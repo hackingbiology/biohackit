@@ -20,14 +20,19 @@ The system SHALL group users practising the same protocol into a `Cohort` and le
 - **WHEN** a user practises a protocol with others
 - **THEN** they can see their own trajectory against the cohort's (see `analytics-and-open-data`)
 
-### Requirement: Link to Rapamycin News first, cohorts second
-The system SHALL link each protocol/compound to the relevant existing forum thread, and SHALL treat community as an extension of Rapamycin News rather than a cold-launched social feature.
+### Requirement: Integrate with Rapamycin News (Discourse Connect where feasible)
+The system SHALL integrate community with the existing Rapamycin News (Discourse) — via Discourse Connect SSO where feasible, falling back to bidirectional links otherwise — and SHALL treat community as an extension of it rather than a cold-launched social feature.
+
+> RESOLVED (2026-08-04): Discourse Connect SSO ideally; else link-only. A form of partnership with Rapamycin News is expected.
+
+#### Scenario: SSO where feasible, link as fallback
+- **WHEN** Discourse Connect SSO is available
+- **THEN** identity is shared via Discourse Connect and protocol↔thread links are bidirectional
+- **AND** where SSO is not available, bidirectional links are still established
 
 #### Scenario: Thread link on every protocol
 - **WHEN** a protocol references a compound discussed on Rapamycin News
 - **THEN** the protocol links bidirectionally to that thread
-
-> DECISION: The exact integration (link only / SSO via Discourse Connect / partnership) is spec v0.3 §11 Q3, still OPEN. Confirm the desired depth.
 
 ### Requirement: Calculated Evidence Badge
 The system SHALL compute reputation from data the system already holds and show its derivation, never a self-declared claim.

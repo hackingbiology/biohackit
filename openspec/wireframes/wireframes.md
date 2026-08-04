@@ -52,11 +52,11 @@ Priority order: what it is → is it trustworthy (badge) → what it involves �
 │   [ ] Liver (ALT/AST)          • fasting glucose, HbA1c              │
 │   [ ] Fasting glucose                                                │
 │                                                                      │
-│   ○ I have these reports  → [ Upload ]                               │
-│   ○ I'll enter them manually                                         │
-│   ○ I understand the risk and acknowledge  (logged)                 │
+│  1) Provide baseline (REQUIRED):                                    │
+│       [ Upload reports ]    or    [ Enter manually ]                │
+│  2) [x] I understand and acknowledge the risk   (REQUIRED, logged)  │
 │                                                                      │
-│                    [ Can't activate yet ]   ← disabled until met    │
+│         [ Activate ]   ← enabled only when 1 AND 2 are both done    │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -167,4 +167,4 @@ The kidney tile shows the whole thesis: the same tile that would show efficacy s
 ## Open layout questions for review
 - Dashboard default: organ-system grid (above) vs a single headline number first? (I chose grid; biological age is one tile, not the hero.)
 - Where does the **cohort comparison** live — inside each dashboard tile, or a dedicated "vs cohort" tab?
-- Copy-flow: is the acknowledge-the-risk option (W2, 3rd radio) acceptable, or must real baseline values be mandatory with no acknowledge-only bypass?
+- ~~Copy-flow acknowledge bypass~~ **RESOLVED**: baseline values are required **and** an explicit risk acknowledgment is **also** required — acknowledgment is never a bypass. (W2 updated)

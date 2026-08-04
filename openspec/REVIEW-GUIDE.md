@@ -26,14 +26,19 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 | D7 | **T0 seeding**: curated protocols (Fabio's first) + invited alpha biohackers → no cold community. | accounts-and-profiles, protocols | your brief |
 | D8 | Competitor names **removed from the deck** (comparison to be done separately later). | deck | your instruction |
 
-## Open questions carried into the spec (`> OPEN:` markers)
+## Review status (updated 2026-08-04)
 
-- **O1 Copy bypass** — In the copy flow, is an "I acknowledge the risk" acknowledgement acceptable, or must real baseline *values* be mandatory with no acknowledge-only path? (safety-guardrails / W2)
-- **O2 Rapamycin News depth** — link-only, SSO via Discourse Connect, or partnership? (community-and-social)
-- **O3 Study endpoint** — pre-registration mandatory to publish, or optional with a quality badge? (studies-nof1)
-- **O4 Baseline lineage** — do we also capture a coarse "how did you arrive at this protocol" note for imported regimens? (protocols D5)
-- **O5 Dashboard default** — organ-system grid (my choice) vs a single headline number first? (wireframes)
-- **O6 Cohort comparison placement** — inside each dashboard tile or a dedicated tab? (wireframes)
+**Confirmed:** D1 (no local-first) ✓ · D2 (public by default) ✓.
+
+**Resolved open questions:**
+- **O1 Copy gate** → baseline values are **required** AND an explicit risk acknowledgment is **also required** (acknowledgment is never a bypass). _(safety-guardrails, W2 updated)_
+- **O2 Rapamycin News** → **Discourse Connect SSO** where feasible, else link-only; a partnership is expected. _(community-and-social updated)_
+- **O5 Dashboard** → **headline number first** (biological-age Δ, with uncertainty/clock/lab), **then** the organ-system grid; graceful fallback if the clock is missing. _(dashboards-and-doctor-view updated)_
+
+**Still open for your call:**
+- **O3 Study endpoint** — pre-registration mandatory to publish, or optional with a quality badge? _(studies-nof1)_
+- **O4 Baseline lineage** — also capture a coarse "how did you arrive at this protocol" note for imported regimens? _(protocols D5)_
+- **O6 Cohort comparison placement** — inside each dashboard tile, or a dedicated "vs cohort" tab? _(wireframes)_
 
 ## What is intentionally NOT here yet
 - Data schemas, API shapes, infrastructure, auth mechanics.

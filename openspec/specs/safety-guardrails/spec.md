@@ -6,13 +6,21 @@ The module that justifies the project. Baseline gating before following a protoc
 
 ## Requirements
 
-### Requirement: Mandatory baseline before following a protocol
-The system SHALL require a safety and baseline checklist to be satisfied before a user can set a copied/followed protocol to `Active`.
+### Requirement: Mandatory baseline AND risk acknowledgment before following a protocol
+The system SHALL require BOTH (a) the required baseline safety markers to be recorded — by import or manual entry — AND (b) an explicit, logged risk acknowledgment, before a user can set a copied/followed protocol to `Active`. Neither substitutes for the other.
+
+> RESOLVED (2026-08-04): baseline values are required *and* an acknowledgment is required; acknowledgment is never a bypass for missing baseline.
 
 #### Scenario: Beginner cannot start blind
 - **WHEN** a beginner copies a protocol containing an off-label compound
-- **THEN** the system blocks activation until the required baseline markers are recorded or explicitly acknowledged
+- **THEN** the system blocks activation until the required baseline markers are recorded
+- **AND** the user has also explicitly acknowledged the risk (recorded, timestamped)
 - **AND** the required safety markers for that compound are already attached
+
+#### Scenario: Acknowledgment alone is not enough
+- **WHEN** a user acknowledges the risk but has not recorded the required baseline
+- **THEN** activation remains blocked
+- **AND** the UI states which baseline markers are still missing
 
 ### Requirement: Safety markers inherited automatically
 The system SHALL attach a substance's associated safety markers to the user's measurement plan whenever that substance becomes active — safety is not opt-in.

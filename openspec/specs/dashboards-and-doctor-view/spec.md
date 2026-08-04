@@ -20,13 +20,20 @@ The system SHALL provide an organ-system view where the same panel that shows ef
 - **WHEN** the renal tile shows a trend
 - **THEN** it can simultaneously show "you take a nephrotoxic compound and have not measured creatinine in 8 months"
 
-### Requirement: Biological age shown with uncertainty
-The system SHALL display the biological-vs-chronological age delta with its uncertainty interval and the clock and laboratory declared, and SHALL NOT use it as a reputation or ranking metric.
+### Requirement: Headline metric first, then organ-system grid
+The system SHALL lead the personal dashboard with a single headline metric — the biological-vs-chronological age delta — shown with its uncertainty interval and the clock and laboratory declared, followed by the organ-system grid. It SHALL NOT use this metric as a reputation or ranking metric.
 
-#### Scenario: Noisy clock shown honestly
-- **WHEN** a biological age is displayed
-- **THEN** its uncertainty interval, clock, and lab are shown
-- **AND** if it is missing, the dashboard remains full (it is one biomarker among many)
+> RESOLVED (2026-08-04): headline number first, then the organ-system grid.
+
+#### Scenario: Headline then grid
+- **WHEN** the dashboard loads and a biological age is available
+- **THEN** the biological-age delta is shown first as the headline, with its uncertainty interval, clock, and lab
+- **AND** the organ-system grid follows below
+
+#### Scenario: Graceful fallback when the clock is missing
+- **WHEN** no biological age is available
+- **THEN** the headline falls back to a data-coverage summary (systems covered / freshness)
+- **AND** the organ-system grid still renders in full
 
 ### Requirement: Doctor protocol sheet
 The system SHALL generate a "protocol sheet" for a physician: everything taken, doses, timing, since when, markers monitored with rationale, trends, and open alerts — as a public link and a PDF.
