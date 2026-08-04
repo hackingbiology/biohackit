@@ -1,0 +1,60 @@
+# biohack.it — Project Context (OpenSpec)
+
+> **Naming.** **HackingBiology** is the organization (a non-profit). **biohack.it** is the software and the initiative.
+
+## What this is
+
+biohack.it is an open-source (AGPL-3.0), free, server-hosted platform where biohackers **document their protocol** in a structured way (what they take and do — dose, timing, cycles), **measure its efficacy and safety through biomarkers**, and **share the protocol and its outcomes publicly**. The social mechanic is "copy-trading for health": follow and copy the people who get results, seeing their public biomarkers. The ethical core is harm reduction for beginners.
+
+The source of truth for scope and rationale is [`docs/hackingbiology-project-spec.md`](../docs/hackingbiology-project-spec.md) (v0.3) and the companion analyses in `docs/`. This `openspec/` tree translates that vision into a reviewable **functional specification**: capabilities → requirements → scenarios.
+
+## Product posture (decisions that shape every capability)
+
+These are settled directions. Where one supersedes spec v0.3, it is flagged so Fabio can confirm on review.
+
+- **Server-hosted, not local-first.** The individual layer runs on the server. There is no browser-only mode.
+  - _Supersedes the "local-first mode" open question (spec v0.3 §11 Q28) — resolved: no local-first._
+- **Public by default.** A profile, its protocol and its biomarker outcomes are meant to be public and shared. The UX actively invites sharing rather than defaulting to private.
+  - _Supersedes spec v0.3 Service Principle #2 ("public by choice, never by default"). Kept from #2: per-marker granularity still exists for the few things a user withholds._
+- **Genomic data is the one structural exception.** There is no code path that publishes genomic data (spec v0.3 Principle #9 stands, unchanged).
+- **The platform describes, never prescribes** (Principle #3). It suggests *what to measure*, never *what to take or how much*.
+- **Deterministic where it counts.** Extraction, mapping, threshold and index computation are deterministic and reproducible; the LLM only produces narration, generated once and cached. *The LLM writes words, never numbers* (Principle, M2/M8).
+- **Fails loudly** (Principle #6) and **stops instead of guessing** (Principle #8).
+- **No chicken-and-egg.** At T0 the team seeds **content-curated protocols** (starting from Fabio's own) and invites a first cohort of **alpha-tester biohackers** with real profiles. Community features attach to Rapamycin News, which already exists.
+- **Protocols are living objects.** They are created from scratch, copied/forked from others, or imported from an already-running regimen; they **change over time and every change is versioned and tracked**.
+- **No economic figures** appear in specs or artifacts (per Fabio, 2026-08-04). Cost *tracking as a user feature* may exist; investment/opex numbers do not.
+
+## Capability map
+
+Each capability lives under `specs/<capability>/spec.md`. Module codes (M1–M13) refer to `docs/hackingbiology-project-spec.md` §6.
+
+| Capability | Module(s) | Phase |
+|---|---|---|
+| `domain-model` | cross-cutting (§5) | 0 |
+| `accounts-and-profiles` | onboarding, seeding | 1 |
+| `protocols` | M1 | 1 |
+| `interventions-and-catalog` | M1/M4 (§5, §8.5quater) | 1 |
+| `biomarkers-and-labs` (Blood Layer) | M2 | 1 |
+| `measurement-planning` | M3 | 2 |
+| `safety-guardrails` | M7 | 1–2 |
+| `daily-log-and-adherence` | M13 | 1 |
+| `dashboards-and-doctor-view` | M5 | 1 |
+| `community-and-social` | M6 | 2 |
+| `studies-nof1` | Study (§5) | 2 |
+| `procurement-and-inventory` | M4 | 3 |
+| `evidence-layer` | M11 | 0/3 |
+| `claims-validator` | M12 | 2 |
+| `analytics-and-open-data` | M8 | 4 |
+| `genomics` | M9 | 2 |
+| `agent-access` | (getbased B6) | 3 |
+
+## Conventions
+
+- **Requirements** use SHALL/MUST; each has at least one `#### Scenario:` with `WHEN/THEN/AND` steps.
+- **`> DECISION:`** blockquotes mark choices that need Fabio's confirmation.
+- **`> OPEN:`** blockquotes mark questions left open for review.
+- Screens and flows are hypotheses in `wireframes/` — explicitly for revision together.
+
+## Tech context (from spec §8, not re-decided here)
+
+Backend Python/Django · PostgreSQL (+TimescaleDB) · Next.js/React PWA · HL7 FHIR internal vocabulary, OMOP export · LOINC + UCUM for analytes · RxNorm/ATC/PubChem/UNII for substances · Discourse (Rapamycin News) for community · component reuse from `get-based` (AGPL).

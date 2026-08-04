@@ -26,6 +26,14 @@ senza upload di file (via browser), più il deck originale dal thread Rapamycin 
 | `docs/bloodwork-layer-analysis.md` | Analisi Blood Layer (Lucis, SiPhox, TestResult, BloodGPT) | ⬜ da importare |
 | `docs/lamplit-analysis.md` | Analisi Lamplit | ⬜ da importare |
 
+## Specifica funzionale (OpenSpec)
+
+La specifica funzionale vive in [`openspec/`](openspec/). **Parti da [openspec/REVIEW-GUIDE.md](openspec/REVIEW-GUIDE.md)** per una revisione guidata: 17 capability (domain-model + M1–M13 e affini), 85 requirement / 92 scenari, più flussi di navigazione e wireframe a bassa fedeltà in [`openspec/wireframes/`](openspec/wireframes/). Le decisioni che rivedono lo spec v0.3 e le domande aperte sono raccolte nella review guide.
+
+## Presentazione
+
+Deck in inglese per il **Biohacker track** del TimePie Longevity Forum: [docs/presentation/timepie-forum.html](docs/presentation/timepie-forum.html) (pubblicato come Artifact per revisione condivisa).
+
 ## Fonti
 
 - claude.ai chat `79c61f96-5b41-433d-b75c-a898c7339488` (spec + companion analyses)
