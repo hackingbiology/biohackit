@@ -20,14 +20,19 @@ The system SHALL let a user author a `Protocol` by composing a `TestingProtocol`
 - **AND** the proposals are shown as an Accept-All / Reject-All block, never auto-applied
 
 ### Requirement: Import an already-running protocol (experienced baseline)
-The system SHALL support an onboarding path for an experienced biohacker who is **already running a protocol**, capturing the current regimen and its historical baseline rather than assuming a clean start.
+The system SHALL support an onboarding path for an experienced biohacker who is **already running a protocol**, capturing the current regimen and its historical baseline rather than assuming a clean start. Where the analytic history is hard to reconstruct, the system SHALL accept a coarse free-text lineage note and SHALL flag the record as starting from a summarized, non-analytic history.
+
+> RESOLVED (2026-08-04): record `in_effect_since` ≠ `tracked_since`; where reconstruction is hard, accept a coarse "how you got here" note AND flag the record as `history: synthesized` (versus `analytic`).
 
 #### Scenario: Baseline capture for someone mid-protocol
 - **WHEN** a new experienced user declares interventions they are already taking
-- **THEN** the system records a `start_date_known_since` and marks the protocol `Active` from import
+- **THEN** the system records `in_effect_since` separately from `tracked_since` and marks the protocol `Active` from import
 - **AND** it invites (does not require) backfilling past measurements and prior changes as history
 
-> DECISION: An imported protocol may have interventions whose true start date predates the account. We record "in effect since" separately from "tracked since". Confirm this pair of dates is enough, or whether we also need a coarse "how did you arrive here" free-text lineage note.
+#### Scenario: Synthesized history when reconstruction is hard
+- **WHEN** the user cannot reconstruct the analytic history of how the protocol evolved
+- **THEN** the system accepts a coarse free-text lineage note ("how you arrived here")
+- **AND** it flags the protocol/baseline as `history: synthesized` (not `analytic`) so downstream analytics can distinguish it (see `analytics-and-open-data`)
 
 ### Requirement: Copy / fork an existing protocol
 The system SHALL let a user copy another user's public `Protocol`, producing a new protocol that records its `forked_from` lineage (source protocol + version).

@@ -34,10 +34,11 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 - **O1 Copy gate** → baseline values are **required** AND an explicit risk acknowledgment is **also required** (acknowledgment is never a bypass). _(safety-guardrails, W2 updated)_
 - **O2 Rapamycin News** → **Discourse Connect SSO** where feasible, else link-only; a partnership is expected. _(community-and-social updated)_
 - **O5 Dashboard** → **headline number first** (biological-age Δ, with uncertainty/clock/lab), **then** the organ-system grid; graceful fallback if the clock is missing. _(dashboards-and-doctor-view updated)_
+- **O3 Study endpoint** → pre-registration is **mandatory** and takes the form of a **community proposal** (forum thread) for comment/consensus; research questions are themselves subject to community proposal; endpoints frozen once posted. _(studies-nof1 + community-and-social updated)_
+
+- **O4 Baseline lineage** → **yes** — where analytic history is hard to reconstruct, capture a coarse free-text "how you got here" note AND flag the record as `history: synthesized` (not analytic). _(protocols updated)_
 
 **Still open for your call:**
-- **O3 Study endpoint** — pre-registration mandatory to publish, or optional with a quality badge? _(studies-nof1)_
-- **O4 Baseline lineage** — also capture a coarse "how did you arrive at this protocol" note for imported regimens? _(protocols D5)_
 - **O6 Cohort comparison placement** — inside each dashboard tile, or a dedicated "vs cohort" tab? _(wireframes)_
 
 ## What is intentionally NOT here yet

@@ -34,6 +34,14 @@ The system SHALL integrate community with the existing Rapamycin News (Discourse
 - **WHEN** a protocol references a compound discussed on Rapamycin News
 - **THEN** the protocol links bidirectionally to that thread
 
+### Requirement: Host study proposals for comment and consensus
+The system SHALL host N-of-1 Study proposals (research question + endpoints) as community threads open for comment, and SHALL surface the proposal discussion alongside the Study.
+
+#### Scenario: Proposal collects community input
+- **WHEN** a Study is pre-registered (see `studies-nof1`)
+- **THEN** its question and endpoints appear as a community proposal thread open for comment
+- **AND** the resulting discussion is visible from the Study, and the Study from the thread
+
 ### Requirement: Calculated Evidence Badge
 The system SHALL compute reputation from data the system already holds and show its derivation, never a self-declared claim.
 

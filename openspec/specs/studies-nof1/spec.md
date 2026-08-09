@@ -29,4 +29,17 @@ The system SHALL compute the declared pre/post comparison at completion and pres
 - **THEN** the system reports the endpoint result as declared, including a null result
 - **AND** insufficient data yields "not determinable" rather than a guessed value
 
-> OPEN: Is endpoint pre-registration mandatory to publish a Study, or optional with a quality badge? (spec v0.3 §11 Q15)
+### Requirement: Study question and endpoints are a community proposal
+The system SHALL require a Study's research question and endpoints to be published as a **community proposal** — a forum thread open for comments (Rapamycin News / Discourse) — as the act of pre-registration, so that pre-registration serves consensus rather than a private declaration. The questions a Study seeks to answer are themselves subject to community proposal.
+
+> RESOLVED (2026-08-04): pre-registration is **mandatory** and takes the form of a community proposal for comment/consensus; the research questions are themselves subject to community proposal.
+
+#### Scenario: Pre-registration posts a proposal
+- **WHEN** a user pre-registers a Study
+- **THEN** the system publishes the question and endpoints as a community proposal thread open for comments
+- **AND** the Study links bidirectionally to its proposal thread (see `community-and-social`)
+
+#### Scenario: Consensus sought, endpoints frozen
+- **WHEN** a Study's proposal is open
+- **THEN** comments are collected against the declared question and endpoints
+- **AND** the pre-registered endpoints are immutable — changing them requires a new proposal/version, never a silent edit

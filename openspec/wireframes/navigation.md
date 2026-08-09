@@ -78,6 +78,8 @@ My Protocol ─▶ "Prepare for my doctor" ─▶ protocol sheet
 ### J7 — N-of-1 Study
 ```
 New Study ─▶ declare question + ENDPOINT (before T0, timestamped)
+   ─▶ POST as community proposal (forum thread) for comment / consensus
+   ─▶ pre-registration = proposal posted (endpoints then frozen)
    ─▶ timepoints T0..Tn + battery ─▶ overlaid on planner
    ─▶ run ─▶ pre/post read-out vs pre-registered endpoint (null allowed;
       "not determinable" if under-covered)
