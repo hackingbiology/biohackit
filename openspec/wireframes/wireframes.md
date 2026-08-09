@@ -70,16 +70,17 @@ Priority order: what it is → is it trustworthy (badge) → what it involves �
 ├───────────────┬───────────────┬───────────────┬────────────────────┤
 │ LIPIDS   ◔◔◔◕ │ KIDNEY   ◔◔◑  │ LIVER   ◔◔◔◔  │ INFLAMMATION ◔◑    │
 │ ApoB ↑ +17%   │ ⚠ creatinine  │ ALT stable    │ hsCRP ↓            │
-│ optimal: out  │   not measured │               │                    │
-│ reason: rapa  │   8 months —   │ reason: rapa  │ reason: goal       │
-│               │   nephrotoxic  │               │                    │
-│               │   compound ⚠   │               │                    │
+│ optimal: out  │   not measured │ optimal: in   │ optimal: in        │
+│ pctl 78 ♂/age │   8 months —   │ pctl 41 ♂/age │ pctl 22 ♂/age     │
+│ vs cohort +3 ▸│   nephrotoxic ⚠│ vs cohort −1 ▸│ vs cohort −4 ▸    │
+│ reason: rapa  │               │ reason: rapa  │ reason: goal       │
 ├───────────────┴───────────────┴───────────────┴────────────────────┤
-│ ◔ = data completeness/freshness   "Metabolic: 6/13, 4 months ago"   │
-│ Index shown only where coverage suffices, else "not determinable".  │
+│ ◔ completeness/freshness · pctl = sex/age-normalized percentile ·   │
+│ "vs cohort ▸" = inline ref (A), opens the dedicated "vs cohort"     │
+│ view (B) with distribution + n. Index only where coverage suffices. │
 └────────────────────────────────────────────────────────────────────┘
 ```
-The kidney tile shows the whole thesis: the same tile that would show efficacy shows the safety gap.
+The kidney tile shows the whole thesis: the same tile that would show efficacy shows the safety gap. Each tile also carries the sex/age-normalized percentile and a lightweight cohort reference that deep-links to the full "vs cohort" view.
 
 ---
 
@@ -164,7 +165,8 @@ The kidney tile shows the whole thesis: the same tile that would show efficacy s
 
 ---
 
-## Open layout questions for review
-- Dashboard default: organ-system grid (above) vs a single headline number first? (I chose grid; biological age is one tile, not the hero.)
-- Where does the **cohort comparison** live — inside each dashboard tile, or a dedicated "vs cohort" tab?
+## Layout decisions (resolved 2026-08-04)
+- Dashboard leads with the **headline biological-age Δ**, then the organ-system grid (O5).
+- Cohort comparison lives **both** inline on each tile **and** in a dedicated "vs cohort" view (O6).
+- Every biomarker also shows its **sex/age-normalized percentile**.
 - ~~Copy-flow acknowledge bypass~~ **RESOLVED**: baseline values are required **and** an explicit risk acknowledgment is **also** required — acknowledgment is never a bypass. (W2 updated)

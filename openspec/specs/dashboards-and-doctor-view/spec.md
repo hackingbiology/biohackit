@@ -50,3 +50,30 @@ The system SHALL, per intervention, place side by side what the literature predi
 - **WHEN** an intervention has both literature evidence and a cohort
 - **THEN** the view shows "literature predicts X; the N people who did it show Y"
 - **AND** the comparison uses the Outcome↔Biomarker link (see `evidence-layer`, `analytics-and-open-data`)
+
+### Requirement: Cohort comparison — inline reference AND dedicated view
+The system SHALL surface cohort comparison in BOTH forms: (A) a lightweight inline reference on each dashboard tile, AND (B) a dedicated "vs cohort" view with distribution, percentile, stratification, sample size (n), and adherence weighting.
+
+> RESOLVED (2026-08-04): both A and B.
+
+#### Scenario: Inline reference on the tile
+- **WHEN** a biomarker's protocol has a cohort large enough to compare
+- **THEN** its dashboard tile shows a lightweight "you vs cohort" reference (e.g. vs cohort median)
+- **AND** the tile links into the dedicated "vs cohort" view
+
+#### Scenario: Dedicated view shows the distribution honestly
+- **WHEN** the user opens the "vs cohort" view for a biomarker
+- **THEN** it shows the cohort distribution with n, stratification, and adherence weighting
+- **AND** it declares "not determinable" when the cohort is too small rather than implying precision
+
+### Requirement: Per-biomarker sex/age-normalized percentile
+The system SHALL, for every biomarker measurement, report the percentile it falls in, normalized for sex and age, alongside the reference / optimal / safety ranges, and SHALL declare the reference population used.
+
+#### Scenario: Percentile shown per marker
+- **WHEN** a biomarker value is displayed
+- **THEN** it shows its sex/age-normalized percentile with the reference population declared
+- **AND** this is distinct from the cohort comparison (population percentile vs same-protocol peers)
+
+#### Scenario: Insufficient reference data
+- **WHEN** the reference population is insufficient to place a percentile for that sex/age
+- **THEN** the system declares "not determinable" rather than showing a guessed percentile

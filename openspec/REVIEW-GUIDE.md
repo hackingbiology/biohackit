@@ -38,8 +38,9 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 
 - **O4 Baseline lineage** → **yes** — where analytic history is hard to reconstruct, capture a coarse free-text "how you got here" note AND flag the record as `history: synthesized` (not analytic). _(protocols updated)_
 
-**Still open for your call:**
-- **O6 Cohort comparison placement** — inside each dashboard tile, or a dedicated "vs cohort" tab? _(wireframes)_
+- **O6 Cohort comparison** → **both** — inline reference on each tile (A) **and** a dedicated "vs cohort" view (B). Plus: every biomarker reports its **sex/age-normalized percentile**. _(dashboards-and-doctor-view + analytics-and-open-data + wireframes updated)_
+
+**All eight review questions are resolved.** One non-blocking design detail remains (`> OPEN:` in analytics-and-open-data): which reference population underlies the sex/age percentile (published references vs platform aggregate). Remaining work is design fidelity, not decisions.
 
 ## What is intentionally NOT here yet
 - Data schemas, API shapes, infrastructure, auth mechanics.
