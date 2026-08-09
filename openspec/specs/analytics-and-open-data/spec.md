@@ -36,9 +36,9 @@ The system SHALL provide a researcher endpoint (dump + API) and an OMOP CDM expo
 - **THEN** it produces an OMOP-CDM dataset consumable by OHDSI tooling
 
 ### Requirement: Sex/age-normalized percentile computation
-The system SHALL compute, per biomarker, a percentile normalized for sex and age against a declared reference population, and SHALL expose it to dashboards and the doctor view (see `dashboards-and-doctor-view`).
+The system SHALL compute, per biomarker, a percentile normalized for sex and age against **published reference distributions**, and SHALL expose it to dashboards and the doctor view (see `dashboards-and-doctor-view`), declaring the published source used per marker.
 
-> OPEN: which reference population underlies the percentile — published reference distributions, the platform's own aggregate, or both with a selector? (design detail, not blocking)
+> RESOLVED (2026-08-04): the percentile is computed against **published reference distributions**, not the platform's own aggregate; the source is declared per marker.
 
 #### Scenario: Percentile with declared reference
 - **WHEN** a percentile is computed for a marker

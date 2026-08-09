@@ -67,7 +67,7 @@ The system SHALL surface cohort comparison in BOTH forms: (A) a lightweight inli
 - **AND** it declares "not determinable" when the cohort is too small rather than implying precision
 
 ### Requirement: Per-biomarker sex/age-normalized percentile
-The system SHALL, for every biomarker measurement, report the percentile it falls in, normalized for sex and age, alongside the reference / optimal / safety ranges, and SHALL declare the reference population used.
+The system SHALL, for every biomarker measurement, report the percentile it falls in, normalized for sex and age against **published reference distributions**, alongside the reference / optimal / safety ranges, and SHALL declare the published source used.
 
 #### Scenario: Percentile shown per marker
 - **WHEN** a biomarker value is displayed

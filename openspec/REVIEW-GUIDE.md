@@ -40,7 +40,7 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 
 - **O6 Cohort comparison** → **both** — inline reference on each tile (A) **and** a dedicated "vs cohort" view (B). Plus: every biomarker reports its **sex/age-normalized percentile**. _(dashboards-and-doctor-view + analytics-and-open-data + wireframes updated)_
 
-**All eight review questions are resolved.** One non-blocking design detail remains (`> OPEN:` in analytics-and-open-data): which reference population underlies the sex/age percentile (published references vs platform aggregate). Remaining work is design fidelity, not decisions.
+**All review questions resolved**, including the percentile reference: it is computed against **published reference distributions** (source declared per marker), not the platform aggregate. No open decisions remain — the next step is the module-by-module OpenSpec deep dive.
 
 ## What is intentionally NOT here yet
 - Data schemas, API shapes, infrastructure, auth mechanics.
