@@ -6,6 +6,14 @@ Grades literature into structured, comparable claims and — crucially — links
 
 ## Requirements
 
+### Requirement: Evipedia as the primary evidence source
+The system SHALL use Forever Healthy's Evipedia knowledgebase as its primary source of intervention evidence reviews (via `ai-uses-and-attribution`), and SHALL run its own AI4L-audited ingestion only for interventions Evipedia does not cover.
+
+#### Scenario: Base on Evipedia, extend where absent
+- **WHEN** evidence for an intervention is needed
+- **THEN** the platform first uses the Evipedia review (conclusion, grading, PMIDs), attributed to Forever Healthy
+- **AND** it runs its own AI4L-audited ingestion only where Evipedia has no coverage
+
 ### Requirement: Structured evidence claims
 The system SHALL ingest literature (Europe PMC / PubMed / preprints) and extract, in batch, `EvidenceClaim` records of intervention × outcome × study.
 

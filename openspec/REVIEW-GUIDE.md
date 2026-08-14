@@ -25,6 +25,7 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 | D6 | **Copy = fork with lineage + safety gate**; beginners cannot activate without baseline. | protocols, safety-guardrails, community | spec §4.1 B |
 | D7 | **T0 seeding**: curated protocols (Fabio's first) + invited alpha biohackers → no cold community. | accounts-and-profiles, protocols | your brief |
 | D8 | Competitor names **removed from the deck** (comparison to be done separately later). | deck | your instruction |
+| D9 | **Content & evidence based on Forever Healthy's work** — Evipedia knowledgebase (CC BY 4.0) via MCP + AI4L (MIT) for AI reviews/queries; new `ai-uses-and-attribution` capability. | ai-uses-and-attribution, evidence-layer, interventions, claims-validator, project.md | your direction |
 
 ## Review status (updated 2026-08-04)
 
@@ -53,5 +54,5 @@ Once the specification is settled, we run a **module-by-module deep dive**, each
 
 ## Inventory of this deliverable
 - `project.md`, `README.md`, this guide.
-- 17 capability specs under `specs/` (domain-model + 16 modules).
+- 18 capability specs under `specs/` (domain-model, ai-uses-and-attribution + 16 modules).
 - `wireframes/navigation.md` (IA + 7 journeys), `wireframes/wireframes.md` (7 annotated screens).

@@ -19,6 +19,7 @@ These are settled directions. Where one supersedes spec v0.3, it is flagged so F
 - **Genomic data is the one structural exception.** There is no code path that publishes genomic data (spec v0.3 Principle #9 stands, unchanged).
 - **The platform describes, never prescribes** (Principle #3). It suggests *what to measure*, never *what to take or how much*.
 - **Deterministic where it counts.** Extraction, mapping, threshold and index computation are deterministic and reproducible; the LLM only produces narration, generated once and cached. *The LLM writes words, never numbers* (Principle, M2/M8).
+- **Built on Forever Healthy's work.** Evidence content structure follows **Evipedia** (Forever Healthy, CC BY 4.0), integrated via its MCP; AI-generated reviews and evidence queries use the **AI4L** audit-based-prompting framework (MIT). Where AI is and isn't used is published as an AI surfaces map. See `specs/ai-uses-and-attribution`.
 - **Fails loudly** (Principle #6) and **stops instead of guessing** (Principle #8).
 - **No chicken-and-egg.** At T0 the team seeds **content-curated protocols** (starting from Fabio's own) and invites a first cohort of **alpha-tester biohackers** with real profiles. Community features attach to Rapamycin News, which already exists.
 - **Protocols are living objects.** They are created from scratch, copied/forked from others, or imported from an already-running regimen; they **change over time and every change is versioned and tracked**.
@@ -31,6 +32,7 @@ Each capability lives under `specs/<capability>/spec.md`. Module codes (M1–M13
 | Capability | Module(s) | Phase |
 |---|---|---|
 | `domain-model` | cross-cutting (§5) | 0 |
+| `ai-uses-and-attribution` | cross-cutting (AI, provenance, previous work) | 0 |
 | `accounts-and-profiles` | onboarding, seeding | 1 |
 | `protocols` | M1 | 1 |
 | `interventions-and-catalog` | M1/M4 (§5, §8.5quater) | 1 |
@@ -57,4 +59,4 @@ Each capability lives under `specs/<capability>/spec.md`. Module codes (M1–M13
 
 ## Tech context (from spec §8, not re-decided here)
 
-Backend Python/Django · PostgreSQL (+TimescaleDB) · Next.js/React PWA · HL7 FHIR internal vocabulary, OMOP export · LOINC + UCUM for analytes · RxNorm/ATC/PubChem/UNII for substances · Discourse (Rapamycin News) for community · component reuse from `get-based` (AGPL).
+Backend Python/Django · PostgreSQL (+TimescaleDB) · Next.js/React PWA · HL7 FHIR internal vocabulary, OMOP export · LOINC + UCUM for analytes · RxNorm/ATC/PubChem/UNII for substances · Discourse (Rapamycin News) for community · component reuse from `get-based` (AGPL) · external evidence from **Evipedia** (Forever Healthy, CC BY 4.0) via `evipedia-mcp` · AI review generation via **AI4L** (MIT, audit-based prompting).

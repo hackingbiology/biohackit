@@ -49,3 +49,11 @@ The system SHALL run long parsing/extraction jobs in an idempotent queue with re
 - **WHEN** an extraction job exceeds an interactive limit
 - **THEN** it continues in the queue and its partial progress is retained
 - **AND** re-running is idempotent rather than duplicating entries
+
+### Requirement: Seed and enrich the catalog from Evipedia
+The system SHALL seed and enrich its substance/intervention catalog from Evipedia's interventions and their alternate names (see `ai-uses-and-attribution`), to bootstrap coverage and multilingual entity resolution.
+
+#### Scenario: Alternate names aid resolution
+- **WHEN** the catalog is seeded or enriched from Evipedia
+- **THEN** Evipedia intervention names and synonyms populate the synonym table alongside RxNorm/ATC/PubChem/UNII
+- **AND** Forever Healthy is attributed (CC BY 4.0)

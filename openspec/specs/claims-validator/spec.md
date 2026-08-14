@@ -20,3 +20,10 @@ The system SHALL present results as informational, anchored to cited literature,
 #### Scenario: Informational framing
 - **WHEN** results are shown
 - **THEN** they cite sources and avoid personalised medical advice
+
+### Requirement: Validate against the Evipedia knowledgebase
+The system SHALL validate product claims against the Evipedia knowledgebase in addition to the internal Evidence Layer, and MAY reuse the Evipedia highlight-and-hover widget pattern to surface evidence on external pages.
+
+#### Scenario: Claim checked against Evipedia
+- **WHEN** a product page names an intervention that has an Evipedia review
+- **THEN** the validator checks the claim against Evipedia's conclusion and grading and cites it (attributed to Forever Healthy)

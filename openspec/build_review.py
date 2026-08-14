@@ -12,6 +12,7 @@ SPECS = ROOT / "specs"
 # (dir, module code, phase, short-code for requirement chips)
 MODULES = [
     ("domain-model",             "cross-cutting", "0",   "DOMAIN"),
+    ("ai-uses-and-attribution",  "cross-cutting", "0",   "AIUSES"),
     ("accounts-and-profiles",    "onboarding",    "1",   "ACCOUNTS"),
     ("protocols",                "M1",            "1",   "PROTOCOLS"),
     ("interventions-and-catalog","M1/M4",         "1",   "INTERVENTIONS"),
