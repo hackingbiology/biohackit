@@ -1,0 +1,209 @@
+<title>biohack.it — Open Laboratory for Longevity</title>
+<style>
+  :root{
+    --bg:#e9edeb; --surface:#ffffff; --surface-2:#f3f6f4;
+    --ink:#131f1b; --muted:#586b64; --faint:#7d8d87;
+    --line:rgba(19,31,27,.12); --line-strong:rgba(19,31,27,.22);
+    --teal:#0a8477; --teal-ink:#075f55; --amber:#b06f18; --amber-ink:#8f5a12;
+    --teal-fill:rgba(10,132,119,.10); --amber-fill:rgba(176,111,24,.10);
+    --shadow:0 1px 0 rgba(19,31,27,.04),0 18px 40px -24px rgba(19,31,27,.35);
+    --ff-display:Georgia,"Times New Roman",serif;
+    --ff-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --ff-mono:ui-monospace,"Cascadia Code","SFMono-Regular",Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0a120f; --surface:#111d18; --surface-2:#0e1814;
+    --ink:#e9f1ee; --muted:#94a59e; --faint:#6f817a;
+    --line:rgba(233,241,238,.12); --line-strong:rgba(233,241,238,.22);
+    --teal:#37c9b8; --teal-ink:#5fd6c7; --amber:#e0a94e; --amber-ink:#ecbd6f;
+    --teal-fill:rgba(55,201,184,.12); --amber-fill:rgba(224,169,78,.12);
+    --shadow:0 1px 0 rgba(0,0,0,.3),0 24px 48px -28px rgba(0,0,0,.7);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0a120f; --surface:#111d18; --surface-2:#0e1814;
+    --ink:#e9f1ee; --muted:#94a59e; --faint:#6f817a;
+    --line:rgba(233,241,238,.12); --line-strong:rgba(233,241,238,.22);
+    --teal:#37c9b8; --teal-ink:#5fd6c7; --amber:#e0a94e; --amber-ink:#ecbd6f;
+    --teal-fill:rgba(55,201,184,.12); --amber-fill:rgba(224,169,78,.12);
+    --shadow:0 1px 0 rgba(0,0,0,.3),0 24px 48px -28px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ff-body);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--teal-ink)}
+  .wrap{width:min(1080px,100%);margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+
+  /* nav */
+  header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;gap:20px;height:60px}
+  .brand{font-family:var(--ff-display);font-size:22px;letter-spacing:-.01em}
+  .brand b{color:var(--teal)}
+  nav .links{margin-left:auto;display:flex;align-items:center;gap:22px;font-size:14px}
+  nav .links a{color:var(--ink);text-decoration:none}
+  nav .links a:hover{color:var(--teal-ink)}
+  nav .links a.ext::after{content:" ↗";color:var(--faint)}
+  .tgl{width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink);cursor:pointer}
+  @media(max-width:640px){nav .links a:not(.ext):not(.cta){display:none}}
+
+  section{padding:clamp(56px,9vw,110px) 0}
+  .eyebrow{font-family:var(--ff-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin:0 0 16px;display:flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:24px;height:1px;background:var(--teal);opacity:.7}
+  h1{font-family:var(--ff-display);font-weight:400;font-size:clamp(52px,10vw,104px);line-height:.95;letter-spacing:-.02em;margin:0}
+  h1 .dot{color:var(--teal)}
+  h2{font-family:var(--ff-display);font-weight:400;font-size:clamp(28px,4.4vw,50px);line-height:1.08;letter-spacing:-.01em;margin:0 0 18px;text-wrap:balance}
+  .sub{font-family:var(--ff-display);font-style:italic;font-size:clamp(22px,3.4vw,38px);color:var(--muted);margin:14px 0 0}
+  .lead{font-size:clamp(17px,1.8vw,20px);color:var(--muted);max-width:60ch;margin:22px 0 0}
+  p{margin:16px 0 0}
+  strong{color:var(--ink);font-weight:600}
+
+  /* hero */
+  .hero{padding-top:clamp(48px,8vw,90px);position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(90% 60% at 82% 0%,var(--teal-fill),transparent 60%);pointer-events:none}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;border:1px solid var(--line-strong)}
+  .btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .btn.primary:hover{filter:brightness(1.06)}
+  .btn.ghost{color:var(--ink);background:var(--surface)}
+  .btn.ghost:hover{border-color:var(--teal)}
+  .metaline{margin-top:30px;display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--ff-mono);font-size:12.5px;color:var(--faint)}
+  .metaline b{color:var(--ink);font-weight:600}
+
+  .cols{display:grid;gap:22px;margin-top:36px}
+  .cols.three{grid-template-columns:repeat(3,1fr)}
+  .cols.two{grid-template-columns:1fr 1fr}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+  .card .tag{font-family:var(--ff-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-ink)}
+  .card h3{margin:10px 0 0;font-family:var(--ff-body);font-size:19px;font-weight:650;letter-spacing:-.01em}
+  .card p{margin-top:8px;font-size:15px;color:var(--muted)}
+  .alt{background:var(--surface-2)}
+  .alt-band{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+  /* roadmap */
+  .road{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:40px}
+  .ph{position:relative;padding:0 12px}
+  .ph .dot{width:14px;height:14px;border-radius:50%;background:var(--surface);border:2px solid var(--teal);position:relative;z-index:1}
+  .ph.now .dot{background:var(--teal)}
+  .ph::before{content:"";position:absolute;top:6px;left:0;right:0;height:2px;background:var(--line-strong)}
+  .ph:first-child::before{left:50%}.ph:last-child::before{right:50%}
+  .ph .k{font-family:var(--ff-mono);font-size:11px;color:var(--teal);margin-top:14px;letter-spacing:.08em}
+  .ph .t{font-size:14px;font-weight:600;margin-top:4px;line-height:1.25}
+  .ph .d{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.45}
+  @media(max-width:760px){.cols.three,.cols.two{grid-template-columns:1fr}.road{grid-template-columns:1fr;gap:14px}.ph::before{display:none}}
+
+  ul.clean{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:12px}
+  ul.clean li{position:relative;padding-left:28px;font-size:16px}
+  ul.clean li::before{content:"";position:absolute;left:2px;top:.6em;width:9px;height:9px;border-radius:2px;background:var(--teal);transform:rotate(45deg)}
+  ul.clean li span{color:var(--muted)}
+
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
+  .about-grid .card h3{font-family:var(--ff-display);font-weight:400;font-size:24px}
+  @media(max-width:760px){.about-grid{grid-template-columns:1fr}}
+  .shoulders{margin-top:22px;font-size:15px;color:var(--muted)}
+  .shoulders b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);background:var(--surface-2)}
+  footer .wrap{padding-top:40px;padding-bottom:48px;display:flex;flex-wrap:wrap;gap:16px 30px;align-items:center}
+  footer .fbrand{font-family:var(--ff-display);font-size:20px}
+  footer .fbrand b{color:var(--teal)}
+  footer .flinks{margin-left:auto;display:flex;flex-wrap:wrap;gap:20px;font-size:14px}
+  footer a{color:var(--ink);text-decoration:none}footer a:hover{color:var(--teal-ink)}
+  footer .lic{width:100%;font-family:var(--ff-mono);font-size:12px;color:var(--faint);margin-top:8px}
+  :focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+</style>
+
+<header>
+  <div class="wrap"><nav>
+    <span class="brand">biohack<b>.</b>it</span>
+    <span class="links">
+      <a href="#what">What</a>
+      <a href="#plan">Plan</a>
+      <a href="#about">About</a>
+      <a class="ext" href="https://hackingbiology.com">HackingBiology</a>
+      <button class="tgl" id="tgl" aria-label="Toggle light or dark theme">◐</button>
+    </span>
+  </nav></div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero"><div class="wrap">
+    <p class="eyebrow">Open source · Non-profit · AGPL-3.0</p>
+    <h1>biohack<span class="dot">.</span>it</h1>
+    <p class="sub">An open laboratory for longevity.</p>
+    <p class="lead">Document your protocol, measure it with biomarkers, and share it — so the biohacking community learns from <strong>real, comparable, open data</strong>, with safety built in rather than bolted on.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#plan">Read the plan</a>
+      <a class="btn ghost ext" href="https://www.rapamycin.news">Join the community ↗</a>
+    </div>
+    <div class="metaline">
+      <span><b>Built on</b> an existing community · Rapamycin News</span>
+      <span><b>Standing on</b> Evipedia · AI4L · get-based</span>
+    </div>
+  </div></section>
+
+  <!-- WHAT -->
+  <section id="what" class="alt-band"><div class="wrap">
+    <p class="eyebrow">What it is</p>
+    <h2>Document your protocol. Measure it. Share it.</h2>
+    <p class="lead">Today a biohacker's protocol lives in spreadsheets, forum posts and chat prompts — not comparable, not followable, not readable by a physician. biohack.it turns it into structured, shareable data.</p>
+    <div class="cols three">
+      <div class="card"><span class="tag">01 · Document</span><h3>What you take &amp; do</h3><p>Substances, therapies, exercise and nutrition — with dose, timing and real cycle schemas. Create from scratch, or copy any public protocol with one click.</p></div>
+      <div class="card"><span class="tag">02 · Measure</span><h3>Efficacy &amp; safety</h3><p>Biomarkers with reference, optimal and safety ranges — plus biological clocks (PhenoAge, epigenetic, glycation). Upload your past lab reports and get your history in graphs, free.</p></div>
+      <div class="card"><span class="tag">03 · Share</span><h3>Open by default</h3><p>Publish your protocol and its outcomes. Follow and copy the people who get results, seeing their public biomarkers — the community is the quality control.</p></div>
+    </div>
+  </div></section>
+
+  <!-- PLAN -->
+  <section id="plan"><div class="wrap">
+    <p class="eyebrow">The plan</p>
+    <h2>From one person to a distributed trial.</h2>
+    <p class="lead">We are building in the open. The functional specification — 24 capabilities across protocols, biomarkers, safety, community and open data — is developed publicly and grows with community review. Here is the road.</p>
+    <div class="road">
+      <div class="ph now"><div class="dot"></div><div class="k">PHASE 0</div><div class="t">Foundations</div><div class="d">Domain model, seed catalogue, biomarker registry, safety rules.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">PHASE 1</div><div class="t">Useful to one</div><div class="d">Blood Layer, daily log, doctor sheet — value in ten minutes, zero spend.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">PHASE 2</div><div class="t">Useful to many</div><div class="d">Public protocols, follow &amp; copy, safety guardrails, N-of-1 studies.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">PHASE 3</div><div class="t">Daily operations</div><div class="d">Pills, therapeutics, exercise &amp; nutrition scheduling; procurement.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">PHASE 4</div><div class="t">Research layer</div><div class="d">Cohorts, literature-vs-observed, OMOP export, first open-data release.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">PHASE 5</div><div class="t">Distributed trials</div><div class="d">Pre-registered studies on shared protocols — a collective read-out.</div></div>
+    </div>
+    <ul class="clean" style="margin-top:44px">
+      <li><strong>Rigor is a design decision, not a disclaimer.</strong> <span>The platform describes, never prescribes; every claim is graded to its evidence.</span></li>
+      <li><strong>The LLM writes words, never numbers.</strong> <span>Extraction, thresholds and indices are deterministic and reproducible.</span></li>
+      <li><strong>Safety is not opt-in.</strong> <span>Follow a protocol and you inherit its safety markers and a mandatory baseline.</span></li>
+      <li><strong>Open by code and by data.</strong> <span>AGPL software; the public dataset is a clonable snapshot anyone can self-host.</span></li>
+    </ul>
+  </div></section>
+
+  <!-- ABOUT -->
+  <section id="about" class="alt-band"><div class="wrap">
+    <p class="eyebrow">About</p>
+    <h2>HackingBiology &amp; biohack.it.</h2>
+    <div class="about-grid">
+      <div class="card"><h3>HackingBiology</h3><p>The <strong>non-profit organization</strong> behind the initiative — its purpose is harm reduction and open longevity data, with the economic cycle secondary to the mission.</p></div>
+      <div class="card"><h3>biohack.it</h3><p>The <strong>software and the initiative</strong>: an open platform for the biohacking and longevity community to document protocols and measure them, together, in the open.</p></div>
+    </div>
+    <p class="shoulders">We build on the shoulders of others and act as a connector of their data effort: <b>Evipedia</b> (Forever Healthy, CC BY 4.0), the <b>AI4L</b> evidence framework, <b>get-based</b>, and open vocabularies (LOINC, UCUM, RxNorm, OMOP, FHIR). The community already exists on <a href="https://www.rapamycin.news">Rapamycin News</a>; now it gets its instrument.</p>
+    <div class="cta-row">
+      <a class="btn ghost ext" href="https://hackingbiology.com">Visit HackingBiology.com ↗</a>
+    </div>
+  </div></section>
+</main>
+
+<footer><div class="wrap">
+  <span class="fbrand">biohack<b>.</b>it</span>
+  <span class="flinks">
+    <a class="ext" href="https://hackingbiology.com">HackingBiology.com</a>
+    <a href="https://www.rapamycin.news">Rapamycin News</a>
+    <a href="#plan">The plan</a>
+  </span>
+  <span class="lic">Open source under AGPL-3.0 · HackingBiology, non-profit · An open laboratory for longevity.</span>
+</div></footer>
+
+<script>
+  document.getElementById('tgl').addEventListener('click',function(){
+    var r=document.documentElement, c=r.getAttribute('data-theme');
+    if(!c) c=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    r.setAttribute('data-theme', c==='dark'?'light':'dark');
+  });
+</script>
