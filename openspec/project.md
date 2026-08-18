@@ -13,10 +13,13 @@ The source of truth for scope and rationale is [`docs/hackingbiology-project-spe
 These are settled directions. Where one supersedes spec v0.3, it is flagged so Fabio can confirm on review.
 
 - **Server-hosted, not local-first.** The individual layer runs on the server. There is no browser-only mode.
-  - _Supersedes the "local-first mode" open question (spec v0.3 §11 Q28) — resolved: no local-first._
+  - _Supersedes the "local-first mode" open question (spec v0.3 §11 Q28) — resolved: no local-first (confirmed by Fabio 2026-08-04)._
+  - **Self-hosting is a different, supported thing:** the software is AGPL, so a technically capable user may stand up their own full instance and seed it from the public OpenData snapshot.
+- **Fully clonable — open by code and by data.** Everything public — public profiles and their public data, defined protocols, treatments/interventions, and measurements — is **OpenData**, published as a clonable snapshot sufficient to run an independent instance. Withheld per-item data is never included; public genomic data (including the gVCF) and original lab report files are included under the same public-by-default rule. See `specs/analytics-and-open-data`.
 - **Public by default.** A profile, its protocol and its biomarker outcomes are meant to be public and shared. The UX actively invites sharing rather than defaulting to private.
   - _Supersedes spec v0.3 Service Principle #2 ("public by choice, never by default"). Kept from #2: per-marker granularity still exists for the few things a user withholds._
-- **Genomic data is the one structural exception.** There is no code path that publishes genomic data (spec v0.3 Principle #9 stands, unchanged).
+- **Raw by default, validated by the community.** Public data is published **raw** (raw lab reports and gVCF included) — no forced obfuscation. This maximal-openness stance will be put to a community poll on Rapamycin News when the public BETA opens. See `specs/analytics-and-open-data`.
+- **Genomics is public too.** Reversing spec v0.3 Principle #9: genomic data — including the gVCF — is public by default like other data, behind a heightened, explicit consent gate (it is maximally identifying and effectively irreversible once public). See `specs/genomics`.
 - **The platform describes, never prescribes** (Principle #3). It suggests *what to measure*, never *what to take or how much*.
 - **Deterministic where it counts.** Extraction, mapping, threshold and index computation are deterministic and reproducible; the LLM only produces narration, generated once and cached. *The LLM writes words, never numbers* (Principle, M2/M8).
 - **Built on Forever Healthy's work.** Evidence content structure follows **Evipedia** (Forever Healthy, CC BY 4.0), integrated via its MCP; AI-generated reviews and evidence queries use the **AI4L** audit-based-prompting framework (MIT). Where AI is and isn't used is published as an AI surfaces map. See `specs/ai-uses-and-attribution`.

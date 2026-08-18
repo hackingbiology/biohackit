@@ -21,9 +21,10 @@ The system SHALL expose a lightweight MCP endpoint returning the profile's data 
 - **WHEN** an authorised agent queries via MCP
 - **THEN** it receives the read-only biomarker/protocol context for that profile
 
-### Requirement: Genomics excluded from agent access
-The system SHALL exclude genomic-derived data from anything returned through agent access.
+### Requirement: Agent access respects per-item visibility
+The system SHALL return through agent access only data consistent with the profile's visibility settings — withheld items are never returned; public data (including public genomics, where the user made it public) follows those settings. There is no special genomics carve-out.
 
-#### Scenario: Genomics not exposed to agents
-- **WHEN** an agent queries a profile that has genomic data
-- **THEN** the response contains no genomic-derived fields
+#### Scenario: Withheld items not exposed
+- **WHEN** an agent queries a profile
+- **THEN** withheld items are not returned
+- **AND** public data follows the profile's visibility settings

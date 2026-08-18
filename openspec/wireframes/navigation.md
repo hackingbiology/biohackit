@@ -19,7 +19,7 @@ biohack.it
 └─ Settings           profile · sharing (per-item) · Agent Access tokens
 ```
 
-Public surfaces (Explore, a public Protocol page, a public Profile) are the acquisition channel and are indexable. Everything a logged-in user creates is **public by default** with per-item withholding; genomics is never on a shareable surface.
+Public surfaces (Explore, a public Protocol page, a public Profile) are the acquisition channel and are indexable. Everything a logged-in user creates is **public by default** with per-item withholding; genomics (including the gVCF) is public too, behind a heightened-consent gate.
 
 ## Primary journeys
 

@@ -19,7 +19,7 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 |---|---|---|---|
 | D1 | **No local-first.** Server-hosted only. | accounts-and-profiles | spec v0.3 §11 Q28 |
 | D2 | **Public by default**, with per-item withholding; UX actively invites sharing. | accounts-and-profiles, project.md | spec v0.3 Principle #2 |
-| D3 | **Genomics stays structurally private** even under D2. | genomics, project.md | unchanged (Principle #9) |
+| D3 | **Genomics is public too** (gVCF included), behind heightened consent — reverses Principle #9. | genomics, project.md, agent-access | your review 2026-08-04 |
 | D4 | **No economic figures** anywhere in specs/artifacts. | project.md | your instruction |
 | D5 | Experienced users **import an already-running protocol**; "in effect since" ≠ "tracked since". | protocols | new (your brief) |
 | D6 | **Copy = fork with lineage + safety gate**; beginners cannot activate without baseline. | protocols, safety-guardrails, community | spec §4.1 B |
@@ -29,7 +29,11 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 
 ## Review status (updated 2026-08-04)
 
-**Confirmed:** D1 (no local-first) ✓ · D2 (public by default) ✓.
+**Confirmed:** D1 (no local-first) ✓ — self-hosting a full AGPL instance is a distinct, supported path · D2 (public by default) ✓.
+
+**Added on review (2026-08-04):**
+- **Raw by default + BETA poll.** Public data (incl. raw lab reports and gVCF) is published **raw**, no forced PII obfuscation; the maximal-openness stance goes to a **community poll on Rapamycin News at the public BETA**. _(analytics-and-open-data, biomarkers-and-labs)_
+- **D10 Fully clonable + self-hostable.** OpenData = public profiles + their public data, protocols, treatments, measurements, original lab files, public genomics/gVCF (excl. only withheld); published as a clonable snapshot to seed an independent AGPL instance; aggregated research export stays z-scored/threshold-guarded. _(analytics-and-open-data, accounts-and-profiles, project.md)_
 
 **Resolved open questions:**
 - **O1 Copy gate** → baseline values are **required** AND an explicit risk acknowledgment is **also required** (acknowledgment is never a bypass). _(safety-guardrails, W2 updated)_

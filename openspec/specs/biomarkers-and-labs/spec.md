@@ -61,9 +61,18 @@ The system SHALL show, per organ system, how complete and how fresh the data is.
 - **THEN** the UI states "Metabolic: 6/13, last updated 4 months ago"
 - **AND** any index computed on sparse data is annotated as such (see `dashboards-and-doctor-view`)
 
-### Requirement: PII obfuscation on import
-The system SHALL strip/obfuscate personally identifying information from imported documents in the pipeline, with a reviewable diff, before the document is processed further.
+### Requirement: Optional PII obfuscation on import
+The system SHALL offer PII obfuscation of imported documents as an option with a reviewable diff; by default the original file is retained **raw** (the user chooses to obfuscate).
 
-#### Scenario: Name and ID removed before processing
-- **WHEN** a PDF containing patient name and ID is imported
-- **THEN** the PII is obfuscated in-stream and the user can see what was removed
+#### Scenario: User opts to obfuscate
+- **WHEN** a user chooses to obfuscate a report containing name and ID
+- **THEN** the PII is obfuscated and the user can see what was removed
+- **AND** by default, without that choice, the original file is retained raw
+
+### Requirement: Original report file retained and public raw
+The system SHALL retain the original lab report file and make it public by default in its **raw** original format, as part of OpenData.
+
+#### Scenario: Raw original file published
+- **WHEN** a user's lab report is public
+- **THEN** the raw original-format file (e.g. PDF) is available exactly as uploaded
+- **AND** it is part of the OpenData public snapshot (see `analytics-and-open-data`)

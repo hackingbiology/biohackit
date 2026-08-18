@@ -48,11 +48,12 @@ The system SHALL let a user copy another user's public `Protocol`, producing a n
 - **AND** the lineage link to the source is retained for later comparison
 
 ### Requirement: Versioning and change tracking
-The system SHALL version every protocol facet, and SHALL record each change as a tracked, timestamped, attributable event with an optional reason.
+The system SHALL version every protocol facet, and SHALL record each change as a tracked, timestamped, attributable event with a **mandatory reason**.
 
 #### Scenario: A dose change is a tracked event
 - **WHEN** a user changes rapamycin from 6 mg/week to 8 mg/week
-- **THEN** a new version is created with a change event {field, old, new, timestamp, actor, reason?}
+- **THEN** a new version is created with a change event {field, old, new, timestamp, actor, reason}
+- **AND** the change cannot be saved without a reason
 - **AND** the prior version remains retrievable and referenceable by measurements taken under it
 
 #### Scenario: Diff between versions
@@ -78,7 +79,7 @@ The system SHALL let a user publish a protocol public-by-default, while allowing
 #### Scenario: Public by default, withhold one marker
 - **WHEN** a user publishes a protocol
 - **THEN** the protocol and its outcomes are public unless the user explicitly withholds an item
-- **AND** any genomic-derived element is never publishable regardless of setting (see `genomics`)
+- **AND** genomic elements follow the same public-by-default rule, behind heightened consent (see `genomics`)
 
 ### Requirement: Protocol states
 The system SHALL support protocol lifecycle states `Draft | Active | Paused | Completed` and SHALL reflect state in discovery and dashboards.

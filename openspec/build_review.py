@@ -158,7 +158,8 @@ sections.append(embed("wireframes.md", "wireframes", "Wireframes"))
 DECISIONS = """
 <div class="dl">
 <div class="dlrow"><b>D1</b> No local-first — server-hosted only. <em>ACCOUNTS</em></div>
-<div class="dlrow"><b>D2</b> Public by default (genomics excepted). <em>ACCOUNTS</em></div>
+<div class="dlrow"><b>D2</b> Public by default — incl. genomics (gVCF public) behind heightened consent. <em>ACCOUNTS · GENOMICS</em></div>
+<div class="dlrow"><b>D10</b> Fully clonable + self-hostable; OpenData incl. public profiles, protocols, treatments, measurements, original lab files, public genomics. <em>ANALYTICS · ACCOUNTS</em></div>
 <div class="dlrow"><b>O1</b> Copy gate = baseline <b>and</b> risk acknowledgment (never a bypass). <em>SAFETY</em></div>
 <div class="dlrow"><b>O2</b> Rapamycin News via Discourse Connect SSO where feasible, else link; partnership expected. <em>COMMUNITY</em></div>
 <div class="dlrow"><b>O3</b> Study pre-registration = mandatory community proposal (forum) for consensus; endpoints frozen. <em>STUDIES</em></div>
