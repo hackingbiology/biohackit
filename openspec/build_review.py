@@ -288,4 +288,7 @@ page = f"""<title>biohack.it — Functional Spec Review</title>
 
 out = ROOT / "review.html"
 out.write_text(page, encoding="utf-8")
-print(f"wrote {out}  ({len(page):,} bytes)  modules={len(MODULES)} req={tot_req} scn={tot_scn}")
+site_out = ROOT.parent / "docs" / "spec" / "index.html"
+site_out.parent.mkdir(parents=True, exist_ok=True)
+site_out.write_text(page, encoding="utf-8")
+print(f"wrote {out} and {site_out}  ({len(page):,} bytes)  modules={len(MODULES)} req={tot_req} scn={tot_scn}")
