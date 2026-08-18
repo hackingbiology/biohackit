@@ -88,3 +88,11 @@ The system SHALL support protocol lifecycle states `Draft | Active | Paused | Co
 - **WHEN** a user sets a protocol to `Paused`
 - **THEN** measurement-plan Overdue calculations for that protocol pause (see `measurement-planning`)
 - **AND** the pause is itself a tracked change event
+
+### Requirement: Protocol level classification (medical | research)
+The system SHALL classify a protocol by level — `medical` (established, clinician-grade) or `research` (experimental) — and display the level wherever the protocol appears, so a follower sees what kind of protocol they are copying.
+
+#### Scenario: Research-level protocol is labelled
+- **WHEN** a protocol contains experimental interventions
+- **THEN** it is classified and displayed as `research` level
+- **AND** a `medical`-level protocol is labelled distinctly, with the acknowledgment implication handled in `safety-guardrails`

@@ -51,3 +51,11 @@ The system SHALL provide an explicit "consult a physician" escalation that produ
 - **WHEN** a measured value crosses a safety threshold
 - **THEN** the system escalates with the protocol sheet pre-generated
 - **AND** it never issues a personalised dosage or diagnosis
+
+### Requirement: Heightened acknowledgment for research-level or animal-derived dosing
+The system SHALL require an explicit, logged risk acknowledgment — accepting the risk knowingly — before activating a protocol that is `research` level or whose posology is `animal-derived`, in addition to the mandatory baseline.
+
+#### Scenario: Accepting the risk of a research protocol
+- **WHEN** a user activates a research-level or animal-derived-dose protocol
+- **THEN** the system requires an explicit acknowledgment naming the level and dose provenance (see `protocols`, `interventions-and-catalog`)
+- **AND** this is on top of the mandatory baseline and safety-marker inheritance

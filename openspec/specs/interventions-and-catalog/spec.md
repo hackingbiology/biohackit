@@ -57,3 +57,11 @@ The system SHALL seed and enrich its substance/intervention catalog from Evipedi
 - **WHEN** the catalog is seeded or enriched from Evipedia
 - **THEN** Evipedia intervention names and synonyms populate the synonym table alongside RxNorm/ATC/PubChem/UNII
 - **AND** Forever Healthy is attributed (CC BY 4.0)
+
+### Requirement: Posology provenance (human vs animal)
+The system SHALL record, per intervention posology, whether the dosing derives from `human` or `animal` experimentation, with its source, so extrapolated dosing is never presented as established.
+
+#### Scenario: Animal-derived dose is marked
+- **WHEN** a dose is extrapolated from animal studies
+- **THEN** the posology is tagged `animal-derived` with its source
+- **AND** a dose from human trials is tagged `human-derived` (see `evidence-layer`)
