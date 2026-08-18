@@ -32,6 +32,7 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 **Confirmed:** D1 (no local-first) ✓ — self-hosting a full AGPL instance is a distinct, supported path · D2 (public by default) ✓.
 
 **Added on review (2026-08-04):**
+- **Managing user (Mentor / Longevity Doctor / Clinic).** New `management-and-delegation`: user self-signs-up then may assign/revoke a manager who administers, measures and monitors them (as Physician-Assigned, attributed); an assigned manager is **indicated** on profile/dashboard. Lean; permission granularity + safety-ack ownership left open. _(management-and-delegation; leverages accounts, protocols, dashboards)_
 - **Three reference sections added.** `related-initiatives` (highlighted register of similar initiatives, commercial & non), `data-standards-and-typing` (data structures in use and why, for scientific validity), and — in `ai-uses-and-attribution` — technical evaluation of reused OSS/open-data components + upstream notification (be the glue of others' data effort). _(related-initiatives, data-standards-and-typing, ai-uses-and-attribution)_
 - **Q7 resolved — everything copyable, informed.** All interventions (peptides / plasmapheresis / IV included) are **one-click copyable**; mitigation = an **informed-decision panel** (adoption + outcomes, evidence corpus & grading, medical/research level, dose provenance, potential impacts, forum links) + the safety gate. _(community-and-social, protocols, safety-guardrails)_
 - **Activities restructured.** Split **Pills Management** out of Procurement (now scales to 60–130 pills/day); added **Therapeutics Management** (red light, HBOT, sauna, cold plunge, cryotherapy, plasmapheresis, IV, ozone/EBOO, PEMF — each with typed parameters), **Exercise Reporting** (strength/cardio/mobility/HIIT + VO2max, log-only, not a gym app), and **Nutrition Management** (computed TDEE, eating pattern OMAD/CR/IF, macro split); **removed Claims Validator** (off-topic). _(pills-management, therapeutics-management, exercise-reporting, nutrition-management, procurement-and-inventory)_
@@ -61,5 +62,5 @@ Once the specification is settled, we run a **module-by-module deep dive**, each
 
 ## Inventory of this deliverable
 - `project.md`, `README.md`, this guide.
-- 23 capability specs under `specs/` (domain-model, ai-uses-and-attribution, data-standards-and-typing, related-initiatives + 19 modules).
+- 24 capability specs under `specs/` (domain-model, ai-uses-and-attribution, data-standards-and-typing, related-initiatives, management-and-delegation + 19 modules).
 - `wireframes/navigation.md` (IA + 7 journeys), `wireframes/wireframes.md` (7 annotated screens).

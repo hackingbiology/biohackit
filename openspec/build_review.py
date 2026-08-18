@@ -16,6 +16,7 @@ MODULES = [
     ("data-standards-and-typing","cross-cutting", "0",   "STANDARDS"),
     ("related-initiatives",      "cross-cutting", "0",   "LANDSCAPE"),
     ("accounts-and-profiles",    "onboarding",    "1",   "ACCOUNTS"),
+    ("management-and-delegation","Roles",         "2",   "MANAGER"),
     ("protocols",                "M1",            "1",   "PROTOCOLS"),
     ("interventions-and-catalog","M1/M4",         "1",   "INTERVENTIONS"),
     ("biomarkers-and-labs",      "M2",            "1",   "BLOODLAYER"),

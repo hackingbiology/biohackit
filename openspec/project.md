@@ -40,6 +40,7 @@ Each capability lives under `specs/<capability>/spec.md`. Module codes (M1–M13
 | `data-standards-and-typing` | cross-cutting (standards, typing) | 0 |
 | `related-initiatives` | cross-cutting (ecosystem) | 0 |
 | `accounts-and-profiles` | onboarding, seeding | 1 |
+| `management-and-delegation` | roles, delegation | 2 |
 | `protocols` | M1 | 1 |
 | `interventions-and-catalog` | M1/M4 (§5, §8.5quater) | 1 |
 | `biomarkers-and-labs` (Blood Layer) | M2 | 1 |
