@@ -61,6 +61,38 @@ The system SHALL show, per organ system, how complete and how fresh the data is.
 - **THEN** the UI states "Metabolic: 6/13, last updated 4 months ago"
 - **AND** any index computed on sparse data is annotated as such (see `dashboards-and-doctor-view`)
 
+### Requirement: Biological clocks are first-class biomarkers
+The system SHALL model biological (aging) clocks as biomarkers with role and provenance, covering both computed clocks and uploaded measured clocks, and SHALL surface them within biomarkers and dashboards.
+
+#### Scenario: A clock behaves like a biomarker
+- **WHEN** a biological-clock value exists (computed or uploaded)
+- **THEN** it is stored as a biomarker with method/provider, date, unit and uncertainty
+- **AND** it appears in the biomarker registry and in dashboards (see `dashboards-and-doctor-view`)
+
+### Requirement: Deterministic PhenoAge computation from the standard panel
+The system SHALL compute PhenoAge (Levine 2018) deterministically from its constituent blood analytes, and SHALL include those analytes in the standard blood panel so PhenoAge is computable from routine labs.
+
+#### Scenario: PhenoAge from routine bloods
+- **WHEN** the standard blood panel is measured
+- **THEN** the system computes PhenoAge deterministically from its constituent analytes (albumin, creatinine, glucose, CRP, lymphocyte %, MCV, RDW, ALP, WBC, and chronological age)
+- **AND** the computation is reproducible (same input → same output), with the LLM never involved
+
+### Requirement: Upload of measured biological clocks (epigenetic, glycation)
+The system SHALL accept uploaded biological-clock results — epigenetic clocks (e.g. TruAge and others) and glycation clocks (e.g. GlycanAge and others) — as measurements, with provider, method, date and uncertainty.
+
+#### Scenario: Epigenetic and glycation clocks uploaded
+- **WHEN** a user uploads a TruAge epigenetic result or a GlycanAge glycation result
+- **THEN** it is stored as a biological-clock biomarker with its provider, method and uncertainty
+- **AND** provider/method are retained because clocks are not comparable across providers
+
+### Requirement: Inventory of biological clocks with accessibility assessment
+The system SHALL maintain an inventory of biological clocks classified by accessibility — computable from existing data, easy to calculate, or purchasable from a reputable provider — to guide which clocks to add.
+
+#### Scenario: Assess a candidate clock
+- **WHEN** a new biological clock is considered
+- **THEN** it is recorded with its accessibility class and provider reputation
+- **AND** clocks computable from existing data are prioritized over ones that must be purchased
+
 ### Requirement: Optional PII obfuscation on import
 The system SHALL offer PII obfuscation of imported documents as an option with a reviewable diff; by default the original file is retained **raw** (the user chooses to obfuscate).
 

@@ -35,6 +35,14 @@ The system SHALL lead the personal dashboard with a single headline metric — t
 - **THEN** the headline falls back to a data-coverage summary (systems covered / freshness)
 - **AND** the organ-system grid still renders in full
 
+### Requirement: Biological clocks surfaced as a group
+The system SHALL present the available biological clocks — computed (PhenoAge) and uploaded (epigenetic, glycation) — as a dashboard group, each with its method/provider and uncertainty; the headline biological-age delta uses a declared default clock.
+
+#### Scenario: Multiple clocks shown honestly
+- **WHEN** more than one biological clock is available
+- **THEN** the dashboard shows each clock with its method/provider and uncertainty interval
+- **AND** the headline names which clock and lab it uses, and clocks are not presented as comparable across providers
+
 ### Requirement: Doctor protocol sheet
 The system SHALL generate a "protocol sheet" for a physician: everything taken, doses, timing, since when, markers monitored with rationale, trends, and open alerts — as a public link and a PDF.
 
