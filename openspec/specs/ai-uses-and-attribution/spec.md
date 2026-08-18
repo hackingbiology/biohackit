@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Consolidates three things the scientific and biohacker audience asks first: **where AI is used and — crucially — where it is not**, **which frameworks and external knowledgebases the platform builds on**, and **the attribution and licensing of prior work**. It adopts the published "AI surfaces map" pattern and names the shoulders biohack.it stands on — above all **Forever Healthy's Evipedia and AI4L**, plus `get-based` and the open vocabularies. This capability governs the others; it owns the trust artifact, not a product screen.
+Consolidates three things the scientific and biohacker audience asks first: **where AI is used and — crucially — where it is not**, **which frameworks and external knowledgebases the platform builds on**, and **the attribution and licensing of prior work**. It adopts the published "AI surfaces map" pattern and names the shoulders biohack.it stands on — above all **Forever Healthy's Evipedia and AI4L**, plus `get-based` and the open vocabularies. It also makes biohack.it a **connector** that evaluates, credits and notifies the upstream projects whose data effort it binds together. This capability governs the others; it owns the trust artifact, not a product screen.
 
 ## Requirements
 
@@ -59,3 +59,19 @@ The system SHALL maintain a register of reused prior work with its license and a
 #### Scenario: Public trust artifact
 - **WHEN** a physician or researcher asks "can I trust these numbers?"
 - **THEN** the published AI surfaces map + attribution register answers where AI runs, where it does not, and whose vetted knowledge is reused
+
+### Requirement: Technical evaluation of reused open-source / open-data components
+The system SHALL maintain a technical evaluation of every reused open-source and open-data component — what it is, its fit, license, maintenance/health, and how it is integrated — with the rationale for use.
+
+#### Scenario: Component evaluated before adoption
+- **WHEN** an OSS or open-data component is considered for reuse
+- **THEN** it is evaluated for fit, license compatibility, maintenance and integration approach
+- **AND** the evaluation and rationale are recorded (see `data-standards-and-typing`, `related-initiatives`)
+
+### Requirement: Notify upstreams of their inclusion
+The system SHALL notify each upstream project whose work is included or built upon, so biohack.it acts as a **connector** of others' data effort rather than a silent consumer.
+
+#### Scenario: Upstream is told, credited, and given back
+- **WHEN** a component or dataset is included (e.g. Evipedia, get-based)
+- **THEN** its maintainers are notified of the inclusion and credited
+- **AND** contributions back (e.g. LOINC mapping upstream) are offered where they help

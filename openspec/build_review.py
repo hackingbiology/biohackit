@@ -13,6 +13,8 @@ SPECS = ROOT / "specs"
 MODULES = [
     ("domain-model",             "cross-cutting", "0",   "DOMAIN"),
     ("ai-uses-and-attribution",  "cross-cutting", "0",   "AIUSES"),
+    ("data-standards-and-typing","cross-cutting", "0",   "STANDARDS"),
+    ("related-initiatives",      "cross-cutting", "0",   "LANDSCAPE"),
     ("accounts-and-profiles",    "onboarding",    "1",   "ACCOUNTS"),
     ("protocols",                "M1",            "1",   "PROTOCOLS"),
     ("interventions-and-catalog","M1/M4",         "1",   "INTERVENTIONS"),
