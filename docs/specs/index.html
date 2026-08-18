@@ -4,10 +4,9 @@
 --line:rgba(19,31,27,.12);--line2:rgba(19,31,27,.22);--teal:#0a8477;--teal-ink:#075f55;--amber:#b06f18;--amber-ink:#8f5a12;
 --green:#127a4a;--blue:#2563a8;--ff:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--ffd:Georgia,"Times New Roman",serif;
 --ffm:ui-monospace,"Cascadia Code",Consolas,monospace;}
-@media (prefers-color-scheme:dark){:root{--bg:#0a120f;--surface:#111d18;--surface2:#0e1814;--ink:#e9f1ee;--muted:#94a59e;--faint:#6f817a;
---line:rgba(233,241,238,.12);--line2:rgba(233,241,238,.22);--teal:#37c9b8;--teal-ink:#5fd6c7;--amber:#e0a94e;--amber-ink:#ecbd6f;--green:#4bd08a;--blue:#7db1e8;}}
-:root[data-theme=light]{--bg:#eef1ef;--surface:#fff;--surface2:#f4f7f5;--ink:#131f1b;--muted:#586b64;--faint:#7d8d87;--line:rgba(19,31,27,.12);--line2:rgba(19,31,27,.22);--teal:#0a8477;--teal-ink:#075f55;--amber:#b06f18;--amber-ink:#8f5a12;--green:#127a4a;--blue:#2563a8;}
-:root[data-theme=dark]{--bg:#0a120f;--surface:#111d18;--surface2:#0e1814;--ink:#e9f1ee;--muted:#94a59e;--faint:#6f817a;--line:rgba(233,241,238,.12);--line2:rgba(233,241,238,.22);--teal:#37c9b8;--teal-ink:#5fd6c7;--amber:#e0a94e;--amber-ink:#ecbd6f;--green:#4bd08a;--blue:#7db1e8;}
+
+
+
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ff);line-height:1.55;-webkit-font-smoothing:antialiased}
 .wrap{display:grid;grid-template-columns:270px minmax(0,1fr);gap:0;max-width:1280px;margin:0 auto}
 aside{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:22px 14px 40px;border-right:1px solid var(--line)}
@@ -66,10 +65,9 @@ details[open] summary::before{transform:rotate(90deg)}
 .callout.note{background:var(--surface2);border-color:var(--line2)}
 pre.ascii{font-family:var(--ffm);font-size:11.5px;line-height:1.35;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto;color:var(--ink)}
 .extra .purpose{max-width:none}
-.tgl{position:fixed;top:14px;right:16px;z-index:9;width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink);cursor:pointer}
+
 @media(max-width:900px){.wrap{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}}
 </style>
-<button class="tgl" id="tgl" aria-label="Toggle theme">◐</button>
 <div class="wrap">
 <aside>
   <div class="brand">biohack<b>.</b>it</div>
@@ -304,5 +302,4 @@ pre.ascii{font-family:var(--ffm);font-size:11.5px;line-height:1.35;background:va
 <script>
 document.getElementById('exp').onclick=function(){document.querySelectorAll('details.req').forEach(d=>d.open=true)};
 document.getElementById('col').onclick=function(){document.querySelectorAll('details.req').forEach(d=>d.open=false)};
-document.getElementById('tgl').onclick=function(){var r=document.documentElement,c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark')};
 </script>

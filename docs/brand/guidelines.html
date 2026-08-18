@@ -9,11 +9,8 @@
     --teal:#0c877a;--teal-ink:#0a6f64;--teal-fill:rgba(12,135,122,.08);
     --ff:"Jost",system-ui,sans-serif;--ffb:system-ui,-apple-system,"Segoe UI",sans-serif;--ffm:ui-monospace,Consolas,monospace;
   }
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-    --bg:#15181a;--surface:#1c2123;--surface2:#1a1f21;--ink:#eef1f1;--muted:#9aa3a7;--faint:#727b7f;
-    --line:rgba(238,241,241,.13);--line2:rgba(238,241,241,.26);--teal:#33c7b8;--teal-ink:#57d4c7;--teal-fill:rgba(51,199,184,.12);
-  }}
-  :root[data-theme="dark"]{--bg:#15181a;--surface:#1c2123;--surface2:#1a1f21;--ink:#eef1f1;--muted:#9aa3a7;--faint:#727b7f;--line:rgba(238,241,241,.13);--line2:rgba(238,241,241,.26);--teal:#33c7b8;--teal-ink:#57d4c7;--teal-fill:rgba(51,199,184,.12)}
+  
+  
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ffb);line-height:1.62;-webkit-font-smoothing:antialiased}
   .wrap{width:min(1040px,100%);margin:0 auto;padding:0 clamp(20px,5vw,44px)}
@@ -64,12 +61,10 @@
   .slide-mock .eb{font-family:var(--ff);font-weight:500;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:#0a6f64}
   .slide-mock .h{font-family:var(--ff);font-weight:400;font-size:22px;margin-top:8px}
   .slide-mock .accent{height:3px;width:44px;background:#0c877a;margin-top:10px}
-  .tgl{position:fixed;top:14px;right:16px;width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink);cursor:pointer;z-index:9}
+  
   .next{background:var(--teal-fill);border:1px solid var(--teal);border-radius:12px;padding:18px 20px;margin-top:22px}
   .next b{color:var(--ink)}
 </style>
-<button class="tgl" id="tgl" aria-label="Toggle theme">◐</button>
-
 <div class="wrap">
   <div class="cover">
     <p class="eyebrow">Brand guidelines · Direction A — Open Lab</p>
@@ -187,6 +182,3 @@
     </div>
   </div>
 </div>
-<script>
-  document.getElementById('tgl').addEventListener('click',function(){var r=document.documentElement,c=r.getAttribute('data-theme');if(!c)c=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';r.setAttribute('data-theme',c==='dark'?'light':'dark');});
-</script>

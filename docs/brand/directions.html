@@ -8,11 +8,8 @@
     --line:rgba(37,41,44,.13);--line2:rgba(37,41,44,.26);
     --ff:"Jost",system-ui,sans-serif;--ffb:system-ui,-apple-system,"Segoe UI",sans-serif;
   }
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-    --bg:#15181a;--surface:#1c2123;--ink:#eef1f1;--muted:#9aa3a7;--faint:#727b7f;
-    --line:rgba(238,241,241,.13);--line2:rgba(238,241,241,.26);
-  }}
-  :root[data-theme="dark"]{--bg:#15181a;--surface:#1c2123;--ink:#eef1f1;--muted:#9aa3a7;--faint:#727b7f;--line:rgba(238,241,241,.13);--line2:rgba(238,241,241,.26)}
+  
+  
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ffb);line-height:1.6;-webkit-font-smoothing:antialiased}
   .wrap{width:min(1080px,100%);margin:0 auto;padding:0 clamp(20px,5vw,44px)}
@@ -63,10 +60,8 @@
   .rec{background:var(--surface);border:1px solid var(--line);border-left:3px solid #0c877a;border-radius:12px;padding:20px 22px}
   .rec h3{margin:0 0 8px;font-family:var(--ff);font-weight:500;font-size:16px}
   .rec p{margin:6px 0 0;font-size:14.5px;color:var(--muted)}
-  .tgl{position:fixed;top:14px;right:16px;width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink);cursor:pointer;z-index:9}
+  
 </style>
-<button class="tgl" id="tgl" aria-label="Toggle theme">◐</button>
-
 <div class="wrap">
   <div class="top">
     <p class="eyebrow">BIOHACK.IT · Brand directions</p>
@@ -162,10 +157,3 @@
   </div>
 </div>
 
-<script>
-  document.getElementById('tgl').addEventListener('click',function(){
-    var r=document.documentElement,c=r.getAttribute('data-theme');
-    if(!c)c=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-    r.setAttribute('data-theme',c==='dark'?'light':'dark');
-  });
-</script>

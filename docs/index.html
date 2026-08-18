@@ -15,20 +15,8 @@
     --ff-display:"Jost",system-ui,sans-serif;
     --ff-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-    --bg:#16191b; --surface:#1c2123; --surface-2:#1a1f21;
-    --ink:#eef1f1; --muted:#9aa3a7; --faint:#727b7f;
-    --line:rgba(238,241,241,.13); --line-strong:rgba(238,241,241,.26);
-    --accent:#33c7b8; --accent-ink:#57d4c7; --accent-fill:rgba(51,199,184,.12);
-    --shadow:0 1px 0 rgba(0,0,0,.3),0 26px 50px -30px rgba(0,0,0,.75);
-  }}
-  :root[data-theme="dark"]{
-    --bg:#16191b; --surface:#1c2123; --surface-2:#1a1f21;
-    --ink:#eef1f1; --muted:#9aa3a7; --faint:#727b7f;
-    --line:rgba(238,241,241,.13); --line-strong:rgba(238,241,241,.26);
-    --accent:#33c7b8; --accent-ink:#57d4c7; --accent-fill:rgba(51,199,184,.12);
-    --shadow:0 1px 0 rgba(0,0,0,.3),0 26px 50px -30px rgba(0,0,0,.75);
-  }
+  
+  
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -52,7 +40,7 @@
   nav .links a{font-family:var(--ff-display);font-weight:400;font-size:14px;letter-spacing:.03em;color:var(--ink);text-decoration:none;text-transform:uppercase}
   nav .links a:hover{color:var(--accent-ink)}
   nav .links a.ext::after{content:" ↗";color:var(--faint)}
-  .tgl{width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink);cursor:pointer}
+  
   @media(max-width:640px){nav .links a:not(.ext){display:none}}
 
   section{padding:clamp(60px,9vw,116px) 0}
@@ -121,11 +109,10 @@
   <span class="links">
     <a href="#what">What</a>
     <a href="#plan">Plan</a>
-    <a href="/spec/">Spec</a>
+    <a href="/specs/">Specs</a>
     <a href="#about">About</a>
     <a class="ext" href="https://hackingbiology.com">HackingBiology</a>
-    <button class="tgl" id="tgl" aria-label="Toggle light or dark theme">◐</button>
-  </span>
+    </span>
 </nav></div></header>
 
 <main>
@@ -160,7 +147,7 @@
     <p class="eyebrow">The plan</p>
     <h2>From one person to a distributed trial.</h2>
     <p class="lead">We are building in the open. The full functional specification — 24 capabilities, 140+ requirements across protocols, biomarkers, safety, community and open data — is public and browsable, and grows with community review.</p>
-    <div class="cta-row"><a class="btn primary" href="/spec/">Read the functional specification →</a></div>
+    <div class="cta-row"><a class="btn primary" href="/specs/">Read the functional specification →</a></div>
     <div class="road">
       <div class="ph now"><div class="dot"></div><div class="k">PHASE 0</div><div class="t">Foundations</div><div class="d">Domain model, seed catalogue, biomarker registry, safety rules.</div></div>
       <div class="ph"><div class="dot"></div><div class="k">PHASE 1</div><div class="t">Useful to one</div><div class="d">Blood Layer, daily log, doctor sheet — value in ten minutes, zero spend.</div></div>
@@ -193,7 +180,7 @@
   <div class="mark" style="font-size:34px">BIOHACK.IT</div>
   <div class="lockup"><span class="bar" style="width:120px"></span><span class="tag">Hacking Biology</span></div>
   <div class="flinks">
-    <a href="/spec/">Spec</a>
+    <a href="/specs/">Specs</a>
     <a href="/brand/guidelines.html">Communication guide</a>
     <a href="/foundation.html">Foundation</a>
     <a href="/presentation/biohackit-deck.pdf">Deck</a>
@@ -204,10 +191,3 @@
   <div class="lic">Open source under AGPL-3.0 · Hacking Biology, non-profit · An open laboratory for longevity.</div>
 </div></footer>
 
-<script>
-  document.getElementById('tgl').addEventListener('click',function(){
-    var r=document.documentElement,c=r.getAttribute('data-theme');
-    if(!c)c=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-    r.setAttribute('data-theme',c==='dark'?'light':'dark');
-  });
-</script>
