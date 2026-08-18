@@ -73,6 +73,11 @@ banners={
  "linkedin-company":(1128,191,50,90,True),
  "youtube-channel":(2560,1440,150,0,True),
  "banner-wide":(1600,600,150,130,False),
+ "facebook-cover":(820,312,56,60,True),
+ "weibo-cover":(920,300,56,60,True),
+ "wechat-cover":(900,383,66,80,True),
+ "square-1080":(1080,1080,120,0,True),
+ "xiaohongshu-cover":(1080,1440,110,0,True),
 }
 for n,(w,h,wm,pad,cen) in banners.items():
     (social/f"{n}.svg").write_text(banner(w,h,wm,pad,cen),encoding="utf-8")
