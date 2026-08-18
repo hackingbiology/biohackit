@@ -32,7 +32,7 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 **Confirmed:** D1 (no local-first) ✓ — self-hosting a full AGPL instance is a distinct, supported path · D2 (public by default) ✓.
 
 **Added on review (2026-08-04):**
-- **Activities restructured.** Split **Pills Management** out of Procurement; added **Therapeutics Management** (red light, HBOT…) and **Exercise Reporting** (strength/cardio/mobility/HIIT + VO2max, log-only, not a gym app); **removed Claims Validator** (off-topic). _(pills-management, therapeutics-management, exercise-reporting, procurement-and-inventory)_
+- **Activities restructured.** Split **Pills Management** out of Procurement (now scales to 60–130 pills/day); added **Therapeutics Management** (red light, HBOT, sauna, cold plunge, cryotherapy, plasmapheresis, IV, ozone/EBOO, PEMF — each with typed parameters), **Exercise Reporting** (strength/cardio/mobility/HIIT + VO2max, log-only, not a gym app), and **Nutrition Management** (computed TDEE, eating pattern OMAD/CR/IF, macro split); **removed Claims Validator** (off-topic). _(pills-management, therapeutics-management, exercise-reporting, nutrition-management, procurement-and-inventory)_
 - **Raw by default + BETA poll.** Public data (incl. raw lab reports and gVCF) is published **raw**, no forced PII obfuscation; the maximal-openness stance goes to a **community poll on Rapamycin News at the public BETA**. _(analytics-and-open-data, biomarkers-and-labs)_
 - **D10 Fully clonable + self-hostable.** OpenData = public profiles + their public data, protocols, treatments, measurements, original lab files, public genomics/gVCF (excl. only withheld); published as a clonable snapshot to seed an independent AGPL instance; aggregated research export stays z-scored/threshold-guarded. _(analytics-and-open-data, accounts-and-profiles, project.md)_
 
@@ -59,5 +59,5 @@ Once the specification is settled, we run a **module-by-module deep dive**, each
 
 ## Inventory of this deliverable
 - `project.md`, `README.md`, this guide.
-- 20 capability specs under `specs/` (domain-model, ai-uses-and-attribution + 18 modules).
+- 21 capability specs under `specs/` (domain-model, ai-uses-and-attribution + 19 modules).
 - `wireframes/navigation.md` (IA + 7 journeys), `wireframes/wireframes.md` (7 annotated screens).

@@ -50,6 +50,7 @@ Each capability lives under `specs/<capability>/spec.md`. Module codes (M1–M13
 | `pills-management` | M4 (daily intake) | 3 |
 | `therapeutics-management` | Device/Therapy | 2–3 |
 | `exercise-reporting` | Exercise | 1–2 |
+| `nutrition-management` | Nutrition/Fasting | 1 |
 | `evidence-layer` | M11 | 0/3 |
 | `analytics-and-open-data` | M8 | 4 |
 | `genomics` | M9 | 2 |

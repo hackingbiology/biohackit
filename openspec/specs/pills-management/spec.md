@@ -37,6 +37,14 @@ The system SHALL link pill scheduling to procurement so that low stock triggers 
 - **WHEN** scheduled consumption will exhaust a compound's stock within its lead time
 - **THEN** the system raises a restock action via procurement
 
+### Requirement: Scale to high-volume regimens
+The system SHALL remain usable and legible for high-volume regimens — dozens to well over a hundred pills per day (e.g. 60–130) — grouping intakes and keeping check-off fast.
+
+#### Scenario: 130 pills a day stays manageable
+- **WHEN** a user's regimen involves 60–130 pills per day
+- **THEN** the schedule groups them by slot/meal for legibility and fast check-off
+- **AND** performance and the daily log remain usable at that scale
+
 ### Requirement: Feeds the daily log and calendar
 The system SHALL surface the resolved pill schedule in the daily log and the programming calendar.
 

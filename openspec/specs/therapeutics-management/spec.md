@@ -2,17 +2,25 @@
 
 ## Purpose
 
-Manages interventions that require a periodic treatment session rather than a pill — red light therapy, hyperbaric oxygen therapy (HBOT, including hypoxia-hyperoxia), sauna, cold exposure, and others to add — capturing their parameters, scheduling their sessions, and logging done/not-done. Builds on the Device/Therapy intervention subtype (see `domain-model`).
+Manages interventions that require a periodic treatment session rather than a pill — red light / photobiomodulation, hyperbaric oxygen therapy (HBOT, incl. hypoxia-hyperoxia), sauna, cold exposure / cold plunge, whole-body cryotherapy, therapeutic plasmapheresis (plasma exchange), IV infusions (e.g. NAD+, vitamins), ozone / EBOO, PEMF, and others to add — capturing their **typed parameters**, scheduling their sessions, and logging done/not-done. Builds on the Device/Therapy and Procedure intervention subtypes (see `domain-model`).
 
 ## Requirements
 
 ### Requirement: Model periodic therapy sessions
-The system SHALL model periodic therapy interventions (red light, HBOT incl. hypoxia-hyperoxia, sauna, cold exposure) with their parameters (dose, duration, protocol) and session cadence.
+The system SHALL model periodic therapy interventions — red light / photobiomodulation, HBOT (incl. hypoxia-hyperoxia), sauna, cold exposure / cold plunge, whole-body cryotherapy, therapeutic plasmapheresis (plasma exchange), IV infusions (e.g. NAD+, vitamins), ozone / EBOO, PEMF — with their parameters and session cadence, and the catalog SHALL be extensible.
 
 #### Scenario: HBOT protocol captured
 - **WHEN** a user configures an HBOT hypoxia-hyperoxia protocol
 - **THEN** its parameters and session cadence are stored
-- **AND** red light and other therapies are represented the same way
+- **AND** red light, cryotherapy, cold plunge, plasmapheresis and the others are represented the same way
+
+### Requirement: Typed parameters per therapy
+The system SHALL type each therapy with its own characteristic parameters — for example red light (wavelength(s), irradiance, duration, distance, body area), HBOT (pressure in ATA, FiO2 profile, duration), cryotherapy / cold plunge (temperature, duration), sauna (temperature, humidity, duration), plasmapheresis (volume exchanged, replacement fluid, frequency), IV infusion (agent, dose, rate) — so each exposes only what is meaningful for it.
+
+#### Scenario: Parameters differ by therapy
+- **WHEN** two different therapies are configured
+- **THEN** each exposes only its characteristic parameters
+- **AND** a cold plunge's water temperature is never conflated with a red-light wavelength
 
 ### Requirement: Extensible therapy catalog
 The system SHALL allow new therapy types to be added and configured with parameters and cadence, without changing the model.

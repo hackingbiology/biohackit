@@ -27,6 +27,7 @@ MODULES = [
     ("pills-management",         "M4",            "3",   "PILLS"),
     ("therapeutics-management",  "Therapy",       "2-3", "THERAPY"),
     ("exercise-reporting",       "Exercise",      "1-2", "EXERCISE"),
+    ("nutrition-management",     "Nutrition",     "1",   "NUTRITION"),
     ("evidence-layer",           "M11",           "0/3", "EVIDENCE"),
     ("analytics-and-open-data",  "M8",            "4",   "ANALYTICS"),
     ("genomics",                 "M9",            "2",   "GENOMICS"),
