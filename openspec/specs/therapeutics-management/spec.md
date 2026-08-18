@@ -2,12 +2,12 @@
 
 ## Purpose
 
-Manages interventions that require a periodic treatment session rather than a pill — red light / photobiomodulation, hyperbaric oxygen therapy (HBOT, incl. hypoxia-hyperoxia), sauna, cold exposure / cold plunge, whole-body cryotherapy, therapeutic plasmapheresis (plasma exchange), IV infusions (e.g. NAD+, vitamins), ozone / EBOO, PEMF, and others to add — capturing their **typed parameters**, scheduling their sessions, and logging done/not-done. Builds on the Device/Therapy and Procedure intervention subtypes (see `domain-model`).
+Manages interventions that require a periodic treatment session rather than a pill — red light / photobiomodulation, HBOT (incl. hypoxia-hyperoxia), IHHT (intermittent hypoxia-hyperoxia training), sauna, cold exposure / cold plunge, whole-body cryotherapy, therapeutic plasma exchange (TPE / plasmapheresis), IV infusions (e.g. NAD+, vitamins), ozone / EBOO, PEMF, whole-body vibration, vagus nerve stimulation (tVNS), and others to add — capturing their **typed parameters**, scheduling their sessions, and logging done/not-done. Builds on the Device/Therapy and Procedure intervention subtypes (see `domain-model`).
 
 ## Requirements
 
 ### Requirement: Model periodic therapy sessions
-The system SHALL model periodic therapy interventions — red light / photobiomodulation, HBOT (incl. hypoxia-hyperoxia), sauna, cold exposure / cold plunge, whole-body cryotherapy, therapeutic plasmapheresis (plasma exchange), IV infusions (e.g. NAD+, vitamins), ozone / EBOO, PEMF — with their parameters and session cadence, and the catalog SHALL be extensible.
+The system SHALL model periodic therapy interventions — red light / photobiomodulation, HBOT (incl. hypoxia-hyperoxia), IHHT (intermittent hypoxia-hyperoxia training), sauna, cold exposure / cold plunge, whole-body cryotherapy, therapeutic plasma exchange (TPE / plasmapheresis), IV infusions (e.g. NAD+, vitamins), ozone / EBOO, PEMF, whole-body vibration, vagus nerve stimulation (tVNS) — with their parameters and session cadence, and the catalog SHALL be extensible.
 
 #### Scenario: HBOT protocol captured
 - **WHEN** a user configures an HBOT hypoxia-hyperoxia protocol
@@ -15,7 +15,7 @@ The system SHALL model periodic therapy interventions — red light / photobiomo
 - **AND** red light, cryotherapy, cold plunge, plasmapheresis and the others are represented the same way
 
 ### Requirement: Typed parameters per therapy
-The system SHALL type each therapy with its own characteristic parameters — for example red light (wavelength(s), irradiance, duration, distance, body area), HBOT (pressure in ATA, FiO2 profile, duration), cryotherapy / cold plunge (temperature, duration), sauna (temperature, humidity, duration), plasmapheresis (volume exchanged, replacement fluid, frequency), IV infusion (agent, dose, rate) — so each exposes only what is meaningful for it.
+The system SHALL type each therapy with its own characteristic parameters — for example red light (wavelength(s), irradiance, duration, distance, body area), HBOT (pressure in ATA, FiO2 profile, duration), IHHT (FiO2 high/low cycle, cycle count, session duration), cryotherapy / cold plunge (temperature, duration), sauna (temperature, humidity, duration), TPE / plasmapheresis (volume exchanged, replacement fluid, frequency), IV infusion (agent, dose, rate), whole-body vibration (frequency, amplitude, duration), tVNS (intensity, site, duration) — so each exposes only what is meaningful for it.
 
 #### Scenario: Parameters differ by therapy
 - **WHEN** two different therapies are configured
