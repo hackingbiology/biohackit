@@ -44,25 +44,28 @@ def bar(x,y,w,h,color): return f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" h
 def svg(w,h,body,bg=PAPER):
     return f'<svg {NS} viewBox="0 0 {w} {h}" width="{w}" height="{h}"><rect width="{w}" height="{h}" fill="{bg}"/>{body}</svg>'
 
-def lockup(cx_left, y, wm_size, color=INK, teal=TEAL, center_w=None):
-    """Wordmark + bar + tagline + mark, returns svg body; anchored at left x=cx_left, wordmark baseline at y."""
-    wm,wmw = wordmark("BIOHACK.IT", F300, wm_size, cx_left, y, color)
-    tag,tagw = wordmark("HACKING BIOLOGY", F500, wm_size*0.22, cx_left+wm_size*0.02, y+wm_size*0.55, color, tracking=0.34)
-    barw=wm_size*1.15
-    b=bar(cx_left, y+wm_size*0.30, barw, wm_size*0.05, color)
-    return wm+b+tag, wmw
+def lockup(x, base, wm_size, sub="HACKING BIOLOGY", color=INK):
+    """Two-line lockup: wordmark + bar + one sub-line (payoff or 'HACKING BIOLOGY')."""
+    wm,wmw = wordmark("BIOHACK.IT", F300, wm_size, x, base, color)
+    subg,_ = wordmark(sub, F500, wm_size*0.205, x+wm_size*0.02, base+wm_size*0.55, color, tracking=0.28)
+    b=bar(x, base+wm_size*0.30, wm_size*1.15, wm_size*0.05, color)
+    return wm+b+subg, wmw
+
+def mark_on(cx, base, wm_size, d, ring=INK, barc=TEAL):
+    """Mark with its ring centred on the wordmark cap-centre (proper optical alignment)."""
+    top = base - 0.365*wm_size - d/2
+    return mark(cx, top, d, ring, barc)
 
 # ---------------- SOCIAL BANNERS (light) ----------------
 social=ROOT/"social"; social.mkdir(exist_ok=True)
 def banner(w,h,wm_size,pad,centered=False):
     _,wmw=wordmark("BIOHACK.IT",F300,wm_size,0,0,INK)
-    markd=wm_size*1.5; gap=wm_size*0.55; bw=markd*1.18
+    d=wm_size*1.35; gap=wm_size*0.6; bw=d*1.18
     lx=(w-(wmw+gap+bw))/2 if centered else pad
-    base=h*0.46
-    body,_=lockup(lx, base, wm_size, INK, TEAL)
-    body+=wordmark("An open laboratory for longevity.", F300, wm_size*0.30, lx+2, base+wm_size*0.95, MUTED)[0]
-    mcx = (lx+wmw+gap+markd/2) if centered else (w-pad-markd/2)
-    body+=mark(mcx, h*0.5-markd/2, markd, INK, TEAL)
+    base=h*0.5+wm_size*0.365            # wordmark cap-centre at h/2
+    body,_=lockup(lx, base, wm_size, "AN OPEN LABORATORY FOR LONGEVITY", INK)
+    mcx=(lx+wmw+gap+d/2) if centered else (w-pad-bw/2)
+    body+=mark_on(mcx, base, wm_size, d)
     return svg(w,h,body)
 banners={
  "x-header":(1500,500,140,120,False),
@@ -77,10 +80,11 @@ for n,(w,h,wm,pad,cen) in banners.items():
 prnt=ROOT/"print"; prnt.mkdir(exist_ok=True)
 CW,CH=1063,591
 # front
-fwm=118
+fwm=112
 _,fwmw=wordmark("BIOHACK.IT",F300,fwm,0,0,INK)
-fbody,_=lockup(80, CH*0.46, fwm, INK, TEAL)
-fbody+=mark(80+fwmw+90, CH*0.5-45, 90, INK, TEAL)
+fbase=CH*0.5+fwm*0.365
+fbody,_=lockup(80, fbase, fwm, "AN OPEN LABORATORY FOR LONGEVITY", INK)
+fbody+=mark_on(80+fwmw+95, fbase, fwm, 88)
 (prnt/"card-front.svg").write_text(svg(CW,CH,fbody),encoding="utf-8")
 # back
 bb=mark(90, 70, 70, INK, TEAL)
@@ -93,8 +97,9 @@ bb+=wordmark("HACKING BIOLOGY  ·  non-profit  ·  AGPL-3.0", F500, 20, 90, 540,
 
 # ---------------- LETTERHEAD (A4 @150dpi = 1240x1754) ----------------
 AW,AH=1240,1754
-lb=mark(96, 84, 60, INK, TEAL)
-lb+=wordmark("BIOHACK.IT", F300, 74, 190, 150, INK)[0]
+lbase=150
+lb=wordmark("BIOHACK.IT", F300, 74, 200, lbase, INK)[0]
+lb+=mark_on(120, lbase, 74, 58)
 lb+=bar(96, 210, 1048, 3, HAIR)
 lb+=bar(96, AH-140, 1048, 2, HAIR)
 lb+=wordmark("Hacking Biology Foundation  ·  non-profit  ·  AGPL-3.0  ·  biohack.it", F500, 22, 96, AH-96, FAINT, tracking=0.12)[0]

@@ -32,7 +32,10 @@
 
   header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   nav{display:flex;align-items:center;gap:20px;height:62px}
-  nav .brand{display:inline-flex;align-items:center;gap:9px;font-family:var(--ff-display);font-weight:300;font-size:21px;letter-spacing:.04em;text-transform:uppercase}
+  nav .brand{display:inline-flex;align-items:center;gap:9px;text-transform:uppercase}
+  nav .brand .bwrap{display:flex;flex-direction:column;line-height:1}
+  nav .brand .bw{font-family:var(--ff-display);font-weight:300;font-size:20px;letter-spacing:.04em}
+  nav .brand .bs{font-family:var(--ff-display);font-weight:500;font-size:8px;letter-spacing:.2em;color:var(--muted);margin-top:3px}
   .navmark{width:23px;height:23px;flex:0 0 auto}
   .navmark .r{fill:none;stroke:var(--ink);stroke-width:8}
   .navmark .b{fill:var(--accent)}
@@ -105,7 +108,7 @@
 </style>
 
 <header><div class="wrap"><nav>
-  <span class="brand"><svg class="navmark" viewBox="0 0 100 100" aria-hidden="true"><circle class="r" cx="50" cy="42" r="26"/><rect class="b" x="20" y="80" width="60" height="8" rx="1.5"/></svg>BIOHACK.IT</span>
+  <span class="brand"><svg class="navmark" viewBox="0 0 100 100" aria-hidden="true"><circle class="r" cx="50" cy="42" r="26"/><rect class="b" x="20" y="80" width="60" height="8" rx="1.5"/></svg><span class="bwrap"><span class="bw">BIOHACK.IT</span><span class="bs">Hacking Biology</span></span></span>
   <span class="links">
     <a href="#what">What</a>
     <a href="#plan">Plan</a>
@@ -119,7 +122,6 @@
   <section class="hero"><div class="wrap">
     <p class="eyebrow">Open source · Non-profit · AGPL-3.0</p>
     <div class="mark">BIOHACK.IT</div>
-    <div class="lockup"><span class="bar"></span><span class="tag">Hacking Biology</span></div>
     <p class="statement">An open laboratory for longevity.</p>
     <p class="lead">Document your protocol, measure it with biomarkers, and share it — so the biohacking community learns from <strong>real, comparable, open data</strong>, with safety built in rather than bolted on.</p>
     <div class="cta-row">
@@ -167,7 +169,7 @@
   <section id="about" class="alt-band"><div class="wrap">
     <p class="eyebrow">About</p>
     <h2>The Software and the Foundation.</h2>
-    <p class="lead">biohack.it is an effort begun in <strong>2022</strong> by <strong><a href="https://linkedin.com/in/secret" target="_blank" rel="noopener">Fabio Pietrosanti</a></strong> — a hacker who turned to biology when his mother died of lung cancer. That loss set his focus on the biology of aging; he became a biohacker himself, and set out to give the international community the instrument he wished had existed.</p>
+    <p class="lead">biohack.it is an effort begun in <strong>2022</strong> by <strong><a href="https://linkedin.com/in/secret" target="_blank" rel="noopener">Fabio Pietrosanti</a></strong> — a hacker who turned to biology when his mother died of lung cancer. That loss set his focus on the biology of aging; he became a biohacker himself, and set out to give the international community the instrument he wished for himself in hacking his own biology.</p>
     <div class="about-grid">
       <div class="card"><h3>BIOHACK.IT</h3><p style="margin-top:12px">The <strong>software and the initiative</strong>: an open platform for the biohacking and longevity community to document protocols and measure them, together, in the open.</p></div>
       <div class="card"><h3>Hacking Biology Foundation</h3><p style="margin-top:12px">The <strong>non-profit foundation</strong> behind the initiative — it manages the project and its development, guarantees it never becomes commercial, and pursues social objectives in the service of biohackers and longevity.</p></div>
@@ -179,7 +181,7 @@
 
 <footer><div class="wrap">
   <div class="mark" style="font-size:34px">BIOHACK.IT</div>
-  <div class="lockup"><span class="bar" style="width:120px"></span><span class="tag">Hacking Biology</span></div>
+  <div class="lockup"><span class="bar" style="width:120px"></span><span class="tag">An open laboratory for longevity</span></div>
   <div class="flinks">
     <a href="/specs/" target="_blank" rel="noopener">Specs</a>
     <a href="/brand/guidelines.html" target="_blank" rel="noopener">Communication guide</a>
