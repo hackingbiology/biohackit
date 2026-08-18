@@ -69,7 +69,8 @@ def banner(w,h,wm_size,pad,centered=False):
     return svg(w,h,body)
 banners={
  "x-header":(1500,500,140,120,False),
- "linkedin-cover":(1584,396,90,120,False),
+ "linkedin-profile":(1584,396,90,120,False),
+ "linkedin-company":(1128,191,50,90,True),
  "youtube-channel":(2560,1440,150,0,True),
  "banner-wide":(1600,600,150,130,False),
 }
