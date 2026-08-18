@@ -25,13 +25,14 @@ This is a first, broad functional specification for biohack.it in OpenSpec form,
 | D6 | **Copy = fork with lineage + safety gate**; beginners cannot activate without baseline. | protocols, safety-guardrails, community | spec §4.1 B |
 | D7 | **T0 seeding**: curated protocols (Fabio's first) + invited alpha biohackers → no cold community. | accounts-and-profiles, protocols | your brief |
 | D8 | Competitor names **removed from the deck** (comparison to be done separately later). | deck | your instruction |
-| D9 | **Content & evidence based on Forever Healthy's work** — Evipedia knowledgebase (CC BY 4.0) via MCP + AI4L (MIT) for AI reviews/queries; new `ai-uses-and-attribution` capability. | ai-uses-and-attribution, evidence-layer, interventions, claims-validator, project.md | your direction |
+| D9 | **Content & evidence based on Forever Healthy's work** — Evipedia knowledgebase (CC BY 4.0) via MCP + AI4L (MIT) for AI reviews/queries; new `ai-uses-and-attribution` capability. | ai-uses-and-attribution, evidence-layer, interventions, project.md | your direction |
 
 ## Review status (updated 2026-08-04)
 
 **Confirmed:** D1 (no local-first) ✓ — self-hosting a full AGPL instance is a distinct, supported path · D2 (public by default) ✓.
 
 **Added on review (2026-08-04):**
+- **Activities restructured.** Split **Pills Management** out of Procurement; added **Therapeutics Management** (red light, HBOT…) and **Exercise Reporting** (strength/cardio/mobility/HIIT + VO2max, log-only, not a gym app); **removed Claims Validator** (off-topic). _(pills-management, therapeutics-management, exercise-reporting, procurement-and-inventory)_
 - **Raw by default + BETA poll.** Public data (incl. raw lab reports and gVCF) is published **raw**, no forced PII obfuscation; the maximal-openness stance goes to a **community poll on Rapamycin News at the public BETA**. _(analytics-and-open-data, biomarkers-and-labs)_
 - **D10 Fully clonable + self-hostable.** OpenData = public profiles + their public data, protocols, treatments, measurements, original lab files, public genomics/gVCF (excl. only withheld); published as a clonable snapshot to seed an independent AGPL instance; aggregated research export stays z-scored/threshold-guarded. _(analytics-and-open-data, accounts-and-profiles, project.md)_
 
@@ -58,5 +59,5 @@ Once the specification is settled, we run a **module-by-module deep dive**, each
 
 ## Inventory of this deliverable
 - `project.md`, `README.md`, this guide.
-- 18 capability specs under `specs/` (domain-model, ai-uses-and-attribution + 16 modules).
+- 20 capability specs under `specs/` (domain-model, ai-uses-and-attribution + 18 modules).
 - `wireframes/navigation.md` (IA + 7 journeys), `wireframes/wireframes.md` (7 annotated screens).

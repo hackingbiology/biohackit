@@ -46,9 +46,11 @@ Each capability lives under `specs/<capability>/spec.md`. Module codes (M1–M13
 | `dashboards-and-doctor-view` | M5 | 1 |
 | `community-and-social` | M6 | 2 |
 | `studies-nof1` | Study (§5) | 2 |
-| `procurement-and-inventory` | M4 | 3 |
+| `procurement-and-inventory` | M4 (supply) | 3 |
+| `pills-management` | M4 (daily intake) | 3 |
+| `therapeutics-management` | Device/Therapy | 2–3 |
+| `exercise-reporting` | Exercise | 1–2 |
 | `evidence-layer` | M11 | 0/3 |
-| `claims-validator` | M12 | 2 |
 | `analytics-and-open-data` | M8 | 4 |
 | `genomics` | M9 | 2 |
 | `agent-access` | (getbased B6) | 3 |
