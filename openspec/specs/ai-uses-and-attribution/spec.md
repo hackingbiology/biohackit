@@ -22,6 +22,16 @@ The system SHALL use Forever Healthy's **AI4L** audit-based-prompting framework 
 - **THEN** it runs the AI4L create → audit → correct cycle against the QA checklist, restricted to trusted scientific sources
 - **AND** outputs are cached and reproducible, and the LLM never writes numbers into constrained fields (see `interventions-and-catalog`, `biomarkers-and-labs`)
 
+### Requirement: AI4L output conforms to the project's strict normalization
+The system SHALL ensure AI4L-generated reviews and evidence queries conform to biohack.it's strict data normalization — analytes coded to LOINC/UCUM, substances resolved to RxNorm/ATC/PubChem/UNII, outcomes mapped to biomarkers — rather than free-text entities.
+
+> OPEN: technical feasibility to decide — either (a) **extend AI4L to use these databases natively** (LOINC/UCUM/RxNorm/ATC/PubChem/UNII), or (b) **extend AI4L's prompting to use biohack.it's databases**. Evaluate both.
+
+#### Scenario: Generated review is normalized
+- **WHEN** AI4L produces or refreshes a review, or answers an evidence query
+- **THEN** its interventions, analytes and outcomes are resolved to the project's coded vocabularies (see `interventions-and-catalog`, `biomarkers-and-labs`)
+- **AND** non-resolvable entities are marked ambiguous for review, never left as silent free text
+
 ### Requirement: Integrate the Evipedia knowledgebase, attributed
 The system SHALL integrate Forever Healthy's **Evipedia** as an external evidence knowledgebase via its MCP server (`mcp.evipedia.ai`) and public endpoints (`/reviews.json`, `/search.json`, `/{slug}.md`, `/{slug}.meta.json`), and SHALL attribute Forever Healthy per Evipedia's **CC BY 4.0** license wherever its content is surfaced.
 
