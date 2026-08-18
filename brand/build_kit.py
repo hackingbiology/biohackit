@@ -105,5 +105,31 @@ lb+=bar(96, AH-140, 1048, 2, HAIR)
 lb+=wordmark("Hacking Biology Foundation  ·  non-profit  ·  AGPL-3.0  ·  biohack.it", F500, 22, 96, AH-96, FAINT, tracking=0.12)[0]
 (prnt/"letterhead.svg").write_text(svg(AW,AH,lb),encoding="utf-8")
 
-print("SVGs written to brand/social and brand/print")
-PY = None
+# ---------------- DOWNLOADABLE LOGOS (transparent, PNG-ready) ----------------
+logos=ROOT/"logos"; logos.mkdir(exist_ok=True)
+def svg_t(w,h,body,bg=None):
+    r=f'<rect width="{w}" height="{h}" fill="{bg}"/>' if bg else ''
+    return f'<svg {NS} viewBox="0 0 {w} {h}" width="{w}" height="{h}">{r}{body}</svg>'
+def full_lockup(color, teal, wm=160, pad=48):
+    _,wmw=wordmark("BIOHACK.IT",F300,wm,0,0,color)
+    d=wm*1.35; gap=wm*0.6; bw=d*1.18
+    top=max(0.73*wm, 0.5*d+0.365*wm); bot=max(0.80*wm, 0.82*d-0.365*wm)
+    base=pad+top; Wc=pad*2+wmw+gap+bw; Hc=pad*2+top+bot
+    body,_=lockup(pad, base, wm, "AN OPEN LABORATORY FOR LONGEVITY", color)
+    body+=mark_on(pad+wmw+gap+d/2, base, wm, d, color, teal)
+    return Wc,Hc,body
+def wm_only(color, teal, wm=160, pad=48):
+    _,wmw=wordmark("BIOHACK.IT",F300,wm,0,0,color)
+    d=wm*1.15; gap=wm*0.55; bw=d*1.18
+    top=max(0.73*wm, 0.5*d+0.365*wm); bot=max(0.18*wm, 0.82*d-0.365*wm)
+    base=pad+top; Wc=pad*2+wmw+gap+bw; Hc=pad*2+top+bot
+    body,_=wordmark("BIOHACK.IT",F300,wm,pad,base,color)
+    body+=mark_on(pad+wmw+gap+d/2, base, wm, d, color, teal)
+    return Wc,Hc,body
+for tag,col in [("dark",INK),("white","#ffffff")]:
+    Wc,Hc,b=full_lockup(col,TEAL); (logos/f"logo-full-{tag}.svg").write_text(svg_t(Wc,Hc,b),encoding="utf-8")
+    Wc,Hc,b=wm_only(col,TEAL);     (logos/f"logo-wordmark-{tag}.svg").write_text(svg_t(Wc,Hc,b),encoding="utf-8")
+Wc,Hc,b=full_lockup(INK,TEAL); (logos/"logo-full-onwhite.svg").write_text(svg_t(Wc,Hc,b,PAPER),encoding="utf-8")
+(logos/"mark-dark.svg").write_text(svg_t(130,168, mark(65,12,104,INK,TEAL)),encoding="utf-8")
+(logos/"mark-white.svg").write_text(svg_t(130,168, mark(65,12,104,"#ffffff",TEAL)),encoding="utf-8")
+print("SVGs written to brand/social, brand/print, brand/logos")
