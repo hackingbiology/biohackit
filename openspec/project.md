@@ -26,6 +26,7 @@ These are settled directions. Where one supersedes spec v0.3, it is flagged so F
 - **Fails loudly** (Principle #6) and **stops instead of guessing** (Principle #8).
 - **No chicken-and-egg.** At T0 the team seeds **content-curated protocols** (starting from Fabio's own) and invites a first cohort of **alpha-tester biohackers** with real profiles. Community features attach to Rapamycin News, which already exists.
 - **Protocols are living objects.** They are created from scratch, copied/forked from others, or imported from an already-running regimen; they **change over time and every change is versioned and tracked**.
+- **Everything is copyable, informed.** Every intervention — peptides, plasmapheresis, IV included — sits in the public **one-click-copyable** catalog; nothing is documentable-but-not-copyable. The mitigation is an **informed-decision panel** (adoption + outcomes, evidence corpus & grading, medical/research level, dose provenance, potential impacts, forum links) plus the safety gate. Resolves spec v0.3 §11 Q7.
 - **No economic figures** appear in specs or artifacts (per Fabio, 2026-08-04). Cost *tracking as a user feature* may exist; investment/opex numbers do not.
 
 ## Capability map

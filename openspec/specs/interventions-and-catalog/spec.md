@@ -65,3 +65,11 @@ The system SHALL record, per intervention posology, whether the dosing derives f
 - **WHEN** a dose is extrapolated from animal studies
 - **THEN** the posology is tagged `animal-derived` with its source
 - **AND** a dose from human trials is tagged `human-derived` (see `evidence-layer`)
+
+### Requirement: Principal peptides present in the catalog
+The system SHALL include the principal, commonly-used peptides as known substances in the catalog (resolved to codes and synonyms), so peptide-first users find them — handled as ordinary substances, without a peptide-specific subsystem.
+
+#### Scenario: A common peptide is already present
+- **WHEN** a user searches for a common peptide (e.g. BPC-157, ipamorelin, semaglutide)
+- **THEN** it is present as a known substance with its codes/synonyms and evidence link
+- **AND** peptides are treated like any other substance, not a separate subsystem

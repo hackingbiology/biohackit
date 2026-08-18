@@ -13,6 +13,16 @@ The system SHALL let a user follow another user and copy/subscribe to a public p
 - **WHEN** a user copies a public protocol
 - **THEN** a fork is created and the mandatory baseline/safety gate is applied before activation
 
+### Requirement: One-click copyable catalog with an informed-decision panel
+The system SHALL keep every intervention — including the most sensitive (peptides, plasmapheresis, IV) — in the public catalog, one-click copyable, with nothing documentable-but-not-copyable, and SHALL present an informed-decision panel at the point of copy.
+
+> RESOLVED (2026-08-04): resolves spec v0.3 §11 Q7 — everything is copyable; the mitigation is informed choice plus the safety gate, not exclusion from the catalog.
+
+#### Scenario: Informed one-click copy
+- **WHEN** a user chooses to copy any protocol, including a peptide / plasmapheresis / IV one
+- **THEN** before activation an informed-decision panel surfaces: how many others practise it and their outcomes (adoption + Evidence Badge), the evidence corpus and grading, the medical/research level and dose provenance, the potential impacts, and Rapamycin News links for deeper discussion
+- **AND** the copy then proceeds through the safety gate (baseline + heightened acknowledgment for research/animal-derived), with nothing withheld from the copyable catalog
+
 ### Requirement: Cohorts form around protocols
 The system SHALL group users practising the same protocol into a `Cohort` and let a follower compare against it.
 
