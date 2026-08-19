@@ -78,6 +78,7 @@ banners={
  "wechat-cover":(900,383,66,80,True),
  "square-1080":(1080,1080,120,0,True),
  "xiaohongshu-cover":(1080,1440,110,0,True),
+ "telegram-preview":(1200,630,110,0,True),
 }
 for n,(w,h,wm,pad,cen) in banners.items():
     (social/f"{n}.svg").write_text(banner(w,h,wm,pad,cen),encoding="utf-8")
