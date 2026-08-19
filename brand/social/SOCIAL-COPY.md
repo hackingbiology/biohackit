@@ -174,9 +174,9 @@ Open source · non-profit
 
 ---
 
-## Telegram — channel 1080×1080 avatar / cover
+## Telegram — channel · preview 1200×630 (link/pinned) + avatar telegram-avatar-512.png
 
-**Image:** `square-1080.png`
+**Image:** `telegram-preview.png`
 
 **Channel name** — 28/128
 
@@ -188,6 +188,12 @@ BIOHACK.IT — Hacking Biology
 
 ```
 Document your protocol, measure it with standards-coded biomarkers, and share it — so thousands of individual experiments become comparable human data. Safety engineered in, not bolted on. Open source, non-profit. biohack.it
+```
+
+**Description (中文)** — 83/255
+
+```
+记录你的方案，用标准编码的生物标志物测量效果与安全性，并公开分享——让成千上万个体实验成为可比较的人类数据。安全内建，而非事后附加。开源·非营利。biohack.it
 ```
 
 ---

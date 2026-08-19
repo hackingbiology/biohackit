@@ -67,8 +67,8 @@ PLATFORMS = [
    ("Page name", 75, EN_NAME_L), ("Short description", 101, EN_TAG + " Open, non-profit."), ("About", 255, EN_MED)]),
  ("square-1080.png", "Instagram / general square 1080×1080", [
    ("Name", 30, EN_NAME), ("Bio", 150, f"{EN_TAG}\n{EN_CAT}\nOpen source · non-profit")]),
- ("square-1080.png", "Telegram — channel 1080×1080 avatar / cover", [
-   ("Channel name", 128, EN_NAME_L), ("Description", 255, EN_MED)]),
+ ("telegram-preview.png", "Telegram — channel · preview 1200×630 (link/pinned) + avatar telegram-avatar-512.png", [
+   ("Channel name", 128, EN_NAME_L), ("Description", 255, EN_MED), ("Description (中文)", 255, ZH_MED)]),
  ("weibo-cover.png", "微博 Weibo — cover 920×300", [
    ("昵称 Nickname", 30, ZH_NAME), ("简介 Bio", 140, ZH_SHORT), ("Bio (EN)", 140, EN_SHORT)]),
  ("wechat-cover.png", "微信公众号 WeChat Official Account — cover 900×383", [
