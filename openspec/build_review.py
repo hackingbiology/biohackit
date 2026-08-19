@@ -14,6 +14,8 @@ MODULES = [
     ("domain-model",             "cross-cutting", "0",   "DOMAIN"),
     ("ai-uses-and-attribution",  "cross-cutting", "0",   "AIUSES"),
     ("data-standards-and-typing","cross-cutting", "0",   "STANDARDS"),
+    ("scientific-method-and-evidence","cross-cutting","0",  "METHOD"),
+    ("statistical-methodology",  "cross-cutting", "0",   "STATS"),
     ("related-initiatives",      "cross-cutting", "0",   "LANDSCAPE"),
     ("accounts-and-profiles",    "onboarding",    "1",   "ACCOUNTS"),
     ("management-and-delegation","Roles",         "2",   "MANAGER"),

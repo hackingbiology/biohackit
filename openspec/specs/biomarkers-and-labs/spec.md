@@ -22,6 +22,20 @@ The system SHALL store and display three distinct ranges — laboratory referenc
 - **THEN** the display shows it as reference-normal yet optimal-out
 - **AND** the optimal range shows its source
 
+### Requirement: Optimal-range governance
+The system SHALL attach to every longevity-optimal range its **source, reference population, endpoint, evidence grade and last-reviewed date**, and SHALL make them inspectable in one interaction from wherever the range is shown. An optimal range without this provenance SHALL NOT be displayed.
+
+> RESOLVED (2026-08-19): reference range and safety threshold are relatively defined; "optimal" is not. Without visible derivation it is wellness numerology — and it is the most exposed number on the platform.
+
+#### Scenario: Inspecting an optimal range
+- **WHEN** a user opens the optimal range shown for an analyte
+- **THEN** they see its source, the population it derives from, the endpoint it optimises, its evidence grade and when it was last reviewed
+- **AND** a range lacking any of these is not shown as optimal
+
+#### Scenario: Contested optimal range
+- **WHEN** an optimal range is disputed
+- **THEN** the dispute is visible on the range itself and handled as a public contested claim (see `community-and-social`)
+
 ### Requirement: Deterministic pipeline with a hard boundary
 The system SHALL make extraction, mapping, and threshold/index computation deterministic and reproducible (same input → same output); the LLM SHALL only produce the plain-language narration, generated once and cached.
 

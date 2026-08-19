@@ -38,6 +38,8 @@ Each capability lives under `specs/<capability>/spec.md`. Module codes (M1–M13
 | `domain-model` | cross-cutting (§5) | 0 |
 | `ai-uses-and-attribution` | cross-cutting (AI, provenance, previous work) | 0 |
 | `data-standards-and-typing` | cross-cutting (standards, typing) | 0 |
+| `scientific-method-and-evidence` | cross-cutting (limits, evidence, confidence) | 0 |
+| `statistical-methodology` | cross-cutting (validity, uncertainty) | 0 |
 | `related-initiatives` | cross-cutting (ecosystem) | 0 |
 | `accounts-and-profiles` | onboarding, seeding | 1 |
 | `management-and-delegation` | roles, delegation | 2 |
