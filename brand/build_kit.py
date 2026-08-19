@@ -112,6 +112,48 @@ lb+=bar(96, AH-140, 1048, 2, HAIR)
 lb+=wordmark("Hacking Biology Foundation  ·  non-profit  ·  AGPL-3.0  ·  biohack.it", F500, 22, 96, AH-96, FAINT, tracking=0.12)[0]
 (prnt/"letterhead.svg").write_text(svg(AW,AH,lb),encoding="utf-8")
 
+# ---------------- CHAT BACKGROUNDS (WeChat / Telegram group wallpaper) ----------------
+def chat_bg(w,h,mark_d=None,wm=None):
+    """Very light branded wallpaper: legible behind chat bubbles."""
+    mark_d = mark_d or w*0.42
+    wm = wm or w*0.20
+    faint="#e8edeb"; soft="#dfe7e4"
+    body=f'<rect width="{w}" height="{h}" fill="#f7faf9"/>'
+    # faint hairline grid (technical/lab register)
+    step=w/14
+    lines=[]
+    x=step
+    while x < w:
+        lines.append(f'<line x1="{x:.0f}" y1="0" x2="{x:.0f}" y2="{h}" stroke="{faint}" stroke-width="1"/>'); x+=step
+    y=step
+    while y < h:
+        lines.append(f'<line x1="0" y1="{y:.0f}" x2="{w}" y2="{y:.0f}" stroke="{faint}" stroke-width="1"/>'); y+=step
+    body+="".join(lines)
+    # oversized watermark mark, centred high
+    st=mark_d*0.16
+    cy=h*0.36
+    body+=(f'<circle cx="{w/2:.0f}" cy="{cy:.0f}" r="{mark_d/2:.0f}" fill="none" stroke="{soft}" stroke-width="{st:.0f}"/>'
+           f'<rect x="{w/2-mark_d*0.59:.0f}" y="{cy+mark_d/2+mark_d*0.16:.0f}" width="{mark_d*1.18:.0f}" height="{mark_d*0.16:.0f}" rx="{mark_d*0.08:.0f}" fill="#cfe0dc"/>')
+    # wordmark low, very light — scaled to fit within 66% of the width
+    target=w*0.66
+    _,w1=wordmark("BIOHACK.IT",F300,100,0,0,"#000")
+    wm=100*target/w1
+    wmg,wmw=wordmark("BIOHACK.IT",F300,wm,0,0,"#c9d3d0")
+    body+=wordmark("BIOHACK.IT",F300,wm,(w-wmw)/2,h*0.88,"#c9d3d0")[0]
+    sub_size=wm*0.185
+    _,sw=wordmark("AN OPEN LABORATORY FOR LONGEVITY",F500,sub_size,0,0,"#000",tracking=0.3)
+    if sw > w*0.72:
+        sub_size *= (w*0.72)/sw
+        _,sw=wordmark("AN OPEN LABORATORY FOR LONGEVITY",F500,sub_size,0,0,"#000",tracking=0.3)
+    body+=wordmark("AN OPEN LABORATORY FOR LONGEVITY",F500,sub_size,(w-sw)/2,h*0.905,"#cdd7d4",tracking=0.3)[0]
+    return svg(w,h,body,"#f7faf9")
+
+chats=ROOT/"chat"; chats.mkdir(exist_ok=True)
+for name,(w,h) in {"wechat-chat-background-1080x1920":(1080,1920),
+                   "wechat-chat-background-1242x2688":(1242,2688),
+                   "telegram-chat-background-1440x2560":(1440,2560)}.items():
+    (chats/f"{name}.svg").write_text(chat_bg(w,h),encoding="utf-8")
+
 # ---------------- DOWNLOADABLE LOGOS (transparent, PNG-ready) ----------------
 logos=ROOT/"logos"; logos.mkdir(exist_ok=True)
 def svg_t(w,h,body,bg=None):

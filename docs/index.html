@@ -108,6 +108,21 @@
   ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;background:var(--accent);transform:rotate(45deg)}
   ul.clean li span{color:var(--muted)}
 
+  .cols.join{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:900px){.cols.join{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.cols.join{grid-template-columns:1fr}}
+  .contact{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:18px;margin-top:22px}
+  @media(max-width:760px){.contact{grid-template-columns:1fr}}
+  .cbox{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  .clab{font-family:var(--ff-display);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .cmail{font-family:var(--ff-display);font-weight:400;font-size:clamp(16px,1.7vw,20px);color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px}
+  .cmail:hover{color:var(--accent-ink)}
+  .cnote{font-size:13px;color:var(--muted);margin-top:12px}
+  .tgbtn{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);border:1px solid var(--ink);border-radius:10px;padding:11px 18px;font-family:var(--ff-display);font-weight:500;font-size:14.5px;text-decoration:none}
+  .tgbtn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+  .qr{width:118px;height:118px;border:1px solid var(--line-strong);border-radius:10px;display:grid;place-items:center;background:var(--surface-2);overflow:hidden}
+  .qr img{width:100%;height:100%;object-fit:contain;display:block}
+  .qr span{font-family:var(--ff-display);font-size:11px;letter-spacing:.14em;color:var(--faint)}
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
   @media(max-width:760px){.about-grid{grid-template-columns:1fr}}
   .about-grid h3{font-family:var(--ff-display);font-weight:400;font-size:24px;margin:0}
@@ -129,6 +144,7 @@
     <a href="#what">What</a>
     <a href="#how">How</a>
     <a href="#plan">Plan</a>
+    <a href="#join">Join</a>
     <a href="/specs/" target="_blank" rel="noopener">Specs</a>
     <a href="#about">About</a>
     <a class="ext" href="https://hackingbiology.com" target="_blank" rel="noopener">HackingBiology</a>
@@ -220,7 +236,41 @@
     </ul>
   </div></section>
 
-  <section id="about" class="alt-band"><div class="wrap">
+  <section id="join" class="alt-band"><div class="wrap">
+    <p class="eyebrow">Join us</p>
+    <h2>Build this with us.</h2>
+    <p class="lead">This is open infrastructure, and it is early. Every one of these roles is genuinely open — and each one changes what the project becomes.</p>
+    <div class="cols join">
+      <div class="card"><span class="tag">Biohackers</span><h3>Bring your experience</h3><p>Shape the specification with what you actually do, and bring your protocols and measurements into the software. The domain model is only as good as the people who practise the domain.</p></div>
+      <div class="card"><span class="tag">Software hackers</span><h3>Build it</h3><p>AGPL, public specification, open issues. Backend, data pipelines, front-end, standards mapping — the whole thing is written down before it is written in code.</p></div>
+      <div class="card"><span class="tag">Researchers &amp; scientists</span><h3>Keep us honest</h3><p>Help make the data defensible — validity, uncertainty, evidence grading — while keeping the software usable by a beginner. Both constraints are real; we need people who hold them together.</p></div>
+      <div class="card"><span class="tag">Longevity enthusiasts</span><h3>Spread it</h3><p>Volunteer to tell people it exists: community, translation, events, content. A tool nobody knows about produces no data.</p></div>
+      <div class="card"><span class="tag">Fundraisers &amp; philanthropy</span><h3>Make it sustainable</h3><p>Help build a funding pipeline — public grants and philanthropic support — so development continues without the project ever becoming commercial.</p></div>
+    </div>
+
+    <div class="contact">
+      <div class="cbox">
+        <div class="clab">Write to us</div>
+        <a class="cmail" href="mailto:research@hackingbiology.com">research@hackingbiology.com</a>
+        <p class="cnote">Tell us which of the five you are — and what you would like to work on.</p>
+      </div>
+      <div class="cbox">
+        <div class="clab">Telegram</div>
+        <a class="tgbtn" href="TELEGRAM_LINK" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M9.04 15.47 8.7 20.1c.5 0 .72-.21.98-.47l2.35-2.24 4.87 3.56c.9.5 1.54.24 1.78-.83l3.23-15.14c.29-1.33-.48-1.85-1.35-1.53L1.62 9.66c-1.3.5-1.28 1.22-.22 1.55l4.86 1.51 11.3-7.12c.53-.32 1.02-.14.62.21z"/></svg>
+          Join and contribute
+        </a>
+        <p class="cnote">Project updates and open discussion.</p>
+      </div>
+      <div class="cbox">
+        <div class="clab">WeChat 微信</div>
+        <div class="qr" id="wechatqr"><span>QR</span></div>
+        <p class="cnote">Scan to join the group chat. 扫码加入群聊。</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="about"><div class="wrap">
     <p class="eyebrow">About</p>
     <h2>The Software and the Foundation.</h2>
     <p class="lead">biohack.it is an effort begun in <strong>2022</strong> by <strong><a href="https://linkedin.com/in/secret" target="_blank" rel="noopener">Fabio Pietrosanti</a></strong> — a hacker who turned to biology when his mother died of lung cancer. That loss set his focus on the biology of aging; he became a biohacker himself, and set out to give the international community the instrument he wished for himself in hacking his own biology.</p>
