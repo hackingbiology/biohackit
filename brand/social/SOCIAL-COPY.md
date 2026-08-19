@@ -11,6 +11,7 @@ rejects the text, trim from the end; every entry is written so the first sentenc
 - Category — `Open infrastructure for structured human self-experimentation.` · `面向结构化人体自我实验的开放基础设施。`
 - Brand payoff — `An open laboratory for longevity.` · `一个开放的长寿实验室。`
 - Link — `https://biohack.it` · Source — `https://github.com/hackingbiology/biohackit`
+- Telegram — `https://t.me/+0qg9-HC4Nx45OTI8` · Email — `research@hackingbiology.com`
 
 ---
 

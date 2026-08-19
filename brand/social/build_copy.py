@@ -94,6 +94,7 @@ out=["# BIOHACK.IT — social copy",
  f"- Category — `{EN_CAT}` · `{ZH_CAT}`",
  f"- Brand payoff — `{EN_PAYOFF}` · `{ZH_PAYOFF}`",
  "- Link — `https://biohack.it` · Source — `https://github.com/hackingbiology/biohackit`",
+ "- Telegram — `https://t.me/+0qg9-HC4Nx45OTI8` · Email — `research@hackingbiology.com`",
  "",
  "---",
  ""]
