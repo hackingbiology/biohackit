@@ -59,7 +59,24 @@
   .hero .mark{font-size:clamp(44px,9.4vw,104px)}
   .hero .eyebrow{margin-bottom:14px}
   .hero .statement{font-family:var(--ff-display);font-weight:300;font-size:clamp(22px,3.4vw,38px);color:var(--muted);margin:16px 0 0;line-height:1.15;letter-spacing:-.01em}
+  .hero .category{font-family:var(--ff-display);font-weight:400;font-size:clamp(15px,1.8vw,20px);color:var(--ink);margin:10px 0 0;letter-spacing:.01em}
   .hero .lead{margin-top:16px}
+  .pipe{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:26px;font-family:var(--ff-display);font-size:14.5px}
+  .pipe .n{background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:7px 15px}
+  .pipe .n.hl{border-color:var(--accent);color:var(--accent-ink)}
+  .pipe .a{color:var(--faint)}
+  .std{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:13px;line-height:1.55;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;overflow-x:auto;margin-top:22px;color:var(--ink)}
+  .std .dim{color:var(--faint)}
+  .std .em{color:var(--accent-ink)}
+  table.git{border-collapse:collapse;width:100%;margin-top:22px;font-size:15px;display:block;overflow-x:auto}
+  table.git th,table.git td{border-bottom:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+  table.git th{font-family:var(--ff-display);font-weight:500;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  table.git td:first-child{font-family:ui-monospace,Consolas,monospace;font-size:13.5px;color:var(--accent-ink);white-space:nowrap}
+  .honest{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:22px 24px;margin-top:24px}
+  .honest h3{font-family:var(--ff-display);font-weight:500;font-size:17px;margin:0 0 6px}
+  .honest p{font-size:15px;color:var(--muted);margin:10px 0 0}
+  .honest p:first-of-type{margin-top:8px}
+  .honest b{color:var(--ink)}
   .hero .cta-row{margin-top:26px}
   .hero .metaline{margin-top:24px}
   .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
@@ -115,6 +132,8 @@
   <span class="brand"><svg class="navmark" viewBox="0 0 100 100" aria-hidden="true"><circle class="r" cx="50" cy="42" r="26"/><rect class="b" x="20" y="80" width="60" height="8" rx="1.5"/></svg><span class="bwrap"><span class="bw">BIOHACK.IT</span><span class="bs">Hacking Biology</span></span></span>
   <span class="links">
     <a href="#what">What</a>
+    <a href="#how">How</a>
+    <a href="#honesty">Limits</a>
     <a href="#plan">Plan</a>
     <a href="/specs/" target="_blank" rel="noopener">Specs</a>
     <a href="#about">About</a>
@@ -126,8 +145,16 @@
   <section class="hero"><div class="wrap">
     <p class="eyebrow">Open source · Non-profit · AGPL-3.0</p>
     <div class="mark">BIOHACK.IT</div>
-    <p class="statement">An open laboratory for longevity.</p>
-    <p class="lead">Document your protocol, measure it with biomarkers, and share it — so the biohacking community learns from <strong>real, comparable, open data</strong>, with safety built in rather than bolted on.</p>
+    <p class="statement">Turn self-experimentation into evidence.</p>
+    <p class="category">Open infrastructure for structured human self-experimentation.</p>
+    <p class="lead">Document what you take and do, measure it with standards-coded biomarkers, and share it — so that thousands of individual experiments become <strong>comparable human data</strong>, with safety engineered in rather than bolted on.</p>
+    <div class="pipe" aria-label="From intervention to evidence">
+      <span class="n">Intervention</span><span class="a">→</span>
+      <span class="n">Measurement</span><span class="a">→</span>
+      <span class="n">Individual effect</span><span class="a">→</span>
+      <span class="n">Cohort</span><span class="a">→</span>
+      <span class="n hl">Evidence</span>
+    </div>
     <div class="cta-row">
       <a class="btn primary" href="#plan">Read the plan</a>
       <a class="btn ghost ext" href="https://www.rapamycin.news" target="_blank" rel="noopener">Join the community ↗</a>
@@ -145,23 +172,69 @@
     <div class="cols three">
       <div class="card"><span class="tag">01 — Document</span><h3>What you take &amp; do</h3><p>Substances, therapies, exercise and nutrition — with dose, timing and real cycle schemas. Create from scratch, or copy any public protocol with one click.</p></div>
       <div class="card"><span class="tag">02 — Measure</span><h3>Efficacy &amp; safety</h3><p>Biomarkers with reference, optimal and safety ranges — plus biological clocks (PhenoAge, epigenetic, glycation). Upload your past lab reports and get your history in graphs, free.</p></div>
-      <div class="card"><span class="tag">03 — Share</span><h3>Open by default</h3><p>Publish your protocol and its outcomes. Follow and copy the people who get results, seeing their public biomarkers — the community is the quality control.</p></div>
+      <div class="card"><span class="tag">03 — Share</span><h3>Open by default</h3><p>Publish your protocol and its outcomes. Follow and copy the people who get results, seeing their public biomarkers. Quality comes from three layers: <strong>deterministic validation, community review, expert oversight</strong>.</p></div>
     </div>
+  </div></section>
+
+  <section id="how"><div class="wrap">
+    <p class="eyebrow">What makes it computable</p>
+    <h2>The same protocol, written three ways, is one entity.</h2>
+    <p class="lead">This is the whole project in three lines. Today a dose lives as prose in a forum post, a screenshot, or a spreadsheet nobody else can read. We turn it into something a machine — and a researcher — can actually use.</p>
+    <div class="std">"rapamycin 6mg weekly"<br>
+"sirolimus 6 mg every Sunday"&nbsp;&nbsp;&nbsp;──▶&nbsp;&nbsp;&nbsp;<span class="em">RxNorm 35302 · 6 mg · every 7 days · pulsed</span><br>
+"Rapa 6 mg q7d"<br><br>
+<span class="dim">human-readable, research-useless&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;one computable entity, linked to your biomarkers over time</span></div>
+
+    <h2 style="margin-top:60px">GitHub for biological self-experimentation.</h2>
+    <p class="lead">If you have ever used version control, you already know how this works.</p>
+    <table class="git">
+      <thead><tr><th>Git</th><th>biohack.it</th></tr></thead>
+      <tbody>
+        <tr><td>repository</td><td>a protocol</td></tr>
+        <tr><td>fork</td><td>copying someone's protocol</td></tr>
+        <tr><td>commit</td><td>a dose or intervention change, with its reason</td></tr>
+        <tr><td>release</td><td>a protocol version</td></tr>
+        <tr><td>CI</td><td>safety monitoring — baseline, inherited markers, overdue checks</td></tr>
+        <tr><td>issues</td><td>a contested claim, discussed in public</td></tr>
+        <tr><td>telemetry</td><td>your biomarkers over time</td></tr>
+        <tr><td>README</td><td>the doctor sheet</td></tr>
+        <tr><td>dataset</td><td>the open research output</td></tr>
+      </tbody>
+    </table>
+  </div></section>
+
+  <section id="honesty" class="alt-band"><div class="wrap">
+    <p class="eyebrow">What this is — and what it is not</p>
+    <h2>We are not a clinical trial, and we say so first.</h2>
+    <p class="lead">This is self-managed, self-declared, self-selected experimentation. There is no randomisation, no blinding, no controlled conditions. People change their protocol halfway through, measure irregularly, and drop out. Self-reported data varies, and the people who share results are not a random sample of anyone.</p>
+    <div class="honest">
+      <h3>So what is the honest comparison?</h3>
+      <p>Not <b>biohack.it versus a clinical trial</b> — we lose that comparison, and we are not trying to win it.</p>
+      <p>The real comparison is <b>biohack.it versus what exists today</b>: a dose described in prose, a screenshot of a lab report, a spreadsheet nobody else can open. Against that, structured interventions, coded biomarkers, versioned protocols, declared adherence and stated provenance are an enormous step toward science.</p>
+      <p>Nothing here <i>starts</i> as a trial. It becomes something trial-like only when enough people run the same protocol with endpoints declared in advance — and we publish the bar a study must clear before that word is used.</p>
+    </div>
+    <ul class="clean" style="margin-top:30px">
+      <li><strong>Every number carries its confidence</strong> <span>— value, uncertainty, provenance and evidence level, or it is not shown.</span></li>
+      <li><strong>The platform describes, never prescribes</strong> <span>— it suggests what to measure, never what to take or how much.</span></li>
+      <li><strong>We report what was observed, never what caused it</strong> <span>— “among qualifying users exposed to X, the observed change was Y”.</span></li>
+      <li><strong>Negative results are welcome</strong> <span>— “I tried X. Nothing happened.” is exactly the data that normally disappears in biohacking, and here it counts.</span></li>
+    </ul>
   </div></section>
 
   <section id="plan"><div class="wrap">
     <p class="eyebrow">The plan</p>
     <h2>From one person to a distributed trial.</h2>
-    <p class="lead">We are building in the open. The full functional specification — 24 capabilities, 140+ requirements across protocols, biomarkers, safety, community and open data — is public and browsable, and grows with community review.</p>
+    <p class="lead">We are building in the open. The full functional specification — 24 capabilities, 140+ requirements across protocols, biomarkers, safety, community and open data — is public and browsable, and grows with community review. What we <em>build first</em> is deliberately much narrower than what we have specified.</p>
     <div class="cta-row"><a class="btn primary" href="/specs/" target="_blank" rel="noopener">Read the functional specification →</a></div>
     <div class="road">
-      <div class="ph now"><div class="dot"></div><div class="k">PHASE 0</div><div class="t">Foundations</div><div class="d">Domain model, seed catalogue, biomarker registry, safety rules.</div></div>
-      <div class="ph"><div class="dot"></div><div class="k">PHASE 1</div><div class="t">Useful to one</div><div class="d">Blood Layer, daily log, doctor sheet — value in ten minutes, zero spend.</div></div>
-      <div class="ph"><div class="dot"></div><div class="k">PHASE 2</div><div class="t">Useful to many</div><div class="d">Public protocols, follow &amp; copy, safety guardrails, N-of-1 studies.</div></div>
-      <div class="ph"><div class="dot"></div><div class="k">PHASE 3</div><div class="t">Daily operations</div><div class="d">Pills, therapeutics, exercise &amp; nutrition scheduling; procurement.</div></div>
-      <div class="ph"><div class="dot"></div><div class="k">PHASE 4</div><div class="t">Research layer</div><div class="d">Cohorts, literature-vs-observed, OMOP export, first open-data release.</div></div>
-      <div class="ph"><div class="dot"></div><div class="k">PHASE 5</div><div class="t">Distributed trials</div><div class="d">Pre-registered studies on shared protocols — a collective read-out.</div></div>
+      <div class="ph now"><div class="dot"></div><div class="k">PHASE 0</div><div class="t">Foundations</div><div class="d">Domain model, biomarker registry, coded catalogue, safety rules.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">MVP</div><div class="t">Useful to one</div><div class="d">Protocol · Blood Layer · Safety · Doctor sheet — value in ten minutes, zero spend.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">NEXT</div><div class="t">Adherence</div><div class="d">Daily log — thirty seconds a day, and the reason any later number means something.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">THEN</div><div class="t">Useful to many</div><div class="d">Public protocols, follow &amp; copy, safety on copy, pre-registered N-of-1.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">THEN</div><div class="t">Open data</div><div class="d">Cohorts, self-generated open &amp; linked data, then a research API.</div></div>
+      <div class="ph"><div class="dot"></div><div class="k">DESTINATION</div><div class="t">Distributed trials</div><div class="d">Shared protocols with endpoints declared in advance, meeting a published bar.</div></div>
     </div>
+    <p class="lead" style="margin-top:34px">Deliberately deferred until those land: procurement, advanced nutrition, therapeutics scheduling, genomics beyond import, agent access. <strong>Breadth in thinking, discipline in shipping.</strong></p>
     <ul class="clean" style="margin-top:46px">
       <li><strong>Rigor is a design decision, not a disclaimer.</strong> <span>The platform describes, never prescribes; every claim is graded to its evidence.</span></li>
       <li><strong>The LLM writes words, never numbers.</strong> <span>Extraction, thresholds and indices are deterministic and reproducible.</span></li>
