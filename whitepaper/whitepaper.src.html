@@ -1,0 +1,382 @@
+<meta charset="utf-8">
+<title>BIOHACK.IT — White Paper</title>
+<style>
+/*FONTS*/
+:root{
+  --ink:#25292c; --muted:#4c565c; --faint:#8b9398;
+  --line:rgba(37,41,44,.14); --line-strong:rgba(37,41,44,.28);
+  --accent:#0c877a; --accent-ink:#0a6f64; --fill:rgba(12,135,122,.07);
+  --surface:#f6f8f8; --surface-2:#eef2f1; --amber:#9a6a12; --amber-fill:rgba(179,130,42,.09);
+  --disp:"Jost",system-ui,sans-serif;
+  --body:Georgia,"Iowan Old Style","Times New Roman",serif;
+}
+@page{ size:A4; margin:20mm 19mm 20mm; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--body); color:var(--ink); font-size:10.5pt; line-height:1.62; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+p{margin:0 0 9pt}
+h1,h2,h3,h4{font-family:var(--disp); font-weight:400; line-height:1.12; color:var(--ink); }
+strong{font-weight:600}
+em{font-style:italic}
+a{color:var(--accent-ink); text-decoration:none}
+code,.mono{font-family:"Jost",ui-monospace,Menlo,Consolas,monospace; font-weight:400}
+
+/* ---------- COVER ---------- */
+.cover{height:257mm; display:flex; flex-direction:column; page-break-after:always; position:relative}
+.cover .mk{margin-top:6mm}
+.cover .kicker{font-family:var(--disp); font-weight:500; font-size:11pt; letter-spacing:.30em; text-transform:uppercase; color:var(--accent-ink); margin-top:auto}
+.cover h1{font-size:52pt; letter-spacing:-.02em; margin:6pt 0 0}
+.cover .rule{width:60pt; height:3pt; background:var(--accent); margin:12pt 0 14pt; border-radius:2pt}
+.cover .sub{font-family:var(--disp); font-weight:300; font-size:20pt; color:var(--muted); letter-spacing:.01em; margin:0 0 3pt}
+.cover .promise{font-family:var(--disp); font-weight:400; font-size:15pt; color:var(--ink); margin:14pt 0 0}
+.cover .doctype{font-family:var(--disp); font-weight:500; font-size:10pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin-top:4pt}
+.cover .foot{margin-top:auto; border-top:1px solid var(--line); padding-top:9pt; display:flex; justify-content:space-between; align-items:flex-end; gap:12pt}
+.cover .foot .ev{font-family:var(--disp); font-size:9.5pt; color:var(--muted); line-height:1.5}
+.cover .foot .ev b{font-weight:500; color:var(--ink)}
+.cover .foot .meta{font-family:var(--disp); font-size:8.5pt; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); text-align:right; line-height:1.7}
+
+/* ---------- STRUCTURE ---------- */
+.abstract{background:var(--surface); border:1px solid var(--line); border-radius:8pt; padding:13pt 16pt; margin:0 0 4pt}
+.abstract h2{font-size:12pt; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-ink); font-weight:500; margin:0 0 7pt}
+.abstract p{margin:0 0 7pt}
+.abstract p:last-child{margin:0}
+
+section.ch{page-break-before:always}
+.chnum{font-family:var(--disp); font-weight:500; font-size:10pt; letter-spacing:.20em; color:var(--accent-ink)}
+h2.ct{font-size:24pt; letter-spacing:-.01em; margin:2pt 0 10pt}
+h3{font-size:13.5pt; font-weight:500; margin:15pt 0 5pt; color:var(--ink)}
+.lead{font-family:var(--disp); font-weight:300; font-size:13pt; line-height:1.4; color:var(--muted); margin:0 0 11pt}
+
+ul,ol{margin:0 0 9pt; padding-left:16pt}
+li{margin:0 0 4pt}
+.tight li{margin:0 0 2pt}
+
+/* callouts */
+.key{background:var(--fill); border-left:3px solid var(--accent); border-radius:0 6pt 6pt 0; padding:9pt 13pt; margin:11pt 0; font-family:var(--disp); font-weight:400; font-size:12.5pt; line-height:1.4; color:var(--ink)}
+.note{background:var(--surface); border:1px solid var(--line); border-radius:6pt; padding:10pt 13pt; margin:11pt 0}
+.note .nl{font-family:var(--disp); font-weight:500; font-size:8.5pt; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); display:block; margin-bottom:4pt}
+.decision{background:var(--amber-fill); border-left:3px solid var(--amber)}
+.decision .nl{color:var(--amber)}
+figure{margin:12pt 0; page-break-inside:avoid}
+figcaption{font-family:var(--disp); font-size:8.5pt; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); margin-top:6pt}
+
+/* figures */
+.std{background:var(--surface); border:1px solid var(--line); border-radius:8pt; padding:12pt 14pt; font-family:"Jost",monospace; font-size:10.5pt}
+.std .raw{color:var(--muted); line-height:1.7}
+.std .arrow{color:var(--accent); margin:6pt 0; font-size:11pt}
+.std .norm{color:var(--ink); font-weight:500; background:#fff; border:1px solid var(--line); border-radius:5pt; padding:5pt 9pt; display:inline-block}
+
+table{border-collapse:collapse; width:100%; margin:4pt 0; font-size:10pt}
+table.git td{padding:6pt 8pt; border-bottom:1px solid var(--line); vertical-align:top}
+table.git td.g{font-family:"Jost",monospace; color:var(--accent-ink); width:32%; font-size:9.5pt}
+table.eq th{text-align:left; font-family:var(--disp); font-weight:500; font-size:8.5pt; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); padding:0 8pt 5pt; border-bottom:1px solid var(--line-strong)}
+
+.chain{font-family:"Jost",sans-serif; font-size:11pt; color:var(--ink); text-align:center; background:var(--surface); border:1px solid var(--line); border-radius:8pt; padding:12pt}
+.chain b{color:var(--accent-ink); font-weight:500}
+.chain .sep{color:var(--faint); margin:0 5pt}
+
+.pipe{display:flex; flex-wrap:wrap; gap:5pt; align-items:center; font-family:var(--disp); font-size:10.5pt; margin:8pt 0}
+.pipe .st{border:1px solid var(--line-strong); border-radius:20pt; padding:4pt 11pt}
+.pipe .st.end{background:var(--accent); color:#fff; border-color:var(--accent)}
+.pipe .ar{color:var(--faint)}
+
+.cols{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9pt; margin:11pt 0}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:7pt; padding:11pt 12pt}
+.card .t{font-family:var(--disp); font-weight:500; font-size:8.5pt; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-ink); margin-bottom:5pt}
+.card p{font-size:9.5pt; line-height:1.5; margin:0; color:var(--muted)}
+.card h4{font-family:var(--disp); font-weight:500; font-size:11pt; margin:0 0 4pt}
+
+.road{margin:10pt 0}
+.road .r{display:flex; gap:10pt; padding:7pt 0; border-top:1px solid var(--line)}
+.road .r:first-child{border-top:none}
+.road .ph{font-family:var(--disp); font-weight:500; font-size:8.5pt; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); width:70pt; flex:none; padding-top:1pt}
+.road .rc b{font-family:var(--disp); font-weight:500}
+.road .rc{font-size:10pt}
+
+.refgrid{display:grid; grid-template-columns:1fr 1fr; gap:8pt; margin-top:8pt}
+.ref{border:1px solid var(--line); border-radius:6pt; padding:9pt 12pt}
+.ref .rl{font-family:var(--disp); font-weight:500; font-size:8pt; letter-spacing:.16em; text-transform:uppercase; color:var(--faint)}
+.ref .rv{font-family:var(--disp); font-size:12pt; color:var(--ink); margin-top:2pt}
+.colophon{margin-top:14pt; padding-top:9pt; border-top:1px solid var(--line); font-size:9pt; color:var(--faint); font-family:var(--disp)}
+</style>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <svg class="mk" width="52" height="66" viewBox="0 0 52 66" aria-hidden="true">
+    <circle cx="26" cy="24" r="19" fill="none" stroke="#25292c" stroke-width="6"/>
+    <rect x="9" y="52" width="34" height="7" rx="3.5" fill="#0c877a"/>
+  </svg>
+  <div class="kicker">Hacking Biology</div>
+  <h1>BIOHACK.IT</h1>
+  <div class="rule"></div>
+  <div class="sub">An open laboratory for longevity</div>
+  <div class="doctype">White Paper</div>
+  <p class="promise">Turn self-experimentation into evidence.</p>
+
+  <div class="foot">
+    <div class="ev">
+      Presented at <b>The 7th TimePie Longevity Forum</b> · Biohacker track<br>
+      September 12–13, 2026 · Shanghai
+    </div>
+    <div class="meta">
+      Version 0.1 · August 2026<br>
+      Open source · AGPL-3.0 · Non-profit<br>
+      biohack.it
+    </div>
+  </div>
+</div>
+
+<!-- ============ ABSTRACT ============ -->
+<div class="abstract">
+  <h2>Abstract</h2>
+  <p>Longevity intervention has run far ahead of longevity measurement. People already take off-label drugs, peptides, hormones and undergo therapies in pursuit of a longer healthspan — but the record of what they do lives in spreadsheets, forum posts and chat prompts: not comparable, not followable, and not readable by a physician. A thousand people running the same protocol produce a thousand anecdotes instead of one dataset.</p>
+  <p><strong>BIOHACK.IT is open infrastructure for structured human self-experimentation.</strong> It lets a person document a protocol in a standardised, machine-readable form, measure its efficacy and safety through standards-coded biomarkers, and share both the protocol and its outcomes in the open — so that many individual experiments become one body of comparable human data. Safety is engineered into the act of copying a protocol, which is where beginners are most exposed. The software is free, open source under AGPL-3.0, and stewarded by the non-profit Hacking Biology Foundation.</p>
+  <p>This paper states the problem, the design, the honest limits of the evidence such a system can produce, and the path from a minimum viable product — turning the lab reports people already have into a legible clinical history — to distributed, self-organised trials. The full functional specification is public.</p>
+</div>
+
+<!-- ============ 1 · THE GAP ============ -->
+<section class="ch">
+  <div class="chnum">01 · The problem</div>
+  <h2 class="ct">Intervention has outrun measurement.</h2>
+  <p class="lead">The longevity field can propose more than it can observe. The imbalance is the opportunity.</p>
+  <p>Over the last decade, the practice of longevity has moved faster than its evidence base. Rapamycin, metformin, GLP-1 agonists, a growing catalogue of peptides, hormone protocols, plasmapheresis, hyperbaric oxygen, exercise and fasting regimes — all are adopted today by motivated individuals, often years ahead of the trials that would tell us whether, and in whom, they work. This is not going to stop, and telling people to wait is neither realistic nor, for many, acceptable.</p>
+  <p>The waste is not that people experiment. The waste is that the experiments evaporate. A protocol is written as prose in a forum post. A result is a screenshot of a lab report. A regime lives in a personal spreadsheet nobody else can open. None of it is comparable across people, none of it accumulates, and almost none of it is in a form a doctor — or a researcher — could actually use.</p>
+  <div class="key">One person with a lab and a research team produces data. Everyone else produces anecdotes. The difference is not effort or sincerity — it is structure.</div>
+  <p>The premise of this project is narrow and, we think, correct: the single most valuable thing to build for longevity right now is not another compound or another wearable, but the <em>shared representation layer</em> that turns what people are already doing into data. That layer does not exist. Building it is the work.</p>
+</section>
+
+<!-- ============ 2 · WHO IS EXPOSED ============ -->
+<section class="ch">
+  <div class="chnum">02 · The ethical core</div>
+  <h2 class="ct">The beginner who copies is the person most at risk.</h2>
+  <p class="lead">Harm reduction is not a feature bolted onto the platform. It is the reason the platform is defensible.</p>
+  <p>Three people stand around any shared protocol, and they are not equally safe.</p>
+  <div class="cols">
+    <div class="card"><div class="t">Primary user</div><h4>The experienced biohacker</h4><p>Designs and self-administers, iterates — but today the results are anecdotes: claimed, not measured, impossible to compare.</p></div>
+    <div class="card"><div class="t">Highest risk</div><h4>The beginner who copies</h4><p>Reads a forum thread, starts taking a compound with no baseline, no safety markers, no idea what to monitor.</p></div>
+    <div class="card"><div class="t">Recipient, not user</div><h4>The treating physician</h4><p>Receives, at best, a handwritten sheet — and deserves a legible, complete view of what is being taken and why.</p></div>
+  </div>
+  <p>The person who copies an off-label compound off a forum thread — without knowing to monitor kidney and liver function, without a baseline to compare against — is exactly the case where structured infrastructure protects health rather than merely recording it. Biohackers already take the risk today. They take it <em>without</em> a baseline, without inherited safety markers, without an overdue-test warning. The platform does not add risk to the world; it adds a floor of safety under a behaviour that is already happening.</p>
+  <p>This is the module that justifies the project. If BIOHACK.IT does nothing else, making the first copied protocol safer than a screenshot is worth building.</p>
+</section>
+
+<!-- ============ 3 · COMPUTABLE ============ -->
+<section class="ch">
+  <div class="chnum">03 · The core idea</div>
+  <h2 class="ct">The same protocol, written three ways, is one entity.</h2>
+  <p class="lead">The real asset is not an app. It is the standardisation of something nobody has standardised.</p>
+  <p>Ask three biohackers to describe the same regimen and you get three strings of text:</p>
+  <figure>
+    <div class="std">
+      <div class="raw">"rapamycin 6mg weekly"<br>"sirolimus 6 mg every Sunday"<br>"Rapa 6mg q7d"</div>
+      <div class="arrow">→ resolved to one computable entity →</div>
+      <div class="norm">RxNorm 35302 · 6 mg · every 7 days · pulsed</div>
+    </div>
+    <figcaption>Figure 1 — Three human descriptions, one machine-readable intervention</figcaption>
+  </figure>
+  <p>To a human these are obviously the same thing. To software they are three unrelated strings — and that is the whole problem, because you cannot compare, aggregate or reason over prose. BIOHACK.IT resolves each of them to a single canonical entity: a substance keyed to standard vocabularies (RxNorm, ATC, PubChem, UNII), with a dose in defined units and a real cycle schema. Do this ten thousand times and a forum's worth of prose becomes a dataset.</p>
+  <p>The same discipline runs through every part of the system. Biomarkers are coded to LOINC and expressed in UCUM units, with the laboratory and assay method carried alongside each value, so that a result from one lab can be compared to a result from another. Nothing the platform stores is free text where a code will do. This is unglamorous, and it is the entire value.</p>
+</section>
+
+<!-- ============ 4 · PIPELINE ============ -->
+<section class="ch">
+  <div class="chnum">04 · From act to evidence</div>
+  <h2 class="ct">From one intervention to shared evidence.</h2>
+  <p class="lead">A single pipeline connects what one person does to what a community can learn.</p>
+  <figure>
+    <div class="pipe">
+      <span class="st">Intervention</span><span class="ar">→</span>
+      <span class="st">Measurement</span><span class="ar">→</span>
+      <span class="st">Individual effect</span><span class="ar">→</span>
+      <span class="st">Cohort</span><span class="ar">→</span>
+      <span class="st end">Evidence</span>
+    </div>
+    <figcaption>Figure 2 — The pipeline from personal act to open evidence</figcaption>
+  </figure>
+  <ul>
+    <li><strong>Intervention</strong> — what you take and do: dose, timing, real cycle schema, versioned with every change.</li>
+    <li><strong>Measurement</strong> — standards-coded biomarkers (LOINC/UCUM) with lab, method and provenance attached.</li>
+    <li><strong>Individual effect</strong> — your own before/after, bound to the exact protocol version that was active at the time.</li>
+    <li><strong>Cohort</strong> — everyone running the same protocol, weighted by adherence and data completeness.</li>
+    <li><strong>Evidence</strong> — an open dataset the community, and researchers, can actually interrogate.</li>
+  </ul>
+  <p>Each stage is only possible because the one before it is structured. You cannot compute an individual effect over free-text doses; you cannot form a cohort over incomparable biomarkers; you cannot produce evidence over a cohort whose adherence you never recorded. The pipeline is the argument for the standardisation.</p>
+</section>
+
+<!-- ============ 5 · PLATFORM ============ -->
+<section class="ch">
+  <div class="chnum">05 · What it does</div>
+  <h2 class="ct">Document your protocol. Measure it. Share it.</h2>
+  <p class="lead">Three verbs describe the whole product.</p>
+  <div class="cols">
+    <div class="card"><div class="t">01 — Document</div><h4>What you take &amp; do</h4><p>Substances, therapies, exercise, nutrition — with dose, timing and real cycle schemas. Create from scratch, or copy any public protocol with one click.</p></div>
+    <div class="card"><div class="t">02 — Measure</div><h4>Efficacy &amp; safety</h4><p>Biomarkers with reference, optimal and safety ranges, plus biological clocks (PhenoAge, epigenetic, glycation). Upload past lab reports, get your history in graphs.</p></div>
+    <div class="card"><div class="t">03 — Share</div><h4>Open by default</h4><p>Publish your protocol and its outcomes. Quality comes from three layers: deterministic validation, community review, expert oversight.</p></div>
+  </div>
+  <p>The social mechanic is deliberately familiar: follow and copy the people who get results, seeing their public biomarkers rather than their claims — copy-trading, for health. But unlike a trading feed, what you copy is a safety-instrumented, versioned object, and what you see is measured, not asserted.</p>
+  <p>The platform is built on the community that already exists, not a forum rebuilt from scratch: community features attach to Rapamycin News, where longevity biohackers already gather.</p>
+</section>
+
+<!-- ============ 6 · ARCHITECTURE ============ -->
+<section class="ch">
+  <div class="chnum">06 · Architecture</div>
+  <h2 class="ct">GitHub for biological self-experimentation.</h2>
+  <p class="lead">If you have ever used version control, you already know how this works.</p>
+  <p>A protocol is not a static document; it is a living object that changes over time, and every change matters. Borrowing the mental model of version control makes the design legible at a glance:</p>
+  <figure>
+    <table class="git">
+      <tr><th></th></tr>
+      <tr><td class="g">repository</td><td>a protocol</td></tr>
+      <tr><td class="g">fork</td><td>copying someone's protocol</td></tr>
+      <tr><td class="g">commit</td><td>a dose or intervention change, with its stated reason</td></tr>
+      <tr><td class="g">release</td><td>a protocol version</td></tr>
+      <tr><td class="g">CI</td><td>safety monitoring — baseline, inherited markers, overdue checks</td></tr>
+      <tr><td class="g">issues</td><td>a contested claim, discussed in public</td></tr>
+      <tr><td class="g">telemetry</td><td>your biomarkers over time</td></tr>
+      <tr><td class="g">dataset</td><td>the open research output</td></tr>
+    </table>
+    <figcaption>Figure 3 — The version-control metaphor, made literal</figcaption>
+  </figure>
+  <p>Every change to a protocol is versioned and carries a mandatory reason, so that when an effect appears in the data it can be traced to the exact state of the protocol that produced it.</p>
+
+  <h3>Three questions, deliberately kept apart</h3>
+  <p>Much of the confusion in existing tools comes from collapsing distinct questions into one record. The domain model keeps them separate:</p>
+  <div class="cols">
+    <div class="card"><h4>TestingProtocol</h4><p>What I measure, and when. A versioned set of measures and timepoints.</p></div>
+    <div class="card"><h4>TreatmentPlan</h4><p>What I take and do. Versioned interventions — self-managed or physician-assigned.</p></div>
+    <div class="card"><h4>Goal</h4><p>What I want to change. Mapped onto the Hallmarks of Aging.</p></div>
+  </div>
+  <figure>
+    <div class="chain"><b>Substance</b><span class="sep">→</span><b>SafetyRule</b><span class="sep">→</span><b>Biomarker</b><span class="sep">→</span><b>Measurement</b><span class="sep">→</span><b>Dashboard</b></div>
+    <figcaption>Figure 4 — "What you take" and "how you are" are the same data structure, read from two sides</figcaption>
+  </figure>
+  <p>Technically the system speaks in established vocabularies rather than inventing its own: HL7 FHIR internally, OMOP for research export, LOINC and UCUM for analytes, RxNorm/ATC/PubChem/UNII for substances. Evidence content structure follows the Forever Healthy Foundation's Evipedia; AI-generated review text is produced through the AI4L audit-based-prompting framework. Where AI is and is not used is published as an explicit map — and, as a firm rule, the model writes words, never numbers.</p>
+</section>
+
+<!-- ============ 7 · SAFETY ============ -->
+<section class="ch">
+  <div class="chnum">07 · Harm reduction</div>
+  <h2 class="ct">Follow a protocol — inherit its safety.</h2>
+  <p class="lead">Safety is never opt-in, because the person who most needs it is the least likely to choose it.</p>
+  <p>When a user adopts a protocol, they do not merely copy its interventions. They inherit its safety apparatus automatically:</p>
+  <ul>
+    <li><strong>Mandatory baseline</strong> — before you can follow a protocol at all, plus an explicit acknowledgement of the risk you are accepting.</li>
+    <li><strong>Safety markers inherited automatically</strong> — from every active compound. If a substance warrants a liver panel, that panel comes with it; safety monitoring is never something you have to remember to add.</li>
+    <li><strong>Dose sanity check</strong> — a plausibility validation on the numbers, catching the extra zero. This is not clinical advice; it is a guardrail against the obvious mistake.</li>
+    <li><strong>Overdue is a safety gap</strong> — "rapamycin active for 94 days, liver panel overdue by 34" is surfaced as a defect in the protocol, not buried.</li>
+  </ul>
+  <div class="key">The platform describes; it never prescribes. It tells you what to measure — never what to take, or how much.</div>
+  <p>Interventions that are medical- or research-grade, and doses that derive from animal rather than human studies, are marked as such and gated behind an informed-decision panel: adoption and outcomes, the evidence corpus and its grading, the medical or research level, dose provenance, potential impacts and links to the relevant forum discussion. Everything remains one-click copyable — nothing is documentable-but-hidden — but nothing is copyable without the context needed to judge it.</p>
+</section>
+
+<!-- ============ 8 · MVP ============ -->
+<section class="ch">
+  <div class="chnum">08 · The minimum viable product</div>
+  <h2 class="ct">Turn the lab reports you already have into a clinical history.</h2>
+  <p class="lead">The first thing we ship is useful to a single person, with no community and no risk narrative attached.</p>
+  <p>Ambition kills products by making the first version un-shippable. The MVP is deliberately narrow: <strong>the Blood Layer</strong>. Upload the lab reports you already have — PDFs, images, the mess your labs actually give you — and get your biomarker history in graphs, free, coded to LOINC/UCUM with reference, optimal and safety ranges per analyte.</p>
+  <div class="cols">
+    <div class="card"><div class="t">A hard boundary</div><h4>The model writes words, never numbers</h4><p>Extraction, mapping and thresholds are deterministic and reproducible. The model only produces the plain-language narration — generated once and cached.</p></div>
+    <div class="card"><div class="t">Built for aggregation</div><h4>LOINC + UCUM + method, every value</h4><p>The only architecture compatible with releasing open data. Three ranges per analyte — laboratory reference, longevity-optimal, safety — each with its source.</p></div>
+    <div class="card"><div class="t">The point</div><h4>Useful before the network</h4><p>A sentence you can say without pronouncing the word "biohacking", with no regulatory exposure — and it works for one user, alone.</p></div>
+  </div>
+  <p>The Blood Layer earns trust with a task everyone recognises and no one enjoys — making sense of a stack of lab PDFs — while quietly building the standards-coded substrate that everything else depends on. It is the wedge, not the whole.</p>
+</section>
+
+<!-- ============ 9 · HONESTY ============ -->
+<section class="ch">
+  <div class="chnum">09 · Intellectual honesty</div>
+  <h2 class="ct">We are not a clinical trial, and we say so first.</h2>
+  <p class="lead">Credibility comes from declared limits, not from claimed rigour.</p>
+  <p>This is self-managed, self-declared, self-selected experimentation. There is no randomisation, no blinding, no controlled conditions. People change their protocol halfway through, measure irregularly, and drop out. A platform that hid these facts would deserve the criticism it received; BIOHACK.IT states them on the front page.</p>
+  <div class="key">The honest comparison is not BIOHACK.IT versus a clinical trial — we lose that one, and we are not trying to win it. It is BIOHACK.IT versus what exists today: a dose written in prose, a screenshot of a lab report, a spreadsheet nobody else can open.</div>
+  <p>Against that real baseline, structure is a large improvement. But structure is not the same as rigour, and the platform enforces the difference in how it reports:</p>
+  <ul>
+    <li><strong>Every number carries its confidence</strong> — value, uncertainty, provenance and evidence level, or it is not shown at all.</li>
+    <li><strong>Observed, never caused</strong> — findings are phrased as "among qualifying users exposed to X, the observed change was Y." The system does not state or imply causation, on any surface, including AI-generated text.</li>
+    <li><strong>Negative results are welcome</strong> — "I tried X. Nothing happened." is a first-class contribution. The absence of an effect is exactly the data biohacking usually loses.</li>
+  </ul>
+  <p>The specification carries a full statistical-methodology capability that names the threats such data faces — confounding, regression to the mean, healthy-user and survivor bias, measurement error, multiple testing — and requires that under-powered comparisons report "not determinable" rather than a precise-looking number. And it publishes the bar a study must clear before the words <em>distributed trial</em> are used: a pre-registered endpoint, a shared protocol version, declared timepoints, an adherence floor, a minimum cohort. Nothing starts as a trial. A study earns the term.</p>
+</section>
+
+<!-- ============ 10 · ORIGINALITY ============ -->
+<section class="ch">
+  <div class="chnum">10 · What is unique</div>
+  <h2 class="ct">What the literature predicts, beside what practitioners actually show.</h2>
+  <p class="lead">The originality is not a chart. It is the ability to put two charts on the same axis.</p>
+  <p>Anyone can draw the line that the literature predicts — it is in the papers. What almost no one can draw is the second line: what a living community of practitioners actually observes, on standards-coded biomarkers, at real doses, over real time. BIOHACK.IT exists to put those two lines side by side on the same axis — outcome against biomarker, prediction against observation — and to let the gap between them be the finding.</p>
+  <p>This is only possible on a platform where the observed line is built from comparable, provenance-carrying measurements rather than testimonials. It is the payoff of every unglamorous standardisation decision described above, and it is the thing no spreadsheet, forum or wellness app is structurally able to produce.</p>
+</section>
+
+<!-- ============ 11 · OPEN DATA ============ -->
+<section class="ch">
+  <div class="chnum">11 · Openness</div>
+  <h2 class="ct">Open data first, linked data second, API third.</h2>
+  <p class="lead">The research output is not a feature to add later. It is what the whole system is for.</p>
+  <p>Everything public — profiles, protocols, treatments, measurements, and, behind a heightened and explicit consent gate, genomic data and original lab reports — is published as a clonable open-data snapshot: enough to stand up an independent instance and seed it. This is the first-order output, generated by construction, not an export bolted on.</p>
+  <ul>
+    <li><strong>Open &amp; linked data, self-generated</strong> — everything public, coded and linked, sufficient to seed an independent instance.</li>
+    <li><strong>A research API, second</strong> — a documented endpoint returning de-identified, methodologically annotated cohort data: ask for an intervention and a biomarker, get an answer with its caveats attached.</li>
+    <li><strong>Impossible to enclose, by construction</strong> — AGPL-3.0 means anyone running it as a service must open the source; a capable user can self-host and keep the community's data in the community's hands.</li>
+  </ul>
+  <p>Data is published raw rather than pre-obfuscated — a maximal-openness stance that will be put to a community vote on Rapamycin News when the public beta opens. Standards, not silos: HL7 FHIR internally, OMOP for research export, LOINC/UCUM for analytes — so what the platform produces is research data, not another wellness silo. We do not, in any form, aim to publish papers; the output is the open dataset itself, and what others build on it.</p>
+</section>
+
+<!-- ============ 12 · SPEC + ROADMAP ============ -->
+<section class="ch">
+  <div class="chnum">12 · Specification &amp; roadmap</div>
+  <h2 class="ct">The whole specification is public before the first line of product.</h2>
+  <p class="lead">Breadth in thinking, discipline in shipping.</p>
+  <p>The functional specification — 26 capabilities and over 150 requirements, each with concrete scenarios, spanning protocols, biomarkers, safety, community, evidence, statistical methodology and open data — is written down, in the open, and browsable at biohack.it/specs, growing with community review. Specifying broadly costs little; building broadly costs everything. So what we build first is deliberately narrow.</p>
+  <figure>
+    <div class="road">
+      <div class="r"><div class="ph">Now</div><div class="rc"><b>Foundations</b> — domain model, biomarker registry, coded catalogue, safety rules.</div></div>
+      <div class="r"><div class="ph">MVP</div><div class="rc"><b>Useful to one</b> — the Blood Layer, safety, the doctor sheet. Useful to a single person, alone.</div></div>
+      <div class="r"><div class="ph">Next</div><div class="rc"><b>Adherence</b> — the daily log; thirty seconds a day.</div></div>
+      <div class="r"><div class="ph">Then</div><div class="rc"><b>Useful to many</b> — public protocols, follow and copy, pre-registered N-of-1.</div></div>
+      <div class="r"><div class="ph">Then</div><div class="rc"><b>Open data</b> — cohorts, open and linked data, then a research API.</div></div>
+      <div class="r"><div class="ph">Destination</div><div class="rc"><b>Distributed trials</b> — shared protocols with endpoints declared in advance.</div></div>
+    </div>
+    <figcaption>Figure 5 — MVP-first roadmap: each stage is useful before the next exists</figcaption>
+  </figure>
+  <p>Deferred without regret, so the first release stays shippable: procurement, advanced nutrition, therapeutics scheduling, genomics beyond simple import, and agent access.</p>
+</section>
+
+<!-- ============ 13 · GOVERNANCE ============ -->
+<section class="ch">
+  <div class="chnum">13 · Governance &amp; sustainability</div>
+  <h2 class="ct">The software and the foundation.</h2>
+  <p class="lead">An instrument this sensitive should not be owned by a company that could be pressured to close it.</p>
+  <p>BIOHACK.IT — the software, the brand and the copyright — is owned by the <strong>Hacking Biology Foundation</strong>, a non-profit incorporated in the Próspera ZEDE on Roatán, Honduras. The organisation is Hacking Biology; the software and the initiative are BIOHACK.IT. Keeping the two distinct is deliberate: the software can be forked, self-hosted and outlive any single steward, precisely because the licence and the ownership are structured to prevent enclosure.</p>
+  <p>The Foundation's board is drawn from a basket of practising biohackers and software hackers — the two communities whose competence the project depends on. Sustainability is pursued through public grants and, where startups build on the open data and standards, aligned equity participation — never by making the platform itself commercial, and never at the cost of the openness of the data.</p>
+  <p>The project began in 2022, when its founder — a hacker who turned to biology after his mother died of lung cancer — went looking for the instrument he wished for himself in hacking his own biology, and could not find it. BIOHACK.IT is an attempt to build that instrument in the open, for everyone who comes to the same search after him.</p>
+</section>
+
+<!-- ============ 14 · JOIN ============ -->
+<section class="ch">
+  <div class="chnum">14 · Participate</div>
+  <h2 class="ct">Build this with us.</h2>
+  <p class="lead">This is open infrastructure, and it is early. Every one of these roles is genuinely open.</p>
+  <div class="cols">
+    <div class="card"><div class="t">Biohackers</div><p>Bring your experience into the specification, and your protocols and measurements into the software.</p></div>
+    <div class="card"><div class="t">Software hackers</div><p>Build it. AGPL, public specification, open issues — written down before it is written in code.</p></div>
+    <div class="card"><div class="t">Researchers &amp; scientists</div><p>Keep us honest on validity, uncertainty and evidence — while keeping it usable by a beginner.</p></div>
+    <div class="card"><div class="t">Longevity enthusiasts</div><p>Volunteer to spread it: community, translation, events. A tool nobody knows about produces no data.</p></div>
+    <div class="card"><div class="t">Fundraisers &amp; philanthropy</div><p>Build the funding pipeline — grants and philanthropy — so it never has to become commercial.</p></div>
+  </div>
+
+  <h3>Contacts &amp; references</h3>
+  <div class="refgrid">
+    <div class="ref"><div class="rl">Email</div><div class="rv">research@hackingbiology.com</div></div>
+    <div class="ref"><div class="rl">Website</div><div class="rv">biohack.it</div></div>
+    <div class="ref"><div class="rl">Specification</div><div class="rv">biohack.it/specs</div></div>
+    <div class="ref"><div class="rl">Source</div><div class="rv">github.com/hackingbiology/biohackit</div></div>
+    <div class="ref"><div class="rl">Telegram</div><div class="rv">t.me/+0qg9-HC4Nx45OTI8</div></div>
+    <div class="ref"><div class="rl">Community</div><div class="rv">rapamycin.news</div></div>
+  </div>
+
+  <div class="colophon">
+    BIOHACK.IT — An open laboratory for longevity. Turn self-experimentation into evidence.<br>
+    Open source under AGPL-3.0. A non-profit project of the Hacking Biology Foundation. · This white paper accompanies the public functional specification at biohack.it/specs; where the two differ, the specification is authoritative.
+  </div>
+</section>
