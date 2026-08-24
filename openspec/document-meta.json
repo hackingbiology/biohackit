@@ -1,0 +1,6 @@
+{
+  "version": "0.1",
+  "date": "2026-08-20",
+  "status": "Generated from OpenSpec — do not edit this document; edit the specs and regenerate.",
+  "note": "Faithful, complete export of the OpenSpec tree. Bump version/date on every regeneration that follows a spec change. The narrative companion is the white paper; where the two differ, THIS document (and the specs it mirrors) is authoritative."
+}
