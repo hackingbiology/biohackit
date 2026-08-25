@@ -1,0 +1,4349 @@
+[
+  {
+    "name": "Biohackr",
+    "aka": [],
+    "category": "consumer-tracker",
+    "one_liner": "Consumer protocol/stack tracker: dose logging, supplement stack, lab tracking with reference ranges, shareable dashboard.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Part of the crowded 2025-26 consumer-tracker wave. Closed, local/proprietary data, zero open data, zero interoperability (per source)."
+  },
+  {
+    "name": "Biomarq",
+    "aka": [],
+    "category": "consumer-tracker",
+    "one_liner": "Consumer protocol/stack tracker: dose logging, supplement stack, lab tracking with reference ranges, shareable dashboard.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Part of the crowded 2025-26 consumer-tracker wave. Closed, local/proprietary data, zero open data, zero interoperability (per source)."
+  },
+  {
+    "name": "MyStack",
+    "aka": [],
+    "category": "consumer-tracker",
+    "one_liner": "Consumer protocol/stack tracker: dose logging, supplement stack, lab tracking with reference ranges, shareable dashboard.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Part of the crowded 2025-26 consumer-tracker wave. Closed, local/proprietary data, zero open data, zero interoperability (per source)."
+  },
+  {
+    "name": "Stackd",
+    "aka": [],
+    "category": "consumer-tracker",
+    "one_liner": "Consumer protocol/stack tracker: dose logging, supplement stack, lab tracking with reference ranges, shareable dashboard.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Part of the crowded 2025-26 consumer-tracker wave. Closed, local/proprietary data, zero open data, zero interoperability (per source)."
+  },
+  {
+    "name": "PeptIQ",
+    "aka": [],
+    "category": "peptide-tracker",
+    "one_liner": "Peptide-focused tracker: dose logging, vial inventory, reconstitution/half-life calc, injection-site rotation, interaction checker, protocol templates.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Peptide sub-niche; some offer AI extraction from lab PDFs + trends and coach-shareable dashboards. Closed, proprietary, no open data (per source)."
+  },
+  {
+    "name": "PepStack Pro",
+    "aka": [],
+    "category": "peptide-tracker",
+    "one_liner": "Peptide-focused tracker: dose logging, vial inventory, reconstitution/half-life calc, injection-site rotation, interaction checker, protocol templates.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Peptide sub-niche; some offer AI extraction from lab PDFs + trends and coach-shareable dashboards. Closed, proprietary, no open data (per source)."
+  },
+  {
+    "name": "Peptide Tracker",
+    "aka": [],
+    "category": "peptide-tracker",
+    "one_liner": "Peptide-focused tracker: dose logging, vial inventory, reconstitution/half-life calc, injection-site rotation, interaction checker, protocol templates.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Peptide sub-niche; some offer AI extraction from lab PDFs + trends and coach-shareable dashboards. Closed, proprietary, no open data (per source)."
+  },
+  {
+    "name": "Pep AI",
+    "aka": [],
+    "category": "peptide-tracker",
+    "one_liner": "Peptide-focused tracker: dose logging, vial inventory, reconstitution/half-life calc, injection-site rotation, interaction checker, protocol templates.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Peptide sub-niche; some offer AI extraction from lab PDFs + trends and coach-shareable dashboards. Closed, proprietary, no open data (per source)."
+  },
+  {
+    "name": "Peptify",
+    "aka": [],
+    "category": "peptide-tracker",
+    "one_liner": "Peptide-focused tracker: dose logging, vial inventory, reconstitution/half-life calc, injection-site rotation, interaction checker, protocol templates.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 1,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Peptide sub-niche; some offer AI extraction from lab PDFs + trends and coach-shareable dashboards. Closed, proprietary, no open data (per source)."
+  },
+  {
+    "name": "Protocol",
+    "aka": [],
+    "category": "biohacker-os",
+    "one_liner": "Turns a health claim into a personal 21-day self-experiment.",
+    "license": {
+      "open_source": null,
+      "spdx_or_detail": "unknown"
+    },
+    "open_data": false,
+    "commercial_model": "unknown",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": true,
+      "timeline": true,
+      "n_of_1": true,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 3,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "UNCERTAIN identity: ChatGPT V2 describes 'Protocol' as an emerging Biohacker-OS that converts a health claim into a 21-day experiment; Claude separately lists a 'Protocol' among peptide trackers. May be two different products with the same name."
+  },
+  {
+    "name": "Function Health",
+    "aka": [],
+    "category": "lab-first-commercial",
+    "one_liner": "Membership lab testing: 100+ (V2: 160+) annual biomarkers plus partial re-test and proprietary biological age; V2 adds imaging.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "annual membership",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": true,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Sells tests and builds the dashboard on top; walled garden, the data is the lock-in (per source)."
+  },
+  {
+    "name": "Superpower",
+    "aka": [],
+    "category": "lab-first-commercial",
+    "one_liner": "Lab-testing membership with biomarker + wearable + AI + protocols.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "membership",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": true,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Lab-first commercial platform; walled-garden model (per source)."
+  },
+  {
+    "name": "SiPhox",
+    "aka": [
+      "SiPhox Health"
+    ],
+    "category": "lab-first-commercial",
+    "one_liner": "At-home blood testing for longevity/optimization with dashboard.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "unknown",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Lab-first commercial platform (per source)."
+  },
+  {
+    "name": "Mito",
+    "aka": [
+      "Mito Health"
+    ],
+    "category": "lab-first-commercial",
+    "one_liner": "Lab-first longevity testing platform with dashboard.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "unknown",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Lab-first commercial; walled-garden model (per source)."
+  },
+  {
+    "name": "One Twenty",
+    "aka": [],
+    "category": "lab-first-commercial",
+    "one_liner": "Longevity testing with quarterly cadence and wearable integration.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "quarterly cadence",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "unknown",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Emphasizes quarterly test cadence + wearable integration; walled garden (per source)."
+  },
+  {
+    "name": "InsideTracker",
+    "aka": [],
+    "category": "lab-first-commercial",
+    "one_liner": "Blood + DNA + wearable to personalized ranges and recommendations; InnerAge biological age from blood.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "test packages + subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": true,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": true,
+    "biohacker_os_closeness": 3,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Optimizes a given biomarker; does NOT do causal inference across multiple interventions (per source)."
+  },
+  {
+    "name": "Lifeforce",
+    "aka": [],
+    "category": "lab-first-commercial",
+    "one_liner": "Longevity membership: blood testing, clinician review, supplements/hormone optimization.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "membership",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Lab-first commercial platform (per source)."
+  },
+  {
+    "name": "Rejuvenation Olympics",
+    "aka": [
+      "TruDiagnostic leaderboard"
+    ],
+    "category": "bioage-leaderboard",
+    "one_liner": "Public biological-age leaderboard ranking pace-of-aging, tied to TruDiagnostic epigenetic tests.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": true,
+    "commercial_model": "sells-tests",
+    "pricing_note": "requires paid epigenetic test",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Public profile + reputation exists — but on a single number, not the protocol that produced it. Tied to one expensive test vendor; has changed criteria/transparency (per source)."
+  },
+  {
+    "name": "Longevity World Cup",
+    "aka": [],
+    "category": "bioage-leaderboard",
+    "one_liner": "Free, open-source biological-age competition ranked on PhenoAge; explicitly independent, not a marketing funnel.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "unknown (open source)"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Free and open source, PhenoAge-based; positioned as independent project. Still one-number-centric, not protocol-level (per source)."
+  },
+  {
+    "name": "NOVOS",
+    "aka": [
+      "NOVOS Top 100"
+    ],
+    "category": "bioage-leaderboard",
+    "one_liner": "Consumer longevity brand with a Top-100 biological-age leaderboard.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": null,
+    "commercial_model": "sells-tests",
+    "pricing_note": "product + test",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Leaderboard tied to a supplement/test brand (per source)."
+  },
+  {
+    "name": "Fasten Health",
+    "aka": [
+      "Fasten"
+    ],
+    "category": "phr-aggregator",
+    "one_liner": "Self-hosted personal health record aggregating providers via FHIR / SMART-on-FHIR.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "GPL-3.0"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free (self-host)",
+    "target": "consumer",
+    "hosting": "self-host",
+    "data_standards": [
+      "FHIR",
+      "LOINC"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "GPL-3 self-hosted PHR; candidate reusable substrate rather than something to rewrite (per source)."
+  },
+  {
+    "name": "Mere Medical",
+    "aka": [],
+    "category": "phr-aggregator",
+    "one_liner": "Self-hosted personal medical record aggregator (FHIR-based).",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "unknown (open source)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free (self-host)",
+    "target": "consumer",
+    "hosting": "self-host",
+    "data_standards": [
+      "FHIR"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Open-source self-hosted PHR aggregator; potential substrate layer (per source)."
+  },
+  {
+    "name": "Open mHealth",
+    "aka": [],
+    "category": "phr-aggregator",
+    "one_liner": "Open schemas/standards for mobile health data interoperability.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "open standard/schemas"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "developer",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Open mHealth data schemas; interoperability substrate (per source)."
+  },
+  {
+    "name": "Open Wearables",
+    "aka": [
+      "Open Wearables API"
+    ],
+    "category": "wearable-infra",
+    "one_liner": "Open-source / self-hosted equivalent of Terra: unifies Garmin/Oura/Whoop/Apple into one API.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "MIT"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free (self-host)",
+    "target": "developer",
+    "hosting": "self-host",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "MIT, self-hosted unified wearable API; buy-the-ingestion-layer candidate for a Biohacker OS (per source)."
+  },
+  {
+    "name": "Heads Up Health",
+    "aka": [],
+    "category": "phr-aggregator",
+    "one_liner": "Professional/clinic health dashboard: labs + wearables + medical devices + EHR + AI, incl. cohort outcomes.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "clinic seats (~500 patients)",
+    "target": "clinician/clinic",
+    "hosting": "cloud",
+    "data_standards": [
+      "FHIR"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": true,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "What a longevity clinic would use; built for the professional (500 patients), not the self-experimenter (per source)."
+  },
+  {
+    "name": "Open Humans",
+    "aka": [],
+    "category": "participatory-research",
+    "one_liner": "Personal-data repository + API + shareable Jupyter notebooks enabling reproducible n=1 experiments without exposing raw personal data.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "MIT (nonprofit)"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free (nonprofit)",
+    "target": "researcher",
+    "hosting": "both",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": true,
+      "microbiome": true,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": true,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": true,
+    "biohacker_os_closeness": 5,
+    "region_focus": "global",
+    "status": "stalled",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Philosophically the closest: data -> dataset -> hypothesis -> experiment -> research; importers for 23andMe/Fitbit/Withings/VCF/Oura/Nightscout/microbiome. Solved the hard part but never reached critical mass; alive but essentially stalled (per source)."
+  },
+  {
+    "name": "Quantified Flu",
+    "aka": [],
+    "category": "participatory-research",
+    "one_liner": "Open Humans community project tracking symptoms vs wearable data around illness.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "open source"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": true,
+      "timeline": true,
+      "n_of_1": true,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "stalled",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Participatory-research offshoot in the Open Humans orbit (per source)."
+  },
+  {
+    "name": "openSNP",
+    "aka": [],
+    "category": "participatory-research",
+    "one_liner": "Open repository where users share genotype (23andMe etc.) + phenotype data for research.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "open source / open data"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": true,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "stalled",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Open genotype+phenotype data sharing; participatory-research ancestor (per source)."
+  },
+  {
+    "name": "Personal Science Wiki",
+    "aka": [],
+    "category": "participatory-research",
+    "one_liner": "Community wiki documenting personal-science / self-experimentation methods and projects.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "open content"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": true,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Knowledge base for the personal-science community (per source)."
+  },
+  {
+    "name": "Bearable",
+    "aka": [],
+    "category": "participatory-research",
+    "one_liner": "Symptom / N-of-1 tracker: interventions -> behaviors -> symptoms -> outcomes with correlations ('what changes when I do X?').",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "free + premium",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": true,
+      "symptoms": true,
+      "timeline": true,
+      "n_of_1": true,
+      "causal_inference": false,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": true,
+    "biohacker_os_closeness": 4,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Correlation engine for self-experiments; strong on symptom/intervention logging, not a full experiment system (per source)."
+  },
+  {
+    "name": "Biolearn",
+    "aka": [],
+    "category": "aging-clock-library",
+    "one_liner": "Python library for biological aging clocks; multi-modal, with automated testing against reference data.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "permissive (open source)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Ready-to-use clock code, permissive license; reusable scientific substrate (per source)."
+  },
+  {
+    "name": "pyaging",
+    "aka": [],
+    "category": "aging-clock-library",
+    "one_liner": "Python library integrating dozens of aging clocks with a PyTorch backend.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "permissive (open source)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Integrates many clocks (PyTorch); reusable library (per source)."
+  },
+  {
+    "name": "ClockBase",
+    "aka": [],
+    "category": "aging-clock-library",
+    "one_liner": "Resource/platform for epigenetic aging-clock computation and comparison.",
+    "license": {
+      "open_source": null,
+      "spdx_or_detail": "unknown"
+    },
+    "open_data": null,
+    "commercial_model": "unknown",
+    "pricing_note": "unknown",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "unknown",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Named as an aging-clock resource (per source); details not specified."
+  },
+  {
+    "name": "methylCIPHER",
+    "aka": [],
+    "category": "aging-clock-library",
+    "one_liner": "R package computing many DNA-methylation aging clocks.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "permissive (open source)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Methylation-clock toolkit (per source)."
+  },
+  {
+    "name": "BioAge",
+    "aka": [
+      "BioAge R package"
+    ],
+    "category": "aging-clock-library",
+    "one_liner": "Library for computing biological-age measures from biomarker data.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "permissive (open source)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Biological-age computation library (per source)."
+  },
+  {
+    "name": "protocols.io",
+    "aka": [],
+    "category": "wetlab-eln",
+    "one_liner": "Platform for versioned, forkable, citable lab protocols.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary (some open content)"
+    },
+    "open_data": null,
+    "commercial_model": "freemium",
+    "pricing_note": "free + paid tiers",
+    "target": "researcher",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Relevant for the model, not the domain: versioned/forkable/citable protocol = the git metaphor of biohack.it (per source)."
+  },
+  {
+    "name": "Benchling",
+    "aka": [],
+    "category": "wetlab-eln",
+    "one_liner": "Cloud R&D platform / electronic lab notebook for life sciences.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "enterprise",
+    "target": "researcher",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Enterprise ELN; cited as UX/model reference (per source)."
+  },
+  {
+    "name": "SciNote",
+    "aka": [],
+    "category": "wetlab-eln",
+    "one_liner": "Electronic lab notebook with open-source core.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "open-core"
+    },
+    "open_data": null,
+    "commercial_model": "freemium",
+    "pricing_note": "free core + paid",
+    "target": "researcher",
+    "hosting": "both",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Open-core ELN (per source)."
+  },
+  {
+    "name": "OpenWetWare",
+    "aka": [],
+    "category": "wetlab-eln",
+    "one_liner": "Open wiki for sharing lab protocols and know-how among biology labs.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "open content"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66"
+    ],
+    "notes": "Community protocol wiki; forkable/citable model (per source)."
+  },
+  {
+    "name": "Guava",
+    "aka": [
+      "Guava Health"
+    ],
+    "category": "phr-aggregator",
+    "one_liner": "'Personal health OS': records, labs, meds, wearables, glucose, symptoms, sleep, nutrition, mood, PDFs, C-CDA, DICOM, genetics on one timeline with relationship search.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "free + premium",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "FHIR",
+      "C-CDA",
+      "DICOM"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": true,
+      "medications": true,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": true,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Starts from the person, not the wearable (strength). Very US-healthcare-oriented, limited use for a European; API in early access (per source)."
+  },
+  {
+    "name": "Exist.io",
+    "aka": [
+      "Exist"
+    ],
+    "category": "quantified-self",
+    "one_liner": "Quantified-Self heir: correlates health, sleep, activity, productivity, mood, calendar across many sources.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "low subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": false,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": false,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Imports Apple Health/Fitbit/Garmin/Oura/Withings/Strava + calendar/GitHub/RescueTime/mood. Correlation engine, not an experimentation system (per source)."
+  },
+  {
+    "name": "Welltory",
+    "aka": [],
+    "category": "quantified-self",
+    "one_liner": "HRV-centric app (stress, activity) reading Apple Health / Health Connect / Samsung Health.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "free + premium",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "HRV/stress focus; explicitly not a medical app, does not ingest medical data (per source)."
+  },
+  {
+    "name": "HRV4Training",
+    "aka": [],
+    "category": "quantified-self",
+    "one_liner": "Vertical HRV app with BT sensors (Polar H7/H10) and published validation studies.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "one-time/paid",
+    "target": "athlete",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Serious for sports biohacking; HRV + stress + performance (per source)."
+  },
+  {
+    "name": "Bevel",
+    "aka": [],
+    "category": "sleep",
+    "one_liner": "Intelligence layer over Apple Health: recovery, strain, sleep ('WHOOP without WHOOP').",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Great UX, not a biohacker tool in the strict sense (per source)."
+  },
+  {
+    "name": "Athlytic",
+    "aka": [],
+    "category": "sleep",
+    "one_liner": "Apple Watch recovery/exertion/sleep intelligence.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription",
+    "target": "athlete",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "WHOOP-style intelligence over Apple Health; UX reference (per source)."
+  },
+  {
+    "name": "Cronometer",
+    "aka": [],
+    "category": "nutrition",
+    "one_liner": "Detailed nutrition database (micronutrients, vitamins, minerals, amino/lipids); exchanges glucose/BP/HRV/SpO2/sleep/weight via Health Connect.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "free + Gold",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Best-in-class nutrition data; interoperates via Health Connect (per source)."
+  },
+  {
+    "name": "Terra",
+    "aka": [
+      "Terra API"
+    ],
+    "category": "wearable-infra",
+    "one_liner": "Unified health API: hundreds of wearable/sensor/lab sources with realtime streaming and webhooks.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "api-usage",
+    "pricing_note": "usage-based API pricing",
+    "target": "developer",
+    "hosting": "cloud",
+    "data_standards": [
+      "FHIR"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 5,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Infrastructure (★★★★★). Unifies Garmin/Fitbit/Oura/WHOOP/Apple/Dexcom/Cronometer + CGM + blood biomarkers; buy-the-ingestion-layer candidate (per source)."
+  },
+  {
+    "name": "Metriport",
+    "aka": [],
+    "category": "medical-infra",
+    "one_liner": "Open-source, FHIR-native medical data platform: EHR, clinical history, C-CDA, PDF, FHIR R4, healthcare networks.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "AGPL/OSS (open source)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free (self-host) + cloud",
+    "target": "developer",
+    "hosting": "both",
+    "data_standards": [
+      "FHIR",
+      "C-CDA"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 5,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Infrastructure (★★★★★). Open-source FHIR-native medical data; ingestion-layer candidate (per source)."
+  },
+  {
+    "name": "Human API",
+    "aka": [],
+    "category": "medical-infra",
+    "one_liner": "REST API aggregating medical records, labs, pharmacy, wearable data.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "api-usage",
+    "pricing_note": "usage-based",
+    "target": "developer",
+    "hosting": "cloud",
+    "data_standards": [
+      "FHIR"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Partial competitor of Terra/Metriport (per source)."
+  },
+  {
+    "name": "Aurboda",
+    "aka": [],
+    "category": "biohacker-os",
+    "one_liner": "Personal data warehouse (PostgreSQL) queryable via MCP.",
+    "license": {
+      "open_source": null,
+      "spdx_or_detail": "unknown"
+    },
+    "open_data": null,
+    "commercial_model": "unknown",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "self-host",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": true,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "unknown",
+    "status": "beta",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Emerging Biohacker-OS primitive: PostgreSQL personal data warehouse queryable via MCP (per source)."
+  },
+  {
+    "name": "Android Health Connect",
+    "aka": [
+      "Health Connect"
+    ],
+    "category": "phr-aggregator",
+    "one_liner": "Android on-device health data store that also structures medical-record data.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "platform (Google)"
+    },
+    "open_data": null,
+    "commercial_model": "free",
+    "pricing_note": "free",
+    "target": "developer",
+    "hosting": "cloud",
+    "data_standards": [
+      "FHIR"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Cross-app health data layer; V2 notes it also structures medical-record data (per source)."
+  },
+  {
+    "name": "Outliyr",
+    "aka": [],
+    "category": "biohacker-os",
+    "one_liner": "Self-experimentation OS: baseline, N-of-1 experiments, wearables, labs, genetics/epigenetics, supplement stack, 'AI Personal Scientist', MCP to ChatGPT/Claude.",
+    "license": {
+      "open_source": null,
+      "spdx_or_detail": "proprietary (unconfirmed)"
+    },
+    "open_data": null,
+    "commercial_model": "subscription",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": true,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": true,
+      "api": true,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "unknown",
+    "status": "beta",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Emerging 'Biohacker OS' category (born 2026). Closest commercial framing to a full self-experimentation OS (per source)."
+  },
+  {
+    "name": "Trialist",
+    "aka": [],
+    "category": "biohacker-os",
+    "one_liner": "Runs N-of-1 experiments locally on top of Apple Health.",
+    "license": {
+      "open_source": null,
+      "spdx_or_detail": "unknown"
+    },
+    "open_data": null,
+    "commercial_model": "unknown",
+    "pricing_note": "unknown",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": true,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": true,
+    "biohacker_os_closeness": 3,
+    "region_focus": "unknown",
+    "status": "beta",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Emerging Biohacker-OS: local N-of-1 experiments over Apple Health (per source)."
+  },
+  {
+    "name": "SelfDecode",
+    "aka": [],
+    "category": "genomics",
+    "one_liner": "1,500+ DNA reports, 4,000+ lab markers, 200M+ variants, polygenic risk scores; suggests tests/supplements/lifestyle; (2026) uses DNA + prior results to suggest which biomarkers to measure.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "unknown"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": true,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": true,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": true,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Genotype -> risk -> recommendation; NOT hypothesis -> intervention -> measurement -> causal inference (per source)."
+  },
+  {
+    "name": "Promethease",
+    "aka": [],
+    "category": "genomics",
+    "one_liner": "Generates a personal genetic report by matching raw DNA against the SNPedia literature.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary (low-cost)"
+    },
+    "open_data": null,
+    "commercial_model": "free",
+    "pricing_note": "small one-time fee",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Variant interpretation from raw DNA (per source)."
+  },
+  {
+    "name": "SNPedia",
+    "aka": [],
+    "category": "genomics",
+    "one_liner": "Wiki/database of SNPs and their reported phenotypic associations.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "open content (CC)"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "biohacker",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": null
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Knowledge base powering Promethease reports (per source)."
+  },
+  {
+    "name": "23andMe",
+    "aka": [],
+    "category": "genomics",
+    "one_liner": "Consumer DNA testing with ancestry + health reports; exportable raw genotype.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "test kit",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Common raw-genotype source imported by other tools (per source)."
+  },
+  {
+    "name": "Python / R / Jupyter",
+    "aka": [
+      "Python",
+      "R",
+      "Jupyter"
+    ],
+    "category": "bioinformatics",
+    "one_liner": "General-purpose data-science stack for arbitrarily sophisticated personal analysis.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "OSS (various)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": true,
+      "causal_inference": true,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": true,
+    "biohacker_os_closeness": 5,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "For the technically capable, still the most powerful option (★★★★★) (per source)."
+  },
+  {
+    "name": "VEP",
+    "aka": [
+      "Ensembl VEP",
+      "Variant Effect Predictor"
+    ],
+    "category": "bioinformatics",
+    "one_liner": "Annotates and predicts the effect of genomic variants (WGS/VCF).",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "Apache-2.0 (OSS)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Advanced-biohacker variant analysis (per source)."
+  },
+  {
+    "name": "OpenCRAVAT",
+    "aka": [],
+    "category": "bioinformatics",
+    "one_liner": "Modular variant annotation and interpretation platform (WGS/VCF/PRS).",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "OSS"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "both",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Advanced variant analysis (per source)."
+  },
+  {
+    "name": "PLINK",
+    "aka": [],
+    "category": "bioinformatics",
+    "one_liner": "Whole-genome association analysis toolset (PRS, QC).",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "GPL (OSS)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "PRS/variant analysis for advanced biohackers (per source)."
+  },
+  {
+    "name": "bcftools",
+    "aka": [],
+    "category": "bioinformatics",
+    "one_liner": "Command-line utilities for variant calling and VCF/BCF manipulation.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "MIT/BSD (OSS)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "library",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 4,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Core VCF tooling (per source)."
+  },
+  {
+    "name": "Gene.iobio",
+    "aka": [],
+    "category": "bioinformatics",
+    "one_liner": "Interactive web tool for real-time variant exploration.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "OSS"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free",
+    "target": "researcher",
+    "hosting": "both",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Interactive variant exploration (per source)."
+  },
+  {
+    "name": "Biomesight",
+    "aka": [],
+    "category": "microbiome",
+    "one_liner": "Gut-microbiome testing with dashboards and community reference ranges.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": null,
+    "commercial_model": "sells-tests",
+    "pricing_note": "test kit + subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": true,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Microbiome testing (per source)."
+  },
+  {
+    "name": "Ombre",
+    "aka": [
+      "Ombre Labs"
+    ],
+    "category": "microbiome",
+    "one_liner": "Consumer gut-microbiome testing with recommendations.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "test kit",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": true,
+      "imaging": null,
+      "medications": null,
+      "supplements": true,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Microbiome testing (per source)."
+  },
+  {
+    "name": "Viome",
+    "aka": [],
+    "category": "microbiome",
+    "one_liner": "Microbiome + RNA testing with food/supplement recommendations.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "subscription kits",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": true,
+      "imaging": null,
+      "medications": null,
+      "supplements": true,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": null,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Microbiome/RNA testing with recommendations (per source)."
+  },
+  {
+    "name": "Levels",
+    "aka": [],
+    "category": "cgm",
+    "one_liner": "CGM-based metabolic app: glucose + food + exercise; V2 adds sleep + activity + labs + DEXA + health records.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription + sensors",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": true,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Expanding from glucose toward a broader metabolic dashboard (per source)."
+  },
+  {
+    "name": "Signos",
+    "aka": [],
+    "category": "cgm",
+    "one_liner": "CGM app pairing glucose with meals/exercise for weight/metabolic goals.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription + sensors",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "CGM-driven metabolic coaching (per source)."
+  },
+  {
+    "name": "Dexcom",
+    "aka": [],
+    "category": "cgm",
+    "one_liner": "Continuous glucose monitoring hardware + app; a common CGM data source.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "device + sensors",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "CGM sensor ecosystem; feeds other platforms (per source)."
+  },
+  {
+    "name": "FreeStyle Libre",
+    "aka": [
+      "Libre"
+    ],
+    "category": "cgm",
+    "one_liner": "Abbott continuous glucose monitoring sensor + app.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "device + sensors",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "CGM sensor ecosystem (per source)."
+  },
+  {
+    "name": "January AI",
+    "aka": [],
+    "category": "cgm",
+    "one_liner": "AI metabolic app predicting glucose response, optionally without a sensor.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": true,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "AI glucose prediction (per source)."
+  },
+  {
+    "name": "Nightscout",
+    "aka": [],
+    "category": "cgm",
+    "one_liner": "Open-source, self-hosted CGM data platform (DIY diabetes community).",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "AGPL-3.0 (OSS)"
+    },
+    "open_data": null,
+    "commercial_model": "free-oss",
+    "pricing_note": "free (self-host)",
+    "target": "biohacker",
+    "hosting": "self-host",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 3,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Open-source self-hosted CGM stack; DIY ethos aligned with biohack.it (per source)."
+  },
+  {
+    "name": "Oura",
+    "aka": [
+      "Oura Ring"
+    ],
+    "category": "sleep",
+    "one_liner": "Ring wearable for sleep/recovery/readiness with API.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "device + subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Sleep/recovery wearable; common data source with an API (per source)."
+  },
+  {
+    "name": "WHOOP",
+    "aka": [],
+    "category": "sleep",
+    "one_liner": "Strap wearable for recovery/strain/sleep with subscription model.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription (device included)",
+    "target": "athlete",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Recovery/strain wearable; UX reference (per source)."
+  },
+  {
+    "name": "Eight Sleep",
+    "aka": [],
+    "category": "sleep",
+    "one_liner": "Smart mattress/pod tracking sleep and controlling temperature.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "device + subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "claude",
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://claude.ai/share/70b73ac1-2843-460c-895b-e678453bfa66",
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Sleep hardware ecosystem (per source)."
+  },
+  {
+    "name": "Sleep Cycle",
+    "aka": [],
+    "category": "sleep",
+    "one_liner": "Phone-based sleep-tracking and smart-alarm app.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "free + premium",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Consumer sleep tracker (per source)."
+  },
+  {
+    "name": "AutoSleep",
+    "aka": [],
+    "category": "sleep",
+    "one_liner": "Apple Watch automatic sleep-tracking app.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "free",
+    "pricing_note": "one-time purchase",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Apple Watch sleep tracking (per source)."
+  },
+  {
+    "name": "Cardiogram",
+    "aka": [],
+    "category": "quantified-self",
+    "one_liner": "App applying analytics to heart-rate data from wearables.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "free + premium",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Heart-rate analytics (per source)."
+  },
+  {
+    "name": "Qardio",
+    "aka": [],
+    "category": "quantified-self",
+    "one_liner": "Connected blood-pressure/ECG devices with companion app.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "sells-tests",
+    "pricing_note": "device",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Connected cardio devices (per source)."
+  },
+  {
+    "name": "Withings",
+    "aka": [],
+    "category": "quantified-self",
+    "one_liner": "Connected scales/watches/BP monitors with health app + API; common data source.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "devices + optional subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "EU",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Broad connected-device ecosystem, frequently imported by aggregators (per source)."
+  },
+  {
+    "name": "Garmin",
+    "aka": [],
+    "category": "quantified-self",
+    "one_liner": "Sports/activity wearables with health metrics and developer API.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "free",
+    "pricing_note": "device",
+    "target": "athlete",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Major wearable data source (per source)."
+  },
+  {
+    "name": "Apple Health",
+    "aka": [
+      "HealthKit"
+    ],
+    "category": "quantified-self",
+    "one_liner": "Apple's on-device health data hub aggregating apps/wearables.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "platform (Apple)"
+    },
+    "open_data": null,
+    "commercial_model": "free",
+    "pricing_note": "free (platform)",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Central iOS health hub other apps build on (per source)."
+  },
+  {
+    "name": "MacroFactor",
+    "aka": [],
+    "category": "nutrition",
+    "one_liner": "Adaptive macro/nutrition coaching app with dynamic energy expenditure.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Nutrition/macro tracking (per source)."
+  },
+  {
+    "name": "MyFitnessPal",
+    "aka": [],
+    "category": "nutrition",
+    "one_liner": "Large-database calorie/macro food logger.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "freemium",
+    "pricing_note": "free + premium",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Mainstream food logger (per source)."
+  },
+  {
+    "name": "ZOE",
+    "aka": [],
+    "category": "nutrition",
+    "one_liner": "Personalized nutrition program combining microbiome + CGM + blood-fat testing.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "test + subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": null,
+      "microbiome": true,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": true,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 2,
+    "region_focus": "EU",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Personalized-nutrition program using microbiome + CGM + blood testing (per source)."
+  },
+  {
+    "name": "Muse",
+    "aka": [
+      "Muse headband"
+    ],
+    "category": "neurofeedback",
+    "one_liner": "EEG headband for meditation/neurofeedback with app.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "device + subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Consumer EEG neurofeedback (per source)."
+  },
+  {
+    "name": "BrainHQ",
+    "aka": [],
+    "category": "neurofeedback",
+    "one_liner": "Cognitive-training exercise platform (Posit Science).",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": null,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "US",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Brain-training exercises (per source)."
+  },
+  {
+    "name": "Sens.ai",
+    "aka": [],
+    "category": "neurofeedback",
+    "one_liner": "Multi-modal EEG neurofeedback + brain-stimulation headset.",
+    "license": {
+      "open_source": false,
+      "spdx_or_detail": "proprietary"
+    },
+    "open_data": false,
+    "commercial_model": "subscription",
+    "pricing_note": "device + subscription",
+    "target": "consumer",
+    "hosting": "cloud",
+    "data_standards": [
+      "none"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": null,
+      "genomics": null,
+      "microbiome": null,
+      "imaging": null,
+      "medications": null,
+      "supplements": null,
+      "nutrition": null,
+      "symptoms": null,
+      "timeline": true,
+      "n_of_1": null,
+      "causal_inference": null,
+      "biological_clocks": null,
+      "ai_reasoning": null,
+      "api": null,
+      "data_export": null,
+      "self_hosting": false
+    },
+    "intervention_biomarker_link": null,
+    "biohacker_os_closeness": 1,
+    "region_focus": "global",
+    "status": "live",
+    "source": [
+      "chatgpt"
+    ],
+    "source_urls": [
+      "https://chatgpt.com/share/6a8d627d-ea84-83ed-b7ea-9c057b6d2c54"
+    ],
+    "notes": "Neurofeedback + stimulation device (per source)."
+  },
+  {
+    "name": "biohack.it",
+    "aka": [
+      "Hacking Biology Foundation"
+    ],
+    "category": "biohacker-os",
+    "one_liner": "Non-profit, AGPL-3.0, free platform making intervention -> biomarker computable AND public, toward distributed self-organised n-of-1 trials.",
+    "license": {
+      "open_source": true,
+      "spdx_or_detail": "AGPL-3.0"
+    },
+    "open_data": true,
+    "commercial_model": "free-oss",
+    "pricing_note": "free (non-profit)",
+    "target": "biohacker",
+    "hosting": "both",
+    "data_standards": [
+      "RxNorm",
+      "LOINC",
+      "UCUM",
+      "FHIR",
+      "OMOP"
+    ],
+    "capabilities": {
+      "wearables": true,
+      "labs": true,
+      "genomics": true,
+      "microbiome": null,
+      "imaging": null,
+      "medications": true,
+      "supplements": true,
+      "nutrition": true,
+      "symptoms": true,
+      "timeline": true,
+      "n_of_1": true,
+      "causal_inference": true,
+      "biological_clocks": true,
+      "ai_reasoning": null,
+      "api": true,
+      "data_export": true,
+      "self_hosting": true
+    },
+    "intervention_biomarker_link": true,
+    "biohacker_os_closeness": 5,
+    "region_focus": "EU",
+    "status": "coming-soon",
+    "source": [
+      "biohack.it"
+    ],
+    "source_urls": [
+      "https://biohack.it"
+    ],
+    "notes": "REFERENCE ROW (from biohack.it positioning spec, not the two sources). Open data by default incl. gVCF + raw lab reports behind heightened consent; standards-coded (RxNorm/ATC, LOINC/UCUM, HL7 FHIR internal, OMOP export). Differentiator is the open-data / research side, not the consumer tracker. Deep SWOT vs these tools is a separate pending step."
+  }
+]
