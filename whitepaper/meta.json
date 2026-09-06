@@ -1,6 +1,6 @@
 {
-  "version": "0.1",
-  "date": "2026-08-20",
+  "version": "0.2",
+  "date": "2026-09-06",
   "status": "Draft for review",
-  "note": "Bump version and date on every substantive change. Keep in sync with the OpenSpec tree and the faithful spec-export."
+  "note": "Bump version and date on every substantive change. Keep in sync with the OpenSpec tree, the faithful spec-export, and the conference deck. v0.2 aligns contacts with the final deck (adds LinkedIn, X, Rapamycin News profile)."
 }
