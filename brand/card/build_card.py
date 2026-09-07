@@ -97,14 +97,14 @@ def qr_placeholder(x,y,size):
 def card(D, real_qr=True):
     # FRONT (EN)
     f=lockup(80,140,112,"AN OPEN LABORATORY FOR LONGEVITY")
-    f+=bar(80,220,CW-160,2,HAIR)
+    f+=bar(80,252,CW-160,2,HAIR)
     f+=T(D["name_en"],F500,48,80,300,INK)[0]+T(D["title_en"]+"  ·  "+D["org_en"],F300,25,80,338,MUTED)[0]
     f+=T(D["desc_en"],F500,21,80,372,TEALD,0.02)[0]
     f+=crow("email",D["email"],80,450,23,INK)+crow("phone",D["phone"],80,490,23,INK)+crow("web",D["site"],80,530,23,TEALD,TEAL)
     f+=icon("signal",640,432,28,MUTED)+icon("whatsapp",686,432,28,MUTED)+icon("linkedin",732,432,28,MUTED)+T(D["link"],F300,19,640,490,MUTED)[0]
     # BACK (中文)
     b=lockup(80,140,112,D["payoff_zh"])
-    b+=bar(80,220,CW-160,2,HAIR)
+    b+=bar(80,252,CW-160,2,HAIR)
     b+=T(D["name_zh"],Y700,48,80,300,INK)[0]+T(D["name_zh2"],F300,22,80+Wd(D["name_zh"],Y700,48)+18,298,MUTED)[0]
     b+=T(D["title_zh"]+"  ·  "+D["org_zh"],Y400,24,80,338,MUTED)[0]+T(D["desc_zh"],Y700,22,80,374,TEALD)[0]
     b+=crow("email",D["email"],80,452,23,INK)+crow("phone",D["phone"],80,492,23,INK)+crow("wechat","微信 "+D["wechat"],80,532,23,INK,TEAL,True)
@@ -123,27 +123,51 @@ TEMPLATE=dict(name_en="Full Name", name_zh="姓名", name_zh2="Full Name",
     link="linkedin.com/in/username", wechat="wechat-id", payoff_zh="一个开放的长寿实验室")
 
 # ---------- print-ready PDF (3mm bleed + crop marks) ----------
-import pymupdf
+import pymupdf, subprocess, tempfile, shutil, os
 MM=72/25.4
-def print_pdf(front_svg, back_svg, out, bleed_mm=2, trim=(85,54), crop=False):
-    """Page = trim + bleed on every side. The chosen printer wants 85x54mm + 2mm bleed,
-    page-exact, no crop marks. Card art is white to the edge, so the bleed is white."""
-    tw,th=trim[0]*MM,trim[1]*MM; bl=bleed_mm*MM
-    pw,ph=tw+2*bl, th+2*bl
-    doc=pymupdf.open()
-    for s in (front_svg, back_svg):
-        d=pymupdf.open(stream=s.encode("utf-8"), filetype="svg")
-        pm=d[0].get_pixmap(matrix=pymupdf.Matrix(1.5,1.5), alpha=False)  # ~450dpi
-        page=doc.new_page(width=pw,height=ph)
-        page.draw_rect(pymupdf.Rect(0,0,pw,ph), color=None, fill=(1,1,1))  # white bleed (card bg is white)
-        page.insert_image(pymupdf.Rect(bl,bl,bl+tw,bl+th), stream=pm.tobytes("png"))
-        if crop:
-            m=3.0
-            def line(x0,y0,x1,y1): page.draw_line((x0,y0),(x1,y1),color=(0,0,0),width=0.4)
-            for (cx,cy) in [(bl,bl),(bl+tw,bl),(bl,bl+th),(bl+tw,bl+th)]:
-                sx=-1 if cx==bl else 1; sy=-1 if cy==bl else 1
-                line(cx, cy+sy*m, cx, cy+sy*(m+bl)); line(cx+sx*m, cy, cx+sx*(m+bl), cy)
-    doc.save(out, deflate=True, garbage=4); doc.close()
+BLEED_MM=2; TRIM_MM=(85,54)
+PPMM=CW/TRIM_MM[0]                       # SVG px per mm (1004px = 85mm)
+BLP=BLEED_MM*PPMM                        # bleed in SVG px
+BW,BH=CW+2*BLP, CH+2*BLP                 # bleed canvas in SVG px
+SOFFICE=r"C:/Program Files/LibreOffice/program/soffice.exe"
+
+def svg_print(body):
+    """Bleed-size VECTOR svg: 89x58mm (trim 85x54 + 2mm bleed), white ground, no clip/border.
+    Physical size set via width/height in mm so the exported PDF is exactly 89x58mm.
+    All text/CJK is already outlined (paths) → no font dependency at the printer."""
+    return (f'<svg {NS} xmlns:xlink="http://www.w3.org/1999/xlink" '
+            f'viewBox="0 0 {BW:.2f} {BH:.2f}" width="{TRIM_MM[0]+2*BLEED_MM}mm" height="{TRIM_MM[1]+2*BLEED_MM}mm">'
+            f'<rect x="0" y="0" width="{BW:.2f}" height="{BH:.2f}" fill="{PAPER}"/>'
+            f'<g transform="translate({BLP:.2f},{BLP:.2f})">'
+            f'<rect width="{CW}" height="{CH}" fill="{PAPER}"/>{body}</g></svg>')
+
+def _svg2pdf(svg_str, workdir, name):
+    svgp=pathlib.Path(workdir)/f"{name}.svg"; svgp.write_text(svg_str, encoding="utf-8")
+    prof=pathlib.Path(workdir)/f"lo_{name}"
+    subprocess.run([SOFFICE,"--headless","--norestore","--convert-to","pdf","--outdir",str(workdir),
+                    str(svgp),f"-env:UserInstallation=file:///{str(prof).replace(chr(92),'/')}"],
+                   capture_output=True, text=True)
+    return pathlib.Path(workdir)/f"{name}.pdf"
+
+def print_pdf(front_body, back_body, out):
+    """Vector 2-page PDF (front, back) via LibreOffice SVG->PDF, merged with PyMuPDF."""
+    wd=tempfile.mkdtemp(prefix="card_")
+    try:
+        fp=_svg2pdf(svg_print(front_body), wd, "front")
+        bp=_svg2pdf(svg_print(back_body),  wd, "back")
+        if not fp.exists() or not bp.exists():
+            raise SystemExit("LibreOffice SVG->PDF failed")
+        doc=pymupdf.open()
+        for pth in (fp,bp):
+            src=pymupdf.open(str(pth)); doc.insert_pdf(src); src.close()
+        # force the page box to exactly (trim + 2*bleed) mm, centred (trims only white bleed)
+        tw=(TRIM_MM[0]+2*BLEED_MM)*MM; th=(TRIM_MM[1]+2*BLEED_MM)*MM
+        for pg in doc:
+            r=pg.rect; dx=(r.width-tw)/2; dy=(r.height-th)/2
+            pg.set_mediabox(pymupdf.Rect(dx, dy, dx+tw, dy+th))
+        doc.save(out, deflate=True, garbage=4); doc.close()
+    finally:
+        shutil.rmtree(wd, ignore_errors=True)
     return out
 
 def build(D, name, real_qr):
@@ -151,7 +175,7 @@ def build(D, name, real_qr):
     f,b=card(D, real_qr=real_qr)
     (d/"card-front.svg").write_text(svg(f,border=True),encoding="utf-8")
     (d/"card-back.svg").write_text(svg(b,border=True),encoding="utf-8")
-    pdf=print_pdf(svg(f,border=False), svg(b,border=False), str(d/f"biohackit-card-{name}.pdf"))
+    pdf=print_pdf(f, b, str(d/f"biohackit-card-{name}.pdf"))
     print(f"  {name}: SVGs + {pdf}")
 
 if __name__=="__main__":
