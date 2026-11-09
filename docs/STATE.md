@@ -6,5 +6,5 @@
 
 ## Current
 - Module: 0 — Foundations
-- Step: not started
-- Next action: write OpenSpec change `m00-foundations` (proposal + tasks), then scaffold.
+- Step: OpenSpec change written (`openspec/changes/m00-foundations/`)
+- Next action: implement TG1 — repo layout and tooling (create Django + Next.js skeleton, Docker Compose, CI workflow, Makefile).
