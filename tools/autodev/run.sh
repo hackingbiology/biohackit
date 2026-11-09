@@ -18,7 +18,7 @@ if python3 -c "import sys;sys.exit(0 if $SPENT>=$WEEKLY_USD else 1)"; then
   echo "$(date -Is) budget reached $SPENT/$WEEKLY_USD" >> $D/runner.log; exit 0; fi
 TOOLS='Read Edit Write Glob Grep Bash(git:*) Bash(python3:*) Bash(pip:*) Bash(pytest:*) Bash(node:*) Bash(npm:*) Bash(npx:*) Bash(ls:*) Bash(mkdir:*) Bash(cat:*) Bash(sed:*) Bash(grep:*) Bash(find:*) Bash(mv:*) Bash(cp:*) Bash(rm:*) Bash(psql:*) Bash(createdb:*) Bash(cd:*) Bash(echo:*) Bash(touch:*) Bash(head:*) Bash(tail:*) Bash(wc:*)'
 OUT=$(timeout 3h claude -p "$(cat $D/PROMPT.md)" --allowedTools $TOOLS \
-      --max-turns $MAX_TURNS --output-format json 2>>$D/runner.log)
+      --model ${MODEL:-sonnet} --max-turns $MAX_TURNS --output-format json 2>>$D/runner.log)
 python3 -c "
 import json,sys,time
 try: r=json.loads(sys.argv[1])
