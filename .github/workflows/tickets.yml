@@ -1,0 +1,41 @@
+name: tickets
+# Turns docs/tickets/outbox/*.md into GitHub issues (the server agent has no GitHub token).
+# File format: first line "# Title", optional "Labels: a, b", "Milestone: Mxx — ...", "Parent: #N", then body.
+on:
+  push:
+    branches: [main]
+    paths: ['docs/tickets/outbox/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency: tickets
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create issues
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          shopt -s nullglob; changed=0
+          for f in docs/tickets/outbox/*.md; do
+            title=$(head -1 "$f" | sed 's/^# *//')
+            labels=$(grep -m1 '^Labels:' "$f" | sed 's/^Labels: *//')
+            ms=$(grep -m1 '^Milestone:' "$f" | sed 's/^Milestone: *//')
+            parent=$(grep -m1 '^Parent:' "$f" | sed 's/^Parent: *//')
+            body=$(tail -n +2 "$f" | grep -v -E '^(Labels|Milestone|Parent):')
+            [ -n "$parent" ] && body="Part of $parent
+
+          $body"
+            args=(-t "$title" -b "$body")
+            [ -n "$labels" ] && args+=(-l "$labels")
+            [ -n "$ms" ] && args+=(-m "$ms")
+            url=$(gh issue create "${args[@]}" || gh issue create -t "$title" -b "$body")
+            n=${url##*/}
+            git mv "$f" "docs/tickets/created/$n-$(basename "$f")"; changed=1
+          done
+          if [ $changed = 1 ]; then
+            git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "tickets: created issues from outbox [skip ci]" && git push
+          fi
