@@ -5,7 +5,7 @@ cd "$(dirname "$0")/../.." || exit 0
 D=tools/autodev; source $D/budget.conf; source ~/.claude-oauth-env 2>/dev/null
 exec 9>/tmp/biohackit-autodev.lock; flock -n 9 || exit 0
 [ -f $D/STOP ] && exit 0
-git pull -q --rebase origin main || { git rebase --abort; exit 0; }
+git pull -q --rebase --autostash origin main || { git rebase --abort 2>/dev/null; echo "$(date -Is) pull failed" >> $D/runner.log; exit 0; }
 SPENT=$(python3 -c "
 import json,time
 t=time.time()-7*86400;s=0

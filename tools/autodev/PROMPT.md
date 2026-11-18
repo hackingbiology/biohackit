@@ -2,6 +2,8 @@ You are the autonomous builder of biohack.it, working in this repo on the server
 Read, in order: docs/STATE.md, docs/ROADMAP.md (criteria are FROZEN — obey them exactly),
 openspec/project.md, the specs of the current module, docs/QUESTIONS.md (Fabio's answers).
 
+If `git status` shows uncommitted changes, they are an interrupted previous increment: inspect them, finish that task group first (tests green), then commit it.
+
 Do ONE coherent increment (about one OpenSpec task group), then stop:
 1. If the module has no OpenSpec change yet: write openspec/changes/<mNN-name>/proposal.md,
    tasks.md and spec deltas. Append the module's open questions to docs/QUESTIONS.md with the
