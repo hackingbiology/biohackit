@@ -10,17 +10,17 @@ Tick items as they are completed. Never commit red tests.
 **Label:** feature  
 **SHALL scenarios covered:** foundations-architecture §Scenario: fresh-clone dev start
 
-- [ ] `backend/` directory with Django project skeleton via `django-admin startproject biohackit backend/`
-- [ ] `backend/pyproject.toml` with deps: Django 5.0, djangorestframework, djangorestframework-simplejwt, django-allauth, psycopg[binary], django-environ, django-timescaledb, whitenoise
-- [ ] `backend/pytest.ini` / `[tool.pytest.ini_options]` configured; `pytest-django` in dev deps
-- [ ] `frontend/` directory with `pnpm create next-app@latest . --typescript --tailwind --app --src-dir --import-alias "@/*"` output committed
-- [ ] `frontend/pnpm-lock.yaml` committed
-- [ ] `docker-compose.yml` at repo root: services `db` (timescale/timescaledb-ha:pg16) and `backend` and `frontend`; volume `pgdata`
-- [ ] `docker-compose.override.yml.example` with per-dev port overrides
-- [ ] `Makefile` at repo root with targets: `install`, `migrate`, `test`, `lint`, `dev`
-- [ ] `.env.example` documenting all required env vars (DB_URL, SECRET_KEY, ALLOWED_HOSTS, CORS_ORIGINS, JWT_*)
-- [ ] `.github/workflows/ci.yml` with jobs `backend` (ruff + pytest) and `frontend` (eslint + jest); trigger: pull_request + push to main
-- [ ] AGPL-3.0 license header added to `backend/biohackit/__init__.py` and `frontend/src/app/layout.tsx`
+- [x] `backend/` directory with Django project skeleton via `django-admin startproject biohackit backend/`
+- [x] `backend/pyproject.toml` with deps: Django 5.0, djangorestframework, djangorestframework-simplejwt, django-allauth, psycopg[binary], django-environ, django-timescaledb, whitenoise
+- [x] `backend/pytest.ini` / `[tool.pytest.ini_options]` configured; `pytest-django` in dev deps
+- [x] `frontend/` directory with `pnpm create next-app@latest . --typescript --tailwind --app --src-dir --import-alias "@/*"` output committed
+- [x] `frontend/pnpm-lock.yaml` committed
+- [x] `docker-compose.yml` at repo root: services `db` (timescale/timescaledb-ha:pg16) and `backend` and `frontend`; volume `pgdata`
+- [x] `docker-compose.override.yml.example` with per-dev port overrides
+- [x] `Makefile` at repo root with targets: `install`, `migrate`, `test`, `lint`, `dev`
+- [x] `.env.example` documenting all required env vars (DB_URL, SECRET_KEY, ALLOWED_HOSTS, CORS_ORIGINS, JWT_*)
+- [x] `.github/workflows/ci.yml` with jobs `backend` (ruff + pytest) and `frontend` (eslint + jest); trigger: pull_request + push to main
+- [x] AGPL-3.0 license header added to `backend/biohackit/__init__.py` and `frontend/src/app/layout.tsx`
 
 ---
 

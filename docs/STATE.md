@@ -6,5 +6,5 @@
 
 ## Current
 - Module: 0 — Foundations
-- Step: OpenSpec change written (`openspec/changes/m00-foundations/`)
-- Next action: implement TG1 — repo layout and tooling (create Django + Next.js skeleton, Docker Compose, CI workflow, Makefile).
+- Step: TG1 done (repo layout and tooling); TG2–TG5 pending
+- Next action: TG2 — backend auth and user model (accounts app, JWT endpoints). Also verify `manage.py check` and `docker compose up` once a DB is available.
