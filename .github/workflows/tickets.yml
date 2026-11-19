@@ -21,7 +21,7 @@ jobs:
           shopt -s nullglob; changed=0
           for f in docs/tickets/outbox/*.md; do
             title=$(head -1 "$f" | sed 's/^# *//')
-            labels=$(grep -m1 '^Labels:' "$f" | sed 's/^Labels: *//')
+            labels=$(grep -m1 '^Labels:' "$f" | sed 's/^Labels: *//; s/ *, */,/g')
             ms=$(grep -m1 '^Milestone:' "$f" | sed 's/^Milestone: *//')
             parent=$(grep -m1 '^Parent:' "$f" | sed 's/^Parent: *//')
             body=$(tail -n +2 "$f" | grep -v -E '^(Labels|Milestone|Parent):')
@@ -37,5 +37,6 @@ jobs:
           done
           if [ $changed = 1 ]; then
             git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "tickets: created issues from outbox [skip ci]" && git push
+            git commit -m "tickets: created issues from outbox [skip ci]"
+            for i in 1 2 3; do git pull -q --rebase origin main && git push && break; sleep 5; done
           fi
