@@ -57,15 +57,15 @@ Tick items as they are completed. Never commit red tests.
 - domain-model §Scenario: The three ranges stay distinct (Biomarker schema)
 - domain-model §Scenario: Pulsed senolytic is representable (Intervention schema)
 
-- [ ] `backend/core/` app created for shared domain models
-- [ ] `InterventionSubtype` enum: `substance | exercise | device_therapy | procedure | hormonal | nutrition_fasting`
-- [ ] `Intervention` stub model: `name` (CharField), `subtype` (ChoiceField), `cycle_schema` (JSONField, nullable), `created_at`; full business logic deferred to M03
-- [ ] `BiomarkerRole` enum: `efficacy | safety | baseline`
-- [ ] `Biomarker` stub model: `loinc_code` (CharField, nullable), `name` (CharField), `role` (ChoiceField), `unit_ucum` (CharField, nullable), `created_at`; full three-range fields deferred to M01
-- [ ] `Measurement` model: `id` (BigAutoField), `user` FK, `biomarker` FK, `time` (DateTimeField), `value` (DecimalField, max_digits=20, decimal_places=6), `unit_ucum` (CharField), `source` (CharField), `laboratory` (CharField, nullable), `method` (CharField, nullable), `is_aggregation_eligible` (BooleanField, default=False, set True when lab+method present)
-- [ ] TimescaleDB `create_hypertable('core_measurement', 'time')` via post-migrate signal or manual migration step
-- [ ] migration 0001 for `core` committed
-- [ ] `is_aggregation_eligible` auto-set to True in `Measurement.save()` when `laboratory` and `method` are both non-empty
+- [x] `backend/core/` app created for shared domain models
+- [x] `InterventionSubtype` enum: `substance | exercise | device_therapy | procedure | hormonal | nutrition_fasting`
+- [x] `Intervention` stub model: `name` (CharField), `subtype` (ChoiceField), `cycle_schema` (JSONField, nullable), `created_at`; full business logic deferred to M03
+- [x] `BiomarkerRole` enum: `efficacy | safety | baseline`
+- [x] `Biomarker` stub model: `loinc_code` (CharField, nullable), `name` (CharField), `role` (ChoiceField), `unit_ucum` (CharField, nullable), `created_at`; full three-range fields deferred to M01
+- [x] `Measurement` model: `id` (BigAutoField), `user` FK, `biomarker` FK, `time` (DateTimeField), `value` (DecimalField, max_digits=20, decimal_places=6), `unit_ucum` (CharField), `source` (CharField), `laboratory` (CharField, nullable), `method` (CharField, nullable), `is_aggregation_eligible` (BooleanField, default=False, set True when lab+method present)
+- [x] TimescaleDB `create_hypertable('core_measurement', 'time')` via post-migrate signal or manual migration step
+- [x] migration 0001 for `core` committed
+- [x] `is_aggregation_eligible` auto-set to True in `Measurement.save()` when `laboratory` and `method` are both non-empty
 
 ---
 
@@ -105,9 +105,9 @@ Tick items as they are completed. Never commit red tests.
 - [ ] `test_accounts.py::test_profile_biological_attributes` — set date_of_birth, sex, height_cm; retrieve; values match
 - [ ] `test_accounts.py::test_social_handles_created` — add telegram and rapamycin_news handles; retrieve profile; both present
 - [ ] `test_accounts.py::test_private_write_requires_auth` — POST /api/auth/register/ then GET /api/auth/me/ without token → 401
-- [ ] `test_domain.py::test_intervention_cycle_schema_stored` — create Intervention with `cycle_schema = {"pattern": "pulsed", "on_days": [1,2,3]}`; retrieve; schema intact
-- [ ] `test_domain.py::test_measurement_aggregation_eligibility` — Measurement with lab+method → is_aggregation_eligible True; without → False
-- [ ] `test_domain.py::test_measurement_hypertable_insert` — insert Measurement row; select back by time range; row returned
+- [x] `test_domain.py::test_intervention_cycle_schema_stored` — create Intervention with `cycle_schema = {"pattern": "pulsed", "on_days": [1,2,3]}`; retrieve; schema intact
+- [x] `test_domain.py::test_measurement_aggregation_eligibility` — Measurement with lab+method → is_aggregation_eligible True; without → False
+- [x] `test_domain.py::test_measurement_hypertable_insert` — insert Measurement row; select back by time range; row returned
 
 **Frontend tests (`frontend/src/__tests__/`):**
 

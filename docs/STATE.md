@@ -6,5 +6,5 @@
 
 ## Current
 - Module: 0 — Foundations
-- Step: TG1, TG2 done (accounts: User/Profile/SocialHandle, JWT endpoints, 10 tests green); TG3–TG5 pending
-- Next action: TG3 — core app domain stubs (Intervention, Biomarker, Measurement + hypertable). Verify `docker compose up` when possible.
+- Step: TG1–TG3 done (core: Intervention, Biomarker, Measurement hypertable; 15 backend tests green); TG4–TG5 pending
+- Next action: TG4 — frontend skeleton and auth. Note: the local dev DB has an inconsistent migration history (blocks `makemigrations`), so core migrations were hand-written; use a fresh DB for future makemigrations.

@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "allauth",
     "allauth.account",
-    # local apps (core added in TG3)
+    # local apps
     "accounts",
+    "core",
 ]
 
 MIDDLEWARE = [
