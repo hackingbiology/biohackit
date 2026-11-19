@@ -6,5 +6,5 @@
 
 ## Current
 - Module: 0 — Foundations
-- Step: TG1 done (repo layout and tooling); TG2–TG5 pending
-- Next action: TG2 — backend auth and user model (accounts app, JWT endpoints). Also verify `manage.py check` and `docker compose up` once a DB is available.
+- Step: TG1, TG2 done (accounts: User/Profile/SocialHandle, JWT endpoints, 10 tests green); TG3–TG5 pending
+- Next action: TG3 — core app domain stubs (Intervention, Biomarker, Measurement + hypertable). Verify `docker compose up` when possible.

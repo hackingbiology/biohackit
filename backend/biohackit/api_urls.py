@@ -6,4 +6,6 @@
 
 # Auth and resource endpoints are registered here by each app as they are
 # built (TG2 adds accounts/auth, TG3 adds domain stubs, etc.).
-urlpatterns: list = []
+from django.urls import include, path
+
+urlpatterns: list = [path("", include("accounts.urls"))]

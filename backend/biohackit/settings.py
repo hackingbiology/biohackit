@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "allauth",
     "allauth.account",
-    # local apps (accounts and core added in TG2/TG3)
+    # local apps (core added in TG3)
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -87,6 +88,7 @@ DATABASES["default"]["ENGINE"] = "timescale.db.backends.postgresql"
 # --- Auth ------------------------------------------------------------------- #
 # Custom user model is added in TG2 (accounts app).  AUTH_USER_MODEL will be
 # set to 'accounts.User' once that app exists.
+AUTH_USER_MODEL = "accounts.User"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
@@ -102,9 +104,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # django-allauth ------------------------------------------------------------ #
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 SITE_ID = 1
 

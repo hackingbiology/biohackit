@@ -35,17 +35,17 @@ Tick items as they are completed. Never commit red tests.
 - accounts-and-profiles §Scenario: Social and forum handles linked
 - foundations-architecture §Scenario: JWT token issued and refreshed
 
-- [ ] `backend/accounts/` app created (`python manage.py startapp accounts`)
-- [ ] Custom `User` model in `accounts/models.py`: email-primary (no username), `is_public` default=True, timestamps
-- [ ] `Profile` model FK to `User`: `date_of_birth`, `sex` (ChoiceField M/F/I/X/prefer-not), `ethnicity` (free text, nullable), `height_cm` (DecimalField), `is_public` default=True, `created_at`, `updated_at`
-- [ ] `SocialHandle` model FK to `Profile`: `platform` (telegram | wechat | xiaohongshu | rapamycin_news | other), `handle`, `url`
-- [ ] `AUTH_USER_MODEL = 'accounts.User'` in settings; migration 0001 committed
-- [ ] DRF configured in settings; `DEFAULT_AUTHENTICATION_CLASSES` = simplejwt
-- [ ] simplejwt settings: access token 15 min, refresh 7 days
-- [ ] allauth configured for email+password; `ACCOUNT_EMAIL_REQUIRED = True`, `ACCOUNT_USERNAME_REQUIRED = False`
-- [ ] API endpoints: `POST /api/auth/register/`, `POST /api/auth/token/` (login), `POST /api/auth/token/refresh/`, `GET /api/auth/me/`
-- [ ] `GET /api/profiles/<username>/` publicly readable, no auth required
-- [ ] Django admin registered for `User`, `Profile`, `SocialHandle`
+- [x] `backend/accounts/` app created (`python manage.py startapp accounts`)
+- [x] Custom `User` model in `accounts/models.py`: email-primary (no username), `is_public` default=True, timestamps
+- [x] `Profile` model FK to `User`: `date_of_birth`, `sex` (ChoiceField M/F/I/X/prefer-not), `ethnicity` (free text, nullable), `height_cm` (DecimalField), `is_public` default=True, `created_at`, `updated_at`
+- [x] `SocialHandle` model FK to `Profile`: `platform` (telegram | wechat | xiaohongshu | rapamycin_news | other), `handle`, `url`
+- [x] `AUTH_USER_MODEL = 'accounts.User'` in settings; migration 0001 committed
+- [x] DRF configured in settings; `DEFAULT_AUTHENTICATION_CLASSES` = simplejwt
+- [x] simplejwt settings: access token 15 min, refresh 7 days
+- [x] allauth configured for email+password; `ACCOUNT_EMAIL_REQUIRED = True`, `ACCOUNT_USERNAME_REQUIRED = False`
+- [x] API endpoints: `POST /api/auth/register/`, `POST /api/auth/token/` (login), `POST /api/auth/token/refresh/`, `GET /api/auth/me/`
+- [x] `GET /api/profiles/<username>/` publicly readable, no auth required
+- [x] Django admin registered for `User`, `Profile`, `SocialHandle`
 
 ---
 
