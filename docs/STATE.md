@@ -5,6 +5,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
-- Module: 0 — Foundations
-- Step: TG1–TG3 done (core: Intervention, Biomarker, Measurement hypertable; 15 backend tests green); TG4–TG5 pending
-- Next action: TG4 — frontend skeleton and auth. Note: the local dev DB has an inconsistent migration history (blocks `makemigrations`), so core migrations were hand-written; use a fresh DB for future makemigrations.
+- Module: 0 — Foundations (with m00b low-friction login prioritised)
+- Step: M00 TG1–TG3 done; m00b TG1 (backend) + TG3 (tests) done, 26 backend tests green; m00b TG2 (frontend sign-in page) pending; M00 TG4–TG5 pending
+- Next action: M00 TG4 frontend skeleton, then m00b TG2 sign-in page (headless API via plain fetch, no new auth dependency).
+- Notes: the venv needed `pip --python backend/.venv/bin/python install "django-allauth[mfa,socialaccount]"` (pulls `requests`). The local dev DB has an inconsistent migration history (blocks `makemigrations`); use a fresh DB.

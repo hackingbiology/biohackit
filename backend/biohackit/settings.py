@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
+    "allauth.headless",
+    "allauth.mfa",
+    "accounts.providers.discourse_connect",
     # local apps
     "accounts",
     "core",
@@ -105,10 +109,85 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # django-allauth ------------------------------------------------------------ #
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # required by passkey signup
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
+ACCOUNT_LOGIN_BY_CODE_ENABLED = True
 SITE_ID = 1
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:3000")
+
+# Headless API (/_allauth/browser/v1/...) used by the Next.js sign-in page.
+HEADLESS_ONLY = False
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": FRONTEND_URL + "/account/verify-email/{key}",
+    "account_reset_password": FRONTEND_URL + "/account/password/reset",
+    "account_reset_password_from_key": FRONTEND_URL
+    + "/account/password/reset/key/{key}",
+    "account_signup": FRONTEND_URL + "/account/signup",
+    "socialaccount_login_error": FRONTEND_URL + "/account/login",
+}
+
+# Passkeys
+MFA_SUPPORTED_TYPES = ["totp", "recovery_codes", "webauthn"]
+MFA_PASSKEY_LOGIN_ENABLED = True
+MFA_PASSKEY_SIGNUP_ENABLED = True
+MFA_WEBAUTHN_ALLOW_INSECURE_ORIGIN = DEBUG
+
+# Account linking: connect a social login to an existing account only when the
+# provider marks the email verified (allauth never connects unverified emails).
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+
+def _build_social_providers():
+    """Only providers with credentials in the environment are configured.
+
+    Identity-only scopes everywhere (openid/email/profile or equivalent).
+    """
+    out = {}
+
+    def app(prefix, **extra):
+        cid = env(f"{prefix}_CLIENT_ID", default="")
+        secret = env(f"{prefix}_SECRET", default="")
+        if not (cid and secret):
+            return None
+        return {"client_id": cid, "secret": secret, **extra}
+
+    simple = {
+        "google": ("GOOGLE", ["profile", "email"]),
+        "microsoft": ("MICROSOFT", ["User.Read"]),
+        "apple": ("APPLE", ["name", "email"]),
+        "facebook": ("FACEBOOK", ["email"]),
+        "weixin": ("WEIXIN", ["snsapi_login"]),
+    }
+    for pid, (prefix, scope) in simple.items():
+        a = app(prefix)
+        if a:
+            if pid == "apple":
+                a["key"] = env("APPLE_KEY_ID", default="")
+                a["settings"] = {
+                    "certificate_key": env("APPLE_PRIVATE_KEY", default="")
+                }
+            out[pid] = {"APPS": [a], "SCOPE": scope}
+    forum_url = env("RAPAMYCIN_NEWS_URL", default="")
+    forum_secret = env("RAPAMYCIN_NEWS_SSO_SECRET", default="")
+    if forum_url and forum_secret:
+        out["discourse_connect"] = {
+            "APPS": [
+                {
+                    "client_id": "rapamycin_news",
+                    "secret": forum_secret,
+                    "settings": {"url": forum_url},
+                }
+            ]
+        }
+    return out
+
+
+SOCIALACCOUNT_PROVIDERS = _build_social_providers()
 
 # djangorestframework + simplejwt ------------------------------------------- #
 REST_FRAMEWORK = {

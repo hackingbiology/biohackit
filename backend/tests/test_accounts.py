@@ -50,7 +50,9 @@ def test_refresh_token(client):
     tok = client.post(
         "/api/auth/token/", {"email": "a@example.com", "password": PW}, format="json"
     ).data
-    r = client.post("/api/auth/token/refresh/", {"refresh": tok["refresh"]}, format="json")
+    r = client.post(
+        "/api/auth/token/refresh/", {"refresh": tok["refresh"]}, format="json"
+    )
     assert r.status_code == 200
     assert "access" in r.data
 
@@ -82,7 +84,9 @@ def test_social_handles_created(client):
     p = Profile.objects.get(display_name="carol")
     SocialHandle.objects.create(profile=p, platform="telegram", handle="@carol")
     SocialHandle.objects.create(profile=p, platform="rapamycin_news", handle="carol1")
-    platforms = {h["platform"] for h in client.get("/api/profiles/carol/").data["social_handles"]}
+    platforms = {
+        h["platform"] for h in client.get("/api/profiles/carol/").data["social_handles"]
+    }
     assert platforms == {"telegram", "rapamycin_news"}
 
 
