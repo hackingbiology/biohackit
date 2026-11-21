@@ -10,8 +10,8 @@ Depends on M00 TG2 (accounts app). Ticket: m00b-low-friction-login.
 - [x] Headless API: frontend uses allauth headless endpoints (`/_allauth/browser/v1/...`); keep `/api/auth/me/` working
 
 ## TG2 Frontend
-- [ ] Sign-in/sign-up page: provider buttons fetched from headless `config` endpoint (only configured ones), rapamycin.news first; email-code and passkey options; plain language, WCAG 2.2 AA, EN/IT/ZH strings
-- [ ] No new frontend auth dependency (plain fetch to headless API; WebAuthn via browser API)
+- [x] Sign-in/sign-up page: provider buttons fetched from headless `config` endpoint (only configured ones), rapamycin.news first; email-code and passkey options; plain language, WCAG 2.2 AA, EN/IT/ZH strings
+- [x] No new frontend auth dependency (plain fetch to headless API; WebAuthn via browser API)
 
 ## TG3 Tests (one per SHALL scenario)
 - [x] DiscourseConnect: valid payload → login + handle; bad sig → rejected; replayed nonce → rejected

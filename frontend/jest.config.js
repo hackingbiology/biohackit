@@ -3,14 +3,15 @@
 // Copyright (C) HackingBiology 2026 — https://biohack.it
 // Full license text: https://www.gnu.org/licenses/agpl-3.0.html
 
-import type { Config } from "jest";
-import nextJest from "next/jest.js";
+// Plain JS (not .ts) so Jest needs no ts-node dependency.
+const nextJest = require("next/jest.js");
 
 const createJestConfig = nextJest({
   dir: "./",
 });
 
-const config: Config = {
+/** @type {import('jest').Config} */
+const config = {
   coverageProvider: "v8",
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
@@ -20,4 +21,4 @@ const config: Config = {
   testMatch: ["**/__tests__/**/*.test.{ts,tsx}"],
 };
 
-export default createJestConfig(config);
+module.exports = createJestConfig(config);

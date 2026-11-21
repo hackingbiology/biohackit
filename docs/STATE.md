@@ -6,6 +6,6 @@
 
 ## Current
 - Module: 0 — Foundations (with m00b low-friction login prioritised)
-- Step: M00 TG1–TG3 done; m00b TG1 (backend) + TG3 (tests) done, 26 backend tests green; m00b TG2 (frontend sign-in page) pending; M00 TG4–TG5 pending
-- Next action: M00 TG4 frontend skeleton, then m00b TG2 sign-in page (headless API via plain fetch, no new auth dependency).
+- Step: M00 TG1–TG3 done; m00b TG1 (backend) + TG3 (tests) done, 26 backend tests green; m00b TG2 (frontend sign-in page, 5 jest tests green) done, so m00b agent tasks are complete; M00 TG4 (remaining items) and TG5 pending
+- Next action: archive the m00b change (Fabio's action list stays open), then finish M00 TG4 (sign-up page → SignInForm, logout via headless, middleware session check, Button/Input tests) and TG5.
 - Notes: the venv needed `pip --python backend/.venv/bin/python install "django-allauth[mfa,socialaccount]"` (pulls `requests`). The local dev DB has an inconsistent migration history (blocks `makemigrations`); use a fresh DB.
