@@ -97,22 +97,22 @@ Tick items as they are completed. Never commit red tests.
 
 **Backend tests (`backend/tests/`):**
 
-- [ ] `test_accounts.py::test_register_creates_user` — POST /api/auth/register/ → 201, user exists
-- [ ] `test_accounts.py::test_register_requires_email` — missing email → 400
-- [ ] `test_accounts.py::test_login_returns_jwt` — POST /api/auth/token/ → 200, `access` and `refresh` keys present
-- [ ] `test_accounts.py::test_refresh_token` — POST /api/auth/token/refresh/ with valid refresh → 200, new `access`
-- [ ] `test_accounts.py::test_public_profile_readable_without_auth` — GET /api/profiles/<slug>/ → 200, no auth header
-- [ ] `test_accounts.py::test_profile_biological_attributes` — set date_of_birth, sex, height_cm; retrieve; values match
-- [ ] `test_accounts.py::test_social_handles_created` — add telegram and rapamycin_news handles; retrieve profile; both present
-- [ ] `test_accounts.py::test_private_write_requires_auth` — POST /api/auth/register/ then GET /api/auth/me/ without token → 401
+- [x] `test_accounts.py::test_register_creates_user` — POST /api/auth/register/ → 201, user exists
+- [x] `test_accounts.py::test_register_requires_email` — missing email → 400
+- [x] `test_accounts.py::test_login_returns_jwt` — POST /api/auth/token/ → 200, `access` and `refresh` keys present
+- [x] `test_accounts.py::test_refresh_token` — POST /api/auth/token/refresh/ with valid refresh → 200, new `access`
+- [x] `test_accounts.py::test_public_profile_readable_without_auth` — GET /api/profiles/<slug>/ → 200, no auth header
+- [x] `test_accounts.py::test_profile_biological_attributes` — set date_of_birth, sex, height_cm; retrieve; values match
+- [x] `test_accounts.py::test_social_handles_created` — add telegram and rapamycin_news handles; retrieve profile; both present
+- [x] `test_accounts.py::test_private_write_requires_auth` — POST /api/auth/register/ then GET /api/auth/me/ without token → 401
 - [x] `test_domain.py::test_intervention_cycle_schema_stored` — create Intervention with `cycle_schema = {"pattern": "pulsed", "on_days": [1,2,3]}`; retrieve; schema intact
 - [x] `test_domain.py::test_measurement_aggregation_eligibility` — Measurement with lab+method → is_aggregation_eligible True; without → False
 - [x] `test_domain.py::test_measurement_hypertable_insert` — insert Measurement row; select back by time range; row returned
 
 **Frontend tests (`frontend/src/__tests__/`):**
 
-- [ ] `auth.test.ts`: `register()` calls the correct endpoint with email/password; returns token on 201
-- [ ] `auth.test.ts`: `login()` calls token endpoint; returns access+refresh on 200
+- [x] `auth.test.ts`: `register()` calls the correct endpoint with email/password; returns token on 201
+- [x] `auth.test.ts`: `login()` calls token endpoint; returns access+refresh on 200
 - [x] `Button.test.tsx`: renders with correct aria-label; onClick fires
 - [x] `Input.test.tsx`: renders label; error prop shows error text; aria-describedby links to error element
 

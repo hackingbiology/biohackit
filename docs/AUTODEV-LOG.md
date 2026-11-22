@@ -10,3 +10,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-21 · M00b low-friction login · TG2 frontend sign-in (SignInForm: providers/email code/passkey, EN/IT/ZH, plain fetch), jest.config.js fix, 5 jest tests green · see git log
 2026-11-21 · M00b low-friction login · archived change into openspec/specs/accounts-and-profiles (Fabio's action list still open) · see git log
 2026-11-22 · M00 Foundations · TG4 frontend skeleton done: sign-up uses SignInForm, logout via allauth headless, middleware session check, Button/Input/logout tests, 9 jest green · see git log
+2026-11-22 · M00 Foundations · TG5 backend tests confirmed (26 green), frontend auth.test.ts added (unrun: pnpm blocked), CI verification pending · see git log
