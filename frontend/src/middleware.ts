@@ -16,9 +16,12 @@ export function middleware(request: NextRequest): NextResponse {
   );
 
   if (isProtected) {
-    // Access token is stored as an httpOnly cookie named `access_token`.
-    const token = request.cookies.get("access_token");
-    if (!token) {
+    // Session: allauth's `sessionid` cookie (browser sign-in) or the JWT
+    // `access_token` cookie (API clients). Presence check only; the backend
+    // verifies it on every data request.
+    const hasSession =
+      request.cookies.has("sessionid") || request.cookies.has("access_token");
+    if (!hasSession) {
       const signIn = new URL("/sign-in", request.url);
       signIn.searchParams.set("next", pathname);
       return NextResponse.redirect(signIn);

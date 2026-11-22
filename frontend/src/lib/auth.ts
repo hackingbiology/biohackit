@@ -4,6 +4,7 @@
 // Full license text: https://www.gnu.org/licenses/agpl-3.0.html
 
 import { apiFetch } from "./api";
+import { logoutSession } from "./allauth";
 
 export interface TokenPair {
   access: string;
@@ -45,6 +46,7 @@ export async function refreshToken(refresh: string): Promise<{ access: string }>
 }
 
 export async function logout(): Promise<void> {
-  // Tokens are in httpOnly cookies set by Next.js route handlers;
-  // clearing is handled server-side when that route is added in TG4.
+  // The browser session lives in allauth's session cookie; the headless
+  // API ends it (allauth answers 401 once the session is gone, which is fine).
+  await logoutSession();
 }

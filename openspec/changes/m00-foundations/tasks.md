@@ -76,17 +76,17 @@ Tick items as they are completed. Never commit red tests.
 - accounts-and-profiles §Scenario: Account needed to contribute
 - accounts-and-profiles §Scenario: Onboarding invites sharing
 
-- [ ] Next.js App Router layout in `frontend/src/app/layout.tsx`: `<html lang="en">`, mobile-first meta viewport, Tailwind base styles
-- [ ] `frontend/src/lib/api.ts`: typed fetch wrapper pointing to `NEXT_PUBLIC_API_URL`; exports `apiFetch(path, init?)`
-- [ ] `frontend/src/lib/auth.ts`: `register(email, password)`, `login(email, password)`, `refreshToken()`, `logout()` — all hit the DRF JWT endpoints; tokens stored in httpOnly cookie via Next.js Route Handler
-- [ ] `frontend/src/app/(auth)/sign-up/page.tsx`: email + password fields, calls `register()`, redirects to `/onboarding` on success
-- [ ] `frontend/src/app/(auth)/sign-in/page.tsx`: email + password fields, calls `login()`, redirects to `/dashboard` on success
-- [ ] `frontend/src/app/onboarding/page.tsx`: placeholder with copy "Welcome — your profile is public by default. Here's why that matters…" + Continue button
-- [ ] `frontend/src/middleware.ts`: redirect unauthenticated requests for `/dashboard/*` to `/sign-in`
-- [ ] `frontend/src/app/page.tsx`: public homepage with tagline, Sign Up + Sign In CTAs
-- [ ] `frontend/src/components/ui/Button.tsx`: accessible button primitive (Tailwind, aria-label support)
-- [ ] `frontend/src/components/ui/Input.tsx`: accessible text input primitive (label, error, aria-describedby)
-- [ ] PWA manifest at `frontend/public/manifest.json`: name, icons (from brand/), `display: standalone`, `theme_color`
+- [x] Next.js App Router layout in `frontend/src/app/layout.tsx`: `<html lang="en">`, mobile-first meta viewport, Tailwind base styles
+- [x] `frontend/src/lib/api.ts`: typed fetch wrapper pointing to `NEXT_PUBLIC_API_URL`; exports `apiFetch(path, init?)`
+- [x] `frontend/src/lib/auth.ts`: `register(email, password)`, `login(email, password)`, `refreshToken()`, `logout()` — all hit the DRF JWT endpoints; tokens stored in httpOnly cookie via Next.js Route Handler (browser sign-in superseded by m00b allauth session; logout ends it via headless DELETE)
+- [x] `frontend/src/app/(auth)/sign-up/page.tsx`: email + password fields, calls `register()`, redirects to `/onboarding` on success
+- [x] `frontend/src/app/(auth)/sign-in/page.tsx`: email + password fields, calls `login()`, redirects to `/dashboard` on success
+- [x] `frontend/src/app/onboarding/page.tsx`: placeholder with copy "Welcome — your profile is public by default. Here's why that matters…" + Continue button
+- [x] `frontend/src/middleware.ts`: redirect unauthenticated requests for `/dashboard/*` to `/sign-in`
+- [x] `frontend/src/app/page.tsx`: public homepage with tagline, Sign Up + Sign In CTAs
+- [x] `frontend/src/components/ui/Button.tsx`: accessible button primitive (Tailwind, aria-label support)
+- [x] `frontend/src/components/ui/Input.tsx`: accessible text input primitive (label, error, aria-describedby)
+- [x] PWA manifest at `frontend/public/manifest.json`: name, icons (from brand/), `display: standalone`, `theme_color`
 
 ---
 
@@ -113,8 +113,8 @@ Tick items as they are completed. Never commit red tests.
 
 - [ ] `auth.test.ts`: `register()` calls the correct endpoint with email/password; returns token on 201
 - [ ] `auth.test.ts`: `login()` calls token endpoint; returns access+refresh on 200
-- [ ] `Button.test.tsx`: renders with correct aria-label; onClick fires
-- [ ] `Input.test.tsx`: renders label; error prop shows error text; aria-describedby links to error element
+- [x] `Button.test.tsx`: renders with correct aria-label; onClick fires
+- [x] `Input.test.tsx`: renders label; error prop shows error text; aria-describedby links to error element
 
 **CI:**
 

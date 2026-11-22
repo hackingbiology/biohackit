@@ -27,7 +27,7 @@ function csrfToken(): string {
 }
 
 async function call(
-  method: "GET" | "POST",
+  method: "GET" | "POST" | "DELETE",
   path: string,
   data?: unknown,
 ): Promise<AllauthResult> {
@@ -71,6 +71,11 @@ export async function requestLoginCode(email: string): Promise<AllauthResult> {
 
 export async function confirmLoginCode(code: string): Promise<AllauthResult> {
   return call("POST", "/auth/code/confirm", { code });
+}
+
+/** Ends the allauth session (headless browser API). */
+export async function logoutSession(): Promise<AllauthResult> {
+  return call("DELETE", "/auth/session");
 }
 
 export function isAuthenticated(r: AllauthResult): boolean {
