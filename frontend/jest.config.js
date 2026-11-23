@@ -4,6 +4,7 @@
 // Full license text: https://www.gnu.org/licenses/agpl-3.0.html
 
 // Plain JS (not .ts) so Jest needs no ts-node dependency.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const nextJest = require("next/jest.js");
 
 const createJestConfig = nextJest({
