@@ -12,3 +12,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-22 · M00 Foundations · TG4 frontend skeleton done: sign-up uses SignInForm, logout via allauth headless, middleware session check, Button/Input/logout tests, 9 jest green · see git log
 2026-11-22 · M00 Foundations · TG5 backend tests confirmed (26 green), frontend auth.test.ts added (unrun: pnpm blocked), CI verification pending · see git log
 2026-11-23 · M00 Foundations · frontend checks run via node (jest 11 green, tsc ok), fixed eslint error in jest.config.js; CI-on-GitHub confirmation requested from Fabio · see git log
+2026-11-23 · M01 Terminology · OpenSpec change written (proposal, tasks TG1-5, spec delta), Q5-Q7 raised; M00 CI confirmation still pending · see git log
