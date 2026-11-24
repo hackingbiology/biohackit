@@ -58,6 +58,7 @@ def forum_reply(nonce, secret=SECRET, **fields):
     return {"sso": payload, "sig": protocol.sign(secret, payload)}
 
 
+# scenario: accounts-and-profiles::sign-up-with-the-rapamycin-news-forum-account
 @pytest.mark.django_db
 @override_settings(SOCIALACCOUNT_PROVIDERS=FORUM_SETTINGS)
 def test_discourse_valid_payload_logs_in_and_sets_handle():
@@ -72,6 +73,7 @@ def test_discourse_valid_payload_logs_in_and_sets_handle():
     assert h.url == f"{FORUM}/u/sirolimus_fan"
 
 
+# scenario: accounts-and-profiles::sign-up-with-the-rapamycin-news-forum-account
 @pytest.mark.django_db
 @override_settings(SOCIALACCOUNT_PROVIDERS=FORUM_SETTINGS)
 def test_discourse_bad_signature_rejected():
@@ -82,6 +84,7 @@ def test_discourse_bad_signature_rejected():
     assert "_auth_user_id" not in c.session
 
 
+# scenario: accounts-and-profiles::sign-up-with-the-rapamycin-news-forum-account
 @pytest.mark.django_db
 @override_settings(SOCIALACCOUNT_PROVIDERS=FORUM_SETTINGS)
 def test_discourse_replayed_nonce_rejected():
@@ -106,6 +109,7 @@ def test_discourse_expired_nonce_rejected():
         )
 
 
+# scenario: accounts-and-profiles::only-configured-providers-are-shown
 @pytest.mark.django_db
 @override_settings(SOCIALACCOUNT_PROVIDERS=FORUM_SETTINGS)
 def test_config_lists_only_configured_providers():
@@ -118,6 +122,7 @@ def test_config_lists_only_configured_providers():
     assert ids == ["discourse_connect"]
 
 
+# scenario: accounts-and-profiles::only-configured-providers-are-shown
 @pytest.mark.django_db
 @override_settings(SOCIALACCOUNT_PROVIDERS={})
 def test_config_works_with_zero_providers():
@@ -126,6 +131,7 @@ def test_config_works_with_zero_providers():
     assert r.json()["data"]["socialaccount"]["providers"] == []
 
 
+# scenario: accounts-and-profiles::passwordless-sign-in
 @pytest.mark.django_db
 def test_login_by_code_flow():
     user = User.objects.create_user("code@example.com", "pw-not-used-12345")
@@ -162,6 +168,7 @@ def _existing_user():
     return user
 
 
+# scenario: accounts-and-profiles::linking-does-not-hijack-accounts
 @pytest.mark.django_db
 @override_settings(SOCIALACCOUNT_PROVIDERS=FORUM_SETTINGS)
 def test_unverified_social_email_does_not_connect():
@@ -173,6 +180,7 @@ def test_unverified_social_email_does_not_connect():
     assert c.session.get("_auth_user_id") != str(existing.pk)
 
 
+# scenario: accounts-and-profiles::linking-does-not-hijack-accounts
 @pytest.mark.django_db
 @override_settings(SOCIALACCOUNT_PROVIDERS=FORUM_SETTINGS)
 def test_verified_social_email_connects_to_existing_account():
@@ -184,6 +192,7 @@ def test_verified_social_email_connects_to_existing_account():
     assert c.session["_auth_user_id"] == str(existing.pk)
 
 
+# scenario: accounts-and-profiles::minimal-scopes
 def test_requested_scopes_are_identity_only(monkeypatch):
     import importlib
 

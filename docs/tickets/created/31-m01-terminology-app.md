@@ -7,7 +7,7 @@ Parent: #4
 Create the `terminology` Django app with sourced `Source`, `Unit` (UCUM) and `UnitConversion` models and a deterministic `normalize_value()` helper that keeps the as-reported value and unit.
 
 ## Spec refs
-`openspec/changes/m01-terminology-reference-data/specs/terminology-reference-data.md` — "Every reference row carries its source", "Units are UCUM and conversions deterministic".
+`openspec/changes/m01-terminology-reference-data/specs/terminology-reference-data/spec.md` — "Every reference row carries its source", "Units are UCUM and conversions deterministic".
 
 ## Acceptance
 - Row without source is rejected (unsourced row).

@@ -12,7 +12,7 @@ handles, and JWT auth endpoints (register, token, refresh, me) plus a public pro
 ## Spec refs
 
 - `openspec/specs/accounts-and-profiles` (server-hosted account, public-by-default, biological profile, social handles)
-- `openspec/changes/m00-foundations/specs/foundations-architecture.md` §JWT authentication
+- `openspec/changes/m00-foundations/specs/foundations-architecture/spec.md` §JWT authentication
 
 ## Acceptance
 

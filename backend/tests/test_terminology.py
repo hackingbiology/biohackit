@@ -35,11 +35,13 @@ def test_unsourced_row_rejected(db):
         Unit(ucum_code="mg/dL", display="x").save()
 
 
+# scenario: terminology-reference-data::unknown-unit
 def test_unknown_unit_rejected(units):
     with pytest.raises(ValidationError):
         normalize_value(1, "furlongs", "g/L")
 
 
+# scenario: terminology-reference-data::conversion
 def test_conversion_deterministic_keeps_reported(units):
     r1 = normalize_value("150", "mg/dL", "g/L")
     r2 = normalize_value("150", "mg/dL", "g/L")

@@ -21,6 +21,7 @@ const cfg = (providers: unknown[]) => ({
   "/config": { status: 200, body: { data: { socialaccount: { providers } } } },
 });
 
+// scenario: accounts-and-profiles::only-configured-providers-are-shown
 test("only configured providers are shown, rapamycin.news first", async () => {
   mockFetch(
     cfg([
@@ -34,6 +35,7 @@ test("only configured providers are shown, rapamycin.news first", async () => {
   expect(items[1]).toHaveTextContent("Google");
 });
 
+// scenario: accounts-and-profiles::only-configured-providers-are-shown
 test("zero providers still offers email code", async () => {
   mockFetch(cfg([]));
   render(<SignInForm onSignedIn={() => {}} />);
@@ -44,6 +46,7 @@ test("zero providers still offers email code", async () => {
   ).toBeInTheDocument();
 });
 
+// scenario: accounts-and-profiles::passwordless-sign-in
 test("email code flow signs in", async () => {
   mockFetch({
     ...cfg([]),

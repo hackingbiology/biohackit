@@ -12,7 +12,7 @@ a Makefile, and a GitHub Actions CI pipeline.
 
 ## Spec refs
 
-- `openspec/changes/m00-foundations/specs/foundations-architecture.md`
+- `openspec/changes/m00-foundations/specs/foundations-architecture/spec.md`
   - §Requirement: Monorepo with backend and frontend roots
   - §Requirement: Technology stack
   - §Requirement: CI pipeline on every pull request
