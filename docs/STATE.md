@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- X01 TG1 done 2026-11-24: docs/ecosystem/ README, GIVEBACK, m00-foundations scan + enforcing test; next X01 item is the m01 scan (add `m01-foundations`-style entry to MODULE_CHANGES in backend/tests/test_ecosystem_docs.py when it lands).
 - M00c TG2: staging stack written (docker-compose.staging.yml, docs/STAGING.md); next M00c TG2 item is gates hardening.
 - Module: 0 — Foundations (with m00b low-friction login prioritised)
 - Step: M00 TG1–TG5 done locally (backend 26 pytest, frontend 11 jest, tsc+eslint clean); only the 3 CI-on-GitHub items remain; Fabio must confirm CI green (QUESTIONS 2026-11-23)

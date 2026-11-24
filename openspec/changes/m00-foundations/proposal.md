@@ -45,6 +45,10 @@ Stand up the technical skeleton that every subsequent module builds on:
 | D9 | UTC everywhere | yes | No timezone ambiguity in measurements or logs |
 | D10 | AGPL-3.0 header | in every new source file | License compliance from day one |
 
+## Ecosystem scan
+
+External projects M00 uses or considered, with verified licences: [docs/ecosystem/m00-foundations.md](../../../docs/ecosystem/m00-foundations.md).
+
 ## Open questions flagged to Fabio
 
 See `docs/QUESTIONS.md` entries dated 2026-11-09, M00.
