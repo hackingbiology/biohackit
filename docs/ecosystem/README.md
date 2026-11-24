@@ -58,8 +58,20 @@ Grounded in the GNU list <https://www.gnu.org/licenses/license-list.html>, fetch
 | CC-BY (data, docs) | yes for data/docs only | GNU list: GPL-compatible, "should not be used on software" |
 | CC-BY-SA | unknown — question in docs/QUESTIONS.md | GNU list: one-way compatible with GPLv3; AGPL not stated in the part fetched |
 | CC0 | yes | GNU list: public-domain dedication, GPL-compatible |
+| ISC | yes | GNU list: "a free software license, and compatible with the GNU GPL" (fetched 2026-11-24) |
+| 0BSD | yes | GNU list: "can operate as a free software license compatible with the GNU GPL" (fetched 2026-11-24) |
+| PSF-2.0 (Python 2.0.1 and newer) | yes | GNU list: "free software license and is compatible with the GNU GPL" (fetched 2026-11-24) |
+| MIT-0 | unknown — question Q12 (admitted only by a per-version override) | Not named on the GNU list. The cffi LICENSE (fetched 2026-11-24) is the MIT permission grant without the attribution condition, i.e. strictly fewer conditions than Expat |
 | Proprietary / source-available / unknown | no | GNU list: nonfree licences are incompatible with the GPL; `unknown` licence is treated as not usable until resolved |
 
 **Separate-process servers.** If the verdict is `unknown` for a server we only talk to over a network or socket (e.g. a database), the entry may keep `adopt as dependency` only with a `- **Provisional:** yes, ...` line naming the exact images/builds and the open question; the question must be in docs/QUESTIONS.md. Code we link or bundle gets no such exception.
 
 A licence not in this table is `unknown` until it is looked up and added.
+
+## Licence gate
+
+`tools/licence/check_licences.py` (stdlib only) runs as the `licences` step of `tools/autodev2/gates.sh`. It checks production dependencies: every installed distribution in `backend/.venv` (pip metadata: `License-Expression`, then a short `License` field, then `License ::` classifiers) and `pnpm --dir frontend licenses list --prod --json`. Each licence is normalised to an SPDX id and must be in the allow-list, which mirrors the table above. Incompatible (proprietary, SSPL-1.0, BUSL-1.1, Elastic-2.0) and unknown licences fail the gate and are printed with ecosystem, name, version and raw licence string.
+
+Run it: `python3 tools/licence/check_licences.py` (prints how many backend and frontend packages were checked).
+
+**Add an override** when metadata is missing or ambiguous: append an `[[override]]` to `tools/licence/overrides.toml` with `package`, `version`, `licence` (SPDX) and `source_url`. Fetch the upstream LICENSE file first and put the URL you fetched in `source_url`; never recall it. An override is pinned to one version. If you cannot verify the licence, add a question to `docs/QUESTIONS.md` instead. Data-only licences (CC-BY-4.0) are accepted only through an override.

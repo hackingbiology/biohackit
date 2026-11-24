@@ -33,5 +33,8 @@ COV=$(python3 tools/trace/matrix.py --json | python3 -c "import json,sys;print(j
 echo "covered=$COV base=${BASE_COVERED:-?}"
 [ -n "${BASE_COVERED:-}" ] && [ "$COV" -lt "$BASE_COVERED" ] && bad "scenario coverage regressed"
 
+step "licences"
+python3 tools/licence/check_licences.py || bad "AGPL-incompatible or unknown dependency licence"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL

@@ -31,6 +31,8 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 
 **Q8** · AGPL-3.0 compatibility could not be grounded in the fetched GNU list for: GPL-3.0, CC-BY-SA, the PostgreSQL licence, and the Timescale License (`tsl/` directory of TimescaleDB). Default taken: **marked `unknown`** in docs/ecosystem/; PostgreSQL and TimescaleDB run as separate server processes. Please confirm or point to a source.
 
+**Q12** · The licence gate admits MIT-0, by per-version override only (used by `cffi`, a backend dependency) although the GNU licence list does not name it; the basis is that the fetched cffi LICENSE is the MIT grant without the attribution condition. `caniuse-lite` (CC-BY-4.0, browser-support data used by the frontend build chain) is accepted only through a documented override, since CC-BY is "data/docs only" in the README table. Default taken: **both accepted**; GPL-3.0 and CC-BY-SA stay `unknown` and fail the gate (see Q8). Please confirm or tell me to drop them.
+
 ## 2026-11-23 · M01 Terminology & reference data
 
 **Q5** · Bundle a small curated LOINC subset (standard panel) under the LOINC licence notice, full table user-supplied? Default taken: **yes, subset only**.
@@ -44,3 +46,4 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 - **Login:** OAuth and DiscourseConnect credentials are deferred by Fabio; nothing more to ask for now.
 - **uv.lock stale for django-allauth extras:** uv.lock metadata has `[mfa]` and `>=0.61`; pyproject has `[mfa,socialaccount]>=65.0`. Fabio/admin to run `uv lock` in backend/ when convenient (default: leave as is until the admin session regenerates).
 - **Staging demo data:** default = demo account only (`DEMO_USERNAME` as sign-in e-mail, `DEMO_PASSWORD`), no health values until M01 seed_reference and sourced data exist; please confirm or provide demo content.
+- **Q13 (licence gate, fido2 2.2.1):** package classifiers list BSD, Apache-2.0 and MPL-2.0, but upstream COPYING (fetched) is only the 2-clause BSD text and names no Apache/MPL files. Default: override records BSD-2-Clause only. Please confirm whether any bundled part is Apache/MPL (all are AGPL-compatible).

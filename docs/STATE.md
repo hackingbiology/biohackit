@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- X01 licence gate done 2026-11-24: tools/licence/check_licences.py + overrides.toml, `licences` step appended to gates.sh (Q12 open); next X01 item: integration scans for the anchors.
 - X01 TG1 done 2026-11-24: docs/ecosystem/ README, GIVEBACK, m00-foundations scan + enforcing test; m01 scan done 2026-11-24 (docs/ecosystem/m01-terminology.md, decisions annotated in m01 tasks); next X01 item: integration scans for the anchors.
 - M00c TG2: staging stack written (docker-compose.staging.yml, docs/STAGING.md); next M00c TG2 item is gates hardening.
 - Module: 0 — Foundations (with m00b low-friction login prioritised)

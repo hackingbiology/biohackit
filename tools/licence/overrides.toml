@@ -1,0 +1,53 @@
+# Verified licence overrides for packages with missing or ambiguous metadata.
+# Each [[override]] needs: package, version, licence (SPDX), source_url (upstream LICENSE file, actually fetched).
+# See docs/ecosystem/README.md, section "Licence gate".
+
+# Metadata says "Apache-2.0 License"; the LICENSE file is the Apache License 2.0 text (fetched 2026-11-24).
+[[override]]
+package = "django-timescaledb"
+version = "0.2.13"
+licence = "Apache-2.0"
+source_url = "https://raw.githubusercontent.com/schlunsen/django-timescaledb/master/LICENSE"
+
+# Data package (browser-support tables), not software; LICENSE is CC BY 4.0 (fetched 2026-11-24).
+[[override]]
+package = "caniuse-lite"
+version = "1.0.30001823"
+licence = "CC-BY-4.0"
+source_url = "https://raw.githubusercontent.com/browserslist/caniuse-lite/main/LICENSE"
+
+# Metadata says "BSD" only; upstream LICENSE is the 3-clause BSD text (fetched 2026-11-24, v8.2).
+[[override]]
+package = "qrcode"
+version = "8.2"
+licence = "BSD-3-Clause"
+source_url = "https://raw.githubusercontent.com/lincolnloop/python-qrcode/v8.2/LICENSE"
+
+# Generic "BSD License" classifier only; LICENSE is the 3-clause BSD text (fetched 2026-11-24, 0.6.1).
+[[override]]
+package = "sqlparse"
+version = "0.6.1"
+licence = "BSD-3-Clause"
+source_url = "https://raw.githubusercontent.com/andialbrecht/sqlparse/0.6.1/LICENSE"
+
+# Generic "BSD License" classifier only; LICENSE says "BSD (3-clause)" (fetched 2026-11-24, v4.14.0).
+[[override]]
+package = "pytest-django"
+version = "4.14.0"
+licence = "BSD-3-Clause"
+source_url = "https://raw.githubusercontent.com/pytest-dev/pytest-django/v4.14.0/LICENSE"
+
+# COPYING is the 2-clause BSD text (fetched 2026-11-24, 2.2.1); it does not mention the Apache/MPL classifiers (see docs/QUESTIONS.md).
+[[override]]
+package = "fido2"
+version = "2.2.1"
+licence = "BSD-2-Clause"
+source_url = "https://raw.githubusercontent.com/Yubico/python-fido2/2.2.1/COPYING"
+
+# Metadata says MIT-0; upstream LICENSE is "MIT No Attribution" (fetched 2026-11-24, v2.1.1).
+# MIT-0 is not on the GNU list, so only this per-version override admits it until question Q12 is answered.
+[[override]]
+package = "cffi"
+version = "2.1.1"
+licence = "MIT-0"
+source_url = "https://raw.githubusercontent.com/python-cffi/cffi/v2.1.1/LICENSE"
