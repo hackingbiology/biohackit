@@ -4,10 +4,10 @@
 - [x] proposal.md, tasks.md, spec delta written; questions appended to docs/QUESTIONS.md
 
 ## TG2 — Terminology app & sources
-- [ ] `terminology` Django app; `Source` model (name, version, licence, url, retrieved_at)
-- [ ] `Unit` (UCUM code, display) and `UnitConversion` (from, to, factor, biomarker nullable, source) models
-- [ ] `normalize_value()` deterministic helper; keeps as-reported value+unit
-- [ ] Tests: unknown unit rejected; conversion deterministic; row without source rejected
+- [x] `terminology` Django app; `Source` model (name, version, licence, url, retrieved_at)
+- [x] `Unit` (UCUM code, display) and `UnitConversion` (from, to, factor, biomarker nullable, source) models
+- [x] `normalize_value()` deterministic helper; keeps as-reported value+unit
+- [x] Tests: unknown unit rejected; conversion deterministic; row without source rejected
 
 ## TG3 — Coded analyte registry
 - [ ] Extend `Biomarker`: loinc_code required+unique, ucum unit FK, long name, system/specimen, source FK

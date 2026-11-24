@@ -13,3 +13,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-22 · M00 Foundations · TG5 backend tests confirmed (26 green), frontend auth.test.ts added (unrun: pnpm blocked), CI verification pending · see git log
 2026-11-23 · M00 Foundations · frontend checks run via node (jest 11 green, tsc ok), fixed eslint error in jest.config.js; CI-on-GitHub confirmation requested from Fabio · see git log
 2026-11-23 · M01 Terminology · OpenSpec change written (proposal, tasks TG1-5, spec delta), Q5-Q7 raised; M00 CI confirmation still pending · see git log
+2026-11-24 · M01 Terminology · TG2 done: terminology app (Source/Unit/UnitConversion, normalize_value), 4 tests, 30 pytest green · see git log
