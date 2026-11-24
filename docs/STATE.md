@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M00c TG2 gates A done 2026-11-24: changed-file coverage gate (tools/coverage/changed_coverage.py); remaining gates-hardening sub-items (mypy, pip-audit, pnpm audit, semgrep, openspec validate, Playwright+axe, mutmut) need tools not installed here.
 - X01 TG4 done 2026-11-24: integration anchor scan docs/ecosystem/integrations.md (Q14), give-back register test, m01 scan TG column fix; next X01 items: planner rule, Ecosystem docs page.
 - X01 licence gate done 2026-11-24: tools/licence/check_licences.py + overrides.toml, `licences` step appended to gates.sh (Q12 open); next X01 item: integration scans for the anchors.
 - X01 TG1 done 2026-11-24: docs/ecosystem/ README, GIVEBACK, m00-foundations scan + enforcing test; m01 scan done 2026-11-24 (docs/ecosystem/m01-terminology.md, decisions annotated in m01 tasks); next X01 item: integration scans for the anchors.

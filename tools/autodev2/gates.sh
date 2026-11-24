@@ -36,5 +36,8 @@ echo "covered=$COV base=${BASE_COVERED:-?}"
 step "licences"
 python3 tools/licence/check_licences.py || bad "AGPL-incompatible or unknown dependency licence"
 
+step "changed-file coverage"
+backend/.venv/bin/python tools/coverage/changed_coverage.py "$BASE" || bad "changed backend file below 90% coverage"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL

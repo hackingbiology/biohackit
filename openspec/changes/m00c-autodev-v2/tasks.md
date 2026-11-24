@@ -8,5 +8,13 @@
 - [x] Tag every existing test with its `scenario:` ids; matrix shows true coverage
 - [x] `docker-compose.staging.yml` (gunicorn + `next start`, Next rewrites `/api` and `/_allauth` to backend, DEBUG off, demo-data seed, `X-Robots-Tag: noindex`), port 18800 only
 - [ ] Gates hardening (append-only to gates.sh): mypy (strict on new apps), coverage ≥ 90% on changed backend files, `pip-audit`, `pnpm audit --prod`, semgrep (p/django, p/typescript), openspec validate (CLI `@fission-ai/openspec`), Playwright e2e + axe WCAG 2.2 AA on key pages, mutmut on statistics/unit-conversion modules
+  - [ ] mypy (strict on new apps)
+  - [x] changed-file coverage ≥ 90% (tools/coverage/changed_coverage.py)
+  - [ ] pip-audit
+  - [ ] pnpm audit --prod
+  - [ ] semgrep (p/django, p/typescript)
+  - [ ] openspec validate
+  - [ ] Playwright e2e + axe WCAG 2.2 AA
+  - [ ] mutmut
 - [ ] Spec discovery: compare whitepaper/, docs/presentation/, docs/*.md against openspec/specs; every feature not yet specified becomes a requirement in an OpenSpec change
 - [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog

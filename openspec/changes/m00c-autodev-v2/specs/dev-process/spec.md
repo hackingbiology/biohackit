@@ -64,3 +64,18 @@ The process SHALL provide a public, password-less staging stack on port 18800 th
 #### Scenario: Staging single port
 - **WHEN** the staging stack is up
 - **THEN** only port 18800 is published on the host and neither the database nor the backend publishes a port
+
+### Requirement: Changed backend code is tested
+The gates SHALL fail when any backend Python source file changed on the branch (excluding tests/, migrations/ and manage.py) has line coverage below 90% under the backend test suite.
+
+#### Scenario: Under-tested change rejected
+- **WHEN** a changed backend source file has less than 90% line coverage or is absent from the coverage report
+- **THEN** the coverage gate fails and names the file and its percentage
+
+#### Scenario: Excluded and unchanged files ignored
+- **WHEN** the only changed backend files are tests, migrations, manage.py or non-Python files
+- **THEN** the coverage gate passes without running coverage
+
+#### Scenario: Deleted file not required
+- **WHEN** a backend source file is deleted on the branch
+- **THEN** it is not checked

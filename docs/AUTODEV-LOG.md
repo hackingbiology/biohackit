@@ -23,3 +23,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-24 · X01 · TG2 m01 terminology scan (docs/ecosystem/m01-terminology.md), m01 proposal link + task annotations, licence-table check in test_ecosystem_docs.py, psycopg-binary entry; Q9–Q11 · see git log
 2026-11-24 · X01 · TG3 licence gate: tools/licence/check_licences.py + overrides.toml, `licences` step appended to gates.sh, README table gains ISC/0BSD/PSF-2.0/MIT-0, tests; Q12 · see git log
 2026-11-24 · X01 · TG4 integration anchor scan (docs/ecosystem/integrations.md), scans test covers it, give-back register test, m01 TG column fix; Q14 · see git log
+2026-11-24 · M00c · TG2 gates A: changed-file backend coverage ≥ 90% gate (tools/coverage/changed_coverage.py, step appended to gates.sh), dev-process spec + tests, GIVEBACK fhir.resources wording fix · see git log
