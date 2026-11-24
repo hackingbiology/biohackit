@@ -12,7 +12,10 @@ from terminology.services import normalize_value
 @pytest.fixture
 def src(db):
     return Source.objects.create(
-        name="UCUM", version="2.1", licence="UCUM licence", url="https://ucum.org",
+        name="UCUM",
+        version="2.1",
+        licence="UCUM licence",
+        url="https://ucum.org",
         retrieved_at=date(2026, 11, 24),
     )
 
@@ -21,7 +24,9 @@ def src(db):
 def units(src):
     a = Unit.objects.create(ucum_code="mg/dL", display="mg/dL", source=src)
     b = Unit.objects.create(ucum_code="g/L", display="g/L", source=src)
-    UnitConversion.objects.create(from_unit=a, to_unit=b, factor=Decimal("0.01"), source=src)
+    UnitConversion.objects.create(
+        from_unit=a, to_unit=b, factor=Decimal("0.01"), source=src
+    )
     return a, b
 
 

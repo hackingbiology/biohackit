@@ -14,7 +14,9 @@ class Source(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["name", "version"], name="uniq_source_name_version")
+            models.UniqueConstraint(
+                fields=["name", "version"], name="uniq_source_name_version"
+            )
         ]
 
     def __str__(self):
@@ -46,8 +48,12 @@ class Unit(SourcedModel):
 class UnitConversion(SourcedModel):
     """normalised = as_reported * factor. `biomarker` null = applies to any analyte."""
 
-    from_unit = models.ForeignKey(Unit, on_delete=models.PROTECT, related_name="conversions_from")
-    to_unit = models.ForeignKey(Unit, on_delete=models.PROTECT, related_name="conversions_to")
+    from_unit = models.ForeignKey(
+        Unit, on_delete=models.PROTECT, related_name="conversions_from"
+    )
+    to_unit = models.ForeignKey(
+        Unit, on_delete=models.PROTECT, related_name="conversions_to"
+    )
     factor = models.DecimalField(max_digits=30, decimal_places=12)
     biomarker = models.ForeignKey(
         "core.Biomarker", null=True, blank=True, on_delete=models.CASCADE
