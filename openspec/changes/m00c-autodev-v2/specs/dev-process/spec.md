@@ -25,6 +25,13 @@ Every task SHALL be reviewed by independent read-only reviewer agents, and only 
 - **WHEN** a reviewer reports a finding whose cited code does not exhibit the problem
 - **THEN** the verifier rejects it and no change is made
 
+### Requirement: Reproducible backend dependencies
+Every runtime dependency declared in backend/pyproject.toml SHALL have a matching package entry in backend/uv.lock.
+
+#### Scenario: Lockfile in sync
+- **WHEN** a dependency is declared in pyproject.toml
+- **THEN** uv.lock contains a `[[package]]` with that normalized name, and the `biohackit` package's dependencies list references it
+
 ### Requirement: Budget ceiling
 The process SHALL keep its attributed share of the weekly plan limit at or below 40%, paced over the week, and SHALL pause when account-wide utilization reaches 90%.
 
