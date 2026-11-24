@@ -24,3 +24,12 @@
 - [ ] `seed_reference` management command, idempotent, refuses rows lacking source
 - [ ] Seed files under `backend/terminology/seed/` with per-row source (UCUM units; LOINC subset for standard panel)
 - [ ] Tests: loader idempotent; unsourced row aborts
+
+## TG-LOINC Full LOINC import (Fabio 2026-11-24)
+- [ ] Importer `manage.py import_loinc <dir>`: Loinc table, ConsumerName, Panels&Forms, AnswerList, Part/LinkageFile, LinguisticVariants (it-IT, zh-CN at least); idempotent upsert, records `Source(name=LOINC, version)`; licence notice stored and shown in UI/exports
+- [ ] Postgres full-text + trigram search over long/consumer/variant names; API `GET /api/terminology/loinc?q=` paginated
+- [ ] Test with a tiny synthetic fixture in LOINC file format (no real table in git); if `data/vendor/loinc/` is absent, the importer exits cleanly with instructions
+## TG-SNOMED
+- [ ] Verify GPS licence text and URL (record in Source); if redistribution allowed, importer for GPS; generic BYO-SNOMED RF2 importer; SNOMED codes are optional cross-refs only
+## TG-STRATA
+- [ ] `OptimalRange`/`ReferenceRange` stratified by age band, sex, ancestry (nullable = all), with evidence grade; selector picks the most specific stratum with complete provenance

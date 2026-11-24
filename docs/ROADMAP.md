@@ -40,3 +40,18 @@ until *everything* is done; then Fabio starts using it as first user.
 
 Fabio reviews each module's spec in `docs/QUESTIONS.md`; work does not block on him —
 reasonable defaults are taken and flagged, and reversed if he disagrees.
+
+## Research programmes (cross-module)
+
+### R1 — Optimal ranges by age, sex, ancestry (Fabio 2026-11-24: a macro research theme)
+- **Goal:** for each analyte, give optimal ranges (distinct from lab reference ranges and safety thresholds), stratified by age, sex and, where the evidence supports it, ancestry.
+- **Method:**
+  1. Run a multi-LLM literature search with AI4L audit-based prompting, using Forever Healthy's Evipedia as the primary knowledgebase.
+  2. **LLMs only propose candidate sources.** Every number must be extracted from a cited primary source (study, guideline, cohort), with population, endpoint (all-cause mortality, CVD, …) and evidence grade, and must be checked by a human before it is shown. This follows the frozen rule "the LLM writes words, never numbers".
+  3. Where sources disagree, show the range of the evidence, not an average invented by us.
+- **Deliverables:**
+  - an OpenSpec change `r1-optimal-ranges`;
+  - a research dataset with full provenance (CC BY 4.0);
+  - a review UI to approve candidates;
+  - outreach to Forever Healthy for a data partnership.
+- **Gate:** no optimal range is displayable without complete provenance (M01 gate).

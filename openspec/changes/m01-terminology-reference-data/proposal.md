@@ -25,3 +25,11 @@ No value is invented. Seed rows are limited to what can be cited from public sou
 | D2 | Optimal ranges in seed | None invented; structure + validator only until sources are supplied/approved |
 | D3 | Location | new Django app `backend/terminology/` |
 | D4 | SNOMED | Not bundled (licence); field reserved |
+
+## Decisions update (Fabio, 2026-11-24)
+- **D-LOINC (supersedes "subset only"):** the platform SHALL carry the **complete** LOINC release, as broad and detailed as published: all terms (~100k+), the official long names, the consumer names, the panels and forms, the answer lists, the LOINC Part hierarchy, and the linguistic variants. Variants for **it-IT and zh-CN** are required for i18n. The LOINC licence allows free redistribution with the copyright and licence notice and with the content unmodified. The release zip must be downloaded with a free loinc.org account, which Fabio holds. It is placed in `data/vendor/loinc/` (git-ignored) and loaded by an idempotent, versioned importer that records the LOINC version as `Source`. The curated "standard panel" subset remains as a *featured* flag, not as a limit.
+- **D-SNOMED:** the full SNOMED CT is not bundled, because of its affiliate licence: it is free only in member territories and it cannot be shipped in an AGPL repo or open-data export. Instead:
+  - bundle the **SNOMED CT Global Patient Set (GPS)**, the free set usable anywhere, after the runner has verified its licence text;
+  - support a "bring your own SNOMED" importer for licensed operators;
+  - keep SNOMED codes as optional cross-references only, never as the primary key: lab tests use LOINC, diagnoses use ICD-11 (WHO), substances use RxNorm/ATC/UNII.
+- **D-OPTIMAL:** optimal ranges by age, sex and (where evidence exists) ancestry are a dedicated **research programme R1**; see docs/ROADMAP.md. M01 delivers only the stratified structure (age band, sex, ancestry, source, evidence grade) and the provenance gate.

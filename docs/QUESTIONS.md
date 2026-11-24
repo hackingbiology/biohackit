@@ -26,3 +26,9 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 **Q5** · Bundle a small curated LOINC subset (standard panel) under the LOINC licence notice, full table user-supplied? Default taken: **yes, subset only**.
 **Q6** · Optimal ranges: no citation can be verified by the runner, so none are seeded. Default taken: **structure + provenance gate only**; please supply or approve sourced optimal ranges.
 **Q7** · SNOMED: Default taken: **not bundled** (licence); field reserved.
+
+**Answers (Fabio 2026-11-24):**
+- **Q5:** yes, and the full, most detailed LOINC is wanted (see m01 D-LOINC). Fabio will provide the release zip.
+- **Q6:** optimal ranges become research programme R1 (ROADMAP). Only structure and gate in M01.
+- **Q7:** explained to Fabio. Bundle GPS where the licence allows, support bring-your-own SNOMED, cross-refs only.
+- **Login:** OAuth and DiscourseConnect credentials are deferred by Fabio; nothing more to ask for now.
