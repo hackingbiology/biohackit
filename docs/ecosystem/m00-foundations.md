@@ -46,6 +46,15 @@ Not in scope of this scan: a PWA/service-worker library (none is in `frontend/pa
 - **Decision:** adopt as dependency
 - **Verified:** api.github.com/repos/psycopg/psycopg and pypi.org (license_expression `LGPL-3.0-only`), 2026-11-24
 
+### psycopg-binary
+- **URL:** https://github.com/psycopg/psycopg
+- **Licence:** LGPL-3.0
+- **AGPL-compatible:** yes (LGPL-3.0, used as an unmodified library)
+- **Last activity:** 2026-11-23
+- **Decision:** adopt as dependency
+- **Verified:** pypi.org/pypi/psycopg-binary/json (license_expression `LGPL-3.0-only`, project_urls Code = the psycopg repo, release 3.3.9 uploaded 2026-11-12) and api.github.com/repos/psycopg/psycopg (pushed_at), 2026-11-24
+- **Licence note:** pre-compiled build of psycopg, same repository and licence; pulled in by the `psycopg[binary]` extra.
+
 ### django-environ
 - **URL:** https://github.com/joke2k/django-environ
 - **Licence:** MIT
@@ -94,7 +103,7 @@ Not in scope of this scan: a PWA/service-worker library (none is in `frontend/pa
 - **URL:** https://github.com/timescale/timescaledb
 - **Licence:** unknown
 - **Licence note:** Apache-2.0 outside `tsl/`; Timescale License inside `tsl/` (mixed, no single SPDX id; GitHub returned `NOASSERTION`)
-- **AGPL-compatible:** Apache-2.0 part yes; Timescale License part unknown — question in docs/QUESTIONS.md
+- **AGPL-compatible:** unknown — Apache-2.0 part yes, Timescale License part unknown; question in docs/QUESTIONS.md
 - **Last activity:** 2026-11-24
 - **Decision:** adopt as dependency
 - **Provisional:** yes, until the AGPL question is answered. Images: `timescale/timescaledb-ha:pg16` (docker-compose.yml:3, docker-compose.staging.yml:5) and `timescale/timescaledb:latest-pg16` (.github/workflows/ci.yml:14). Whether those builds include `tsl/` is unknown (docker not available to inspect them).

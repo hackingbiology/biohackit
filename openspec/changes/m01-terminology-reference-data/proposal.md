@@ -12,6 +12,9 @@ Give the platform a standards-coded, provenance-carrying reference layer that M0
 - **Seed loader**: management command `seed_reference` loading CSV/JSON seed files; refuses any row with no `source`. Idempotent.
 - **Validation helpers**: UCUM unit validation, value normalisation (as-reported and normalised both kept).
 
+## Ecosystem scan
+Reuse decisions for UCUM, LOINC, OHDSI/OMOP vocabularies, FHIR terminology tooling and reference-range datasets: [docs/ecosystem/m01-terminology.md](../../../docs/ecosystem/m01-terminology.md) (change `x01-ecosystem-reuse`). Its decisions are annotated in `tasks.md`.
+
 ## Out of scope
 Lab import (M02), interventions catalog (M03), PhenoAge computation (M02), AI narration (M07).
 

@@ -20,3 +20,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-24 · M00c · TG2 staging part B review fixes: skipTrailingSlashRedirect + slash-terminated rewrites (no 308/APPEND_SLASH loop); seed_demo creates a verified primary EmailAddress; staging uses console EMAIL_BACKEND; tests added · see git log
 2026-11-24 · M00c · TG2 staging B round 2: NoIndexMiddleware moved first in MIDDLEWARE (covers redirects, 400s, WhiteNoise; tests added); STAGING.md documents e-mail-code sign-in via backend logs · see git log
 2026-11-24 · X01 · TG1 docs/ecosystem README+GIVEBACK+m00 scan (fetched from GitHub/PyPI/npm), proposal link, test_ecosystem_docs.py; Q8 added for unknown licence verdicts · see git log
+2026-11-24 · X01 · TG2 m01 terminology scan (docs/ecosystem/m01-terminology.md), m01 proposal link + task annotations, licence-table check in test_ecosystem_docs.py, psycopg-binary entry; Q9–Q11 · see git log
