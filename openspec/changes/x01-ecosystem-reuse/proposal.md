@@ -8,7 +8,7 @@ Fabio (2026-11-24): biohack.it must become **part of an ecosystem**, not a silo.
 - UI components;
 - protocols.
 
-The slides already name software to integrate or learn from: get-based (AGPL, reuse analysis in `docs/getbased-reuse-analysis.md`), Forever Healthy's AI4L and evipedia-mcp, HL7 FHIR, OMOP, LOINC/UCUM, and Discourse/rapamycin.news. Some overhead in the software is accepted: anchoring to third-party knowledge and giving our knowledge back is worth more than a lean custom design.
+The slides already name software to integrate or learn from: get-based (AGPL, reuse analysis in `docs/getbased-reuse-analysis.md`), Forever Healthy's AI4L and evipedia-mcp, HL7 FHIR, OMOP, LOINC/UCUM, and Discourse/rapamycin.news. Their verified scan is `docs/ecosystem/integrations.md`. Some overhead in the software is accepted: anchoring to third-party knowledge and giving our knowledge back is worth more than a lean custom design.
 
 ## What changes
 - **Ecosystem scan before every module**, recorded as `docs/ecosystem/<module>.md`, which a module's OpenSpec change must cite. The scan covers:

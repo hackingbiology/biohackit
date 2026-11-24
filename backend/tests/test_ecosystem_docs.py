@@ -105,7 +105,7 @@ def _entries(path: Path) -> dict[str, dict[str, str]]:
 
 
 def _scans() -> list[Path]:
-    scans = sorted(ECOSYSTEM.glob("m*.md"))
+    scans = sorted(ECOSYSTEM.glob("m*.md")) + [ECOSYSTEM / "integrations.md"]
     assert scans, "no module scans under docs/ecosystem"
     return scans
 
@@ -159,6 +159,92 @@ def test_module_change_links_its_scan() -> None:
         assert f"docs/ecosystem/{scan_name}" in proposal, change
 
 
+_GIVEBACK_STATUSES = {"proposed", "approved", "done"}
+
+
+def _giveback_rows() -> list[list[str]]:
+    """Data rows of the GIVEBACK.md table: date, project, contribution, status, link."""
+    rows: list[list[str]] = []
+    for line in (ECOSYSTEM / "GIVEBACK.md").read_text(encoding="utf-8").splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if line.startswith("|") and cells[0] != "date" and not set(cells[0]) <= {"-"}:
+            rows.append(cells)
+    return rows
+
+
+def _giveback_problem(row: list[str]) -> str | None:
+    if len(row) != 5 or not all(row):
+        return "needs date, upstream project, contribution, status and link"
+    date, project, contribution, status, link = row
+    if not _ISO.fullmatch(date):
+        return "date must be YYYY-MM-DD"
+    if "/" not in project:
+        return "upstream project must be named as owner/repo"
+    if len(contribution.split()) < 3:
+        return "proposed contribution must be described"
+    if status not in _GIVEBACK_STATUSES:
+        return f"status must be one of {sorted(_GIVEBACK_STATUSES)}"
+    if not link.startswith("https://"):
+        return "link must start with https://"
+    return None
+
+
+# scenario: ecosystem-reuse::proposed-upstream-contribution
+def test_giveback_entries_are_complete_and_nothing_is_posted_unapproved() -> None:
+    rows = _giveback_rows()
+    assert rows, "GIVEBACK.md has no entries"
+    for row in rows:
+        assert _giveback_problem(row) is None, f"{row[:2]}: {_giveback_problem(row)}"
+    text = (ECOSYSTEM / "GIVEBACK.md").read_text(encoding="utf-8")
+    assert "Nothing is posted" in text and "approval" in text
+
+
+# scenario: ecosystem-reuse::proposed-upstream-contribution
+def test_giveback_register_is_linked_from_readme() -> None:
+    readme = (ECOSYSTEM / "README.md").read_text(encoding="utf-8")
+    assert "(GIVEBACK.md)" in readme
+
+
+# scenario: ecosystem-reuse::proposed-upstream-contribution
+def test_giveback_row_without_status_or_project_is_rejected() -> None:
+    good = [
+        "2026-11-24",
+        "owner/repo",
+        "Add a LICENSE file",
+        "proposed",
+        "https://x.org",
+    ]
+    assert _giveback_problem(good) is None
+    assert _giveback_problem([*good[:3], "", good[4]]) is not None
+    assert _giveback_problem([good[0], "somewhere", *good[2:]]) is not None
+    assert _giveback_problem([*good[:3], "posted", good[4]]) is not None
+
+
+# scenario: ecosystem-reuse::scan-entries-are-verified
+def test_integration_scan_covers_every_anchor_and_is_parsed() -> None:
+    entries = _entries(ECOSYSTEM / "integrations.md")
+    urls = " ".join(e.get("URL", "") for e in entries.values())
+    for anchor in (
+        "elkimek/get-based",
+        "forever-healthy/AI4L",
+        "forever-healthy/evipedia-mcp",
+        "nazrulworld/fhir.resources",
+        "OHDSI/CommonDataModel",
+        "docs.discourse.org",
+    ):
+        assert anchor in urls, f"integrations.md lacks {anchor}"
+
+
+# scenario: ecosystem-reuse::scan-entries-are-verified
+def test_integration_scan_is_linked_from_readme_and_proposal() -> None:
+    readme = (ECOSYSTEM / "README.md").read_text(encoding="utf-8")
+    proposal = (CHANGES / "x01-ecosystem-reuse" / "proposal.md").read_text(
+        encoding="utf-8"
+    )
+    assert "integrations.md" in readme
+    assert "docs/ecosystem/integrations.md" in proposal
+
+
 def _synthetic(licence: str, compat: str, decision: str) -> dict[str, str]:
     return {"Licence": licence, "AGPL-compatible": compat, "Decision": decision}
 
@@ -193,3 +279,18 @@ def test_capitalised_or_paraphrased_yes_on_gpl_is_still_checked() -> None:
         entry = _synthetic("GPL-3.0", claim, "adopt as dependency")
         assert _licence_problem(entry, verdicts) is not None
         assert not re.match(r"^(yes|no|unknown)\b", claim)
+
+
+# scenario: ecosystem-reuse::scan-entries-are-verified
+def test_same_url_has_same_licence_verdict_in_every_scan() -> None:
+    seen: dict[str, tuple[str, str, str]] = {}
+    for scan in _scans():
+        for name, fields in _entries(scan).items():
+            url = fields.get("URL", "").rstrip("/")
+            verdict = (fields.get("Licence", ""), fields.get("AGPL-compatible", "")[:3])
+            if url in seen:
+                other = seen[url][2]
+                assert seen[url][:2] == verdict, (
+                    f"{name} ({scan.name}) disagrees with {other}"
+                )
+            seen[url] = (*verdict, scan.name)

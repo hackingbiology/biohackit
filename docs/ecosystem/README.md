@@ -1,6 +1,6 @@
 # Ecosystem reuse
 
-biohack.it prefers maintained open-source projects, upstream schemas (FHIR, OMOP CDM, OHDSI vocabularies) and open datasets over custom designs, even with some overhead (OpenSpec change `x01-ecosystem-reuse`). This folder holds one **scan** per module (`m00-foundations.md`, later `m01-terminology.md`, …) and the [give-back register](GIVEBACK.md).
+biohack.it prefers maintained open-source projects, upstream schemas (FHIR, OMOP CDM, OHDSI vocabularies) and open datasets over custom designs, even with some overhead (OpenSpec change `x01-ecosystem-reuse`). This folder holds one **scan** per module (`m00-foundations.md`, later `m01-terminology.md`, …), the [integration anchors scan](integrations.md) and the [give-back register](GIVEBACK.md).
 
 ## Method
 

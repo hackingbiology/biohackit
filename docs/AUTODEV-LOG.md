@@ -22,3 +22,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-24 · X01 · TG1 docs/ecosystem README+GIVEBACK+m00 scan (fetched from GitHub/PyPI/npm), proposal link, test_ecosystem_docs.py; Q8 added for unknown licence verdicts · see git log
 2026-11-24 · X01 · TG2 m01 terminology scan (docs/ecosystem/m01-terminology.md), m01 proposal link + task annotations, licence-table check in test_ecosystem_docs.py, psycopg-binary entry; Q9–Q11 · see git log
 2026-11-24 · X01 · TG3 licence gate: tools/licence/check_licences.py + overrides.toml, `licences` step appended to gates.sh, README table gains ISC/0BSD/PSF-2.0/MIT-0, tests; Q12 · see git log
+2026-11-24 · X01 · TG4 integration anchor scan (docs/ecosystem/integrations.md), scans test covers it, give-back register test, m01 TG column fix; Q14 · see git log

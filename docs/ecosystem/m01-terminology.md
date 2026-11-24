@@ -132,8 +132,8 @@ No other open reference-range dataset with a stated licence was found and verifi
 
 | Decision | M01 task changed |
 |---|---|
-| Adopt ucumvert for UCUM validation instead of a custom parser | TG2 (`Unit` validation) and TG5 (seed check) |
-| Align `Unit`/`Source` columns and the LOINC tables with OMOP `CONCEPT`/`VOCABULARY` vocabulary where it fits | TG2, TG-LOINC |
+| Adopt ucumvert for UCUM validation instead of a custom parser | TG5 (UCUM validation of seed rows and `services.resolve_unit`) |
+| Align `Unit`/`Source` columns and the LOINC tables with OMOP `CONCEPT`/`VOCABULARY` vocabulary where it fits | TG5, TG-LOINC |
 | LOINC and Athena content stay user-supplied until Q9/Q10 are answered | TG5, TG-LOINC |
 | No open reference-range dataset: ranges stay structure-only | TG4 |
 | Snowstorm/HAPI read as references only | TG-SNOMED |

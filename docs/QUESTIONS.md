@@ -33,6 +33,12 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 
 **Q12** · The licence gate admits MIT-0, by per-version override only (used by `cffi`, a backend dependency) although the GNU licence list does not name it; the basis is that the fetched cffi LICENSE is the MIT grant without the attribution condition. `caniuse-lite` (CC-BY-4.0, browser-support data used by the frontend build chain) is accepted only through a documented override, since CC-BY is "data/docs only" in the README table. Default taken: **both accepted**; GPL-3.0 and CC-BY-SA stay `unknown` and fail the gate (see Q8). Please confirm or tell me to drop them.
 
+## 2026-11-24 · X01 integration anchor scan
+
+**Q14** · Discourse is GPL-2.0 (fetched LICENSE.txt: GNU GPL Version 2, June 1991), which is not in the README AGPL table. Default taken: **verdict unknown, learn-from only**; we talk to a forum only over its HTTP API and import no Discourse code. Please confirm that API use alone raises no licence concern, or tell us otherwise.
+
+**Q15** · The licence of the evipedia.ai review content (as returned by evipedia-mcp) was not fetched; only the MCP server code is MIT. Default taken: **store only the review URL/ID and PubMed PMIDs, never review text**, until the content licence is confirmed. Please confirm the content terms or tell us what may be stored.
+
 ## 2026-11-23 · M01 Terminology & reference data
 
 **Q5** · Bundle a small curated LOINC subset (standard panel) under the LOINC licence notice, full table user-supplied? Default taken: **yes, subset only**.
