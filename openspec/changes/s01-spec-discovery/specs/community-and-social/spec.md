@@ -16,6 +16,11 @@ The system SHALL NOT sell protocols, biomarkers, safety rules or the open datase
 - **WHEN** protocols or interventions are listed or ranked
 - **THEN** no supplier payment affects the listing or ranking
 
+#### Scenario: Commercial content is labelled
+- **WHEN** a market player publishes availability or receives requests through the platform
+- **THEN** every commercial item is labelled as commercial
+- **AND** the player cannot position itself in the protocol catalog (Source: docs/hackingbiology-project-spec.md § 3.9)
+
 #### Scenario: Open data is not a product
 - **WHEN** the open dataset or the knowledge content is offered
 - **THEN** it is offered without charge and without exclusive access for any party
@@ -42,3 +47,33 @@ The system SHALL publish its functional specification, and its architecture deci
 #### Scenario: Specification tracks the repository
 - **WHEN** a requirement changes in the repository
 - **THEN** the published specification reflects the change
+
+### Requirement: Public profile and protocol pages are indexable
+The system SHALL serve a public profile page and a public protocol page that search engines can index, showing only what the owner has made public. (Source: docs/hackingbiology-project-spec.md § 4.2.)
+
+#### Scenario: Public page is indexable
+- **WHEN** a search engine requests a public protocol page
+- **THEN** the page is served with its public content
+
+#### Scenario: Withheld items stay out
+- **WHEN** an item is withheld by its owner
+- **THEN** it is absent from the page and from anything an indexer can read
+
+### Requirement: Moderation policy for community-contributed protocols
+The system SHALL publish a policy that states what cannot be published and SHALL moderate community-contributed protocols against it. (Source: docs/hackingbiology-project-spec.md § 7. The source does not state the content of the policy; see QUESTIONS.md Q23.)
+
+#### Scenario: Policy is public
+- **WHEN** a user submits a protocol for publication
+- **THEN** the policy is reachable from the submission page
+
+#### Scenario: Reported content is reviewed
+- **WHEN** a published protocol is reported as violating the policy
+- **THEN** it enters a moderation review and the outcome is recorded
+
+### Requirement: Medical objections are collected as a public backlog
+The system SHALL collect objections raised by clinicians about markers, safety cutoffs or warnings, publish them, and track them as an improvement backlog. (Source: docs/hackingbiology-project-spec.md § 3.6.)
+
+#### Scenario: Objection is recorded and visible
+- **WHEN** a clinician submits an objection
+- **THEN** it is published with its status
+- **AND** the status changes when it is accepted, rejected or addressed, with a reason

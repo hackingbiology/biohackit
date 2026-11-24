@@ -4,6 +4,22 @@ Format: date · module · question · default taken (work continues with the def
 
 ---
 
+## 2026-11-24 · s01 spec discovery B
+
+**Q18** · The project spec wants protocol cost shown (§ 6 M4bis) but does not say where prices come from or in what currency. Default taken: **the requirement only says each price shows who entered it**; no price source, catalogue or currency is chosen. Please say where prices should come from.
+
+**Q19** · The project spec wants a monthly LLM credit allowance (§ 8.5bis) with "a generous balance" but gives no amounts; the 3 and 10 credits it quotes are MyAgingTests' values. Default taken: **the requirement fixes no amount**. Please set the allowance and the regeneration day.
+
+**Q20** · The project spec has the system "generate the request for the laboratory" (§ 4.1 C) without a format. Default taken: **the requirement fixes no format** (printable page); no laboratory is named. Please say which format labs accept.
+
+**Q21** · Erasure (§ 7) conflicts with a clonable public snapshot (whitepaper § 11): copies already cloned cannot be recalled. Default taken: **delete from the instance and later snapshots, and tell the user plainly that clones are out of reach**. Please confirm this is acceptable under your reading of GDPR art. 9.
+
+**Q22** · Reminders (§ 4.2) name no channel. Default taken: **channel-agnostic requirement**; in-app first when built. Please say whether e-mail or push is wanted.
+
+**Q23** · The project spec says a policy on "what is not publishable" is needed (§ 7) but not its content. Default taken: **the requirement only says the policy is published and enforced**; no categories chosen. Please say what must be excluded.
+
+**Q24** · The whitepaper promises "open and linked data" (§ 11) without a serialisation. Default taken: **the requirement names no format**; implementation will pick a standard RDF or JSON-LD form during the data-export task and record it as an ADR, reversible. Please name a preferred format if you have one.
+
 ## 2026-11-24 · s01 spec discovery A
 
 **Q16** · The Foundation text says content and the public dataset are under "open licenses" without naming them. Default taken: **the requirement only says a licence is declared per artefact**; no licence is chosen. Please name the licences (code is AGPL-3.0).

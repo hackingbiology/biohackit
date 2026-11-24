@@ -69,6 +69,7 @@ The Requirement column reads `<capability>/<Requirement title>`. `backend/tests/
 | whitepaper/whitepaper.src.html § 10 What is unique | Literature prediction and observed cohort on one axis | covered | dashboards-and-doctor-view/Double-column literature vs observed | |
 | whitepaper/whitepaper.src.html § 11 Openness | Clonable open-data snapshot sufficient to seed an instance | covered | analytics-and-open-data/Full clonable public snapshot | |
 | whitepaper/whitepaper.src.html § 11 Openness | Genomic data and lab originals public behind a heightened consent gate | covered | genomics/Public by default with heightened consent (incl. gVCF) | |
+| whitepaper/whitepaper.src.html § 11 Openness | Everything public is open and linked data, coded and linked, sufficient to seed an instance | added | analytics-and-open-data/Public data is published as linked data | Serialisation open, Q24 |
 | whitepaper/whitepaper.src.html § 11 Openness | Research API returns de-identified cohort data with caveats for an intervention and biomarker | added | analytics-and-open-data/Research API answers intervention-by-biomarker queries | |
 | whitepaper/whitepaper.src.html § 11 Openness | Raw publication put to a community vote when the public beta opens | covered | analytics-and-open-data/Raw-data publication validated by a community poll at BETA | |
 | whitepaper/whitepaper.src.html § 11 Openness | OMOP research export | covered | analytics-and-open-data/Researcher access and OMOP export | |

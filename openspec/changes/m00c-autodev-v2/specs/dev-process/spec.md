@@ -85,7 +85,7 @@ Every feature promised by a project document SHALL be recorded in a register und
 
 #### Scenario: Register rows resolve
 - **WHEN** a register row has status covered or added
-- **THEN** its source file exists and the cited `<capability>/<Requirement title>` exists in `openspec/specs/**` or in an open change's specs
+- **THEN** the source file exists, a covered row's `<capability>/<Requirement title>` exists in `openspec/specs/**`, and an added row's requirement exists in an open change's specs
 
 #### Scenario: Unspecified feature captured
 - **WHEN** a register row has status added

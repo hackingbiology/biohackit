@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -161,3 +161,19 @@ def test_added_row_already_in_specs_fails() -> None:
     specs = _titles("cap", "Req")
     errors = check_rows([_row("added")], specs, _titles("cap", "Req"), ROOT)
     assert any("already in openspec/specs" in e for e in errors)
+
+
+# scenario: dev-process::register-rows-resolve
+def test_project_spec_register_is_checked_and_a_bad_title_breaks_it() -> None:
+    names = {p.name for p in (ROOT / "docs/spec-discovery").glob("*.md")}
+    assert {"whitepaper.md", "project-spec.md"} <= names
+    specs = collect_titles(ROOT / "openspec/specs", "*/spec.md")
+    changes = collect_titles(ROOT / "openspec/changes", "*/specs/*/spec.md")
+    text = (ROOT / "docs/spec-discovery/project-spec.md").read_text(encoding="utf-8")
+    rows = parse_register(text)
+    source = "docs/hackingbiology-project-spec.md"
+    assert all(r.source.startswith(source) for r in rows)
+    assert check_rows(rows, specs, changes, ROOT) == []
+    covered = next(r for r in rows if r.status == "covered")
+    bad = replace(covered, requirement="protocols/No such requirement")
+    assert check_rows([bad], specs, changes, ROOT)

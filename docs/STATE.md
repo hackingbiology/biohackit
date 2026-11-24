@@ -6,7 +6,8 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
-- M00c TG2 spec discovery part A done 2026-11-24: register docs/spec-discovery/whitepaper.md, change openspec/changes/s01-spec-discovery (8 ADDED requirements, Q16–Q17), test_spec_discovery_register.py; next: part B (docs/hackingbiology-project-spec.md, docs/getbased-reuse-analysis.md, docs/presentation/).
+- M00c TG2 spec discovery part B done 2026-11-24: register docs/spec-discovery/project-spec.md (14 ADDED requirements, Q18–Q23), plus part A residuals (linked-data requirement, Q24; register-rows scenario wording); next: part C (docs/getbased-reuse-analysis.md, docs/presentation/).
+- M00c TG2 spec discovery part A done 2026-11-24: register docs/spec-discovery/whitepaper.md, change openspec/changes/s01-spec-discovery (8 ADDED requirements, Q16–Q17), test_spec_discovery_register.py.
 - M00c TG2 gates A done 2026-11-24: changed-file coverage gate (tools/coverage/changed_coverage.py); remaining gates-hardening sub-items (mypy, pip-audit, pnpm audit, semgrep, openspec validate, Playwright+axe, mutmut) need tools not installed here.
 - X01 TG4 done 2026-11-24: integration anchor scan docs/ecosystem/integrations.md (Q14), give-back register test, m01 scan TG column fix; next X01 items: planner rule, Ecosystem docs page.
 - X01 licence gate done 2026-11-24: tools/licence/check_licences.py + overrides.toml, `licences` step appended to gates.sh (Q12 open); next X01 item: integration scans for the anchors.

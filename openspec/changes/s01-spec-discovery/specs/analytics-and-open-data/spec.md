@@ -23,3 +23,21 @@ The system SHALL publish its public dataset snapshot and its content under open 
 #### Scenario: Content states its licence
 - **WHEN** a user views published content
 - **THEN** the applicable open licence is reachable from that page
+
+### Requirement: Analytics pipeline works on pseudonymised data
+The system SHALL run cohort analytics on pseudonymised records, with identifiers held apart from the analytic data. (Source: docs/hackingbiology-project-spec.md § 7.)
+
+#### Scenario: Analytics input carries no direct identifier
+- **WHEN** a cohort analysis runs
+- **THEN** its input records carry a pseudonym and no name or contact detail
+
+### Requirement: Public data is published as linked data
+The system SHALL publish everything public as linked data, with its entities coded and linked to each other and to external vocabularies, sufficient to seed an independent instance. (Source: whitepaper § 11 Openness, "Open & linked data". The source names no serialisation; see QUESTIONS.md Q24.)
+
+#### Scenario: Entities are coded and linked
+- **WHEN** a third party reads the public dataset
+- **THEN** each entity carries its standard codes and a link to every entity it references
+
+#### Scenario: Linked data seeds an instance
+- **WHEN** an independent instance imports the linked data
+- **THEN** it reproduces the public entities and their links without access to the origin instance

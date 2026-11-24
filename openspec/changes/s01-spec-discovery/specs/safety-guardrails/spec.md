@@ -11,3 +11,18 @@ The system SHALL tell a user what to measure and SHALL NOT tell a user what to t
 #### Scenario: Dose guidance is a plausibility check only
 - **WHEN** a dose is checked
 - **THEN** the result is framed as a guardrail against an implausible entry, not as clinical advice
+
+### Requirement: LLM-assisted curation requires human review
+The system SHALL treat any safety rule, interaction or mapping proposed by an LLM as a proposal only, generated offline in batch, and SHALL NOT make it live until a named curator approves it. (Source: docs/hackingbiology-project-spec.md § 8.3 and § 8.4.)
+
+#### Scenario: Proposals are not live
+- **WHEN** an LLM proposes a safety rule, interaction or mapping
+- **THEN** it is stored as a proposal that no user-facing check uses
+
+#### Scenario: Curator approval and provenance
+- **WHEN** a curator approves a proposal
+- **THEN** it goes live and records the curator and its AI origin as provenance
+
+#### Scenario: Numeric thresholds need a source
+- **WHEN** an LLM proposal contains a numeric threshold
+- **THEN** it cannot be approved until a cited source is attached
