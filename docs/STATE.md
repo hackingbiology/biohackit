@@ -1,7 +1,8 @@
 # STATE — resume entrypoint
 
-- Runner: `gl-auditor@sd-172212:~/biohackit` (migrated 2026-11-17), loop `tools/autodev/run.sh` (cron 03:15 and 15:15, Sonnet, ≤15 USD/week).
-- Budget: ≤20% of weekly Claude cap; ledger `tools/autodev/ledger.jsonl`, cap in `tools/autodev/budget.conf`.
+- Runner: **autodev v2** (OpenSpec `m00c-autodev-v2`): systemd `biohackit-autodev` as gl-auditor on sd-172212, continuous graph planner→implementer→gates→adversarial review→verify→merge (`tools/autodev2/`). v1 cron runner retired 2026-11-24.
+- Definition of done: `docs/TRACEABILITY.md` (`tools/trace/matrix.py`). Daily digest 08:15 in `docs/digest/` + GitHub issue. Staging: http://51.158.36.151:18800.
+- Budget: ≤40% of the weekly plan limit, measured from real utilization (`/var/lib/biohackit-usage/usage.json`), paced over the week.
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current

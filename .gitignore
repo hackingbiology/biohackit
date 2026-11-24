@@ -35,3 +35,7 @@ frontend/.env*
 Thumbs.db
 tools/autodev/last-result.json
 data/vendor/
+tools/autodev2/state/
+frontend/coverage/
+frontend/next-env.d.ts
+*.tsbuildinfo
