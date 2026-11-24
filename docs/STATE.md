@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M00c TG2: staging stack written (docker-compose.staging.yml, docs/STAGING.md); next M00c TG2 item is gates hardening.
 - Module: 0 — Foundations (with m00b low-friction login prioritised)
 - Step: M00 TG1–TG5 done locally (backend 26 pytest, frontend 11 jest, tsc+eslint clean); only the 3 CI-on-GitHub items remain; Fabio must confirm CI green (QUESTIONS 2026-11-23)
 - m00b archived 2026-11-21 (openspec/changes/archive/m00b-low-friction-login); Fabio's action list (rapamycin.news secret, OAuth apps) still open.

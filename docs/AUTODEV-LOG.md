@@ -16,3 +16,6 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-24 · M01 Terminology · TG2 done: terminology app (Source/Unit/UnitConversion, normalize_value), 4 tests, 30 pytest green · see git log
 2026-11-24 · M00c · TG2 tag-tests: delta specs moved to specs/<capability>/spec.md; 7/206 scenarios covered by tagged tests · see git log
 2026-11-24 · M00c · TG2 staging part A: gunicorn added to pyproject and uv.lock from PyPI JSON; lockfile-sync test covers dev-process::lockfile-in-sync · see git log
+2026-11-24 · M00c · TG2 staging part B: docker-compose.staging.yml, noindex middleware + Next headers/rewrites, seed_demo, docs/STAGING.md; PyPI requires_dist for gunicorn 27.0.1 lists packaging only under extras gevent/testing, so uv.lock left unchanged · see git log
+2026-11-24 · M00c · TG2 staging part B review fixes: skipTrailingSlashRedirect + slash-terminated rewrites (no 308/APPEND_SLASH loop); seed_demo creates a verified primary EmailAddress; staging uses console EMAIL_BACKEND; tests added · see git log
+2026-11-24 · M00c · TG2 staging B round 2: NoIndexMiddleware moved first in MIDDLEWARE (covers redirects, 400s, WhiteNoise; tests added); STAGING.md documents e-mail-code sign-in via backend logs · see git log

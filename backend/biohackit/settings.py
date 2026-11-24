@@ -14,6 +14,9 @@ env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
     CORS_ALLOWED_ORIGINS=(list, []),
+    CSRF_TRUSTED_ORIGINS=(list, []),
+    NOINDEX=(bool, False),
+    EMAIL_BACKEND=(str, "django.core.mail.backends.smtp.EmailBackend"),
     DATABASE_URL=(str, "postgres://biohackit:biohackit@localhost:5432/biohackit"),
 )
 # Read .env file if present; CI/production inject env vars directly.
@@ -23,6 +26,11 @@ environ.Env.read_env(BASE_DIR / ".env", overwrite=False)
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+# Staging only: ask crawlers not to index any response (see core.middleware).
+NOINDEX = env("NOINDEX")
+# Staging sets the console backend: no mail transport is configured there.
+EMAIL_BACKEND = env("EMAIL_BACKEND")
 
 # --- Application definition ------------------------------------------------- #
 INSTALLED_APPS = [
@@ -49,6 +57,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # first, so it wraps every response (WhiteNoise, redirects, 400s)
+    "core.middleware.NoIndexMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

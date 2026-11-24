@@ -38,6 +38,28 @@ def test_every_declared_dependency_is_locked_and_referenced() -> None:
 
 
 # scenario: dev-process::lockfile-in-sync
+def test_transitive_dependencies_of_runtime_packages_are_locked() -> None:
+    packages = _packages()
+    seen: set[str] = set()
+    todo = [d["name"] for d in packages["biohackit"]["dependencies"]]
+    while todo:
+        name = todo.pop()
+        if name in seen:
+            continue
+        seen.add(name)
+        assert name in packages, f"{name} missing from uv.lock"
+        todo.extend(d["name"] for d in packages[name].get("dependencies", []))
+
+
+# scenario: dev-process::lockfile-in-sync
+def test_gunicorn_declares_no_unconditional_dependencies() -> None:
+    # https://pypi.org/pypi/gunicorn/27.0.1/json info.requires_dist lists
+    # `packaging` only with `extra == "gevent"` / `"testing"`, so the base
+    # install has no dependencies and uv.lock must not declare any.
+    assert "dependencies" not in _packages()["gunicorn"]
+
+
+# scenario: dev-process::lockfile-in-sync
 def test_gunicorn_artifacts_have_sha256_hashes() -> None:
     gunicorn = _packages()["gunicorn"]
     artifacts = [gunicorn["sdist"], *gunicorn["wheels"]]

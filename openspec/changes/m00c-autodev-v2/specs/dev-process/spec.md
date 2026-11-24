@@ -45,3 +45,22 @@ The process SHALL publish one daily digest and SHALL never block on a question, 
 #### Scenario: Digest published
 - **WHEN** it is 08:15 Europe/Rome and no digest exists for today
 - **THEN** a digest with matrix %, merges, failures, defaults taken, questions and budget is committed and filed as a `digest` issue
+
+### Requirement: Public staging environment
+The process SHALL provide a public, password-less staging stack on port 18800 that runs production servers, is not indexed by search engines, holds only demo data and publishes a single port.
+
+#### Scenario: Staging runs production servers
+- **WHEN** docker-compose.staging.yml is started
+- **THEN** the backend runs gunicorn with DEBUG false and a required SECRET_KEY, and the frontend runs the production Next server with `/api` and `/_allauth` rewritten to the backend
+
+#### Scenario: Staging not indexed
+- **WHEN** any page or API response is requested from staging
+- **THEN** it carries the header `X-Robots-Tag: noindex`
+
+#### Scenario: Staging holds only demo data
+- **WHEN** the staging seed runs, once or repeatedly
+- **THEN** it creates at most one demo account from DEMO_USERNAME and DEMO_PASSWORD and no measurements, ranges, doses or other health values
+
+#### Scenario: Staging single port
+- **WHEN** the staging stack is up
+- **THEN** only port 18800 is published on the host and neither the database nor the backend publishes a port
