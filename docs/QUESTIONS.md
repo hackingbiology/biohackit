@@ -4,6 +4,24 @@ Format: date · module · question · default taken (work continues with the def
 
 ---
 
+## 2026-11-24 · s01 spec discovery C
+
+**Q25** · getbased trend alerts use thresholds on slope and R² plus jump detection (getbased analysis § A4) but the document gives no values. Default taken: **the requirement fixes no threshold or minimum point count**; they are declared in code with their rationale at implementation. Please set them if you have a view.
+
+**Q26** · The calculated markers and the Bortz clock (getbased analysis § A3) are named without formulas or inputs. Default taken: **the requirements name the markers only**; formulas and inputs are taken from the published method, cited with provenance at implementation, never recalled. Please confirm the list of markers wanted.
+
+**Q27** · The password-protected sharing link (getbased analysis § B8) has no stated lifetime. Default taken: **the requirement only says the link expires and is revocable**; no default duration is chosen. Please say how long a link should live.
+
+**Q28** · getbased offers six AI providers, local models and in-browser DNA parsing (analysis § 1, § A6, § B9) and asks whether biohack.it has a local-first mode (their Q28). Default taken: **provider-agnostic requirement with a local option; no provider is named; no local-first storage mode is specified**. Please decide on the local-first mode.
+
+**Q29** · The deck (slide 13) lists "produce dosing algorithms proposal" as an AI use, which conflicts with the requirement that the platform describes and never prescribes. Default taken: **not specified; the never-prescribes rule stands**. Please say whether any dosing proposal is wanted and how it would be framed. The same slide also says AI evaluates safety profiles and biomarkers and optimises scheduling: default taken: **safety and biomarker values and scheduling stay deterministic (rules and a constraint solver); AI only writes words about them**. Please confirm.
+
+**Q30** · Cycle-phase ranges (getbased analysis § A1) are named for four hormones but no values or phase definitions are given. Default taken: **the requirement fixes no values; each range comes with its source via the range governance**. Please confirm phase-dependent ranges are wanted.
+
+**Q31** · How many wrong passwords on a sharing link (Q27) before it is delayed or locked? The source gives none. Default taken: **the requirement says attempts are throttled without a number**. Please set the limit.
+
+**Q32** · User-supplied AI endpoints (getbased analysis § B9): may the server ever call them? Default taken: **calls are made from the user's browser only; a server-side call needs a later requirement (private, loopback, link-local refused, HTTPS required)**. Please confirm.
+
 ## 2026-11-24 · s01 spec discovery B
 
 **Q18** · The project spec wants protocol cost shown (§ 6 M4bis) but does not say where prices come from or in what currency. Default taken: **the requirement only says each price shows who entered it**; no price source, catalogue or currency is chosen. Please say where prices should come from.

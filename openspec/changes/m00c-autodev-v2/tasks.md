@@ -19,5 +19,6 @@
 - [ ] Spec discovery: compare whitepaper/, docs/presentation/, docs/*.md against openspec/specs; every feature not yet specified becomes a requirement in an OpenSpec change
   - [x] part A: whitepaper/ + docs/foundation.md (docs/spec-discovery/whitepaper.md)
   - [x] part B: docs/hackingbiology-project-spec.md (docs/spec-discovery/project-spec.md)
-  - [ ] part C: docs/getbased-reuse-analysis.md, docs/presentation/
+  - [x] part C: docs/getbased-reuse-analysis.md, docs/presentation/
+  - [ ] part D: docs/slides/, docs/specs/, docs/analysis/, remaining docs/*.md
 - [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog

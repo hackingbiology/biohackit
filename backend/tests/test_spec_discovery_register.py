@@ -164,6 +164,35 @@ def test_added_row_already_in_specs_fails() -> None:
 
 
 # scenario: dev-process::register-rows-resolve
+def test_part_c_registers_exist_and_resolve() -> None:
+    specs = collect_titles(ROOT / "openspec/specs", "*/spec.md")
+    changes = collect_titles(ROOT / "openspec/changes", "*/specs/*/spec.md")
+    sources = {
+        "getbased-reuse.md": "docs/getbased-reuse-analysis.md",
+        "presentation.md": "docs/presentation/biohackit-deck.pdf",
+    }
+    for name, source in sources.items():
+        path = ROOT / "docs/spec-discovery" / name
+        assert path.is_file(), name
+        rows = parse_register(path.read_text(encoding="utf-8"))
+        assert rows, name
+        assert all(r.source.startswith(source + " § ") for r in rows), name
+        assert check_rows(rows, specs, changes, ROOT) == []
+
+
+# scenario: dev-process::unspecified-feature-captured
+def test_linked_data_scenario_excludes_withheld_entities() -> None:
+    path = (
+        ROOT
+        / "openspec/changes/s01-spec-discovery/specs/analytics-and-open-data/spec.md"
+    )
+    text = path.read_text(encoding="utf-8")
+    assert "each public entity carries its standard codes" in text
+    assert "no identifier or link for a withheld entity" in text
+    assert "- **AND** the dataset contains no reference to a withheld item" in text
+
+
+# scenario: dev-process::register-rows-resolve
 def test_project_spec_register_is_checked_and_a_bad_title_breaks_it() -> None:
     names = {p.name for p in (ROOT / "docs/spec-discovery").glob("*.md")}
     assert {"whitepaper.md", "project-spec.md"} <= names

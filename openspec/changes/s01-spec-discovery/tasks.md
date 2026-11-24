@@ -2,6 +2,8 @@
 
 Registers: `docs/spec-discovery/whitepaper.md` (part A), `docs/spec-discovery/project-spec.md` (part B)
 
+Registers part C: `docs/spec-discovery/getbased-reuse.md`, `docs/spec-discovery/presentation.md`
+
 ## safety-guardrails
 - [ ] Implement "Platform describes and never prescribes" (copy review, AI narration check)
 - [ ] Implement "LLM-assisted curation requires human review"
@@ -10,6 +12,7 @@ Registers: `docs/spec-discovery/whitepaper.md` (part A), `docs/spec-discovery/pr
 - [ ] Implement "Full personal data export"
 - [ ] Implement "Personal data erasure"
 - [ ] Implement "Consent to public-by-default is explicit and revocable"
+- [ ] Implement "Lifestyle context cards"
 
 ## community-and-social
 - [ ] Implement "Three layers of quality assurance"
@@ -31,6 +34,12 @@ Registers: `docs/spec-discovery/whitepaper.md` (part A), `docs/spec-discovery/pr
 
 ## biomarkers-and-labs
 - [ ] Implement "Import from wearable export files"
+- [ ] Implement "Deterministic calculated markers"
+- [ ] Implement "Deterministic Bortz clock computation"
+- [ ] Implement "Unit conversion between unit systems"
+- [ ] Implement "Cycle-phase-dependent ranges"
+- [ ] Implement "Import can be rolled back"
+- [ ] Implement "Extraction benchmark on a synthetic report"
 
 ## procurement-and-inventory
 - [ ] Implement "Protocol cost is tracked and shown"
@@ -41,12 +50,21 @@ Registers: `docs/spec-discovery/whitepaper.md` (part A), `docs/spec-discovery/pr
 ## ai-uses-and-attribution
 - [ ] Implement "LLM usage is capped by a monthly credit allowance"
 - [ ] Implement "AI proposals are offered as a block"
+- [ ] Implement "AI verdict shape with insufficient-data state"
+- [ ] Implement "Choice of AI provider including a local model"
 
 ## measurement-planning
 - [ ] Implement "Lab request generated from a pooled draw"
+- [ ] Implement "Measurement appointments are recorded"
 
 ## interventions-and-catalog
 - [ ] Implement "Early partial result during long waits"
 
 ## dashboards-and-doctor-view
 - [ ] Implement "Quick actions on the dashboard"
+- [ ] Implement "Trend alerts"
+- [ ] Implement "Intervention timeline overlaid on biomarker chart"
+- [ ] Implement "Time-limited password-protected sharing link"
+
+## genomics
+- [ ] Implement "Import of consumer DNA test files"

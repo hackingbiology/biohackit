@@ -36,7 +36,8 @@ The system SHALL publish everything public as linked data, with its entities cod
 
 #### Scenario: Entities are coded and linked
 - **WHEN** a third party reads the public dataset
-- **THEN** each entity carries its standard codes and a link to every entity it references
+- **THEN** each public entity carries its standard codes and a link to every public entity it references, and no identifier or link for a withheld entity
+- **AND** the dataset contains no reference to a withheld item
 
 #### Scenario: Linked data seeds an instance
 - **WHEN** an independent instance imports the linked data

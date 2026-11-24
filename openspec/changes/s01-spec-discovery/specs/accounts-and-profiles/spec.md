@@ -35,3 +35,15 @@ The system SHALL record one explicit consent to the public-by-default posture at
 - **WHEN** a user revokes consent or withholds an item
 - **THEN** the item is removed from the instance's public pages and from later public snapshots
 - **AND** the system states that copies already cloned by others are outside its control (see Q21)
+
+### Requirement: Lifestyle context cards
+The system SHALL let a person describe nine contexts — diet, sleep, exercise, stress, light and circadian rhythm, environment, medical history, goals and EMF — and SHALL show whether each is coherent with the declared goals, as AI-written words only, labelled and cached. (Source: docs/getbased-reuse-analysis.md § B5.)
+
+#### Scenario: A context card is filled in
+- **WHEN** a user fills in a context card
+- **THEN** it is stored on their profile with its visibility
+
+#### Scenario: Coherence note
+- **WHEN** a coherence note is shown for a card
+- **THEN** it is labelled as AI-written and carries no number
+- **AND** it is regenerated only when the card or the goals changed
