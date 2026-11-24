@@ -17,4 +17,6 @@
   - [ ] Playwright e2e + axe WCAG 2.2 AA
   - [ ] mutmut
 - [ ] Spec discovery: compare whitepaper/, docs/presentation/, docs/*.md against openspec/specs; every feature not yet specified becomes a requirement in an OpenSpec change
+  - [x] part A: whitepaper/ + docs/foundation.md (docs/spec-discovery/whitepaper.md)
+  - [ ] part B: docs/hackingbiology-project-spec.md, docs/getbased-reuse-analysis.md, docs/presentation/
 - [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog

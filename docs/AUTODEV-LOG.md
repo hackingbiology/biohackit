@@ -24,3 +24,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-24 · X01 · TG3 licence gate: tools/licence/check_licences.py + overrides.toml, `licences` step appended to gates.sh, README table gains ISC/0BSD/PSF-2.0/MIT-0, tests; Q12 · see git log
 2026-11-24 · X01 · TG4 integration anchor scan (docs/ecosystem/integrations.md), scans test covers it, give-back register test, m01 TG column fix; Q14 · see git log
 2026-11-24 · M00c · TG2 gates A: changed-file backend coverage ≥ 90% gate (tools/coverage/changed_coverage.py, step appended to gates.sh), dev-process spec + tests, GIVEBACK fhir.resources wording fix · see git log
+2026-11-24 · M00c · TG2 spec discovery A: whitepaper + foundation register (docs/spec-discovery/whitepaper.md), change s01-spec-discovery with 8 ADDED requirements, register-consistency test, dev-process requirement; Q16–Q17 · see git log

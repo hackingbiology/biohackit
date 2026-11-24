@@ -4,6 +4,12 @@ Format: date · module · question · default taken (work continues with the def
 
 ---
 
+## 2026-11-24 · s01 spec discovery A
+
+**Q16** · The Foundation text says content and the public dataset are under "open licenses" without naming them. Default taken: **the requirement only says a licence is declared per artefact**; no licence is chosen. Please name the licences (code is AGPL-3.0).
+
+**Q17** · The whitepaper names three quality layers (deterministic validation, community review, expert oversight) but not who the experts are or how they flag. Default taken: **the requirement only says the mechanism exists**, no roles defined. Please say who counts as an expert.
+
 ## 2026-11-09 · M00 Foundations
 
 **Q1** · Should OAuth social login (GitHub, Google) be live from day one, or stubbed and enabled later?  

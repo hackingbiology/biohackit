@@ -79,3 +79,14 @@ The gates SHALL fail when any backend Python source file changed on the branch (
 #### Scenario: Deleted file not required
 - **WHEN** a backend source file is deleted on the branch
 - **THEN** it is not checked
+
+### Requirement: Specification discovery is traceable
+Every feature promised by a project document SHALL be recorded in a register under `docs/spec-discovery/` that maps it to a requirement, and every feature without a requirement SHALL be added to an open OpenSpec change.
+
+#### Scenario: Register rows resolve
+- **WHEN** a register row has status covered or added
+- **THEN** its source file exists and the cited `<capability>/<Requirement title>` exists in `openspec/specs/**` or in an open change's specs
+
+#### Scenario: Unspecified feature captured
+- **WHEN** a register row has status added
+- **THEN** its requirement is in an open change and not yet in `openspec/specs/**`
