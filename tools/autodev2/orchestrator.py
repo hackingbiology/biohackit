@@ -37,14 +37,14 @@ CFG = {
 }
 
 WRITE_TOOLS = (
-    "Read Edit Write Glob Grep Bash(git add:*) Bash(git commit:*) Bash(git status:*) Bash(git diff:*) Bash(git log:*) Bash(git show:*) Bash(git mv:*) Bash(git rm:*) Bash(python3:*) Bash(node:*) Bash(pnpm:*) Bash(npx:*) "
-    "Bash(ls:*) Bash(mkdir:*) Bash(cat:*) Bash(sed:*) Bash(grep:*) Bash(find:*) Bash(mv:*) Bash(cp:*) "
-    "Bash(rm:*) Bash(touch:*) Bash(head:*) Bash(tail:*) Bash(wc:*) Bash(diff:*) Bash(pg_isready:*) "
-    "Bash(tools/autodev2/gates.sh:*) Bash(backend/.venv/bin/python:*) Bash(backend/.venv/bin/pytest:*) "
-    "Bash(backend/.venv/bin/ruff:*) Bash(backend/.venv/bin/pip:*) Bash(curl -s:*) WebFetch WebSearch"
+    "Read,Edit,Write,Glob,Grep,Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git mv:*),Bash(git rm:*),Bash(python3:*),Bash(node:*),Bash(pnpm:*),Bash(npx:*),"
+    "Bash(ls:*),Bash(mkdir:*),Bash(cat:*),Bash(sed:*),Bash(grep:*),Bash(find:*),Bash(mv:*),Bash(cp:*),"
+    "Bash(rm:*),Bash(touch:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(diff:*),Bash(pg_isready:*),"
+    "Bash(bash tools/autodev2/gates.sh:*),Bash(backend/.venv/bin/python:*),Bash(backend/.venv/bin/pytest:*),"
+    "Bash(backend/.venv/bin/ruff:*),Bash(backend/.venv/bin/pip:*),Bash(curl -s:*),WebFetch,WebSearch"
 )
-READ_TOOLS = "Read Glob Grep Bash(git diff:*) Bash(git log:*) Bash(git show:*) Bash(ls:*) Bash(cat:*) Bash(grep:*)"
-VERIFY_TOOLS = READ_TOOLS + " WebFetch"
+READ_TOOLS = "Read,Glob,Grep,Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(ls:*),Bash(cat:*),Bash(grep:*)"
+VERIFY_TOOLS = READ_TOOLS + ",WebFetch"
 
 
 # ----------------------------------------------------------------------------- utils
@@ -134,10 +134,13 @@ def agent(role: str, prompt: str, cwd: Path, tools: str, max_turns: int, task: s
     u0, _ = usage_pct()
     t0 = time.time()
     cmd = ["claude", "-p", prompt, "--model", model, "--max-turns", str(max_turns),
-           "--output-format", "json", "--allowedTools", *tools.split()]
+           "--output-format", "json", "--allowedTools", *[t.strip() for t in tools.split(",") if t.strip()]]
     try:
         p = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=3 * 3600)
         out = p.stdout
+        if not out.strip():
+            log(f"  agent {role} produced no output, rc={p.returncode}: {p.stderr[:500]}")
+            raise RuntimeError("agent call failed")
     except subprocess.TimeoutExpired:
         out = ""
     r = jload_str(out)
@@ -176,7 +179,7 @@ def covered_on_main() -> int:
 
 
 def gates(wt: Path) -> tuple[bool, str]:
-    rc, out = sh("tools/autodev2/gates.sh origin/main", cwd=wt, timeout=3600,
+    rc, out = sh("bash tools/autodev2/gates.sh origin/main", cwd=wt, timeout=3600,
                  env={"BASE_COVERED": str(covered_on_main())})
     tail = "\n".join(out.splitlines()[-120:])
     return rc == 0, tail
@@ -297,7 +300,7 @@ def run_task(task: dict) -> dict:
                 ok, tail = gates(wt)
                 if ok:
                     break
-                feedback = "Deterministic gates FAILED. Fix all of these, then rerun tools/autodev2/gates.sh:\n" + tail
+                feedback = "Deterministic gates FAILED. Fix all of these, then rerun bash tools/autodev2/gates.sh origin/main:\n" + tail
                 log(f"  gates failed (round {g + 1})")
             if not ok:
                 result.update(status="failed-gates", detail=tail[-3000:])
