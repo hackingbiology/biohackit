@@ -32,5 +32,5 @@ Environment notes: Python deps live in `backend/.venv` — call `backend/.venv/b
 PRIORITY (Fabio 2026-11-19): after M00 TG2 is complete, implement `openspec/changes/m00b-low-friction-login/` (agent tasks only, not "Fabio's action list") before continuing M00 TG3+. The M00 sign-in page tasks must use it.
 
 CI gate (mirror of .github/workflows/ci.yml — run ALL before every commit, never commit if any fails):
-`backend/.venv/bin/ruff format backend` then `backend/.venv/bin/ruff check backend`, `backend/.venv/bin/pytest -q backend`; if frontend changed: `npm --prefix frontend run lint`, `npm --prefix frontend run type-check`, `npm --prefix frontend run test:ci`.
+`backend/.venv/bin/ruff format backend` then `backend/.venv/bin/ruff check backend`, `backend/.venv/bin/pytest -q backend`; if frontend changed: `pnpm --dir frontend lint`, `pnpm --dir frontend type-check`, `pnpm --dir frontend test:ci`.
 The last GitHub CI result is appended at the end of this prompt. If it is "failure", fixing main is the first task of this iteration (reproduce with the CI gate commands). You can see CI status yourself, so never ask Fabio to confirm CI.
