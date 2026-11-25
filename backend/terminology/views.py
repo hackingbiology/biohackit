@@ -2,18 +2,23 @@
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
+from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError  # type: ignore[import-untyped]  # DRF ships no stubs
+from rest_framework.generics import ListAPIView  # type: ignore[import-untyped]  # DRF ships no stubs
+from rest_framework.pagination import PageNumberPagination  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.request import Request  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.response import Response  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
 from core.models import Biomarker
 
-from .models import ReferenceRange, SafetyThreshold
+from .models import LoincTerm, ReferenceRange, SafetyThreshold
+from .search import search_loinc
 from .selectors import displayable_optimal_range
 from .serializers import (
     BiomarkerSerializer,
+    LoincTermSerializer,
     OptimalRangeSerializer,
     ReferenceRangeSerializer,
     SafetyThresholdSerializer,
@@ -30,6 +35,25 @@ def _parse_value(raw: str | None) -> Decimal | None:
     if not value.is_finite():
         raise ValidationError({"value": "value must be a finite decimal number"})
     return value
+
+
+class LoincSearchPagination(PageNumberPagination):  # type: ignore[misc]  # base is Any: DRF untyped
+    page_size = 20
+    page_size_query_param = "page_size"
+    max_page_size = 100
+
+
+class LoincSearchView(ListAPIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """Read-only search of imported LOINC terms: `?q=<name words or LOINC code>`."""
+
+    serializer_class = LoincTermSerializer
+    pagination_class = LoincSearchPagination
+
+    def get_queryset(self) -> QuerySet[LoincTerm]:
+        q = self.request.query_params.get("q", "").strip()
+        if not q:
+            raise ValidationError({"q": "Enter a word or a LOINC code to search."})
+        return search_loinc(q)
 
 
 class BiomarkerRangesView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped

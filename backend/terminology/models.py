@@ -3,8 +3,11 @@
 
 from typing import Any
 
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.functions import Upper
 
 from accounts.models import Sex
 
@@ -194,6 +197,32 @@ class LoincTerm(SourcedModel):
     short_name = models.CharField(max_length=100, blank=True, default="")
     status = models.CharField(max_length=255, blank=True, default="")
     featured = models.BooleanField(default=False)
+
+    class Meta:
+        indexes = [
+            GinIndex(
+                fields=["long_common_name"],
+                name="loinc_trgm_long_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+            GinIndex(
+                fields=["short_name"],
+                name="loinc_trgm_short_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+            GinIndex(
+                fields=["component"],
+                name="loinc_trgm_comp_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+            models.Index(Upper("loinc_num"), name="loinc_num_upper_idx"),
+            GinIndex(
+                SearchVector(
+                    "long_common_name", "short_name", "component", config="simple"
+                ),
+                name="loinc_fts_idx",
+            ),
+        ]
 
     def __str__(self) -> str:
         return self.loinc_num

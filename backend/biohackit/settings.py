@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     # third-party
     "rest_framework",
     "rest_framework_simplejwt",
@@ -100,6 +101,12 @@ DATABASES = {
     )
 }
 DATABASES["default"]["ENGINE"] = "timescale.db.backends.postgresql"
+# Cut-off used by the indexable `<%` word-similarity operator of the LOINC search
+# (terminology/search.py). pg_trgm's default 0.6 would miss a one-letter typo of a
+# six-letter word ("glucse" scores 0.571), so it is lowered for every connection.
+DATABASES["default"].setdefault("OPTIONS", {})["options"] = (
+    "-c pg_trgm.word_similarity_threshold=0.5"
+)
 
 # --- Auth ------------------------------------------------------------------- #
 # Custom user model is added in TG2 (accounts app).  AUTH_USER_MODEL will be

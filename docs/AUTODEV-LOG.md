@@ -54,3 +54,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 gates B2 review fixes: gate rejects pnpm.auditConfig waiver (new scenario + tests); build verification stays open (Q34) · see git log
 2026-11-25 · M01 · TG-STRATA: nullable age band/sex/ancestry strata on ReferenceRange and OptimalRange (+ ReferenceRange.evidence_grade), most-specific-complete-row selectors, None on a tie (5 scenarios, tests) · see git log
 2026-11-25 · M01 · TG-LOINC part A: LoincTerm model + idempotent import_loinc for Loinc.csv (synthetic fixture, Source per release, 4 scenarios, tests) · see git log
+2026-11-25 · M01 · TG-LOINC part B: authenticated paginated GET /api/terminology/loinc/?q= (full-text + pg_trgm + exact code, migration 0005, 7 scenarios, tests) · see git log

@@ -9,7 +9,14 @@ from rest_framework import serializers  # type: ignore[import-untyped]  # DRF sh
 
 from core.models import Biomarker
 
-from .models import OptimalRange, RangeBase, ReferenceRange, SafetyThreshold, Source
+from .models import (
+    LoincTerm,
+    OptimalRange,
+    RangeBase,
+    ReferenceRange,
+    SafetyThreshold,
+    Source,
+)
 from .services import range_status
 
 
@@ -17,6 +24,24 @@ class SourceSerializer(serializers.ModelSerializer[Source]):  # type: ignore[mis
     class Meta:
         model = Source
         fields = ["name", "version", "licence", "url", "retrieved_at"]
+
+
+class LoincTermSerializer(serializers.ModelSerializer[LoincTerm]):  # type: ignore[misc]  # base is Any: DRF untyped
+    source = SourceSerializer()
+
+    class Meta:
+        model = LoincTerm
+        fields = [
+            "loinc_num",
+            "long_common_name",
+            "short_name",
+            "component",
+            "system",
+            "property",
+            "scale_type",
+            "status",
+            "source",
+        ]
 
 
 class BiomarkerSerializer(serializers.ModelSerializer[Biomarker]):  # type: ignore[misc]  # base is Any: DRF untyped

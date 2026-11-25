@@ -105,3 +105,35 @@ The system SHALL import the LOINC core table (Loinc.csv) from user-supplied file
 - **WHEN** Loinc.csv lacks a required column or has a row with an empty LOINC_NUM
 - **THEN** the whole import is rolled back
 - **AND** the error names the file and line
+
+### Requirement: LOINC terms are searchable by name and code
+The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, using Postgres full-text and trigram matching. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search.
+
+#### Scenario: LOINC search by name
+- **WHEN** an authenticated user searches for a word contained in a term's long name
+- **THEN** that term is returned
+
+#### Scenario: LOINC search tolerates a typo
+- **WHEN** an authenticated user searches with a one-letter misspelling of a word in a term's name
+- **THEN** the term is still returned through trigram similarity
+
+#### Scenario: LOINC search by exact code
+- **WHEN** an authenticated user searches with `q=<loinc_num>`
+- **THEN** the term with that code is the first result
+
+#### Scenario: LOINC search is paginated
+- **WHEN** an authenticated user searches
+- **THEN** the response has `count`, `next`, `previous` and `results`
+- **AND** `page_size` is bounded to a maximum
+
+#### Scenario: LOINC search rejects an empty query
+- **WHEN** `q` is missing or only whitespace
+- **THEN** the response is HTTP 400 with a plain-language message
+
+#### Scenario: LOINC search requires authentication
+- **WHEN** an anonymous client searches
+- **THEN** the response is HTTP 401
+
+#### Scenario: LOINC search returns provenance
+- **WHEN** a term is returned
+- **THEN** it includes loinc_num, long_common_name, short_name, component, system, property, scale_type, status and source {name, version, licence, url, retrieved_at}
