@@ -33,6 +33,15 @@
     "ts-jest": "^29.2.0",
     "typescript": "^5"
   },
+  "packageManager": "pnpm@9.15.9",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ],
+    "ignoredBuiltDependencies": [
+      "unrs-resolver"
+    ]
+  },
   "engines": {
     "node": ">=18"
   }

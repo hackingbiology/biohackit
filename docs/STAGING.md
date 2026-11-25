@@ -41,3 +41,21 @@ no page in the UI accepts it.
   time via build args.
 - `db`: TimescaleDB, not published.
 - Only `18800:3000` is published on the host.
+
+## Troubleshooting: `ERR_PNPM_IGNORED_BUILDS`
+
+pnpm 10 and later fail `pnpm install` when a dependency has a build script
+that is neither allowed nor ignored. The frontend therefore pins pnpm with
+`packageManager` in `frontend/package.json` (read by `corepack enable` in
+`frontend/Dockerfile`) and declares the policy next to it:
+
+- `pnpm.onlyBuiltDependencies`: `sharp` (native image optimisation for
+  `next build`).
+- `pnpm.ignoredBuiltDependencies`: `unrs-resolver` (only used by lint tooling).
+
+To approve a new dependency's build script, add its name to
+`onlyBuiltDependencies`; to refuse it, add it to `ignoredBuiltDependencies`.
+Keep `BUILD_SCRIPT_PACKAGES` in `frontend/src/__tests__/pnpm-build-policy.test.ts`
+in step. If you bump the pinned pnpm, move the policy to the place that
+version reads (`pnpm-workspace.yaml` in newer pnpm) and copy that file in the
+Dockerfile `deps` stage.

@@ -6,6 +6,8 @@ FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+# pnpm version comes from "packageManager" in package.json; the build-script
+# policy (pnpm.onlyBuiltDependencies) lives in package.json too.
 
 WORKDIR /app
 
