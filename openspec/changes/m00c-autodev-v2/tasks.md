@@ -16,7 +16,7 @@
   - [x] semgrep (p/django, p/typescript) (tools/semgrep/semgrep_gate.py, pinned semgrep 1.187.0 via uvx)
   - [x] openspec validate (tools/openspec/validate_gate.py, pinned @fission-ai/openspec 2.2.0 via pnpm dlx)
   - [ ] Playwright e2e + axe WCAG 2.2 AA
-  - [ ] mutmut
+  - [x] mutmut (tools/mutmut/mutmut_gate.py, pinned mutmut 3.8.1 via uv run --isolated; targets in tools/mutmut/targets.txt)
 - [x] Spec discovery: compare whitepaper/, docs/presentation/, docs/*.md against openspec/specs; every feature not yet specified becomes a requirement in an OpenSpec change
   - [x] part A: whitepaper/ + docs/foundation.md (docs/spec-discovery/whitepaper.md)
   - [x] part B: docs/hackingbiology-project-spec.md (docs/spec-discovery/project-spec.md)

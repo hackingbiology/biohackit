@@ -51,5 +51,8 @@ python3 tools/semgrep/semgrep_gate.py || bad "semgrep"
 step "mypy strict"
 python3 tools/mypy/mypy_gate.py || bad "mypy"
 
+step "mutmut"
+python3 tools/mutmut/mutmut_gate.py || bad "mutmut"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL

@@ -125,3 +125,7 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 ## 2026-11-25 · M00c mypy strict scope
 
 **Q41** · The mypy gate is strict only for `backend/terminology` (the newest app, M01). `core` and `accounts` have untyped functions and model-override errors and are not checked. Default taken: **strict on new apps only**; add a path to `tools/mypy/strict_apps.txt` to widen. Should `core` and `accounts` become strict later, and when?
+
+## 2026-11-25 · M00c mutation-testing scope
+
+**Q42** · The mutmut gate mutates only the unit-conversion code, `backend/terminology/services.py` (no statistics module exists yet). Default taken: **any survivor not listed with a written reason in `tools/mutmut/accepted_survivors.txt` fails the gate**; one equivalent mutant is accepted today. Statistics modules should be added to `tools/mutmut/targets.txt` (with their test files) in the same task that creates them. Do you want the same strictness for them, or a minimum kill ratio?

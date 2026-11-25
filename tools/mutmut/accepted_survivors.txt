@@ -1,0 +1,2 @@
+# <mutant-id> # <reason it is equivalent or unkillable>  (each entry needs a written reason)
+terminology.services.x_normalize_value__mutmut_22 # equivalent: `conv = None` -> `conv = ""` is overwritten by `conv = conv or qs.filter(...).first()`, and "" and None are both falsy, so no input can tell them apart

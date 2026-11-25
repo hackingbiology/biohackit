@@ -47,10 +47,37 @@ def test_conversion_deterministic_keeps_reported(units):
     r2 = normalize_value("150", "mg/dL", "g/L")
     assert r1 == r2
     assert r1.value == Decimal("1.5")
+    assert (r1.unit, r1.source_id) == ("g/L", UnitConversion.objects.get().source_id)
     assert (r1.reported_value, r1.reported_unit) == (Decimal("150"), "mg/dL")
+
+
+# scenario: terminology-reference-data::unknown-unit
+def test_unknown_unit_message_names_the_unit(units):
+    with pytest.raises(ValidationError, match="Unknown UCUM unit: 'furlongs'"):
+        normalize_value(1, "furlongs", "g/L")
+
+
+# scenario: terminology-reference-data::conversion
+def test_same_unit_is_identity_without_source(units):
+    r = normalize_value("150", "mg/dL", "mg/dL")
+    assert (r.value, r.unit, r.source_id) == (Decimal("150"), "mg/dL", None)
+    assert (r.reported_value, r.reported_unit) == (Decimal("150"), "mg/dL")
+
+
+# scenario: terminology-reference-data::conversion
+def test_analyte_specific_conversion_preferred(units, src):
+    from core.models import Biomarker
+
+    a, b = units
+    bm = Biomarker.objects.create(name="X", role="efficacy")
+    UnitConversion.objects.create(
+        from_unit=a, to_unit=b, factor=Decimal("0.5"), source=src, biomarker=bm
+    )
+    assert normalize_value("10", "mg/dL", "g/L", bm).value == Decimal("5.0")
+    assert normalize_value("10", "mg/dL", "g/L").value == Decimal("0.10")
 
 
 def test_missing_conversion_rejected(units, src):
     Unit.objects.create(ucum_code="mmol/L", display="mmol/L", source=src)
-    with pytest.raises(ValidationError):
+    with pytest.raises(ValidationError, match="No conversion mg/dL -> mmol/L"):
         normalize_value(1, "mg/dL", "mmol/L")

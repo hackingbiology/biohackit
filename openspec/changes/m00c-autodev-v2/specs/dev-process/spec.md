@@ -142,3 +142,18 @@ The gates SHALL fail on any mypy error in an app listed in `tools/mypy/strict_ap
 #### Scenario: Strict apps type-clean
 - **WHEN** mypy reports no error for every listed app
 - **THEN** the gate prints the checked app list and exits 0
+
+### Requirement: Mutation testing on deterministic numeric code
+The gates SHALL fail when mutmut leaves a surviving mutant in a module listed in `tools/mutmut/targets.txt` that is not listed with a reason in `tools/mutmut/accepted_survivors.txt`, and SHALL fail when the mutation run cannot complete.
+
+#### Scenario: Surviving mutant rejected
+- **WHEN** mutmut leaves a surviving mutant in a listed module and the mutant is not in the accepted survivors file
+- **THEN** the gate prints the module, the mutant id and its diff and exits 1
+
+#### Scenario: Mutation run cannot complete
+- **WHEN** uv is missing, the environment build fails, mutmut crashes or times out, its results cannot be read, targets.txt is missing, empty or lists a path that does not exist, or an accepted survivor has no reason
+- **THEN** the gate prints that it cannot run and exits 2
+
+#### Scenario: All mutants killed
+- **WHEN** every mutant in every listed module is killed or accepted with a reason
+- **THEN** the gate prints each target with its killed and total counts and exits 0

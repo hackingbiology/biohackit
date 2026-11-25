@@ -367,6 +367,18 @@
             "Verified": "pinned `mypy==2.4.1` and `django-stubs==6.1.2` (latest on PyPI), added with `uv run --project backend --isolated --frozen --with ...` by `tools/mypy/mypy_gate.py`, so they never enter `backend/.venv` (the licence gate scans it) or `backend/uv.lock`. Sources, fetched 2026-11-25: https://pypi.org/pypi/mypy/json (2.4.1, `license_expression` MIT, requires Python >=3.10), https://pypi.org/pypi/django-stubs/json (6.1.2, `license_expression` MIT, requires Python >=3.11, extra `compatible-mypy` = `mypy<2.5,>=1.13`, requires `django-stubs-ext>=6.0.2`), https://pypi.org/pypi/django-stubs-ext/json (6.1.2, MIT), https://api.github.com/repos/typeddjango/django-stubs (spdx MIT, not archived). The GitHub API gives spdx `NOASSERTION` for python/mypy (not archived); PyPI says MIT. Compatibility: mypy 2.4.1 satisfies `<2.5,>=1.13`; the real gate run on the locked Django 5.2.19 and Python 3.12 passes, which is the only compatibility evidence beyond the metadata."
           },
           "name": "mypy and django-stubs"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-3-Clause is permissive); run as a separate dev-time process, not shipped",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-19",
+            "Licence": "BSD-3-Clause",
+            "Provisional": "no",
+            "URL": "https://github.com/boxed/mutmut",
+            "Verified": "pinned `mutmut==3.8.1` (latest on PyPI), added with `uv run --project <scratch copy of backend> --isolated --frozen --with mutmut==3.8.1` by `tools/mutmut/mutmut_gate.py`, so it never enters `backend/.venv` (the licence gate scans it) or `backend/uv.lock`. Sources, fetched 2026-11-25: https://pypi.org/pypi/mutmut/json (3.8.1, `license_expression` BSD-3-Clause, requires Python >=3.10, repository https://github.com/boxed/mutmut) and https://api.github.com/repos/boxed/mutmut (spdx BSD-3-Clause, pushed 2026-11-19, not archived). The gate runs mutmut in a scratch copy of backend/ in a temp dir, with pytest-django project discovery off so the mutated copy is the one imported."
+          },
+          "name": "mutmut"
         }
       ],
       "file": "m00-foundations.md",
