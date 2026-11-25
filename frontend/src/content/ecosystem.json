@@ -1,0 +1,502 @@
+{
+  "giveback": [
+    {
+      "contribution": "Propose adding a `LICENSE` file to the repository root: GitHub detects no licence and only the R package `DESCRIPTION` states Apache License 2.0",
+      "date": "2026-11-24",
+      "link": "https://github.com/OHDSI/CommonDataModel",
+      "status": "proposed",
+      "upstream": "OHDSI/CommonDataModel"
+    },
+    {
+      "contribution": "Propose a short licence statement for the application repository (no licence detected, no LICENSE file in the root)",
+      "date": "2026-11-24",
+      "link": "https://github.com/OHDSI/Athena",
+      "status": "proposed",
+      "upstream": "OHDSI/Athena"
+    },
+    {
+      "contribution": "Ask for machine-readable licence metadata for the custom UCUM licence, so downstream tools can classify it (GitHub reports `NOASSERTION`)",
+      "date": "2026-11-24",
+      "link": "https://github.com/ucum-org/ucum",
+      "status": "proposed",
+      "upstream": "ucum-org/ucum"
+    },
+    {
+      "contribution": "Once adopted: share our list of analyte UCUM units as extra test cases and report any validation issue found",
+      "date": "2026-11-24",
+      "link": "https://github.com/dalito/ucumvert",
+      "status": "proposed",
+      "upstream": "dalito/ucumvert"
+    },
+    {
+      "contribution": "Propose declaring an SPDX licence expression in package metadata: GitHub reports `NOASSERTION` and PyPI says only \"BSD license\"",
+      "date": "2026-11-24",
+      "link": "https://github.com/nazrulworld/fhir.resources",
+      "status": "proposed",
+      "upstream": "nazrulworld/fhir.resources"
+    },
+    {
+      "contribution": "Ask for a stated licence for the evipedia.ai review content (the MCP server is MIT; the content licence was not found), so downstream apps know how reviews may be stored and quoted",
+      "date": "2026-11-24",
+      "link": "https://github.com/forever-healthy/evipedia-mcp",
+      "status": "proposed",
+      "upstream": "forever-healthy/evipedia-mcp"
+    }
+  ],
+  "scans": [
+    {
+      "entries": [
+        {
+          "fields": {
+            "AGPL-compatible": "yes (same licence)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-22",
+            "Licence": "AGPL-3.0",
+            "Licence note": "Same facts as the get-based entry in [m00-foundations.md](m00-foundations.md); not repeated here. Component-level reuse (biomarker schema, import pipeline) is analysed in `docs/getbased-reuse-analysis.md`. The licence is the same as ours, so later modules may port code with attribution; that is decided per module.",
+            "URL": "https://github.com/elkimek/get-based",
+            "Verified": "api.github.com/repos/elkimek/get-based, 2026-11-24"
+          },
+          "name": "get-based"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-08",
+            "Licence": "MIT",
+            "Licence note": "README describes it as \"Enabling anyone to use AI to generate high-quality, evidence-based reviews of health & longevity interventions\" (v2.0.5 badge). Its method is read for the AI4L surface design; no code is imported. Any AI text we produce stays labelled and listed in the AI surfaces map.",
+            "URL": "https://github.com/forever-healthy/AI4L",
+            "Verified": "api.github.com/repos/forever-healthy/AI4L and raw.githubusercontent.com/forever-healthy/AI4L/main/README.md, 2026-11-24"
+          },
+          "name": "AI4L"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-09-09",
+            "Licence": "MIT",
+            "Licence note": "A Model Context Protocol server for evipedia.ai, published to npm as `evipedia-mcp` (per its README) and run over stdio. We would talk to it as a separate process. The README lists the tools `search_reviews`, `list_reviews`, `list_updates`, `get_conclusion`, `get_review`, `get_metadata` (includes PubMed PMIDs of citations), `suggest_review` and `get_version`. `suggest_review` submits to a public form, so it is outward-facing and must not be called by agents without Fabio's approval. The licence of the evipedia.ai review content itself was not fetched: unknown, see Q15 in docs/QUESTIONS.md (stored values need provenance).",
+            "Provisional": "yes, the MCP server code is MIT but the evipedia.ai content licence is unknown (Q15); until answered we store only the review URL/ID and PMIDs, never review text.",
+            "URL": "https://github.com/forever-healthy/evipedia-mcp",
+            "Verified": "api.github.com/repos/forever-healthy/evipedia-mcp and raw.githubusercontent.com/forever-healthy/evipedia-mcp/main/README.md, 2026-11-24"
+          },
+          "name": "evipedia-mcp"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q9)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-09-14",
+            "Licence": "unknown",
+            "Licence note": "same verdict as docs/ecosystem/m01-terminology.md: the file is a BSD licence, but the number of clauses was not determined, so no SPDX id is claimed. Pydantic FHIR models. Re-check its dependency licences if it is ever adopted.",
+            "Provisional": "yes, fhir.resources is not used until Fabio answers Q9; the default is that it is not a dependency.",
+            "URL": "https://github.com/nazrulworld/fhir.resources",
+            "Verified": "api.github.com/repos/nazrulworld/fhir.resources (licence `NOASSERTION`), raw.githubusercontent.com/nazrulworld/fhir.resources/main/LICENSE and pypi.org/pypi/fhir.resources/json (version 8.3.0 uploaded 2026-07-03, classifier \"BSD License\"), 2026-11-24"
+          },
+          "name": "fhir.resources"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-21",
+            "Licence": "MIT",
+            "Licence note": "PyPI release 2.3.3 (uploaded 2026-11-21) carries no licence metadata; the licence comes from GitHub. A client for talking to FHIR servers; biohack.it does not call a FHIR server yet, so it is not adopted now.",
+            "URL": "https://github.com/beda-software/fhir-py",
+            "Verified": "api.github.com/repos/beda-software/fhir-py and pypi.org/pypi/fhirpy/json, 2026-11-24"
+          },
+          "name": "fhirpy"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "reuse schema or dataset",
+            "Last activity": "2026-10-28",
+            "Licence": "Apache-2.0",
+            "Licence note": "Same licence evidence as the OMOP CDM entry in [m01-terminology.md](m01-terminology.md): GitHub detects no licence and the root has no LICENSE file; only `DESCRIPTION` states Apache License 2.0 (give-back item in GIVEBACK.md). `inst/ddl` has versions 5.3, 5.4 and 5.5, and the 5.4 directory has a `postgresql` subfolder. Which version to target is a later module decision.",
+            "URL": "https://github.com/OHDSI/CommonDataModel",
+            "Verified": "api.github.com/repos/OHDSI/CommonDataModel, api.github.com/repos/OHDSI/CommonDataModel/contents/inst/ddl and raw.githubusercontent.com/OHDSI/CommonDataModel/main/DESCRIPTION (`License: Apache License 2.0`), 2026-11-24"
+          },
+          "name": "OMOP CDM DDL"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q14)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-24",
+            "Licence": "GPL-2.0",
+            "Licence note": "The Licence and Last activity fields describe the server repository https://github.com/discourse/discourse; the URL field is the API documentation. GPL-2.0 is not in the README licence table (the GNU list was only checked for GPLv3 compatibility), so the verdict is unknown. We would only talk to a Discourse forum (rapamycin.news) over HTTP, never link or bundle its code. DiscourseConnect login is already tracked in docs/QUESTIONS.md.",
+            "Provisional": "yes, only the public HTTP API documentation is used and no Discourse code is imported; the decision waits on Q14.",
+            "URL": "https://docs.discourse.org/",
+            "Verified": "api.github.com/repos/discourse/discourse, raw.githubusercontent.com/discourse/discourse/main/LICENSE.txt (GNU GPL, Version 2, June 1991) and docs.discourse.org (HTTP 200, title \"Discourse API Docs\"), 2026-11-24"
+          },
+          "name": "Discourse API"
+        }
+      ],
+      "file": "integrations.md",
+      "title": "Ecosystem scan: integration anchors"
+    },
+    {
+      "entries": [
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-3-Clause)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-23",
+            "Licence": "BSD-3-Clause",
+            "URL": "https://github.com/django/django",
+            "Verified": "api.github.com/repos/django/django and pypi.org/pypi/Django/json (license_expression), 2026-11-24"
+          },
+          "name": "Django"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-3-Clause)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-24",
+            "Licence": "BSD-3-Clause",
+            "URL": "https://github.com/encode/django-rest-framework",
+            "Verified": "pypi.org/pypi/djangorestframework/json (license_expression); api.github.com reported `NOASSERTION` for the licence, so PyPI is the source; pushed_at from api.github.com, 2026-11-24"
+          },
+          "name": "Django REST framework"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-23",
+            "Licence": "MIT",
+            "URL": "https://github.com/jazzband/djangorestframework-simplejwt",
+            "Verified": "api.github.com/repos/jazzband/djangorestframework-simplejwt and pypi.org (license field `MIT`), 2026-11-24"
+          },
+          "name": "djangorestframework-simplejwt"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-13",
+            "Licence": "MIT",
+            "URL": "https://codeberg.org/allauth/django-allauth",
+            "Verified": "pypi.org/pypi/django-allauth/json (license_expression, Source URL); api.github.com/repos/pennersr/django-allauth for pushed_at (GitHub repo, not the Codeberg source URL), 2026-11-24"
+          },
+          "name": "django-allauth"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (LGPL-3.0, used as an unmodified library)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-23",
+            "Licence": "LGPL-3.0",
+            "URL": "https://github.com/psycopg/psycopg",
+            "Verified": "api.github.com/repos/psycopg/psycopg and pypi.org (license_expression `LGPL-3.0-only`), 2026-11-24"
+          },
+          "name": "psycopg"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (LGPL-3.0, used as an unmodified library)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-23",
+            "Licence": "LGPL-3.0",
+            "Licence note": "pre-compiled build of psycopg, same repository and licence; pulled in by the `psycopg[binary]` extra.",
+            "URL": "https://github.com/psycopg/psycopg",
+            "Verified": "pypi.org/pypi/psycopg-binary/json (license_expression `LGPL-3.0-only`, project_urls Code = the psycopg repo, release 3.3.9 uploaded 2026-11-12) and api.github.com/repos/psycopg/psycopg (pushed_at), 2026-11-24"
+          },
+          "name": "psycopg-binary"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-09-16",
+            "Licence": "MIT",
+            "URL": "https://github.com/joke2k/django-environ",
+            "Verified": "api.github.com/repos/joke2k/django-environ and pypi.org (license field `MIT`), 2026-11-24"
+          },
+          "name": "django-environ"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0), but the PyPI classifier says BSD while its licence text says Apache-2.0; GitHub says Apache-2.0",
+            "Decision": "adopt as dependency",
+            "Last activity": "2025-04-10",
+            "Licence": "Apache-2.0",
+            "URL": "https://github.com/jamessewell/django-timescaledb",
+            "Verified": "api.github.com/repos/schlunsen/django-timescaledb (redirects to jamessewell/django-timescaledb) and pypi.org/pypi/django-timescaledb/json, 2026-11-24. Last push is over seven months old; watch for a maintained fork."
+          },
+          "name": "django-timescaledb"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-13",
+            "Licence": "MIT",
+            "URL": "https://github.com/evansd/whitenoise",
+            "Verified": "api.github.com/repos/evansd/whitenoise and pypi.org (license_expression), 2026-11-24"
+          },
+          "name": "whitenoise"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-12",
+            "Licence": "MIT",
+            "URL": "https://github.com/benoitc/gunicorn",
+            "Verified": "pypi.org/pypi/gunicorn/json (license_expression); api.github.com reported `NOASSERTION`, so PyPI is the source; pushed_at from api.github.com, 2026-11-24"
+          },
+          "name": "gunicorn"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (the licence is not on the fetched GNU list page)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-24",
+            "Licence": "unknown",
+            "Licence note": "PostgreSQL licence (permissive text in the COPYRIGHT file); GitHub returned no SPDX id (`NOASSERTION`)",
+            "Provisional": "yes, until the AGPL question is answered (README rule on separate-process servers). Images used: `timescale/timescaledb-ha:pg16` (docker-compose.yml:3, docker-compose.staging.yml:5) and `timescale/timescaledb:latest-pg16` (.github/workflows/ci.yml:14); both bundle PostgreSQL.",
+            "URL": "https://github.com/postgres/postgres",
+            "Verified": "raw.githubusercontent.com/postgres/postgres/master/COPYRIGHT and api.github.com/repos/postgres/postgres (GitHub mirror), 2026-11-24. Runs as a separate server process, not linked into our code."
+          },
+          "name": "PostgreSQL"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — Apache-2.0 part yes, Timescale License part unknown; question in docs/QUESTIONS.md",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-24",
+            "Licence": "unknown",
+            "Licence note": "Apache-2.0 outside `tsl/`; Timescale License inside `tsl/` (mixed, no single SPDX id; GitHub returned `NOASSERTION`)",
+            "Provisional": "yes, until the AGPL question is answered. Images: `timescale/timescaledb-ha:pg16` (docker-compose.yml:3, docker-compose.staging.yml:5) and `timescale/timescaledb:latest-pg16` (.github/workflows/ci.yml:14). Whether those builds include `tsl/` is unknown (docker not available to inspect them).",
+            "URL": "https://github.com/timescale/timescaledb",
+            "Verified": "raw.githubusercontent.com/timescale/timescaledb/main/LICENSE and api.github.com (`NOASSERTION`), 2026-11-24. Runs as a database extension in a separate server process; M00 uses a hypertable only."
+          },
+          "name": "TimescaleDB"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-24",
+            "Licence": "MIT",
+            "URL": "https://github.com/vercel/next.js",
+            "Verified": "api.github.com/repos/vercel/next.js and registry.npmjs.org/next (license `MIT`), 2026-11-24"
+          },
+          "name": "Next.js"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-24",
+            "Licence": "MIT",
+            "URL": "https://github.com/react/react",
+            "Verified": "api.github.com/repos/facebook/react (redirects to react/react) and registry.npmjs.org/react, 2026-11-24"
+          },
+          "name": "React"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-24",
+            "Licence": "MIT",
+            "URL": "https://github.com/tailwindlabs/tailwindcss",
+            "Verified": "api.github.com/repos/tailwindlabs/tailwindcss and registry.npmjs.org/tailwindcss, 2026-11-24"
+          },
+          "name": "Tailwind CSS"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-24",
+            "Licence": "MIT",
+            "URL": "https://github.com/Fission-AI/OpenSpec",
+            "Verified": "api.github.com/repos/Fission-AI/OpenSpec and registry.npmjs.org/@fission-ai%2Fopenspec (npm package `@fission-ai/openspec`), 2026-11-24"
+          },
+          "name": "OpenSpec"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (same licence)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-22",
+            "Licence": "AGPL-3.0",
+            "URL": "https://github.com/elkimek/get-based",
+            "Verified": "api.github.com/repos/elkimek/get-based, 2026-11-24. No get-based code is imported in M00. Component-level reuse (biomarker schema, import pipeline) is analysed in `docs/getbased-reuse-analysis.md` and belongs to later module scans."
+          },
+          "name": "get-based"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-19",
+            "Licence": "Apache-2.0",
+            "URL": "https://github.com/pypa/pip-audit",
+            "Verified": "dev tool only, pinned `pip-audit==2.10.1` and run through `uvx` (isolated tool environment), never installed into `backend/.venv` because the licence gate scans that venv. Sources: pypi.org/pypi/pip-audit/json (version 2.10.1, classifier `License :: OSI Approved :: Apache Software License`) and api.github.com/repos/pypa/pip-audit (spdx `Apache-2.0`, pushed 2026-11-19, not archived), fetched 2026-11-25"
+          },
+          "name": "pip-audit"
+        }
+      ],
+      "file": "m00-foundations.md",
+      "title": "Ecosystem scan — M00 foundations (retroactive)"
+    },
+    {
+      "entries": [
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q9)",
+            "Decision": "reuse schema or dataset",
+            "Last activity": "2026-11-09",
+            "Licence": "unknown",
+            "Licence note": "custom \"UCUM Copyright Notice and License, Version 1.1, June 2024\" (Regenstrief Institute); not an SPDX licence. The repository contains `ucum-essence.xml` (the machine-readable unit table).",
+            "Provisional": "yes, we take UCUM codes (no code) for the `Unit` table, as M01 TG2 already does; open question Q9 on the UCUM licence terms.",
+            "URL": "https://github.com/ucum-org/ucum",
+            "Verified": "api.github.com/repos/ucum-org/ucum (pushed_at; licence `NOASSERTION`) and raw.githubusercontent.com/ucum-org/ucum/main/LICENSE.md, 2026-11-24"
+          },
+          "name": "UCUM specification and essence file"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-10",
+            "Licence": "MIT",
+            "Licence note": "replaces a hand-written UCUM validator (assessment: parsing the UCUM grammar ourselves is the larger risk). Adds `lark` and `pint` as transitive dependencies; their licences must be re-checked when the dependency is added.",
+            "URL": "https://github.com/dalito/ucumvert",
+            "Verified": "api.github.com/repos/dalito/ucumvert and pypi.org/pypi/ucumvert/json (license_expression `MIT`, version 0.3.3 uploaded 2026-11-06, summary \"Python parser & interface for UCUM\", requires `lark` and `pint>=0.25.0`), 2026-11-24"
+          },
+          "name": "ucumvert"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-3-Clause)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-15",
+            "Licence": "BSD-3-Clause",
+            "Licence note": "general units library, not UCUM. It arrives transitively through ucumvert; we do not call it directly. Assessment: per-analyte mass↔molar conversions need an analyte factor with a source, which a units library does not supply, so `UnitConversion` stays our table.",
+            "URL": "https://github.com/hgrecco/pint",
+            "Verified": "pypi.org/pypi/pint/json (license_expression `BSD-3-Clause`; api.github.com reports `NOASSERTION`) and api.github.com/repos/hgrecco/pint (pushed_at), 2026-11-24"
+          },
+          "name": "pint"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q9)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-10-29",
+            "Licence": "unknown",
+            "Licence note": "BSD-based custom terms with a notice requirement, a citation request and the UCUM licence. Not used until Q9 is answered; M01 has no frontend UCUM validation task today.",
+            "URL": "https://github.com/LHNCBC/ucum-lhc",
+            "Verified": "api.github.com/repos/LHNCBC/ucum-lhc (licence `NOASSERTION`), raw.githubusercontent.com/LHNCBC/ucum-lhc/master/LICENSE.md and registry.npmjs.org/@lhncbc/ucum-lhc (latest 8.0.1 published 2026-10-19, license field \"SEE LICENSE IN LICENSE.md\"), 2026-11-24"
+          },
+          "name": "ucum-lhc (JavaScript)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q10)",
+            "Decision": "reuse schema or dataset",
+            "Last activity": "unknown",
+            "Licence": "unknown",
+            "Licence note": "the licence page returned HTTP 403 to the runner on 2026-11-24, so the terms are not verified here. The M01 proposal (D-LOINC) records Fabio's statement that redistribution is free with notice and unmodified content; that statement is Fabio's, not fetched. The `ucum-lhc` licence file quotes LOINC as \"available at no cost under the license at http://loinc.org/terms-of-use\".",
+            "Provisional": "yes, the release zip stays in git-ignored `data/vendor/loinc/` and is user-supplied; nothing from LOINC is committed until Q10 is answered.",
+            "URL": "https://loinc.org/license/",
+            "Verified": "unknown"
+          },
+          "name": "LOINC (release tables and terms of use)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q9)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-23",
+            "Licence": "unknown",
+            "Licence note": "GitHub reports Unlicense, which is not yet in the README licence table, hence `unknown`. Read as a reference for how LOINC releases are staged into OMOP concept tables; no code is copied. The vocabularies it builds carry their own licences.",
+            "URL": "https://github.com/OHDSI/Vocabulary-v5.0",
+            "Verified": "api.github.com/repos/OHDSI/Vocabulary-v5.0 (licence reported as `Unlicense`; the repository root contains a `LICENSE` file and a `LOINC` directory), 2026-11-24"
+          },
+          "name": "OHDSI Vocabulary-v5.0 (LOINC loader scripts)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "reuse schema or dataset",
+            "Last activity": "2026-10-28",
+            "Licence": "Apache-2.0",
+            "Licence note": "GitHub detects no licence and the repository root has no LICENSE file; the R package `DESCRIPTION` states Apache License 2.0. Weaker evidence than a licence file; a LICENSE-file check is a give-back item.",
+            "URL": "https://github.com/OHDSI/CommonDataModel",
+            "Verified": "api.github.com/repos/OHDSI/CommonDataModel (pushed_at; no licence detected) and raw.githubusercontent.com/OHDSI/CommonDataModel/main/DESCRIPTION (`License: Apache License 2.0`), 2026-11-24"
+          },
+          "name": "OMOP CDM (DDL and documentation)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q9)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-09-02",
+            "Licence": "unknown",
+            "Licence note": "the vocabulary files themselves carry per-vocabulary licences; the Athena page fetched gave no licence information. Vocabularies would be bring-your-own downloads, like LOINC.",
+            "URL": "https://athena.ohdsi.org/",
+            "Verified": "api.github.com/repos/OHDSI/Athena (pushed_at for the application repo; no licence detected, no LICENSE file in the root), 2026-11-24"
+          },
+          "name": "OHDSI Athena (vocabulary download service)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-24",
+            "Licence": "Apache-2.0",
+            "Licence note": "a Java server. Assessment: running a JVM terminology server for a lookup table of tens of thousands of rows is more overhead than M01 needs; revisit when FHIR export (module on interoperability) needs `$lookup`/`$translate`. Read for the CodeSystem / ValueSet / ConceptMap shapes only.",
+            "URL": "https://github.com/hapifhir/hapi-fhir",
+            "Verified": "api.github.com/repos/hapifhir/hapi-fhir, 2026-11-24"
+          },
+          "name": "HAPI FHIR"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-24",
+            "Licence": "Apache-2.0",
+            "Licence note": "a SNOMED CT terminology server; the server code is Apache-2.0, SNOMED content is separately licensed (see TG-SNOMED). Relevant to the bring-your-own-SNOMED importer as a reference for RF2 handling only.",
+            "URL": "https://github.com/IHTSDO/snowstorm",
+            "Verified": "api.github.com/repos/IHTSDO/snowstorm (pushed_at; licence `NOASSERTION`) and raw.githubusercontent.com/IHTSDO/snowstorm/master/LICENSE.md (Apache License, Version 2.0 text), 2026-11-24"
+          },
+          "name": "Snowstorm"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q9)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-09-14",
+            "Licence": "unknown",
+            "Licence note": "the file is a BSD licence with the 2018 \"AS IS\" disclaimer; the number of clauses (2 or 3) was not determined, so no SPDX id is claimed. Pydantic FHIR models; the choice of FHIR library belongs to the integration scan (`x01-ecosystem-reuse` tasks), not M01.",
+            "URL": "https://github.com/nazrulworld/fhir.resources",
+            "Verified": "api.github.com/repos/nazrulworld/fhir.resources (licence `NOASSERTION`), raw.githubusercontent.com/nazrulworld/fhir.resources/main/LICENSE and pypi.org/pypi/fhir.resources/json (version 8.3.0 uploaded 2026-07-03, classifier \"BSD License\"), 2026-11-24"
+          },
+          "name": "fhir.resources"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q11)",
+            "Decision": "learn-from only",
+            "Last activity": "unknown",
+            "Licence": "unknown",
+            "Licence note": "US population laboratory survey data. Not a published reference-interval set. Any range derived from it would be our own analysis under research programme R1, with the method recorded; no range is imported in M01.",
+            "URL": "https://www.cdc.gov/nchs/nhanes/about/index.html",
+            "Verified": "cdc.gov/nchs/nhanes/about (page fetched; it says the data files are \"publicly available to download and analyze\" and states no licence), 2026-11-24"
+          },
+          "name": "NHANES (CDC / NCHS)"
+        }
+      ],
+      "file": "m01-terminology.md",
+      "title": "Ecosystem scan — M01 terminology & reference data (retroactive)"
+    }
+  ]
+}

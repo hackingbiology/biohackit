@@ -74,6 +74,104 @@ export const signInStrings: Record<Locale, SignInStrings> = {
   },
 };
 
+export interface EcosystemStrings {
+  title: string;
+  intro: string;
+  scanHeading: string;
+  name: string;
+  licence: string;
+  agpl: string;
+  decision: string;
+  verified: string;
+  provisional: string;
+  licenceNote: string;
+  giveBackHeading: string;
+  giveBackIntro: string;
+  approval: string;
+  upstream: string;
+  contribution: string;
+  status: string;
+  date: string;
+  tableRegion: string;
+  link: string;
+  back: string;
+}
+
+export const ecosystemStrings: Record<Locale, EcosystemStrings> = {
+  en: {
+    title: "Ecosystem",
+    intro:
+      "biohack.it reuses open-source projects, standards and datasets instead of rebuilding them. This page lists what we looked at, the licence, and what we decided. Where a fact could not be checked, it says unknown.",
+    scanHeading: "What we build on",
+    name: "Project",
+    licence: "Licence",
+    agpl: "AGPL-compatible",
+    decision: "Decision",
+    verified: "Verified",
+    provisional: "Provisional",
+    licenceNote: "Licence note",
+    giveBackHeading: "What we give back",
+    giveBackIntro:
+      "Ideas for helping the projects we use. They are only proposals.",
+    approval: "Nothing is posted upstream without the owner's approval.",
+    upstream: "Upstream project",
+    contribution: "Proposed contribution",
+    status: "Status",
+    date: "Date",
+    tableRegion: "Scrollable table",
+    link: "Link",
+    back: "Back to home",
+  },
+  it: {
+    title: "Ecosistema",
+    intro:
+      "biohack.it riusa progetti open source, standard e dataset invece di rifarli da zero. Questa pagina elenca cosa abbiamo valutato, la licenza e la decisione presa. Dove un dato non è stato verificato, c'è scritto unknown.",
+    scanHeading: "Su cosa costruiamo",
+    name: "Progetto",
+    licence: "Licenza",
+    agpl: "Compatibile con AGPL",
+    decision: "Decisione",
+    verified: "Verificato",
+    provisional: "Provvisorio",
+    licenceNote: "Nota sulla licenza",
+    giveBackHeading: "Cosa restituiamo",
+    giveBackIntro:
+      "Idee per aiutare i progetti che usiamo. Sono solo proposte.",
+    approval:
+      "Nulla viene pubblicato presso i progetti originali senza l'approvazione del titolare.",
+    upstream: "Progetto originale",
+    contribution: "Contributo proposto",
+    status: "Stato",
+    date: "Data",
+    tableRegion: "Tabella scorrevole",
+    link: "Link",
+    back: "Torna alla home",
+  },
+  zh: {
+    title: "生态系统",
+    intro:
+      "biohack.it 复用开源项目、标准和数据集，而不是重新开发。本页列出我们评估过的项目、许可证和决定。无法核实的信息标为 unknown。",
+    scanHeading: "我们基于什么构建",
+    name: "项目",
+    licence: "许可证",
+    agpl: "与 AGPL 兼容",
+    decision: "决定",
+    verified: "核实依据",
+    provisional: "暂定",
+    licenceNote: "许可证说明",
+    giveBackHeading: "我们回馈什么",
+    giveBackIntro: "帮助我们所用项目的想法，仅为提议。",
+    approval: "未经所有者批准，不会向上游发布任何内容。",
+    upstream: "上游项目",
+    contribution: "拟议贡献",
+    status: "状态",
+    date: "日期",
+    tableRegion: "可滚动表格",
+    link: "链接",
+    back: "返回首页",
+  },
+};
+
 export function pickLocale(lang: string | undefined): Locale {
   const l = (lang ?? "en").toLowerCase();
   if (l.startsWith("it")) return "it";

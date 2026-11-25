@@ -30,3 +30,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 gates B1: next + eslint-config-next 15.1.0 -> 15.5.29, advisory register, offline test; Q33 · see git log
 2026-11-25 · M00c · fix main (no .npmrc): verified shared node_modules gates, STATE root-cause section, Q34 orchestrator proposal · see git log
 2026-11-25 · M00c · TG2 gates C: pip-audit gate via uvx (pinned 2.10.1), offline tests, dev-process scenarios · see git log
+2026-11-25 · X01 · public /ecosystem page, exporter and sync test; requirement added to x01 delta · see git log
