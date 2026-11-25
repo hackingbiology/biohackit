@@ -354,6 +354,19 @@
             "Verified": "pinned `semgrep==1.187.0` (latest on PyPI), run through `uvx` in an isolated tool environment by `tools/semgrep/semgrep_gate.py`, never installed into `backend/.venv` (the licence gate scans it) or `frontend/node_modules`. Sources: https://pypi.org/pypi/semgrep/json (version 1.187.0, `license_expression` LGPL-2.1-or-later) and https://api.github.com/repos/semgrep/semgrep (spdx `LGPL-2.1`, pushed 2026-11-25), fetched 2026-11-25."
           },
           "name": "semgrep"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT is permissive); run as a separate dev-time process, not shipped",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-25",
+            "Licence": "MIT",
+            "Licence note": "both tools and django-stubs-ext (pulled in by django-stubs) are MIT.",
+            "Provisional": "no",
+            "URL": "https://github.com/python/mypy and https://github.com/typeddjango/django-stubs",
+            "Verified": "pinned `mypy==2.4.1` and `django-stubs==6.1.2` (latest on PyPI), added with `uv run --project backend --isolated --frozen --with ...` by `tools/mypy/mypy_gate.py`, so they never enter `backend/.venv` (the licence gate scans it) or `backend/uv.lock`. Sources, fetched 2026-11-25: https://pypi.org/pypi/mypy/json (2.4.1, `license_expression` MIT, requires Python >=3.10), https://pypi.org/pypi/django-stubs/json (6.1.2, `license_expression` MIT, requires Python >=3.11, extra `compatible-mypy` = `mypy<2.5,>=1.13`, requires `django-stubs-ext>=6.0.2`), https://pypi.org/pypi/django-stubs-ext/json (6.1.2, MIT), https://api.github.com/repos/typeddjango/django-stubs (spdx MIT, not archived). The GitHub API gives spdx `NOASSERTION` for python/mypy (not archived); PyPI says MIT. Compatibility: mypy 2.4.1 satisfies `<2.5,>=1.13`; the real gate run on the locked Django 5.2.19 and Python 3.12 passes, which is the only compatibility evidence beyond the metadata."
+          },
+          "name": "mypy and django-stubs"
         }
       ],
       "file": "m00-foundations.md",

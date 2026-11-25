@@ -8,7 +8,7 @@
 - [x] Tag every existing test with its `scenario:` ids; matrix shows true coverage
 - [x] `docker-compose.staging.yml` (gunicorn + `next start`, Next rewrites `/api` and `/_allauth` to backend, DEBUG off, demo-data seed, `X-Robots-Tag: noindex`), port 18800 only
 - [ ] Gates hardening (append-only to gates.sh): mypy (strict on new apps), coverage ≥ 90% on changed backend files, `pip-audit`, `pnpm audit --prod`, semgrep (p/django, p/typescript), openspec validate (CLI `@fission-ai/openspec`), Playwright e2e + axe WCAG 2.2 AA on key pages, mutmut on statistics/unit-conversion modules
-  - [ ] mypy (strict on new apps)
+  - [x] mypy (strict on new apps) (tools/mypy/mypy_gate.py, pinned mypy 2.4.1 + django-stubs 6.1.2 via uv run --isolated)
   - [x] changed-file coverage ≥ 90% (tools/coverage/changed_coverage.py)
   - [x] pip-audit (tools/audit/pip_audit_gate.py, pinned pip-audit 2.10.1 via uvx)
   - [x] B1 upgrade next to a patched release (no waiver for fixable high/critical advisories)

@@ -170,3 +170,13 @@ Not in scope of this scan: a PWA/service-worker library (none is in `frontend/pa
 - **Decision:** adopt as dependency
 - **Verified:** pinned `semgrep==1.187.0` (latest on PyPI), run through `uvx` in an isolated tool environment by `tools/semgrep/semgrep_gate.py`, never installed into `backend/.venv` (the licence gate scans it) or `frontend/node_modules`. Sources: https://pypi.org/pypi/semgrep/json (version 1.187.0, `license_expression` LGPL-2.1-or-later) and https://api.github.com/repos/semgrep/semgrep (spdx `LGPL-2.1`, pushed 2026-11-25), fetched 2026-11-25.
 - **Licence note:** The GitHub API reports `LGPL-2.1`; PyPI `license_expression` says LGPL-2.1-or-later. The p/django and p/typescript Semgrep Registry rules, licence "Semgrep Rules License v1.0" (https://github.com/semgrep/semgrep-rules, LICENSE file; terms at https://semgrep.dev/legal/rules-license). Terms: use "only for your own internal business purposes"; no distribution of the rules or making them available "as a service". The gate downloads the rules at scan time and prints only findings; the rules are not copied into this repository or shipped. They are not open source, so they are a scan input only. Whether CI of an open project counts as "internal business purposes" is unknown, see Q40.
+
+### mypy and django-stubs
+- **URL:** https://github.com/python/mypy and https://github.com/typeddjango/django-stubs
+- **Licence:** MIT
+- **AGPL-compatible:** yes (MIT is permissive); run as a separate dev-time process, not shipped
+- **Licence note:** both tools and django-stubs-ext (pulled in by django-stubs) are MIT.
+- **Provisional:** no
+- **Last activity:** 2026-11-25
+- **Decision:** adopt as dependency
+- **Verified:** pinned `mypy==2.4.1` and `django-stubs==6.1.2` (latest on PyPI), added with `uv run --project backend --isolated --frozen --with ...` by `tools/mypy/mypy_gate.py`, so they never enter `backend/.venv` (the licence gate scans it) or `backend/uv.lock`. Sources, fetched 2026-11-25: https://pypi.org/pypi/mypy/json (2.4.1, `license_expression` MIT, requires Python >=3.10), https://pypi.org/pypi/django-stubs/json (6.1.2, `license_expression` MIT, requires Python >=3.11, extra `compatible-mypy` = `mypy<2.5,>=1.13`, requires `django-stubs-ext>=6.0.2`), https://pypi.org/pypi/django-stubs-ext/json (6.1.2, MIT), https://api.github.com/repos/typeddjango/django-stubs (spdx MIT, not archived). The GitHub API gives spdx `NOASSERTION` for python/mypy (not archived); PyPI says MIT. Compatibility: mypy 2.4.1 satisfies `<2.5,>=1.13`; the real gate run on the locked Django 5.2.19 and Python 3.12 passes, which is the only compatibility evidence beyond the metadata.

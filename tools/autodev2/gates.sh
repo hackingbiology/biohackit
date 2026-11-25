@@ -48,5 +48,8 @@ python3 tools/openspec/validate_gate.py || bad "openspec validate"
 step "semgrep"
 python3 tools/semgrep/semgrep_gate.py || bad "semgrep"
 
+step "mypy strict"
+python3 tools/mypy/mypy_gate.py || bad "mypy"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL

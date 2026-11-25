@@ -127,3 +127,18 @@ The gates SHALL fail when the pinned OpenSpec CLI reports an invalid specificati
 #### Scenario: Valid specifications pass
 - **WHEN** the validator reports every item as valid
 - **THEN** the gate prints the item count and exits 0
+
+### Requirement: Strict type checking on new backend apps
+The gates SHALL fail on any mypy error in an app listed in `tools/mypy/strict_apps.txt`, and SHALL fail when the type check cannot run.
+
+#### Scenario: Type error in strict app rejected
+- **WHEN** mypy in strict mode reports an error in a listed app
+- **THEN** the gate prints each error as file:line:message and exits 1
+
+#### Scenario: Type checker cannot run
+- **WHEN** uv is missing, the environment build fails, mypy crashes or times out, its output cannot be parsed, or strict_apps.txt is missing, empty or lists a path that does not exist
+- **THEN** the gate prints that it cannot run and exits 2
+
+#### Scenario: Strict apps type-clean
+- **WHEN** mypy reports no error for every listed app
+- **THEN** the gate prints the checked app list and exits 0

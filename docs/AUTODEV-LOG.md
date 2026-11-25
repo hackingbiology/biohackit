@@ -40,3 +40,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 spec discovery D2b3: foundation-html register (8 sections, 23 rows, all reuse part A foundation.md rows, no new requirement), test added, Q39; part D closed · see git log
 2026-11-25 · M00c · TG2 gates D: openspec validate gate (pinned @fission-ai/openspec 2.2.0 via pnpm dlx), 3 scenarios, m00-foundations delta header fixed · see git log
 2026-11-25 · M00c · TG2 gates E: semgrep gate (pinned semgrep 1.187.0 via uvx, p/django on backend, p/typescript on frontend/src), 0 findings, 11 offline tests, Q40 · see git log
+2026-11-25 · M00c · TG2 gates F: mypy strict gate (pinned mypy 2.4.1 + django-stubs 6.1.2 via uv run --isolated) on backend/terminology, type-only fixes, 3 scenarios, Q41 · see git log

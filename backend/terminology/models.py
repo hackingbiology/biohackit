@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Terminology & reference data (M01 TG2). Every row carries a Source; no invented values."""
 
+from typing import Any
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -19,7 +21,7 @@ class Source(models.Model):
             )
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} {self.version}".strip()
 
 
@@ -31,7 +33,7 @@ class SourcedModel(models.Model):
     class Meta:
         abstract = True
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         if self.source_id is None:
             raise ValidationError(f"{type(self).__name__} requires a source")
         super().save(*args, **kwargs)
@@ -41,7 +43,7 @@ class Unit(SourcedModel):
     ucum_code = models.CharField(max_length=64, unique=True)
     display = models.CharField(max_length=100)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.ucum_code
 
 
