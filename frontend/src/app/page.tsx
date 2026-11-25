@@ -4,11 +4,13 @@
 // Full license text: https://www.gnu.org/licenses/agpl-3.0.html
 
 import Link from "next/link";
-import { ecosystemStrings } from "@/lib/i18n";
+import { aiSurfacesStrings, ecosystemStrings } from "@/lib/i18n";
 import { requestLocale } from "@/lib/request-locale";
 
 export default async function Home() {
-  const t = ecosystemStrings[await requestLocale()];
+  const locale = await requestLocale();
+  const t = ecosystemStrings[locale];
+  const docs = aiSurfacesStrings[locale];
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-8">
       <div className="max-w-2xl w-full space-y-8 text-center">
@@ -43,6 +45,11 @@ export default async function Home() {
         <p>
           <Link href="/ecosystem" className="underline">
             {t.title}
+          </Link>
+        </p>
+        <p>
+          <Link href="/docs" className="underline">
+            {docs.docsIndex}
           </Link>
         </p>
       </div>

@@ -29,4 +29,9 @@
     - [x] D2b1: docs/proposal-critique.html (docs/spec-discovery/proposal-critique.md)
     - [x] D2b2: docs/reference/hb-protocol-structure.xlsx
     - [x] D2b3: docs/foundation.html (docs/spec-discovery/foundation-html.md)
-- [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog
+- [ ] Docs site generated from repo, as a Next route `/docs` (decision: Next route `/docs`, not MkDocs: no new deps, same pattern as /ecosystem)
+    - [x] A: AI surfaces map (`docs/ai-surfaces.md` -> `/docs/ai-surfaces`)
+    - [ ] B: architecture
+    - [ ] C: user guide
+    - [ ] D: OpenAPI reference
+    - [ ] E: changelog

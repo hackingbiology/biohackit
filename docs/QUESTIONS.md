@@ -129,3 +129,11 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 ## 2026-11-25 · M00c mutation-testing scope
 
 **Q42** · The mutmut gate mutates only the unit-conversion code, `backend/terminology/services.py` (no statistics module exists yet). Default taken: **any survivor not listed with a written reason in `tools/mutmut/accepted_survivors.txt` fails the gate**; one equivalent mutant is accepted today. Statistics modules should be added to `tools/mutmut/targets.txt` (with their test files) in the same task that creates them. Do you want the same strictness for them, or a minimum kill ratio?
+
+## 2026-11-25 · M00c AI surfaces map
+
+**Q43** · The map has no row for the attribution register (spec scenario "Public trust artifact"), and every row except unit conversion is `specified` (no code yet). Default taken: **the register stays out of this page**; the map covers only the AI vs deterministic scenario. Should the attribution register be shown on the same page? Also, "Index" and "Calculated markers" cite biomarkers-and-labs requirements because no dedicated "index" requirement exists; tell me if a better one should be cited.
+
+## 2026-11-25 · M00c AI surfaces map: extraction conflict
+
+**Q44** · `biomarkers-and-labs/spec.md` ("Deterministic pipeline with a hard boundary") says extraction is deterministic and the LLM only writes narration, while `ai-uses-and-attribution/spec.md` lists lab-report extraction as an AI surface and "Import from PDF, photo, and CSV with learned templates" says known labs bypass the LLM. Default taken: **the map lists extraction as AI, used only when no learned template matches, with the user confirming values**. Should the hard-boundary requirement be amended to match?

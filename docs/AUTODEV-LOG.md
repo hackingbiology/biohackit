@@ -42,3 +42,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 gates E: semgrep gate (pinned semgrep 1.187.0 via uvx, p/django on backend, p/typescript on frontend/src), 0 findings, 11 offline tests, Q40 · see git log
 2026-11-25 · M00c · TG2 gates F: mypy strict gate (pinned mypy 2.4.1 + django-stubs 6.1.2 via uv run --isolated) on backend/terminology, type-only fixes, 3 scenarios, Q41 · see git log
 2026-11-25 · M00c · TG2 gates G: mutmut gate (pinned mutmut 3.8.1 via uv run --isolated in a scratch copy) on terminology/services.py, 43-44/44 killed + 1 accepted equivalent, 3 new tests, 16 offline gate tests, Q42 · see git log
+2026-11-25 · M00c · TG2 docs A: AI surfaces map docs/ai-surfaces.md -> /docs/ai-surfaces (3 AI surfaces, 7 deterministic, exporter + sync test + jest test), Q43 · see git log

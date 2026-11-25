@@ -1,0 +1,67 @@
+{
+  "ai": [
+    {
+      "kind": "AI",
+      "status": "specified",
+      "surface": "Lab-report extraction (LLM used only when no learned laboratory template matches; see Q44)",
+      "where": "openspec/specs/biomarkers-and-labs/spec.md: Import from PDF, photo, and CSV with learned templates"
+    },
+    {
+      "kind": "AI",
+      "status": "specified",
+      "surface": "Plain-language narration (generated once, cached)",
+      "where": "openspec/specs/biomarkers-and-labs/spec.md: Deterministic pipeline with a hard boundary"
+    },
+    {
+      "kind": "AI",
+      "status": "specified",
+      "surface": "Evidence-review generation via AI4L",
+      "where": "openspec/specs/ai-uses-and-attribution/spec.md: AI4L as the framework for AI-generated reviews and evidence queries"
+    }
+  ],
+  "deterministic": [
+    {
+      "kind": "deterministic",
+      "status": "specified",
+      "surface": "Safety threshold (dose sanity check)",
+      "where": "openspec/specs/safety-guardrails/spec.md: Dose sanity check"
+    },
+    {
+      "kind": "deterministic",
+      "status": "specified",
+      "surface": "Index and threshold computation",
+      "where": "openspec/specs/biomarkers-and-labs/spec.md: Deterministic pipeline with a hard boundary"
+    },
+    {
+      "kind": "deterministic",
+      "status": "specified",
+      "surface": "Sex/age percentile",
+      "where": "openspec/specs/analytics-and-open-data/spec.md: Sex/age-normalized percentile computation"
+    },
+    {
+      "kind": "deterministic",
+      "status": "specified",
+      "surface": "Trend (never derived from insufficient data)",
+      "where": "openspec/specs/statistical-methodology/spec.md: Uncertainty and effect size are mandatory"
+    },
+    {
+      "kind": "deterministic",
+      "status": "specified",
+      "surface": "Schedule (constraint solver, not an LLM)",
+      "where": "openspec/specs/pills-management/spec.md: Daily intake schedule across slots"
+    },
+    {
+      "kind": "deterministic",
+      "status": "implemented",
+      "surface": "Unit conversion (stored factors only)",
+      "where": "backend/terminology/services.py"
+    },
+    {
+      "kind": "deterministic",
+      "status": "specified",
+      "surface": "Calculated markers (PhenoAge)",
+      "where": "openspec/specs/biomarkers-and-labs/spec.md: Deterministic PhenoAge computation from the standard panel"
+    }
+  ],
+  "title": "AI surfaces map — what is AI, what is NOT AI"
+}

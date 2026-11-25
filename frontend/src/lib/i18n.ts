@@ -172,6 +172,46 @@ export const ecosystemStrings: Record<Locale, EcosystemStrings> = {
   },
 };
 
+export interface AiSurfacesStrings {
+  title: string;
+  intro: string;
+  aiCaption: string;
+  deterministicCaption: string;
+  surface: string;
+  kind: string;
+  where: string;
+  status: string;
+  tableRegion: string;
+  docsIndex: string;
+  back: string;
+  kindLabels: Record<string, string>;
+  statusLabels: Record<string, string>;
+}
+
+const aiSurfacesEn: AiSurfacesStrings = {
+  title: "What is AI, what is not",
+  intro:
+    "Computed values such as safety thresholds, indexes, percentiles, trends and schedules come from deterministic code that gives the same result for the same input. AI writes explanations and evidence reviews, and reads a lab report only when its format is not yet known, with you confirming the values.",
+  aiCaption: "Where AI is used",
+  deterministicCaption: "Computed by code, not AI",
+  surface: "Surface",
+  kind: "AI or deterministic",
+  where: "Where in the code or spec",
+  status: "Status",
+  tableRegion: "Scrollable table",
+  docsIndex: "Documentation",
+  back: "Back to documentation",
+  kindLabels: { AI: "AI", deterministic: "Computed by code (not AI)" },
+  statusLabels: { implemented: "Built", specified: "Planned, not built yet" },
+};
+
+// IT and ZH fall back to EN until translated, as for other pages.
+export const aiSurfacesStrings: Record<Locale, AiSurfacesStrings> = {
+  en: aiSurfacesEn,
+  it: aiSurfacesEn,
+  zh: aiSurfacesEn,
+};
+
 export function pickLocale(lang: string | undefined): Locale {
   const l = (lang ?? "en").toLowerCase();
   if (l.startsWith("it")) return "it";
