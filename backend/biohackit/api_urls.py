@@ -8,4 +8,7 @@
 # built (TG2 adds accounts/auth, TG3 adds domain stubs, etc.).
 from django.urls import include, path
 
-urlpatterns: list = [path("", include("accounts.urls"))]
+urlpatterns: list = [
+    path("", include("accounts.urls")),
+    path("terminology/", include("terminology.urls")),
+]

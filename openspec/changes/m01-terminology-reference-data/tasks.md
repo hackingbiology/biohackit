@@ -18,8 +18,8 @@
   - Scan decision: no open reference-range dataset with a stated licence was found (Q11); ranges stay structure-only, no import
 - [x] (models done; API in part B) `ReferenceRange` (lab/method, population, low, high, source), `OptimalRange` (source, population, endpoint, evidence_grade, last_reviewed), `SafetyThreshold` (source)
 - [x] Selector `displayable_optimal_range()` returns None unless all provenance fields present
-- [ ] API read endpoint exposing the three ranges separately with provenance
-- [ ] Tests for every SHALL scenario in the spec delta
+- [x] API read endpoint exposing the three ranges separately with provenance
+- [x] Tests for every SHALL scenario in the spec delta
 
 ## TG5 — Seed loader & data
 - [ ] `seed_reference` management command, idempotent, refuses rows lacking source
