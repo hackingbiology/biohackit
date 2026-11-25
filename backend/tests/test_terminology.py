@@ -6,7 +6,7 @@ import pytest
 from django.core.exceptions import ValidationError
 
 from terminology.models import Source, Unit, UnitConversion
-from terminology.services import normalize_value
+from terminology.services import normalize_value, range_status
 
 
 @pytest.fixture
@@ -119,3 +119,25 @@ def test_missing_conversion_rejected(units, src):
     Unit.objects.create(ucum_code="mmol/L", display="mmol/L", source=src)
     with pytest.raises(ValidationError, match="No conversion mg/dL -> mmol/L"):
         normalize_value(1, "mg/dL", "mmol/L")
+
+
+@pytest.mark.parametrize(
+    ("value", "low", "high", "expected"),
+    [
+        ("0.9", "1", "2", "below"),
+        ("1", "1", "2", "within"),
+        ("1.5", "1", "2", "within"),
+        ("2", "1", "2", "within"),
+        ("2.1", "1", "2", "above"),
+        ("-5", None, "2", "within"),
+        ("2.1", None, "2", "above"),
+        ("99", "1", None, "within"),
+        ("0.9", "1", None, "below"),
+        ("0", None, None, "within"),
+    ],
+)
+def test_range_status(value, low, high, expected):
+    def d(x):
+        return None if x is None else Decimal(x)
+
+    assert range_status(Decimal(value), d(low), d(high)) == expected

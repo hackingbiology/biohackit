@@ -22,12 +22,19 @@ def map_units(apps, schema_editor):
     rows = list(biomarker.objects.all())
     if not rows:
         return
-    uncoded = [r.pk for r in rows if not r.loinc_code]
+    uncoded = [r.pk for r in rows if not (r.loinc_code or "").strip()]
+    by_code = {}
+    for r in rows:
+        if r.pk not in uncoded:
+            by_code.setdefault(r.loinc_code, []).append(r.pk)
+    duplicates = {code: ids for code, ids in by_code.items() if len(ids) > 1}
     units = {u.ucum_code: u for u in unit_model.objects.all()}
     no_unit = [r.pk for r in rows if r.unit_ucum not in units]
     problems = []
     if uncoded:
         problems.append(f"no loinc_code: ids {uncoded}")
+    for code, ids in duplicates.items():
+        problems.append(f"duplicate loinc_code {code}: ids {ids}")
     if no_unit:
         problems.append(f"unit_ucum has no stored terminology.Unit: ids {no_unit}")
     source_name = os.environ.get(SOURCE_ENV, "")

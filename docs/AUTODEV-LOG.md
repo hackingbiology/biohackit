@@ -47,3 +47,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 docs C: user guide docs/user-guide.md -> /docs/user-guide (exporter, route/requirement-exists test, sign-in fact test, sync test, jest test), Q45 · see git log
 2026-11-25 · M00c · TG2 docs E: changelog docs/CHANGELOG.md -> /docs/changelog (exporter, commit/change-exists test, sync test, jest test, CI fetch-depth 0), Q46 · see git log
 2026-11-25 · M01 · TG3 coded analyte registry: Biomarker requires unique LOINC + Unit FK + Source FK, Measurement unit checked against analyte unit, migrations core/0003-0005 fail loudly on uncoded rows, Q47-Q48 · see git log
+2026-11-25 · M01 · TG4 part A: Reference/Optimal/SafetyThreshold models, displayable_optimal_range, range_status, TG3 residual fixes (blank + duplicate LOINC), Q49 · see git log

@@ -148,6 +148,10 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 
 **Q48** · Legacy `core.Biomarker` rows without a LOINC code cannot be coded without inventing data. Default taken: **migrations `core/0003-0005` (fields, data, constraints; split so Postgres has no pending trigger events) fail loudly naming the row ids and never fill codes; the Source is never inferred: on a non-empty table the operator must set `BIOHACK_LEGACY_BIOMARKER_SOURCE` to the exact name of one stored `terminology.Source`**. Fresh and staging databases have no such rows. If production ever has them, should the operator fix the data by hand, or should we ship a reviewed mapping file?
 
+## 2026-11-25 · M01 TG4 part A ranges
+
+**Q49** · The evidence-grade vocabulary for `OptimalRange` is not defined, and several complete optimal rows may exist for one analyte (different populations or endpoints). Default taken: **`evidence_grade` is free text naming the grading system used by the cited source (no scale invented); `displayable_optimal_range()` returns None when more than one complete row exists and never picks one**. Which grading scale(s) should be allowed, and how should one be chosen among several complete rows (stratification is TG-STRATA)?
+
 ## 2026-11-25 · M00c user guide
 
 **Q45** · The user guide is English only; IT and ZH fall back to EN as on /docs/architecture. The `/dashboard` page that sign-in redirects to does not exist yet, so the guide lists it under "Coming later". Default taken: **EN only, no translation yet**. Should the guide be translated to IT/ZH now, and should the sign-in redirect point somewhere that exists until the dashboard is built?

@@ -69,3 +69,66 @@ class UnitConversion(SourcedModel):
                 nulls_distinct=False,
             )
         ]
+
+
+class RangeBase(SourcedModel):
+    """Abstract: bounds are in the analyte's own unit (never converted); at least one
+    bound is set and low <= high. Concrete rows are structure only: no value is seeded."""
+
+    biomarker = models.ForeignKey(
+        "core.Biomarker", on_delete=models.CASCADE, related_name="%(class)s_set"
+    )
+    low = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
+    high = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
+    unit = models.ForeignKey(Unit, on_delete=models.PROTECT, related_name="+")
+
+    class Meta:
+        abstract = True
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(low__isnull=False) | models.Q(high__isnull=False),
+                name="%(app_label)s_%(class)s_has_a_bound",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(low__isnull=True)
+                | models.Q(high__isnull=True)
+                | models.Q(low__lte=models.F("high")),
+                name="%(app_label)s_%(class)s_low_lte_high",
+            ),
+        ]
+
+    def clean(self) -> None:
+        super().clean()
+        if self.low is None and self.high is None:
+            raise ValidationError("A range needs at least one bound")
+        if self.low is not None and self.high is not None and self.low > self.high:
+            raise ValidationError("Range low must not exceed high")
+        if self.unit_id != self.biomarker.unit_id:
+            raise ValidationError("Range unit must equal the analyte's unit")
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self.source_id is None:
+            raise ValidationError(f"{type(self).__name__} requires a source")
+        self.clean()
+        super().save(*args, **kwargs)
+
+
+class ReferenceRange(RangeBase):
+    lab = models.CharField(max_length=200, blank=True, default="")
+    method = models.CharField(max_length=200, blank=True, default="")
+    population = models.CharField(max_length=200, blank=True, default="")
+
+
+class OptimalRange(RangeBase):
+    """Provenance fields are nullable so incomplete rows can exist; the selector
+    `displayable_optimal_range` gates what is shown. evidence_grade is free text naming
+    the grading system of the cited source (Q49)."""
+
+    population = models.CharField(max_length=200, null=True, blank=True)
+    endpoint = models.CharField(max_length=200, null=True, blank=True)
+    evidence_grade = models.CharField(max_length=100, null=True, blank=True)
+    last_reviewed = models.DateField(null=True, blank=True)
+
+
+class SafetyThreshold(RangeBase):
+    pass

@@ -120,6 +120,19 @@ def test_biomarker_without_loinc_code_fails(mg_l, source):
         _biomarker(loinc_code="", unit=mg_l, source=source).save()
 
 
+# scenario: terminology-reference-data::blank-loinc-code
+def test_biomarker_with_whitespace_loinc_code_fails(mg_l, source):
+    with pytest.raises(ValidationError, match="LOINC"):
+        _biomarker(loinc_code="   ", unit=mg_l, source=source).save()
+
+
+# scenario: terminology-reference-data::blank-loinc-code
+def test_measurement_with_whitespace_loinc_code_fails(user, biomarker):
+    biomarker.loinc_code = "   "
+    with pytest.raises(ValidationError, match="coded analyte"):
+        _unsaved_measurement(user, biomarker).save()
+
+
 # scenario: terminology-reference-data::missing-code
 def test_biomarker_without_unit_fails(source):
     with pytest.raises(ValidationError, match="UCUM unit"):
@@ -233,6 +246,33 @@ def test_migration_0004_fails_loudly_naming_uncoded_rows(monkeypatch):
     assert rows[0].saved == []
 
 
+def test_migration_0004_treats_whitespace_code_as_uncoded(monkeypatch):
+    monkeypatch.setenv(migration_0003.SOURCE_ENV, "s")
+    rows = [_row(3, "  ", "mg/L")]
+    apps = _fake_apps(
+        rows, [SimpleNamespace(ucum_code="mg/L")], [SimpleNamespace(name="s")]
+    )
+    with pytest.raises(RuntimeError, match=r"no loinc_code: ids \[3\]"):
+        migration_0003.map_units(apps, None)
+
+
+def test_migration_0004_names_rows_sharing_a_loinc_code(monkeypatch):
+    monkeypatch.setenv(migration_0003.SOURCE_ENV, "s")
+    rows = [
+        _row(4, "TEST-1", "mg/L"),
+        _row(5, "TEST-1", "mg/L"),
+        _row(6, "TEST-2", "mg/L"),
+    ]
+    apps = _fake_apps(
+        rows, [SimpleNamespace(ucum_code="mg/L")], [SimpleNamespace(name="s")]
+    )
+    with pytest.raises(RuntimeError) as exc:
+        migration_0003.map_units(apps, None)
+    assert "duplicate loinc_code TEST-1: ids [4, 5]" in str(exc.value)
+    assert "TEST-2" not in str(exc.value)
+    assert rows[0].saved == []
+
+
 def test_migration_0004_never_infers_the_source(monkeypatch):
     monkeypatch.delenv(migration_0003.SOURCE_ENV, raising=False)
     rows = [_row(1, "TEST-1", "mg/L")]
@@ -262,7 +302,7 @@ def test_migrations_apply_on_postgres_with_one_coded_row(monkeypatch):
     monkeypatch.setenv(migration_0003.SOURCE_ENV, "test fixture")
     executor = MigrationExecutor(connection)
     before = [("core", "0002_measurement_hypertable")]
-    latest = executor.loader.graph.leaf_nodes("core")
+    latest = executor.loader.graph.leaf_nodes()
     executor.migrate(before)
     old = MigrationExecutor(connection).loader.project_state(before).apps
     src = Source.objects.create(

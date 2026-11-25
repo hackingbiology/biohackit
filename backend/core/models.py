@@ -55,13 +55,37 @@ class Biomarker(models.Model):
         return self.name
 
     def save(self, *args: Any, **kwargs: Any) -> None:
-        if not self.loinc_code:
+        if not (self.loinc_code or "").strip():
             raise ValidationError("Biomarker requires a LOINC code")
         if self.unit_id is None:
             raise ValidationError("Biomarker requires a UCUM unit")
         if self.source_id is None:
             raise ValidationError("Biomarker requires a source")
+        self._check_unit_change_keeps_ranges_consistent()
         super().save(*args, **kwargs)
+
+    def _check_unit_change_keeps_ranges_consistent(self) -> None:
+        """Range bounds are stored in the analyte's unit and never converted, so the
+        unit cannot change while a range row still uses another unit."""
+        if self.pk is None:
+            return
+        stored = (
+            type(self)
+            .objects.filter(pk=self.pk)
+            .values_list("unit_id", flat=True)
+            .first()
+        )
+        if stored is None or stored == self.unit_id:
+            return
+        for ranges in (
+            self.referencerange_set,
+            self.optimalrange_set,
+            self.safetythreshold_set,
+        ):
+            if ranges.exclude(unit_id=self.unit_id).exists():
+                raise ValidationError(
+                    "Biomarker unit cannot change while range rows use the previous unit"
+                )
 
 
 class Measurement(models.Model):
@@ -82,7 +106,7 @@ class Measurement(models.Model):
         # The analyte must be coded; the unit must be stored and equal to the analyte
         # unit or convertible with a stored factor. value/unit_ucum stay as reported.
         analyte = self.biomarker
-        if not analyte.loinc_code or analyte.unit_id is None:
+        if not (analyte.loinc_code or "").strip() or analyte.unit_id is None:
             raise ValidationError("Measurement requires a coded analyte (LOINC + UCUM)")
         normalize_value(self.value, self.unit_ucum, analyte.unit.ucum_code, analyte)
         # Domain rule: without lab AND method a measurement is not aggregation-eligible.

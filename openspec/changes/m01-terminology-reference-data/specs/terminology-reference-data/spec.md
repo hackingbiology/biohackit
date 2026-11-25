@@ -28,6 +28,10 @@ The system SHALL require a LOINC code and a UCUM unit on every analyte, and a me
 - **WHEN** an analyte or measurement lacks LOINC or UCUM unit
 - **THEN** persistence fails with a validation error
 
+#### Scenario: Blank LOINC code
+- **WHEN** the LOINC code is empty or whitespace only
+- **THEN** persistence fails with a validation error
+
 ### Requirement: Three ranges kept separate
 The system SHALL store reference, optimal and safety ranges in separate structures and expose them separately.
 
@@ -35,12 +39,20 @@ The system SHALL store reference, optimal and safety ranges in separate structur
 - **WHEN** a value lies inside the reference range and outside the optimal range
 - **THEN** the API reports both statuses independently
 
+#### Scenario: Range bounds in analyte unit
+- **WHEN** a range row's unit differs from its analyte's unit
+- **THEN** persistence fails with a validation error
+
 ### Requirement: Optimal range provenance gate
 The system SHALL expose an optimal range only if it has source, population, endpoint, evidence grade and last-reviewed date.
 
 #### Scenario: Incomplete provenance
 - **WHEN** any of those fields is missing
 - **THEN** the range is not returned as optimal
+
+#### Scenario: Complete provenance
+- **WHEN** source, population, endpoint, evidence grade and last-reviewed date are all present
+- **THEN** the selector returns the range
 
 ### Requirement: Licence-restricted vocabularies are not bundled
 The system SHALL NOT ship SNOMED or the full LOINC table; it SHALL load them only from user-supplied files.

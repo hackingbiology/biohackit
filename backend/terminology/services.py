@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from django.core.exceptions import ValidationError
 
@@ -46,3 +46,14 @@ def normalize_value(
     if conv is None:
         raise ValidationError(f"No conversion {unit} -> {target_unit}")
     return Normalized(amount, unit, amount * conv.factor, target_unit, conv.source_id)
+
+
+def range_status(
+    value: Decimal, low: Decimal | None, high: Decimal | None
+) -> Literal["below", "within", "above"]:
+    """Bounds are inclusive; a None bound is open."""
+    if low is not None and value < low:
+        return "below"
+    if high is not None and value > high:
+        return "above"
+    return "within"
