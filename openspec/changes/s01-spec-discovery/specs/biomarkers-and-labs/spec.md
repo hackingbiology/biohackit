@@ -67,6 +67,17 @@ The system SHALL let a user undo a persisted report import as one action, removi
 - **THEN** every measurement created by that import is removed
 - **AND** measurements from other imports and manual entries are untouched
 
+### Requirement: Body composition and microbiome results are accepted as measurements
+The system SHALL accept DEXA body-composition results and microbiome analysis results as measurements, each with its provenance (laboratory or device, method, date), and SHALL keep them in the same time series model as blood analytes. (Source: docs/slides/hacking-biology-project-presentation.pdf § page 6, "DNA Analytics, Microbiome, DEXA".)
+
+#### Scenario: DEXA result recorded
+- **WHEN** a user enters a DEXA result with its date and provider
+- **THEN** it is stored as a dated measurement with that provenance
+
+#### Scenario: Result without provenance
+- **WHEN** a user submits a microbiome result without a laboratory or method
+- **THEN** the system asks for the missing provenance before it is stored
+
 ### Requirement: Extraction benchmark on a synthetic report
 The system SHALL provide a benchmark that runs the report parser on a synthetic report with a verified answer key and reports accuracy and speed per model or parser, so that extraction changes can be compared. (Source: docs/getbased-reuse-analysis.md § A2, `import-benchmarks.js`. This project's report and key are authored here, not copied.)
 

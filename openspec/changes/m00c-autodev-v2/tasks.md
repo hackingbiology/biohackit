@@ -22,4 +22,5 @@
   - [x] part B: docs/hackingbiology-project-spec.md (docs/spec-discovery/project-spec.md)
   - [x] part C: docs/getbased-reuse-analysis.md, docs/presentation/
   - [ ] part D: docs/slides/, docs/specs/, docs/analysis/, remaining docs/*.md
+    - [x] D1a: docs/slides/ (docs/spec-discovery/slides.md)
 - [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog

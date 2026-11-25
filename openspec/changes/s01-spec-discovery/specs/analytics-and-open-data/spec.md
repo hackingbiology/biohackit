@@ -14,7 +14,7 @@ The system SHALL offer a documented research endpoint that, given an interventio
 - **AND** it applies the minimum cohort thresholds of "Aggregated research export uses only well-coded data", suppressing or marking not determinable any cohort below them
 
 ### Requirement: Open licences declared on published data and content
-The system SHALL publish its public dataset snapshot and its content under open licences and SHALL state the licence alongside each published artefact. (Source: docs/foundation.md § 3, "Open by code and by data". The source does not name the licences; see QUESTIONS.md Q16.)
+The system SHALL publish its public dataset snapshot and its content under open licences and SHALL state the licence alongside each published artefact. (Source: docs/foundation.md § 3, "Open by code and by data"; docs/slides/hacking-biology-project-presentation.pdf § page 9, AGPL-3.0 software and a Creative Commons licence for material. The source does not name the licences; see QUESTIONS.md Q16.)
 
 #### Scenario: Snapshot states its licence
 - **WHEN** a third party downloads the public snapshot

@@ -170,6 +170,7 @@ def test_part_c_registers_exist_and_resolve() -> None:
     sources = {
         "getbased-reuse.md": "docs/getbased-reuse-analysis.md",
         "presentation.md": "docs/presentation/biohackit-deck.pdf",
+        "slides.md": "docs/slides/hacking-biology-project-presentation.pdf",
     }
     for name, source in sources.items():
         path = ROOT / "docs/spec-discovery" / name

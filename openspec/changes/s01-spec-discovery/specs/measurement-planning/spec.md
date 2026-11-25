@@ -9,7 +9,7 @@ The system SHALL generate, from the analytes pooled into one draw, a request the
 - **AND** the request recommends no brand of laboratory test
 
 ### Requirement: Measurement appointments are recorded
-The system SHALL let a user record a planned measurement as an appointment with a date and a place, and SHALL close it when the result is recorded. (Source: docs/presentation/biohackit-deck.pdf slide 14, "Scheduling measurements (booking, appointments, recording data)". Booking with a laboratory is not specified.)
+The system SHALL let a user record a planned measurement as an appointment with a date and a place, and SHALL close it when the result is recorded. (Source: docs/presentation/biohackit-deck.pdf slide 14; docs/slides/hacking-biology-project-presentation.pdf § page 8, "Scheduling measurements (booking, appointments, recording data)". Booking with a laboratory is not specified.)
 
 #### Scenario: Record an appointment
 - **WHEN** a user records an appointment for a planned measurement

@@ -33,6 +33,7 @@ Registers part C: `docs/spec-discovery/getbased-reuse.md`, `docs/spec-discovery/
 - [ ] Implement "Reminders for intake, due tests and restock"
 
 ## biomarkers-and-labs
+- [ ] Implement "Body composition and microbiome results are accepted as measurements"
 - [ ] Implement "Import from wearable export files"
 - [ ] Implement "Deterministic calculated markers"
 - [ ] Implement "Deterministic Bortz clock computation"
