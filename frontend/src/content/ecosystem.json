@@ -41,6 +41,13 @@
       "link": "https://github.com/forever-healthy/evipedia-mcp",
       "status": "proposed",
       "upstream": "forever-healthy/evipedia-mcp"
+    },
+    {
+      "contribution": "Propose declaring an SPDX licence expression in package metadata: GitHub reports `NOASSERTION` and PyPI says only \"new BSD\"",
+      "date": "2026-11-26",
+      "link": "https://github.com/bio-learn/biolearn",
+      "status": "proposed",
+      "upstream": "bio-learn/biolearn"
     }
   ],
   "scans": [
@@ -535,6 +542,194 @@
       ],
       "file": "m01-terminology.md",
       "title": "Ecosystem scan — M01 terminology & reference data (retroactive)"
+    },
+    {
+      "entries": [
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-21",
+            "Licence": "MIT",
+            "Licence note": "assessment: extracts text and tables with coordinates from text-based lab PDFs, the first step of the import pipeline. Its own dependencies were not checked; the licence gate (`tools/licence/check_licences.py`) must pass when it is added in an M02 task.",
+            "URL": "https://github.com/jsvine/pdfplumber",
+            "Verified": "api.github.com/repos/jsvine/pdfplumber and pypi.org/pypi/pdfplumber/json (classifier \"MIT License\", version 0.11.11), 2026-11-26"
+          },
+          "name": "pdfplumber"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-3-Clause)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-25",
+            "Licence": "BSD-3-Clause",
+            "Licence note": "the licence comes from PyPI because GitHub reported `NOASSERTION`. Assessment: plain text extraction without table geometry; pdfplumber is the better fit, so this is a fallback to reconsider only.",
+            "URL": "https://github.com/py-pdf/pypdf",
+            "Verified": "api.github.com/repos/py-pdf/pypdf (licence `NOASSERTION`) and pypi.org/pypi/pypdf/json (license_expression `BSD-3-Clause`, version 7.1.1), 2026-11-26"
+          },
+          "name": "pypdf"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (same licence)",
+            "Decision": "reject",
+            "Last activity": "2026-11-24",
+            "Licence": "AGPL-3.0",
+            "Licence note": "compatible by licence, but a second licensing regime for the same capability adds nothing over pdfplumber; the GitHub licence field was not cross-checked against a commercial dual-licence statement, which was not fetched.",
+            "URL": "https://github.com/pymupdf/PyMuPDF",
+            "Verified": "api.github.com/repos/pymupdf/PyMuPDF, 2026-11-26"
+          },
+          "name": "PyMuPDF"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-25",
+            "Licence": "Apache-2.0",
+            "Licence note": "a native binary run as a separate process; assessment: its accuracy on phone photos of lab reports was not measured, so M02 must test it on synthetic reports before relying on it.",
+            "URL": "https://github.com/tesseract-ocr/tesseract",
+            "Verified": "api.github.com/repos/tesseract-ocr/tesseract, 2026-11-26"
+          },
+          "name": "Tesseract OCR"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-02",
+            "Licence": "Apache-2.0",
+            "Licence note": "thin Python wrapper around the Tesseract binary above.",
+            "URL": "https://github.com/madmaze/pytesseract",
+            "Verified": "api.github.com/repos/madmaze/pytesseract and pypi.org/pypi/pytesseract/json (licence text \"Apache License 2.0\", version 0.3.13), 2026-11-26"
+          },
+          "name": "pytesseract"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-13",
+            "Licence": "Apache-2.0",
+            "Licence note": "assessment: a deep-learning engine whose install pulls a large ML stack; heavier than Tesseract for the same job, so kept as an alternative to compare, not adopted.",
+            "URL": "https://github.com/JaidedAI/EasyOCR",
+            "Verified": "api.github.com/repos/JaidedAI/EasyOCR, 2026-11-26"
+          },
+          "name": "EasyOCR"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-3-Clause)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-25",
+            "Licence": "BSD-3-Clause",
+            "Licence note": "assessment: lab CSVs are small; the standard-library `csv` module, already used by `import_loinc`, avoids a large dependency. Revisit only if a task needs heavy tabular transforms.",
+            "URL": "https://github.com/pandas-dev/pandas",
+            "Verified": "api.github.com/repos/pandas-dev/pandas and pypi.org/pypi/pandas/json (license_expression `BSD-3-Clause`, version 3.1.1), 2026-11-26"
+          },
+          "name": "pandas"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q55)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-25",
+            "Licence": "unknown",
+            "Licence note": "DiagnosticReport and Observation definitions are read only to design our export mapping; no definition text or file is copied until Q55 is answered.",
+            "Provisional": "yes, until Q55 is answered; nothing from this repository is imported.",
+            "URL": "https://github.com/HL7/fhir",
+            "Verified": "api.github.com/repos/HL7/fhir (licence `NOASSERTION`) and raw.githubusercontent.com/HL7/fhir/master/LICENSE (says the source is covered by multiple licences, and that the specification itself is under a different licence), 2026-11-26"
+          },
+          "name": "HL7 FHIR specification"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q9)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-09-14",
+            "Licence": "unknown",
+            "Licence note": "same verdict as docs/ecosystem/m01-terminology.md and integrations.md; cited, not re-decided. Pydantic FHIR models; M02 builds DiagnosticReport/Observation JSON by hand against the spec until Q9 is answered.",
+            "Provisional": "yes, fhir.resources is not used until Fabio answers Q9; the default is that it is not a dependency.",
+            "URL": "https://github.com/nazrulworld/fhir.resources",
+            "Verified": "api.github.com/repos/nazrulworld/fhir.resources (licence `NOASSERTION`), raw.githubusercontent.com/nazrulworld/fhir.resources/main/LICENSE and pypi.org/pypi/fhir.resources/json (version 8.3.0 uploaded 2026-07-03, classifier \"BSD License\"), 2026-11-24"
+          },
+          "name": "fhir.resources"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "reuse schema or dataset",
+            "Last activity": "2026-10-28",
+            "Licence": "Apache-2.0",
+            "Licence note": "same verdict as m01-terminology.md and integrations.md; cited, not re-decided. The MEASUREMENT table is the alignment target for lab results (column names must be checked against the DDL when M02 is specified).",
+            "URL": "https://github.com/OHDSI/CommonDataModel",
+            "Verified": "api.github.com/repos/OHDSI/CommonDataModel and raw.githubusercontent.com/OHDSI/CommonDataModel/main/DESCRIPTION (`License: Apache License 2.0`), 2026-11-24"
+          },
+          "name": "OMOP CDM DDL"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-22",
+            "Licence": "MIT",
+            "Licence note": "assessment: a clock library built around epigenetic and omics data with a large dependency set. Its model files and data licences were not checked. Our PhenoAge is a closed-form formula over routine blood markers, with the published coefficients to be taken from the paper (Levine 2018) when M02 is specified, not from memory; this library is read for method only.",
+            "URL": "https://github.com/lucascamillomd/pyaging",
+            "Verified": "api.github.com/repos/lucascamillomd/pyaging and pypi.org/pypi/pyaging/json (license_expression `MIT`, version 0.6.3; project_urls point to this repository), 2026-11-26"
+          },
+          "name": "pyaging"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — a \"new BSD\" licence without a clause count cannot be assigned an SPDX id; question in docs/QUESTIONS.md (Q55)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-07-11",
+            "Licence": "unknown",
+            "Licence note": "the clause count (2 or 3) was not determined, so no SPDX id is claimed. Read for method only; no code is imported.",
+            "URL": "https://github.com/bio-learn/biolearn",
+            "Verified": "api.github.com/repos/bio-learn/biolearn (licence `NOASSERTION`) and pypi.org/pypi/biolearn/json (licence text \"new BSD\", classifier \"OSI Approved\", version 0.9.1), 2026-11-26"
+          },
+          "name": "biolearn"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (same licence)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-22",
+            "Licence": "AGPL-3.0",
+            "Licence note": "`docs/getbased-reuse-analysis.md` §A3 says get-based has PhenoAge and Bortz as deterministic closed formulas. That statement comes from the analysis document; the source file was not read in this scan. Code is not copied here: the backend is Python and each coefficient needs a citation, so M02 verifies it against the paper.",
+            "URL": "https://github.com/elkimek/get-based",
+            "Verified": "api.github.com/repos/elkimek/get-based, 2026-11-26 (the same entry is in m00-foundations.md, verified 2026-11-24)"
+          },
+          "name": "get-based (PhenoAge and Bortz, calculated markers)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-24",
+            "Licence": "MIT",
+            "Licence note": "assessment: it detects PII with NLP models and a language model download, which is heavy for the first step. M02 first uses deterministic pattern redaction before any text reaches an AI step; whether Presidio's recall justifies its size is to be measured on synthetic reports before adopting it. Its own dependencies were not checked.",
+            "URL": "https://github.com/data-privacy-stack/presidio",
+            "Verified": "api.github.com/repos/data-privacy-stack/presidio (the old microsoft/presidio name redirects there) and pypi.org/pypi/presidio-analyzer/json (license_expression `MIT`, version 2.2.366), 2026-11-26"
+          },
+          "name": "Microsoft Presidio"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (same licence)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-22",
+            "Licence": "AGPL-3.0",
+            "Licence note": "`docs/getbased-reuse-analysis.md` §A2 names `pdf-import.js` and seven satellite modules: text extraction, PII obfuscation with a diff viewer, AI parsing, schema mapping, a review modal and rollback, plus a benchmark on a synthetic report. We take the design (review step before persistence, rollback, a benchmark with a verified answer key); the JavaScript is not imported. The module files were not read in this scan.",
+            "URL": "https://github.com/elkimek/get-based",
+            "Verified": "api.github.com/repos/elkimek/get-based, 2026-11-26"
+          },
+          "name": "get-based import pipeline (pdf-import.js and satellites)"
+        }
+      ],
+      "file": "m02-blood-layer.md",
+      "title": "Ecosystem scan — M02 Blood Layer"
     }
   ]
 }
