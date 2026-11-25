@@ -22,10 +22,10 @@
 - [x] Tests for every SHALL scenario in the spec delta
 
 ## TG5 — Seed loader & data
-- [ ] `seed_reference` management command, idempotent, refuses rows lacking source
+- [x] `seed_reference` management command, idempotent, refuses rows lacking source (part A: loader + format; data rows in part B)
 - [ ] Seed files under `backend/terminology/seed/` with per-row source (UCUM units; LOINC subset for standard panel)
 - [ ] Validate UCUM codes (seed rows and `services.resolve_unit`) with the `ucumvert` package (MIT, docs/ecosystem/m01-terminology.md) instead of a custom parser, with a test; re-check the licences of its `lark`/`pint` dependencies when adding it; each seed row's `Source` records the UCUM licence name and URL (Q9); keep `Source`/`Unit` column names alignable with OMOP `VOCABULARY`/`CONCEPT`
-- [ ] Tests: loader idempotent; unsourced row aborts
+- [x] Tests: loader idempotent; unsourced row aborts
 
 ## TG-LOINC Full LOINC import (Fabio 2026-11-24)
 - [ ] Importer `manage.py import_loinc <dir>`: Loinc table, ConsumerName, Panels&Forms, AnswerList, Part/LinkageFile, LinguisticVariants (it-IT, zh-CN at least); idempotent upsert, records `Source(name=LOINC, version)`; licence notice stored and shown in UI/exports
