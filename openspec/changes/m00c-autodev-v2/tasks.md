@@ -17,16 +17,16 @@
   - [ ] openspec validate
   - [ ] Playwright e2e + axe WCAG 2.2 AA
   - [ ] mutmut
-- [ ] Spec discovery: compare whitepaper/, docs/presentation/, docs/*.md against openspec/specs; every feature not yet specified becomes a requirement in an OpenSpec change
+- [x] Spec discovery: compare whitepaper/, docs/presentation/, docs/*.md against openspec/specs; every feature not yet specified becomes a requirement in an OpenSpec change
   - [x] part A: whitepaper/ + docs/foundation.md (docs/spec-discovery/whitepaper.md)
   - [x] part B: docs/hackingbiology-project-spec.md (docs/spec-discovery/project-spec.md)
   - [x] part C: docs/getbased-reuse-analysis.md, docs/presentation/
-  - [ ] part D: docs/slides/, docs/specs/, docs/analysis/, remaining docs/*.md
+  - [x] part D: docs/slides/, docs/specs/, docs/analysis/, remaining docs/*.md
     - [x] D1a: docs/slides/ (docs/spec-discovery/slides.md)
     - [x] D1b: docs/specs/biohackit-specification.html sections 1–14 (docs/spec-discovery/specs-html.md)
     - [x] D1c: docs/specs/biohackit-specification.html sections 15–27 (Daily Log … Agent Access)
     - [x] D2a: docs/analysis/competitive-landscape.html (docs/spec-discovery/competitive-landscape.md)
     - [x] D2b1: docs/proposal-critique.html (docs/spec-discovery/proposal-critique.md)
     - [x] D2b2: docs/reference/hb-protocol-structure.xlsx
-    - [ ] D2b3: docs/foundation.html
+    - [x] D2b3: docs/foundation.html (docs/spec-discovery/foundation-html.md)
 - [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog

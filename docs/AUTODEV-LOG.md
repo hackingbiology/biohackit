@@ -37,3 +37,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 spec discovery D2a: competitive-landscape register (6 sections, 28 rows), test added, Q35 · see git log
 2026-11-25 · M00c · TG2 spec discovery D2b1: proposal-critique register (7 sections, 65 rows), 1 added requirement, test added, Q37 · see git log
 2026-11-25 · M00c · TG2 spec discovery D2b2: hb-protocol-structure register (6 worksheets), 3 added requirements (per-weight posology gated on provenance, route and formulation, multi-ingredient products), test extended, Q38 · see git log
+2026-11-25 · M00c · TG2 spec discovery D2b3: foundation-html register (8 sections, 23 rows, all reuse part A foundation.md rows, no new requirement), test added, Q39; part D closed · see git log

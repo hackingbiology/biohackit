@@ -425,3 +425,34 @@ def test_weight_relative_posology_has_animal_and_missing_provenance_scenarios() 
     assert (
         "Heightened acknowledgment for research-level or animal-derived dosing" in body
     )
+
+
+FOUNDATION_HTML_SECTIONS = (
+    "1. Why two names, one mission",
+    "2. Incorporation & ownership",
+    "3. What the Foundation guarantees (the mission lock)",
+    "4. Governance",
+    "5. Sustainability",
+    "6. Public presence — two sites, two jobs",
+    "7. Risks & mitigations",
+    "Resolved (Fabio) & still open",
+)
+
+
+# scenario: dev-process::register-rows-resolve
+# scenario: dev-process::unspecified-feature-captured
+def test_foundation_html_register_covers_all_sections() -> None:
+    path = ROOT / "docs/spec-discovery/foundation-html.md"
+    assert path.is_file()
+    rows = parse_register(path.read_text(encoding="utf-8"))
+    prefix = "docs/foundation.html § "
+    assert rows
+    assert all(r.source.startswith(prefix) for r in rows)
+    assert {r.source[len(prefix) :] for r in rows} == set(FOUNDATION_HTML_SECTIONS)
+    html = (ROOT / "docs/foundation.html").read_text(encoding="utf-8")
+    h2 = re.findall(r"<h2[^>]*>(.*?)</h2>", html, re.S)
+    titles = [unescape(re.sub(r"<[^>]+>", "", h)).strip() for h in h2]
+    assert titles == list(FOUNDATION_HTML_SECTIONS)
+    specs = collect_titles(ROOT / "openspec/specs", "*/spec.md")
+    changes = collect_titles(ROOT / "openspec/changes", "*/specs/*/spec.md")
+    assert check_rows(rows, specs, changes, ROOT) == []
