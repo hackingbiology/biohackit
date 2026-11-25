@@ -4,7 +4,8 @@ Registers: `docs/spec-discovery/whitepaper.md` (part A), `docs/spec-discovery/pr
 
 Registers part C: `docs/spec-discovery/getbased-reuse.md`, `docs/spec-discovery/presentation.md`
 
-Registers part D1b: docs/spec-discovery/specs-html.md (sections 1–13)
+Registers part D1b: docs/spec-discovery/specs-html.md (sections 1–14)
+Registers part D1c: docs/spec-discovery/specs-html.md (sections 15–27)
 
 ## safety-guardrails
 - [ ] Implement "Platform describes and never prescribes" (copy review, AI narration check)

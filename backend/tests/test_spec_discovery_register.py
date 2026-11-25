@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, replace
+from html import unescape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -230,9 +231,25 @@ SPECS_HTML_PART1_SECTIONS = (
     "Safety Guardrails (M7)",
 )
 
+SPECS_HTML_PART2_SECTIONS = (
+    "Daily Log & Adherence (M13)",
+    "Dashboards & Doctor View (M5)",
+    "Community & Social (M6)",
+    "N-of-1 Studies",
+    "Procurement & Inventory (M4)",
+    "Pills Management (M4 — daily intake orchestration)",
+    "Therapeutics Management (periodic treatments)",
+    "Exercise Reporting",
+    "Nutrition Management",
+    "Evidence Layer (M11)",
+    "Analytics & Open Data (M8)",
+    "Genomics (M9 — minimal interpretation, public by default)",
+    "Agent Access (MCP)",
+)
+
 
 # scenario: dev-process::register-rows-resolve
-def test_specs_html_part1_register_covers_its_sections() -> None:
+def test_specs_html_register_covers_all_sections() -> None:
     specs = collect_titles(ROOT / "openspec/specs", "*/spec.md")
     changes = collect_titles(ROOT / "openspec/changes", "*/specs/*/spec.md")
     path = ROOT / "docs/spec-discovery/specs-html.md"
@@ -242,7 +259,12 @@ def test_specs_html_part1_register_covers_its_sections() -> None:
     assert rows
     assert all(r.source.startswith(prefix) for r in rows)
     cited = {r.source[len(prefix) :] for r in rows}
-    assert cited == set(SPECS_HTML_PART1_SECTIONS)
+    assert cited == set(SPECS_HTML_PART1_SECTIONS) | set(SPECS_HTML_PART2_SECTIONS)
+    html = (ROOT / "docs/specs/biohackit-specification.html").read_text(
+        encoding="utf-8"
+    )
+    h2 = re.findall(r'<h2 class="ct">(.*?)</h2>', html, re.S)
+    assert cited == {unescape(re.sub(r"<[^>]+>", "", h)).strip() for h in h2}
     assert check_rows(rows, specs, changes, ROOT) == []
     covered = next(r for r in rows if r.status == "covered")
     bad = replace(covered, requirement="protocols/No such requirement")

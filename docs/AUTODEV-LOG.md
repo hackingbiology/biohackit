@@ -33,3 +33,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · X01 · public /ecosystem page, exporter and sync test; requirement added to x01 delta · see git log
 2026-11-25 · M00c · TG2 spec discovery D1a: slides register (14 pages), 2 ADDED requirements, test covers slides.md · see git log
 2026-11-25 · M00c · TG2 spec discovery D1b: specs-html register (sections 1–13, 112 rows), parser accepts escaped pipes, test added · see git log
+2026-11-25 · M00c · TG2 spec discovery D1c: specs-html register extended to all 27 sections, test checks titles against the HTML · see git log

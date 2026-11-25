@@ -23,6 +23,7 @@
   - [x] part C: docs/getbased-reuse-analysis.md, docs/presentation/
   - [ ] part D: docs/slides/, docs/specs/, docs/analysis/, remaining docs/*.md
     - [x] D1a: docs/slides/ (docs/spec-discovery/slides.md)
-    - [x] D1b: docs/specs/biohackit-specification.html sections 1–13 (docs/spec-discovery/specs-html.md)
-    - [ ] D1c: docs/specs/biohackit-specification.html sections 14–26 (Daily Log … Agent Access)
+    - [x] D1b: docs/specs/biohackit-specification.html sections 1–14 (docs/spec-discovery/specs-html.md)
+    - [x] D1c: docs/specs/biohackit-specification.html sections 15–27 (Daily Log … Agent Access)
+    - [ ] D2: docs/analysis/ + remaining docs/*.md
 - [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog
