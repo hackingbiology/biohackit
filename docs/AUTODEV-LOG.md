@@ -45,3 +45,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 docs A: AI surfaces map docs/ai-surfaces.md -> /docs/ai-surfaces (3 AI surfaces, 7 deterministic, exporter + sync test + jest test), Q43 · see git log
 2026-11-25 · M00c · TG2 docs B: architecture page docs/architecture.md -> /docs/architecture (exporter, path/requirement-exists test, sync test, jest test), ai-surfaces safety-threshold row split · see git log
 2026-11-25 · M00c · TG2 docs C: user guide docs/user-guide.md -> /docs/user-guide (exporter, route/requirement-exists test, sign-in fact test, sync test, jest test), Q45 · see git log
+2026-11-25 · M00c · TG2 docs E: changelog docs/CHANGELOG.md -> /docs/changelog (exporter, commit/change-exists test, sync test, jest test, CI fetch-depth 0), Q46 · see git log

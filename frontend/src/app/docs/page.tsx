@@ -7,6 +7,7 @@ import Link from "next/link";
 import {
   aiSurfacesStrings,
   architectureStrings,
+  changelogStrings,
   userGuideStrings,
 } from "@/lib/i18n";
 import { requestLocale } from "@/lib/request-locale";
@@ -24,6 +25,7 @@ export default async function DocsIndex() {
   const t = aiSurfacesStrings[locale];
   const a = architectureStrings[locale];
   const u = userGuideStrings[locale];
+  const c = changelogStrings[locale];
   return (
     <main className="mx-auto max-w-3xl space-y-6 p-4 sm:p-8">
       <h1 className="text-3xl font-bold tracking-tight">{t.docsIndex}</h1>
@@ -41,6 +43,11 @@ export default async function DocsIndex() {
         <li>
           <Link href="/docs/user-guide" className={`underline ${focus}`}>
             {u.title}
+          </Link>
+        </li>
+        <li>
+          <Link href="/docs/changelog" className={`underline ${focus}`}>
+            {c.title}
           </Link>
         </li>
       </ul>

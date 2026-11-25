@@ -34,4 +34,4 @@
     - [x] B: architecture (`docs/architecture.md` -> `/docs/architecture`)
     - [x] C: user guide (`docs/user-guide.md` -> `/docs/user-guide`)
     - [ ] D: OpenAPI reference
-    - [ ] E: changelog
+    - [x] E: changelog

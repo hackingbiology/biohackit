@@ -1,0 +1,75 @@
+{
+  "days": [
+    {
+      "date": "2026-11-25",
+      "entries": [
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "02c9898",
+          "summary": "A plain-language user guide now lists what you can do today and what is still to come."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "be0aa23",
+          "summary": "An architecture page now shows what is built and what is only planned."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "e07566e",
+          "summary": "A documentation section now opens with a page listing every place where AI writes words."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "3db6ac4",
+          "summary": "Automatic checks now test that the unit-conversion code is well covered by tests."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "9ee6f33",
+          "summary": "Automatic checks now enforce stricter typing on the terminology code."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "28c917d",
+          "summary": "Automatic checks now scan the code for common security mistakes."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "570b43a",
+          "summary": "Automatic checks now confirm that every specification is well formed."
+        },
+        {
+          "change": "x01-ecosystem-reuse",
+          "commit": "7bd6163",
+          "summary": "A public Ecosystem page now shows what biohack.it builds on and what it gives back."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "240bc0a",
+          "summary": "Automatic checks now look for known security problems in the backend libraries."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "ec313cd",
+          "summary": "The web framework was upgraded to a patched release that fixes known security problems."
+        }
+      ]
+    },
+    {
+      "date": "2026-11-24",
+      "entries": [
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "e512cc5",
+          "summary": "The project papers were compared with the specifications and the gaps were written down."
+        },
+        {
+          "change": "m00c-autodev-v2",
+          "commit": "1787aa0",
+          "summary": "Automatic checks now require that changed backend code is well covered by tests."
+        }
+      ]
+    }
+  ],
+  "title": "Changelog — what changed on biohack.it"
+}

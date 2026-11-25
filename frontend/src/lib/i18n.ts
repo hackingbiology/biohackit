@@ -301,6 +301,36 @@ export const userGuideStrings: Record<Locale, UserGuideStrings> = {
   zh: userGuideEn,
 };
 
+export interface ChangelogStrings {
+  title: string;
+  intro: string;
+  caption: string;
+  summary: string;
+  change: string;
+  commit: string;
+  tableRegion: string;
+  back: string;
+}
+
+const changelogEn: ChangelogStrings = {
+  title: "Changelog",
+  intro:
+    "What changed on biohack.it, newest day first. Each line names the project change it belongs to and the commit that delivered it.",
+  caption: "Changes made on",
+  summary: "What changed",
+  change: "Project change",
+  commit: "Commit",
+  tableRegion: "Scrollable table",
+  back: "Back to documentation",
+};
+
+// IT and ZH fall back to EN until translated, as for the user guide.
+export const changelogStrings: Record<Locale, ChangelogStrings> = {
+  en: changelogEn,
+  it: changelogEn,
+  zh: changelogEn,
+};
+
 export function pickLocale(lang: string | undefined): Locale {
   const l = (lang ?? "en").toLowerCase();
   if (l.startsWith("it")) return "it";

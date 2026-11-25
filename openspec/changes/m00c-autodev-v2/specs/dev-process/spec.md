@@ -179,3 +179,14 @@ The user guide page SHALL be generated from `docs/user-guide.md`, SHALL cite for
 #### Scenario: User guide page in sync
 - **WHEN** `frontend/src/content/user-guide.json` differs from the export of `docs/user-guide.md`
 - **THEN** the test fails and `tools/docs/export_user_guide.py --check` exits 1
+
+### Requirement: Changelog reflects merged work
+The changelog page SHALL be generated from `docs/CHANGELOG.md`. Every entry SHALL cite a commit that exists in the repository history and an OpenSpec change that exists under `openspec/changes/` (open or archive) or whose capability exists in `openspec/specs/`.
+
+#### Scenario: Changelog entries resolve
+- **WHEN** an entry in `docs/CHANGELOG.md` cites a commit that is not in the repository history or an OpenSpec change that does not exist
+- **THEN** the test fails naming the entry
+
+#### Scenario: Changelog page in sync
+- **WHEN** `frontend/src/content/changelog.json` differs from the export of `docs/CHANGELOG.md`
+- **THEN** the test fails and `tools/docs/export_changelog.py --check` exits 1
