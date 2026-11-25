@@ -11,6 +11,7 @@ The system SHALL tell a user what to measure and SHALL NOT tell a user what to t
 #### Scenario: Dose guidance is a plausibility check only
 - **WHEN** a dose is checked
 - **THEN** the result is framed as a guardrail against an implausible entry, not as clinical advice
+- **AND** a dose with `animal-derived` provenance (see "Posology provenance (human vs animal)") keeps its marking and the heightened acknowledgment applies (see `interventions-and-catalog`)
 
 ### Requirement: LLM-assisted curation requires human review
 The system SHALL treat any safety rule, interaction or mapping proposed by an LLM as a proposal only, generated offline in batch, and SHALL NOT make it live until a named curator approves it. (Source: docs/hackingbiology-project-spec.md § 8.3 and § 8.4.)

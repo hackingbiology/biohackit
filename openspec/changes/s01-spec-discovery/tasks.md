@@ -64,6 +64,9 @@ Registers part D1c: docs/spec-discovery/specs-html.md (sections 15–27)
 
 ## interventions-and-catalog
 - [ ] Implement "Early partial result during long waits"
+- [ ] Implement "Weight-relative posology is gated on posology provenance"
+- [ ] Implement "Route and formulation are recorded per intake item"
+- [ ] Implement "Multi-ingredient products list their declared ingredients"
 
 ## dashboards-and-doctor-view
 - [ ] Implement "Quick actions on the dashboard"

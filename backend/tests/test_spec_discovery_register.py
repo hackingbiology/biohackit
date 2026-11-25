@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import re
+import zipfile
 from dataclasses import dataclass, replace
 from html import unescape
 from pathlib import Path
+from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parents[2]
 STATUSES = {"covered", "added", "out-of-scope"}
@@ -323,3 +325,103 @@ def test_specs_html_register_covers_all_sections() -> None:
     covered = next(r for r in rows if r.status == "covered")
     bad = replace(covered, requirement="protocols/No such requirement")
     assert check_rows([bad], specs, changes, ROOT)
+
+
+HB_PROTOCOL_XLSX = "docs/reference/hb-protocol-structure.xlsx"
+DOSE_WORDS = re.compile(
+    r"\b(dose|doses|dosing|posology|mg/kg|weight)\b|per[- ]kg|per[- ]weight", re.I
+)
+PROVENANCE_MARKERS = ("Posology provenance (human vs animal)",)
+
+
+def is_gated_on_posology_provenance(body: str) -> bool:
+    return any(m in body for m in PROVENANCE_MARKERS)
+
+
+def xlsx_sheet_titles(path: Path) -> list[str]:
+    """Worksheet titles in order, read from the workbook XML with the stdlib."""
+    with zipfile.ZipFile(path) as z:
+        root = ElementTree.fromstring(z.read("xl/workbook.xml"))
+    ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+    return [s.get("name", "") for s in root.iter(f"{ns}sheet")]
+
+
+def register_sections(text: str) -> list[str]:
+    return [line[3:].strip() for line in text.splitlines() if line.startswith("## ")]
+
+
+def requirement_blocks(text: str) -> dict[str, str]:
+    blocks: dict[str, str] = {}
+    for part in re.split(r"^### Requirement: ", text, flags=re.M)[1:]:
+        title, _, body = part.partition("\n")
+        blocks[title.strip()] = body
+    return blocks
+
+
+# scenario: dev-process::register-rows-resolve
+def test_hb_protocol_structure_register_has_one_section_per_worksheet() -> None:
+    path = ROOT / "docs/spec-discovery/hb-protocol-structure.md"
+    assert path.is_file()
+    text = path.read_text(encoding="utf-8")
+    titles = xlsx_sheet_titles(ROOT / HB_PROTOCOL_XLSX)
+    assert titles
+    assert register_sections(text) == titles
+    rows = parse_register(text)
+    prefix = HB_PROTOCOL_XLSX + " § "
+    assert all(r.source.startswith(prefix) for r in rows)
+    assert {r.source[len(prefix) :] for r in rows} == set(titles)
+    specs = collect_titles(ROOT / "openspec/specs", "*/spec.md")
+    changes = collect_titles(ROOT / "openspec/changes", "*/specs/*/spec.md")
+    assert check_rows(rows, specs, changes, ROOT) == []
+
+
+# scenario: dev-process::unspecified-feature-captured
+def test_dose_related_s01_requirements_reference_posology_provenance() -> None:
+    base = ROOT / "openspec/changes/s01-spec-discovery/specs"
+    checked = 0
+    for path in sorted(base.glob("*/spec.md")):
+        for title, body in requirement_blocks(path.read_text("utf-8")).items():
+            if DOSE_WORDS.search(title + body):
+                checked += 1
+                assert is_gated_on_posology_provenance(body), (
+                    f"{path.parent.name}/{title}"
+                )
+    assert checked >= 2
+
+
+# scenario: dev-process::unspecified-feature-captured
+def test_curator_provenance_alone_does_not_gate_a_dose_requirement() -> None:
+    assert not is_gated_on_posology_provenance(
+        "The dose comes with curator provenance and a citation."
+    )
+    assert is_gated_on_posology_provenance("See Posology provenance (human vs animal).")
+
+
+# scenario: dev-process::unspecified-feature-captured
+def test_heightened_acknowledgment_title_alone_does_not_gate_a_dose_requirement() -> (
+    None
+):
+    body = (
+        "Needs Heightened acknowledgment for research-level or animal-derived dosing."
+    )
+    assert not is_gated_on_posology_provenance(body)
+
+
+# scenario: dev-process::unspecified-feature-captured
+def test_weight_relative_posology_has_animal_and_missing_provenance_scenarios() -> None:
+    path = (
+        ROOT
+        / "openspec/changes/s01-spec-discovery/specs/interventions-and-catalog/spec.md"
+    )
+    body = requirement_blocks(path.read_text("utf-8"))[
+        "Weight-relative posology is gated on posology provenance"
+    ]
+    assert "#### Scenario: Animal-derived per-weight dose is not converted" in body
+    assert "no absolute human dose is computed or shown" in body
+    assert "#### Scenario: Weight-relative posology without provenance" in body
+    assert "SHALL compute an absolute dose" not in body
+    assert "#### Scenario: Human-derived per-weight dose yields" not in body
+    assert "no absolute dose is computed or shown" in body
+    assert (
+        "Heightened acknowledgment for research-level or animal-derived dosing" in body
+    )
