@@ -10,7 +10,7 @@
 - [ ] Gates hardening (append-only to gates.sh): mypy (strict on new apps), coverage ≥ 90% on changed backend files, `pip-audit`, `pnpm audit --prod`, semgrep (p/django, p/typescript), openspec validate (CLI `@fission-ai/openspec`), Playwright e2e + axe WCAG 2.2 AA on key pages, mutmut on statistics/unit-conversion modules
   - [ ] mypy (strict on new apps)
   - [x] changed-file coverage ≥ 90% (tools/coverage/changed_coverage.py)
-  - [ ] pip-audit
+  - [x] pip-audit (tools/audit/pip_audit_gate.py, pinned pip-audit 2.10.1 via uvx)
   - [x] B1 upgrade next to a patched release (no waiver for fixable high/critical advisories)
   - [ ] B2 pnpm audit --prod gate
   - [ ] semgrep (p/django, p/typescript)

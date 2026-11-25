@@ -97,3 +97,18 @@ The frontend SHALL pin a `next` version that satisfies the patched range of ever
 #### Scenario: Patched framework pinned
 - **WHEN** the frontend lockfile is read
 - **THEN** the resolved `next` version satisfies the patched range of every advisory listed in docs/security/frontend-advisories.md, and package.json and the lockfile agree
+
+### Requirement: Backend dependencies have no fixable known vulnerability
+The gates SHALL fail when pip-audit reports a vulnerability with a fix version in the runtime packages locked in `backend/uv.lock`, and SHALL fail when the audit cannot run.
+
+#### Scenario: Fixable backend vulnerability rejected
+- **WHEN** pip-audit reports a vulnerability that has a fix version for a locked runtime package
+- **THEN** the gate exits 1 and prints the package, version, advisory id and fix versions
+
+#### Scenario: Backend audit cannot run
+- **WHEN** uv or uvx is missing, the lock export fails, pip-audit exits with an error, or its output is not JSON
+- **THEN** the gate prints that it cannot run and exits 2
+
+#### Scenario: Unfixed backend advisory reported
+- **WHEN** pip-audit reports a vulnerability with no fix version
+- **THEN** the gate prints it as unfixed and does not fail on it

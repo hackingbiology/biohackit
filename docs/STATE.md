@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M00c TG2 gates C done 2026-11-25: `tools/audit/pip_audit_gate.py` audits `uv export` of backend/uv.lock with `pip-audit==2.10.1` run through `uvx` (isolated tool env). It is not installed in `backend/.venv` because `tools/licence/check_licences.py` scans every distribution of that venv. Fixable vulnerability exits 1; cannot run exits 2. On this branch: 19 packages, no fixable vulnerability. **B2 blocker for the next planner:** B2's last run failed only at the licence gate, because `pnpm licenses list --prod --json` exited 1 after the postcss override changed the lockfile while the shared `frontend/node_modules` did not match (see the node_modules section below and Q34).
 - M00c TG2 spec discovery part C done 2026-11-24: registers docs/spec-discovery/getbased-reuse.md and presentation.md (14 ADDED requirements, Q25–Q30), linked-data scenario fix; next: part D (docs/slides/, docs/specs/, docs/analysis/, remaining docs/*.md).
 - M00c TG2 spec discovery part B done 2026-11-24: register docs/spec-discovery/project-spec.md (14 ADDED requirements, Q18–Q23), plus part A residuals (linked-data requirement, Q24; register-rows scenario wording); next: part C (docs/getbased-reuse-analysis.md, docs/presentation/).
 - M00c TG2 spec discovery part A done 2026-11-24: register docs/spec-discovery/whitepaper.md, change openspec/changes/s01-spec-discovery (8 ADDED requirements, Q16–Q17), test_spec_discovery_register.py.

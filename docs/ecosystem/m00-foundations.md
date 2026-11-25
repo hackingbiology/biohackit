@@ -152,3 +152,11 @@ Not in scope of this scan: a PWA/service-worker library (none is in `frontend/pa
 - **Last activity:** 2026-11-22
 - **Decision:** learn-from only
 - **Verified:** api.github.com/repos/elkimek/get-based, 2026-11-24. No get-based code is imported in M00. Component-level reuse (biomarker schema, import pipeline) is analysed in `docs/getbased-reuse-analysis.md` and belongs to later module scans.
+
+### pip-audit
+- **URL:** https://github.com/pypa/pip-audit
+- **Licence:** Apache-2.0
+- **AGPL-compatible:** yes (Apache-2.0)
+- **Last activity:** 2026-11-19
+- **Decision:** adopt as dependency
+- **Verified:** dev tool only, pinned `pip-audit==2.10.1` and run through `uvx` (isolated tool environment), never installed into `backend/.venv` because the licence gate scans that venv. Sources: pypi.org/pypi/pip-audit/json (version 2.10.1, classifier `License :: OSI Approved :: Apache Software License`) and api.github.com/repos/pypa/pip-audit (spdx `Apache-2.0`, pushed 2026-11-19, not archived), fetched 2026-11-25

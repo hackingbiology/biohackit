@@ -39,5 +39,8 @@ python3 tools/licence/check_licences.py || bad "AGPL-incompatible or unknown dep
 step "changed-file coverage"
 backend/.venv/bin/python tools/coverage/changed_coverage.py "$BASE" || bad "changed backend file below 90% coverage"
 
+step "backend pip-audit"
+python3 tools/audit/pip_audit_gate.py || bad "pip-audit"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL
