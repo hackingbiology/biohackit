@@ -212,6 +212,49 @@ export const aiSurfacesStrings: Record<Locale, AiSurfacesStrings> = {
   zh: aiSurfacesEn,
 };
 
+export interface ArchitectureStrings {
+  title: string;
+  intro: string;
+  builtCaption: string;
+  specifiedCaption: string;
+  component: string;
+  layer: string;
+  path: string;
+  purpose: string;
+  requirement: string;
+  tableRegion: string;
+  back: string;
+  layerLabels: Record<string, string>;
+}
+
+const architectureEn: ArchitectureStrings = {
+  title: "Architecture",
+  intro:
+    "What the platform is made of today, with the file or folder of each part, and what is specified but not built yet. Every built part points to something that exists in the repository.",
+  builtCaption: "Built components",
+  specifiedCaption: "Specified, not yet built",
+  component: "Component",
+  layer: "Layer",
+  path: "Where in the repository",
+  purpose: "Purpose",
+  requirement: "Requirement that specifies it",
+  tableRegion: "Scrollable table",
+  back: "Back to documentation",
+  layerLabels: {
+    backend: "Backend",
+    frontend: "Frontend",
+    deployment: "Deployment",
+    process: "Development process",
+  },
+};
+
+// IT and ZH fall back to EN until translated, as for other pages.
+export const architectureStrings: Record<Locale, ArchitectureStrings> = {
+  en: architectureEn,
+  it: architectureEn,
+  zh: architectureEn,
+};
+
 export function pickLocale(lang: string | undefined): Locale {
   const l = (lang ?? "en").toLowerCase();
   if (l.startsWith("it")) return "it";

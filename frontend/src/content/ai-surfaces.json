@@ -23,8 +23,14 @@
     {
       "kind": "deterministic",
       "status": "specified",
-      "surface": "Safety threshold (dose sanity check)",
+      "surface": "Dose plausibility check",
       "where": "openspec/specs/safety-guardrails/spec.md: Dose sanity check"
+    },
+    {
+      "kind": "deterministic",
+      "status": "specified",
+      "surface": "Safety threshold (critical-value alert)",
+      "where": "openspec/specs/safety-guardrails/spec.md: Interaction and critical-value alerts"
     },
     {
       "kind": "deterministic",

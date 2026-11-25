@@ -1,0 +1,185 @@
+{
+  "built": [
+    {
+      "component": "Django project package",
+      "layer": "backend",
+      "path": "backend/biohackit",
+      "purpose": "Settings, URL routing, WSGI and ASGI entry points for the backend"
+    },
+    {
+      "component": "API URL registry",
+      "layer": "backend",
+      "path": "backend/biohackit/api_urls.py",
+      "purpose": "Collects the API routes that each app registers"
+    },
+    {
+      "component": "accounts app",
+      "layer": "backend",
+      "path": "backend/accounts",
+      "purpose": "Users, profiles, social handles and sign-in endpoints"
+    },
+    {
+      "component": "Discourse sign-in provider",
+      "layer": "backend",
+      "path": "backend/accounts/providers/discourse_connect",
+      "purpose": "Sign-in through a Discourse forum account"
+    },
+    {
+      "component": "Demo data seeding",
+      "layer": "backend",
+      "path": "backend/accounts/management/commands/seed_demo.py",
+      "purpose": "Command that fills the staging site with demo data"
+    },
+    {
+      "component": "core app",
+      "layer": "backend",
+      "path": "backend/core",
+      "purpose": "Data models for interventions, biomarkers and measurements, and the no-index middleware"
+    },
+    {
+      "component": "terminology app",
+      "layer": "backend",
+      "path": "backend/terminology",
+      "purpose": "Sources, units and stored unit conversions"
+    },
+    {
+      "component": "Measurement hypertable",
+      "layer": "backend",
+      "path": "backend/core/migrations/0002_measurement_hypertable.py",
+      "purpose": "Stores measurements in a TimescaleDB table split by time"
+    },
+    {
+      "component": "Unit conversion service",
+      "layer": "backend",
+      "path": "backend/terminology/services.py",
+      "purpose": "Converts values with stored factors only, no AI"
+    },
+    {
+      "component": "Backend tests",
+      "layer": "backend",
+      "path": "backend/tests",
+      "purpose": "Automated tests for the backend, docs pages and gates"
+    },
+    {
+      "component": "Next.js app",
+      "layer": "frontend",
+      "path": "frontend/src/app",
+      "purpose": "Pages of the web app: home, sign-in, sign-up, onboarding, ecosystem and documentation"
+    },
+    {
+      "component": "Documentation pages",
+      "layer": "frontend",
+      "path": "frontend/src/app/docs",
+      "purpose": "The public documentation index and its pages"
+    },
+    {
+      "component": "Interface strings",
+      "layer": "frontend",
+      "path": "frontend/src/lib/i18n.ts",
+      "purpose": "All user-facing text, English first, Italian and Chinese falling back to English"
+    },
+    {
+      "component": "Generated page data",
+      "layer": "frontend",
+      "path": "frontend/src/content",
+      "purpose": "JSON files generated from the Markdown sources under docs/"
+    },
+    {
+      "component": "Frontend tests",
+      "layer": "frontend",
+      "path": "frontend/src/__tests__",
+      "purpose": "Automated tests for the web app"
+    },
+    {
+      "component": "Local stack",
+      "layer": "deployment",
+      "path": "docker-compose.yml",
+      "purpose": "Database, backend and frontend containers for local development"
+    },
+    {
+      "component": "Staging stack",
+      "layer": "deployment",
+      "path": "docker-compose.staging.yml",
+      "purpose": "The public staging site with demo data, one published port"
+    },
+    {
+      "component": "Quality gates",
+      "layer": "process",
+      "path": "tools/autodev2/gates.sh",
+      "purpose": "The checks every change must pass before merge"
+    },
+    {
+      "component": "Traceability matrix",
+      "layer": "process",
+      "path": "tools/trace/matrix.py",
+      "purpose": "Links each spec scenario to the test that declares it"
+    },
+    {
+      "component": "OpenSpec validation gate",
+      "layer": "process",
+      "path": "tools/openspec/validate_gate.py",
+      "purpose": "Fails on structural errors in the specifications"
+    },
+    {
+      "component": "Dependency audit gate",
+      "layer": "process",
+      "path": "tools/audit/pip_audit_gate.py",
+      "purpose": "Fails on known vulnerable backend packages"
+    },
+    {
+      "component": "Licence gate",
+      "layer": "process",
+      "path": "tools/licence/check_licences.py",
+      "purpose": "Fails on licences that are not AGPL-3.0 compatible"
+    },
+    {
+      "component": "Changed-file coverage gate",
+      "layer": "process",
+      "path": "tools/coverage/changed_coverage.py",
+      "purpose": "Checks test coverage of the lines a change touches"
+    },
+    {
+      "component": "Static analysis gate",
+      "layer": "process",
+      "path": "tools/semgrep/semgrep_gate.py",
+      "purpose": "Scans backend and frontend code for known risky patterns"
+    },
+    {
+      "component": "Strict typing gate",
+      "layer": "process",
+      "path": "tools/mypy/mypy_gate.py",
+      "purpose": "Strict type check of the apps listed for it"
+    },
+    {
+      "component": "Mutation testing gate",
+      "layer": "process",
+      "path": "tools/mutmut/mutmut_gate.py",
+      "purpose": "Checks that tests catch changes in the numeric code"
+    },
+    {
+      "component": "Docs exporters",
+      "layer": "process",
+      "path": "tools/docs",
+      "purpose": "Generate the documentation page data from docs/"
+    }
+  ],
+  "specified": [
+    {
+      "component": "OMOP research export",
+      "requirement": "openspec/specs/analytics-and-open-data/spec.md: Researcher access and OMOP export"
+    },
+    {
+      "component": "Evipedia evidence integration",
+      "requirement": "openspec/specs/ai-uses-and-attribution/spec.md: Integrate the Evipedia knowledgebase, attributed"
+    },
+    {
+      "component": "AI4L generated reviews",
+      "requirement": "openspec/specs/ai-uses-and-attribution/spec.md: AI4L as the framework for AI-generated reviews and evidence queries"
+    },
+    {
+      "component": "MCP gateway for agents",
+      "requirement": "openspec/specs/agent-access/spec.md: MCP gateway over encrypted context"
+    }
+  ],
+  "title": "Architecture — what exists, what is only planned"
+}

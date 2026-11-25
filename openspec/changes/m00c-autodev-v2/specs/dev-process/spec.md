@@ -157,3 +157,14 @@ The gates SHALL fail when mutmut leaves a surviving mutant in a module listed in
 #### Scenario: All mutants killed
 - **WHEN** every mutant in every listed module is killed or accepted with a reason
 - **THEN** the gate prints each target with its killed and total counts and exits 0
+
+### Requirement: Architecture documentation reflects the repository
+The architecture page SHALL be generated from `docs/architecture.md`, SHALL cite for every built component a repository path that exists, and SHALL list planned but unbuilt parts separately, each citing an existing OpenSpec requirement.
+
+#### Scenario: Architecture components exist
+- **WHEN** a built component in `docs/architecture.md` cites a repository path that does not exist, or a specified-not-built row cites a requirement that is not in openspec
+- **THEN** the test fails naming the row
+
+#### Scenario: Architecture page in sync
+- **WHEN** `frontend/src/content/architecture.json` differs from the export of `docs/architecture.md`
+- **THEN** the test fails and `tools/docs/export_architecture.py --check` exits 1
