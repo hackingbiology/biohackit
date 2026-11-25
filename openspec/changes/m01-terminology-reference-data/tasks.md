@@ -28,10 +28,10 @@
 - [x] Tests: loader idempotent; unsourced row aborts
 
 ## TG-LOINC Full LOINC import (Fabio 2026-11-24)
-- [ ] Importer `manage.py import_loinc <dir>`: Loinc table, ConsumerName, Panels&Forms, AnswerList, Part/LinkageFile, LinguisticVariants (it-IT, zh-CN at least); idempotent upsert, records `Source(name=LOINC, version)`; licence notice stored and shown in UI/exports
+- [ ] (part A: core table + synthetic fixture) Importer `manage.py import_loinc <dir>`: Loinc table, ConsumerName, Panels&Forms, AnswerList, Part/LinkageFile, LinguisticVariants (it-IT, zh-CN at least); idempotent upsert, records `Source(name=LOINC, version)`; licence notice stored and shown in UI/exports
 - [ ] Scan decision: model LOINC tables so they map onto OMOP `CONCEPT` / `CONCEPT_RELATIONSHIP` (Part hierarchy as relationships); the release stays user-supplied until Q10 is answered; no Python LOINC loader was verified, so the importer is our own
 - [ ] Postgres full-text + trigram search over long/consumer/variant names; API `GET /api/terminology/loinc?q=` paginated
-- [ ] Test with a tiny synthetic fixture in LOINC file format (no real table in git); if `data/vendor/loinc/` is absent, the importer exits cleanly with instructions
+- [ ] (part A: core table + synthetic fixture) Test with a tiny synthetic fixture in LOINC file format (no real table in git); if `data/vendor/loinc/` is absent, the importer exits cleanly with instructions
 ## TG-SNOMED
   - Scan decision: Snowstorm (Apache-2.0) and HAPI FHIR are read as references for RF2 / CodeSystem handling only; not adopted
 - [ ] Verify GPS licence text and URL (record in Source); if redistribution allowed, importer for GPS; generic BYO-SNOMED RF2 importer; SNOMED codes are optional cross-refs only

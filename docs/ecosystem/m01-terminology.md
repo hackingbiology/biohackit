@@ -64,6 +64,8 @@ Our own assessments (not fetched facts) are marked "assessment". Feed-back into 
 - **Verified:** api.github.com/repos/OHDSI/Vocabulary-v5.0 (licence reported as `Unlicense`; the repository root contains a `LICENSE` file and a `LOINC` directory), 2026-11-24
 - **Licence note:** GitHub reports Unlicense, which is not yet in the README licence table, hence `unknown`. Read as a reference for how LOINC releases are staged into OMOP concept tables; no code is copied. The vocabularies it builds carry their own licences.
 
+**Loinc.csv column names (TG-LOINC part A).** Verified on 2026-11-25 from https://raw.githubusercontent.com/OHDSI/Vocabulary-v5.0/master/LOINC/create_source_tables.sql (table `SOURCES.LOINC`; read as a reference only, no code copied) and https://raw.githubusercontent.com/OHDSI/Vocabulary-v5.0/master/LOINC/readme.md, which says that table is loaded from `LoincTable\Loinc.csv`. Columns the importer requires: LOINC_NUM, COMPONENT, PROPERTY, TIME_ASPCT, SYSTEM, SCALE_TYP, METHOD_TYP, CLASS, LONG_COMMON_NAME, SHORTNAME, STATUS. Caveat: this is the OHDSI staging DDL, not a real Loinc.csv header (no release was available to read); an actual release is the final check. Licence note: that file's header says Apache-2.0 while the GitHub API reported Unlicense for the repository.
+
 No Python loader package for LOINC releases was verified: a PyPI lookup for the package name `loinc` returned HTTP 404 on 2026-11-24 and no other candidate was found. This is a "no verified candidate found" result for loaders; `import_loinc` (TG-LOINC) is our own importer, kept thin and aligned to the OMOP concept layout.
 
 ## OHDSI Athena / OMOP vocabularies

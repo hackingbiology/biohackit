@@ -172,3 +172,34 @@ class OptimalRange(StratifiedRange):
 
 class SafetyThreshold(RangeBase):
     pass
+
+
+class LoincTerm(SourcedModel):
+    """One row of the LOINC core table (Loinc.csv), user-supplied (Q10).
+
+    OMOP CONCEPT mapping: concept_code = loinc_num, concept_name = long_common_name,
+    vocabulary = source (Source.name 'LOINC', Source.version = release).
+    `loinc_class` holds the CLASS column (`class` is a Python keyword).
+    """
+
+    loinc_num = models.CharField(max_length=10, unique=True)
+    component = models.CharField(max_length=255, blank=True, default="")
+    property = models.CharField(max_length=255, blank=True, default="")
+    time_aspect = models.CharField(max_length=255, blank=True, default="")
+    system = models.CharField(max_length=255, blank=True, default="")
+    scale_type = models.CharField(max_length=255, blank=True, default="")
+    method_type = models.CharField(max_length=255, blank=True, default="")
+    loinc_class = models.CharField(max_length=255, blank=True, default="")
+    long_common_name = models.CharField(max_length=255, blank=True, default="")
+    short_name = models.CharField(max_length=100, blank=True, default="")
+    status = models.CharField(max_length=255, blank=True, default="")
+    featured = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.loinc_num
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.loinc_num = self.loinc_num.strip()
+        if not self.loinc_num:
+            raise ValidationError("loinc_num must not be blank")
+        super().save(*args, **kwargs)

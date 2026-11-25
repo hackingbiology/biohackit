@@ -83,3 +83,25 @@ The system SHALL NOT ship SNOMED or the full LOINC table; it SHALL load them onl
 #### Scenario: Seed contents
 - **WHEN** the repository seed files are inspected
 - **THEN** they contain only openly licensed or explicitly permitted content, with licence noted in `Source`
+
+### Requirement: Full LOINC release is imported from user-supplied files
+The system SHALL import the LOINC core table (Loinc.csv) from user-supplied files with `manage.py import_loinc`, idempotently and in one transaction, SHALL link every imported term to a `Source` recording the release version, and SHALL NOT commit any LOINC content to the repository.
+
+#### Scenario: LOINC release absent
+- **WHEN** `import_loinc` runs and the release directory or Loinc.csv is absent
+- **THEN** the command fails with a non-zero exit and no traceback
+- **AND** the message names `data/vendor/loinc/` and how to obtain the release
+- **AND** nothing is written
+
+#### Scenario: LOINC import is idempotent
+- **WHEN** `import_loinc` runs twice on the same release
+- **THEN** the row count and the stored values are the same after both runs
+
+#### Scenario: LOINC import records its version as Source
+- **WHEN** `import_loinc` runs with `--release-version <v>`
+- **THEN** every imported term links to `Source(name='LOINC', version=<v>, licence, url='https://loinc.org/license/', retrieved_at)`
+
+#### Scenario: Malformed LOINC release aborts the import
+- **WHEN** Loinc.csv lacks a required column or has a row with an empty LOINC_NUM
+- **THEN** the whole import is rolled back
+- **AND** the error names the file and line
