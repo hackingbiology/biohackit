@@ -130,7 +130,7 @@ The system SHALL import the optional LOINC ConsumerName file and the it-IT and z
 - **AND** the error names the file and line
 
 ### Requirement: LOINC terms are searchable by name and code
-The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, using Postgres full-text and trigram matching. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search. The query SHALL be at most 200 characters after trimming, and searches SHALL be rate-limited per user.
+The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, and also on the imported consumer name (LoincConsumerName.consumer_name) and on the it-IT/zh-CN linguistic variant fields long_common_name, short_name, component and display_name (related_names is excluded in this part), using Postgres full-text and trigram matching plus a case-insensitive substring match on variant names. Each term SHALL be returned once however many names match, and `count` SHALL count terms. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search. The query SHALL be at most 200 characters after trimming, and searches SHALL be rate-limited per user.
 
 #### Scenario: LOINC search by name
 - **WHEN** an authenticated user searches for a word contained in a term's long name
@@ -143,6 +143,19 @@ The system SHALL return imported LOINC terms that match a query on loinc_num (ex
 #### Scenario: LOINC search by exact code
 - **WHEN** an authenticated user searches with `q=<loinc_num>`
 - **THEN** the term with that code is the first result
+
+#### Scenario: LOINC search by consumer name
+- **WHEN** an authenticated user searches for a word in a term's imported consumer name
+- **THEN** that term is returned
+
+#### Scenario: LOINC search by Italian or Chinese name
+- **WHEN** an authenticated user searches for a word or substring of a term's it-IT or zh-CN variant name
+- **THEN** that term is returned
+
+#### Scenario: LOINC search returns each term once
+- **WHEN** a query matches a term through several names
+- **THEN** the term appears exactly once
+- **AND** `count` counts terms
 
 #### Scenario: LOINC search is paginated
 - **WHEN** an authenticated user searches

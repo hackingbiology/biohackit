@@ -252,6 +252,13 @@ class LoincConsumerName(SourcedModel):
                 fields=["term", "consumer_name"], name="uniq_loinc_consumer_name"
             )
         ]
+        indexes = [
+            GinIndex(
+                fields=["consumer_name"],
+                name="loinc_trgm_cn_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+        ]
 
     def __str__(self) -> str:
         return self.consumer_name
@@ -280,6 +287,28 @@ class LoincLinguisticVariant(SourcedModel):
             models.UniqueConstraint(
                 fields=["term", "language"], name="uniq_loinc_variant_term_language"
             )
+        ]
+        indexes = [
+            GinIndex(
+                fields=["long_common_name"],
+                name="loinc_trgm_lv_long_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+            GinIndex(
+                fields=["short_name"],
+                name="loinc_trgm_lv_short_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+            GinIndex(
+                fields=["component"],
+                name="loinc_trgm_lv_comp_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+            GinIndex(
+                fields=["display_name"],
+                name="loinc_trgm_lv_disp_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
         ]
 
     def __str__(self) -> str:

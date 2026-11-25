@@ -12,7 +12,12 @@ from rest_framework.throttling import ScopedRateThrottle
 
 from accounts.models import User
 from biohackit.dboptions import with_trgm_threshold
-from terminology.models import LoincTerm, Source
+from terminology.models import (
+    LoincConsumerName,
+    LoincLinguisticVariant,
+    LoincTerm,
+    Source,
+)
 from terminology.search import search_loinc
 
 URL = "/api/terminology/loinc/"
@@ -237,3 +242,75 @@ def test_connection_threshold_is_applied(db):
     with connection.cursor() as cur:
         cur.execute("SHOW pg_trgm.word_similarity_threshold")
         assert cur.fetchone()[0] == "0.5"
+
+
+def _variant(term, language, **fields):
+    return LoincLinguisticVariant.objects.create(
+        term=term, language=language, source=term.source, **fields
+    )
+
+
+def _consumer(term, name):
+    return LoincConsumerName.objects.create(
+        term=term, consumer_name=name, source=term.source
+    )
+
+
+# scenario: terminology-reference-data::loinc-search-by-consumer-name
+def test_search_by_consumer_name_word(api, term):
+    _consumer(term, "Zorblax sugar level")
+    LoincTerm.objects.create(
+        loinc_num="99999-2", long_common_name="Other thing", source=term.source
+    )
+    assert codes(api.get(URL, {"q": "zorblax"})) == ["99999-1"]
+
+
+# scenario: terminology-reference-data::loinc-search-by-consumer-name
+def test_search_by_consumer_name_typo(api, term):
+    _consumer(term, "Zorblax sugar level")
+    assert codes(api.get(URL, {"q": "zorblex"})) == ["99999-1"]
+
+
+# scenario: terminology-reference-data::loinc-search-by-italian-or-chinese-name
+def test_search_by_italian_variant_word(api, term):
+    _variant(term, "it-IT", long_common_name="Quxalina sintetica nel sangue")
+    assert codes(api.get(URL, {"q": "quxalina"})) == ["99999-1"]
+
+
+# scenario: terminology-reference-data::loinc-search-by-italian-or-chinese-name
+def test_search_by_chinese_variant_substring(api, term):
+    _variant(term, "zh-CN", display_name="测试合成物质血清")
+    assert codes(api.get(URL, {"q": "合成物"})) == ["99999-1"]
+
+
+# scenario: terminology-reference-data::loinc-search-returns-each-term-once
+def test_term_matching_many_names_returned_once(api, term):
+    _consumer(term, "Glucose lay name")
+    _consumer(term, "Glucose second lay name")
+    _variant(term, "it-IT", long_common_name="Glucosio sintetico", component="Glucose")
+    _variant(term, "zh-CN", component="Glucose 葡萄糖")
+    response = api.get(URL, {"q": "glucose"})
+    assert codes(response) == ["99999-1"]
+    assert response.json()["count"] == 1
+
+
+# scenario: terminology-reference-data::loinc-search-by-exact-code
+def test_exact_code_ranks_before_variant_match(api, source):
+    other = LoincTerm.objects.create(
+        loinc_num="99999-0", long_common_name="Unrelated", source=source
+    )
+    _variant(other, "it-IT", long_common_name="99999-5 menzione nel testo")
+    LoincTerm.objects.create(
+        loinc_num="99999-5", long_common_name="Different", source=source
+    )
+    assert codes(api.get(URL, {"q": "99999-5"})) == ["99999-5", "99999-0"]
+
+
+# scenario: terminology-reference-data::loinc-search-by-consumer-name
+def test_tie_on_consumer_name_orders_by_loinc_num(api, source):
+    for num in ("99999-9", "99999-3", "99999-6"):
+        t = LoincTerm.objects.create(
+            loinc_num=num, long_common_name="Unrelated", source=source
+        )
+        _consumer(t, "Blorptag lay name")
+    assert codes(api.get(URL, {"q": "blorptag"})) == ["99999-3", "99999-6", "99999-9"]

@@ -30,8 +30,8 @@
 ## TG-LOINC Full LOINC import (Fabio 2026-11-24)
 - [ ] (part A: core table; part C1: ConsumerName + LinguisticVariants it-IT/zh-CN) Importer `manage.py import_loinc <dir>`: Loinc table, ConsumerName, Panels&Forms, AnswerList, Part/LinkageFile, LinguisticVariants (it-IT, zh-CN at least); idempotent upsert, records `Source(name=LOINC, version)`; licence notice stored and shown in UI/exports
 - [ ] Scan decision: model LOINC tables so they map onto OMOP `CONCEPT` / `CONCEPT_RELATIONSHIP` (Part hierarchy as relationships); the release stays user-supplied until Q10 is answered; no Python LOINC loader was verified, so the importer is our own
-- [ ] (part B: search over long/short/component names + API done; consumer/variant names follow their import)
-- [ ] part C2: search over consumer names and linguistic variants
+- [x] (part B: search over long/short/component names + API done; consumer/variant names: part C2)
+- [x] part C2: search over consumer names and linguistic variants (term ids UNIONed per source table, trigram GIN indexes in 0007)
 - [ ] (part A: core table + synthetic fixture) Test with a tiny synthetic fixture in LOINC file format (no real table in git); if `data/vendor/loinc/` is absent, the importer exits cleanly with instructions
 - [x] (part B2) Search hardening: q longer than 200 characters rejected with HTTP 400 and a plain-language message; LoincSearchView has DRF ScopedRateThrottle scope `loinc_search` (rate in settings, Q51 default); pg_trgm.word_similarity_threshold appended to any existing DATABASE_URL `options` instead of replacing them
 ## TG-SNOMED
