@@ -106,6 +106,29 @@ The system SHALL import the LOINC core table (Loinc.csv) from user-supplied file
 - **THEN** the whole import is rolled back
 - **AND** the error names the file and line
 
+### Requirement: LOINC consumer names and linguistic variants are imported
+The system SHALL import the optional LOINC ConsumerName file and the it-IT and zh-CN LinguisticVariants files in the same `import_loinc` transaction, idempotently, linking every row to an existing `LoincTerm` and to the release `Source`. Other languages SHALL be skipped and counted in the command output. Absent optional files SHALL NOT fail the import. A row for a LOINC code that is not imported SHALL abort the whole import.
+
+#### Scenario: LOINC consumer names imported
+- **WHEN** `import_loinc` runs on a release that has `AccessoryFiles/ConsumerName/ConsumerName.csv`
+- **THEN** each row is stored as a `LoincConsumerName` linked to its `LoincTerm` and to the release `Source`
+- **AND** a second run gives the same rows and values
+
+#### Scenario: LOINC linguistic variants imported for it-IT and zh-CN
+- **WHEN** `import_loinc` runs on a release with per-language files under `AccessoryFiles/LinguisticVariants/`
+- **THEN** the it-IT and zh-CN rows are stored as `LoincLinguisticVariant` linked to their `LoincTerm` and the release `Source`, one per term and language
+- **AND** files of other languages are not imported and the command output counts them
+
+#### Scenario: Optional LOINC accessory files absent
+- **WHEN** `import_loinc` runs and only Loinc.csv is present
+- **THEN** the core import succeeds and the command exits 0
+- **AND** the output names each optional file that was not found
+
+#### Scenario: Accessory row for an unknown LOINC code aborts the import
+- **WHEN** an accessory file has a row whose LOINC code is not in the imported terms
+- **THEN** the whole import is rolled back
+- **AND** the error names the file and line
+
 ### Requirement: LOINC terms are searchable by name and code
 The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, using Postgres full-text and trigram matching. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search. The query SHALL be at most 200 characters after trimming, and searches SHALL be rate-limited per user.
 

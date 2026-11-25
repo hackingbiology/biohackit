@@ -163,3 +163,7 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 ## 2026-11-25 · M01 LOINC search hardening
 
 **Q51** · The LOINC search is rate-limited per user with a DRF scoped throttle (`loinc_search`) and queries are capped at 200 characters. Neither value comes from a cited source; both are operational limits that can be configured (LOINC_SEARCH_THROTTLE_RATE). Default taken: **60/min, 200 characters**. Are these limits right for staging and production, and should the throttle use a shared cache (Redis) instead of the per-process local-memory cache?
+
+## 2026-11-25 · M01 LOINC consumer names and linguistic variants (part C1)
+
+**Q52** · The ConsumerName and LinguisticVariants file paths and headers were verified only from the HAPI FHIR loader config and its test fixtures, and the OHDSI staging DDL for ConsumerName; no real LOINC release was read, and the it-IT file's numeric id in its file name is unknown (the importer matches any id). Also, ConsumerName may hold several names per LOINC code, so rows are unique per (term, consumer_name) rather than per term. Default taken: **import what was verified (ConsumerName; it-IT and zh-CN variants), other languages skipped, everything else not imported**. Please check the headers against a real release when one is available, and say whether a term may have several consumer names.

@@ -232,3 +232,55 @@ class LoincTerm(SourcedModel):
         if not self.loinc_num:
             raise ValidationError("loinc_num must not be blank")
         super().save(*args, **kwargs)
+
+
+class LoincConsumerName(SourcedModel):
+    """One row of ConsumerName.csv (plain-language name of a LOINC term), user-supplied.
+
+    OMOP CONCEPT_SYNONYM mapping: concept = term, concept_synonym_name = consumer_name,
+    language = English (the file carries no language column).
+    """
+
+    term = models.ForeignKey(
+        LoincTerm, on_delete=models.CASCADE, related_name="consumer_names"
+    )
+    consumer_name = models.CharField(max_length=1000)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["term", "consumer_name"], name="uniq_loinc_consumer_name"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return self.consumer_name
+
+
+class LoincLinguisticVariant(SourcedModel):
+    """One row of a per-language LinguisticVariants file (e.g. it-IT, zh-CN).
+
+    OMOP CONCEPT_SYNONYM mapping: concept = term, concept_synonym_name = display_name
+    (or long_common_name), language = `language` (BCP 47 tag).
+    """
+
+    term = models.ForeignKey(
+        LoincTerm, on_delete=models.CASCADE, related_name="linguistic_variants"
+    )
+    language = models.CharField(max_length=10)
+    component = models.CharField(max_length=255, blank=True, default="")
+    system = models.CharField(max_length=255, blank=True, default="")
+    short_name = models.CharField(max_length=255, blank=True, default="")
+    long_common_name = models.CharField(max_length=255, blank=True, default="")
+    related_names = models.TextField(blank=True, default="")
+    display_name = models.TextField(blank=True, default="")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["term", "language"], name="uniq_loinc_variant_term_language"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.term_id} {self.language}"

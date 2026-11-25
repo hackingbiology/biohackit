@@ -56,3 +56,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M01 · TG-LOINC part A: LoincTerm model + idempotent import_loinc for Loinc.csv (synthetic fixture, Source per release, 4 scenarios, tests) · see git log
 2026-11-25 · M01 · TG-LOINC part B: authenticated paginated GET /api/terminology/loinc/?q= (full-text + pg_trgm + exact code, migration 0005, 7 scenarios, tests) · see git log
 2026-11-25 · M01 · TG-LOINC part B2: LOINC search q capped at 200 chars (400), scoped throttle loinc_search, pg_trgm threshold merged into DATABASE_URL options (2 scenarios, tests, Q51) · see git log
+2026-11-25 · M01 · TG-LOINC part C1: import_loinc also imports optional ConsumerName and it-IT/zh-CN LinguisticVariants (2 models, migration 0006, 4 scenarios, tests, Q52) · see git log
