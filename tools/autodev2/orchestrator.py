@@ -59,6 +59,16 @@ def log(msg: str) -> None:
         f.write(line + "\n")
 
 
+def sync() -> None:
+    """Bring the main checkout up to date and publish any local commits (tickets, digest)."""
+    rc, out = sh("git pull -q --rebase origin main")
+    if rc:
+        sh("git rebase --abort")
+        log("sync: pull --rebase failed: " + out[-300:])
+        return
+    sh("git push -q origin HEAD:main")
+
+
 def sh(cmd: str, cwd: Path = ROOT, timeout: int = 1800, env: dict | None = None) -> tuple[int, str]:
     p = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True, timeout=timeout,
                        env={**os.environ, **(env or {})})
@@ -118,9 +128,10 @@ def budget_status() -> dict:
     rows = [r for r in ledger() if r["ts"] >= week_start]
     usd = sum(r.get("usd", 0) for r in rows)
     dpct = sum(r.get("dpct", 0) for r in rows if r.get("dpct") is not None)
-    cal = [r for r in ledger() if r.get("dpct")]
+    cal = [r for r in ledger() if r.get("dpct") is not None]
     usd_per_pct = (sum(r["usd"] for r in cal) / sum(r["dpct"] for r in cal)) if sum(r["dpct"] for r in cal) >= 2 else CFG["usd_per_pct_default"]
-    share = max(dpct, usd / usd_per_pct)  # conservative: the larger of the two estimates
+    # measured share from real utilization deltas; USD fallback only when the usage sample is stale
+    share = dpct if util is not None else usd / usd_per_pct
     elapsed = min(1.0, max(0.0, (time.time() - week_start) / (7 * 86400)))
     allowed = min(CFG["weekly_share_pct"], CFG["weekly_share_pct"] * elapsed + CFG["pace_headroom_pct"])
     ok = share < allowed and (util is None or util < CFG["account_stop_pct"])
@@ -222,7 +233,7 @@ def merge(wt: Path, task: dict) -> tuple[bool, str]:
             return False, "gates failed after rebase:\n" + g
         rc, out = sh("git push -q origin HEAD:main", cwd=wt)
         if rc == 0:
-            sh("git pull -q --ff-only origin main")
+            sync()
             return True, "merged"
         time.sleep(20)
     return False, "push failed: " + out[-1000:]
@@ -230,12 +241,13 @@ def merge(wt: Path, task: dict) -> tuple[bool, str]:
 
 # ----------------------------------------------------------------------------- graph
 def plan(history: list[dict]) -> dict | None:
-    sh("git pull -q --ff-only origin main")
+    sync()
     _, matrix = sh("python3 tools/trace/matrix.py")
     ok_main, gate_tail = gates_on_main()
     ctx = {
         "matrix": matrix.strip(),
         "main_gates": "PASS" if ok_main else "FAIL\n" + gate_tail[-4000:],
+        "staging_deploy_log_tail": sh("grep -E 'deploy|ERR|error' /var/log/biohackit-staging.log | tail -12")[1][-2500:],
         "open_changes": sorted(p.name for p in (ROOT / "openspec/changes").iterdir() if p.is_dir() and p.name != "archive"),
         "recent_tasks": [{k: (str(v)[:400]) for k, v in h.items()} for h in history[-12:]],
     }
@@ -334,7 +346,8 @@ def run_task(task: dict) -> dict:
 def file_ticket(title: str, body: str, labels: str = "autodev") -> None:
     p = ROOT / "docs/tickets/outbox" / f"{int(time.time())}-{re.sub(r'[^a-z0-9]+', '-', title.lower())[:40]}.md"
     p.write_text(f"# {title}\n\nLabels: {labels}\n\n{body}\n")
-    sh(f"git add {p} && git commit -qm 'ticket: {title[:60]}' && git push -q origin HEAD:main")
+    sh(f"git add {p} && git commit -qm 'ticket: {title[:60]}'")
+    sync()
 
 
 # ----------------------------------------------------------------------------- digest
@@ -345,10 +358,10 @@ def digest_due() -> bool:
 
 
 def write_digest(history: list[dict]) -> None:
-    sh("git pull -q --ff-only origin main")
+    sync()
     n = now()
     since = (n - dt.timedelta(days=1)).timestamp()
-    _, mx = sh("python3 tools/trace/matrix.py --write")
+    _, mx = sh("python3 tools/trace/matrix.py")
     _, commits = sh(f"git log --since=@{int(since)} --no-merges --format='- %h %s' origin/main | grep -v -E 'ledger|tickets:|digest' | head -60")
     day = [h for h in history if h.get("end", "") >= (n - dt.timedelta(days=1)).isoformat()]
     failed = [h for h in day if h.get("status") != "merged"]
@@ -368,7 +381,8 @@ def write_digest(history: list[dict]) -> None:
     (ROOT / "docs/digest").mkdir(exist_ok=True)
     (ROOT / f"docs/digest/{n:%Y-%m-%d}.md").write_text(text)
     (ROOT / f"docs/tickets/outbox/digest-{n:%Y-%m-%d}.md").write_text(f"# Daily digest {n:%Y-%m-%d}\n\nLabels: digest\n\n" + "\n".join(body[2:]) + "\n")
-    sh(f"git add docs/digest docs/TRACEABILITY.md docs/tickets/outbox && git commit -qm 'digest {n:%Y-%m-%d}' && git push -q origin HEAD:main")
+    sh(f"git add docs/digest docs/tickets/outbox && git commit -qm 'digest {n:%Y-%m-%d}'")
+    sync()
     log("digest written")
 
 

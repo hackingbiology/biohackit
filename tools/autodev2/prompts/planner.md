@@ -3,6 +3,7 @@ Choose the single next task with the highest value toward "100% of scenarios cov
 
 Priority order:
 1. If main gates FAIL: a task that fixes main (slug starting `fix-main`).
+1b. If staging_deploy_log_tail shows the last deploy FAILED: a task that fixes the staging build (slug starting `fix-staging`). Fabio must be able to open http://51.158.36.151:18800. The deploy runs `docker compose -p biohackit-staging -f docker-compose.staging.yml up -d --build` from a clean clone with a .env containing only SECRET_KEY.
 2. Open OpenSpec changes with unchecked agent tasks (respect their order and dependencies; m00c TG2 tasks are high priority: tagging tests with scenario ids, staging compose, gate hardening, spec discovery, docs).
 3. Modules in docs/ROADMAP.md order: if a module has no OpenSpec change, the task is to WRITE that change (proposal, tasks, spec deltas, questions with defaults in docs/QUESTIONS.md); otherwise implement its next task group.
 4. Uncovered scenarios in the matrix.
