@@ -42,3 +42,16 @@ The system SHALL publish everything public as linked data, with its entities cod
 #### Scenario: Linked data seeds an instance
 - **WHEN** an independent instance imports the linked data
 - **THEN** it reproduces the public entities and their links without access to the origin instance
+
+### Requirement: Public-by-default reasoning and opt-out are stated publicly
+The system SHALL publish, where public-by-default sharing is explained, why maximal openness was chosen, the safeguards that accompany it (the heightened consent gate for genomic data and the BETA community poll) and how a person opts out, meaning withholds an item before it is published. Publication, especially of genomic data, is effectively irreversible once copied, and the explanation SHALL say so. (Source: docs/proposal-critique.html § The ten criticisms, C7, and § What I need from you; the document says to surface the reasoning, not to reopen the decision. See QUESTIONS.md Q37 and genomics "Public by default with heightened consent (incl. gVCF)".)
+
+#### Scenario: Reasoning is reachable from the sharing choice
+- **WHEN** a person is shown the public-by-default choice for their data
+- **THEN** the reasoning for maximal openness and its safeguards are reachable from that place
+- **AND** the page states how to opt out by withholding an item before publication
+
+#### Scenario: Opt-out is stated
+- **WHEN** a visitor reads the public-by-default explanation
+- **THEN** it states how a person opts out by withholding an item before it is published
+- **AND** it states that publication, especially of genomic data, is effectively irreversible once copied

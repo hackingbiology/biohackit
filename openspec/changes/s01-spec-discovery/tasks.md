@@ -31,6 +31,7 @@ Registers part D1c: docs/spec-discovery/specs-html.md (sections 15–27)
 - [ ] Implement "Open licences declared on published data and content"
 - [ ] Implement "Analytics pipeline works on pseudonymised data"
 - [ ] Implement "Public data is published as linked data"
+- [ ] Implement "Public-by-default reasoning and opt-out are stated publicly"
 
 ## daily-log-and-adherence
 - [ ] Implement "Reminders for intake, due tests and restock"

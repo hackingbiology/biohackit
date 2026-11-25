@@ -177,6 +177,7 @@ def test_part_c_registers_exist_and_resolve() -> None:
         "presentation.md": "docs/presentation/biohackit-deck.pdf",
         "slides.md": "docs/slides/hacking-biology-project-presentation.pdf",
         "competitive-landscape.md": "docs/analysis/competitive-landscape.html",
+        "proposal-critique.md": "docs/proposal-critique.html",
     }
     for name, source in sources.items():
         path = ROOT / "docs/spec-discovery" / name
@@ -224,6 +225,16 @@ COMPETITIVE_LANDSCAPE_SECTIONS = (
     "Emerging “Biohacker OS”",
 )
 
+PROPOSAL_CRITIQUE_SECTIONS = (
+    "My verdict, in one paragraph",
+    "The ten criticisms",
+    "The twelve pieces of advice",
+    "What I would rewrite on the site",
+    "What I would add to the specification",
+    "MVP first",
+    "What I need from you",
+)
+
 
 # scenario: dev-process::register-rows-resolve
 def test_competitive_landscape_register_covers_all_sections() -> None:
@@ -239,6 +250,21 @@ def test_competitive_landscape_register_covers_all_sections() -> None:
     titles = [unescape(re.sub(r"<[^>]+>", "", h)).strip() for h in h2]
     assert len(titles) == len(COMPETITIVE_LANDSCAPE_SECTIONS)
     for title, section in zip(titles, COMPETITIVE_LANDSCAPE_SECTIONS, strict=True):
+        assert title.startswith(section)
+
+
+# scenario: dev-process::register-rows-resolve
+def test_proposal_critique_register_covers_all_sections() -> None:
+    path = ROOT / "docs/spec-discovery/proposal-critique.md"
+    rows = parse_register(path.read_text(encoding="utf-8"))
+    prefix = "docs/proposal-critique.html § "
+    cited = {r.source[len(prefix) :] for r in rows}
+    assert cited == set(PROPOSAL_CRITIQUE_SECTIONS)
+    html = (ROOT / "docs/proposal-critique.html").read_text(encoding="utf-8")
+    h2 = re.findall(r"<h2[^>]*>(.*?)</h2>", html, re.S)
+    titles = [unescape(re.sub(r"<[^>]+>", "", h)).strip() for h in h2]
+    assert len(titles) == len(PROPOSAL_CRITIQUE_SECTIONS)
+    for title, section in zip(titles, PROPOSAL_CRITIQUE_SECTIONS, strict=True):
         assert title.startswith(section)
 
 

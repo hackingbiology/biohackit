@@ -35,3 +35,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 spec discovery D1b: specs-html register (sections 1–13, 112 rows), parser accepts escaped pipes, test added · see git log
 2026-11-25 · M00c · TG2 spec discovery D1c: specs-html register extended to all 27 sections, test checks titles against the HTML · see git log
 2026-11-25 · M00c · TG2 spec discovery D2a: competitive-landscape register (6 sections, 28 rows), test added, Q35 · see git log
+2026-11-25 · M00c · TG2 spec discovery D2b1: proposal-critique register (7 sections, 65 rows), 1 added requirement, test added, Q37 · see git log
