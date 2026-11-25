@@ -1,0 +1,4 @@
+"LoincNumber","LongCommonName","AnswerListId","AnswerListName","AnswerListLinkType","ApplicableContext"
+"SYN-0001","SYNTHETIC long","LL99999-1","SYNTHETIC list one","NORMATIVE",
+"SYN-0002","SYNTHETIC long","LL99999-1","SYNTHETIC list one","EXAMPLE",
+"SYN-0002","SYNTHETIC long","LL99999-2","SYNTHETIC list two","NORMATIVE",

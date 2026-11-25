@@ -1,0 +1,5 @@
+"AnswerListId","AnswerListName","AnswerListOID","ExtDefinedYN","ExtDefinedAnswerListCodeSystem","ExtDefinedAnswerListLink","AnswerStringId","LocalAnswerCode","LocalAnswerCodeSystem","SequenceNumber","DisplayText","ExtCodeId","ExtCodeDisplayName","ExtCodeSystem","ExtCodeSystemVersion","ExtCodeSystemCopyrightNotice","SubsequentTextPrompt","Description","Score"
+"LL99999-1","SYNTHETIC list one","9.9.9.1","N",,,"LA99999-1","1",,1,"synthetic answer one",,,,,,,,
+"LL99999-1","SYNTHETIC list one","9.9.9.1","N",,,"LA99999-2","2",,2,"synthetic answer two",,,,,,,,
+"LL99999-2","SYNTHETIC list two","9.9.9.2","N",,,"LA99999-1","1",,1,"synthetic answer one",,,,,,,,
+"LL99999-3","SYNTHETIC externally defined list","9.9.9.3","Y",,,,,,,,,,,,,,,

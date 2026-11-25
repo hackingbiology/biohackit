@@ -120,7 +120,7 @@ The system SHALL import the optional LOINC ConsumerName file and the it-IT and z
 - **AND** files of other languages are not imported and the command output counts them
 
 #### Scenario: Optional LOINC accessory files absent
-- **WHEN** `import_loinc` runs and only Loinc.csv is present (no ConsumerName, LinguisticVariants, Part or LoincPartLink_Primary file)
+- **WHEN** `import_loinc` runs and only Loinc.csv is present (no ConsumerName, LinguisticVariants, Part, LoincPartLink_Primary, AnswerList or LoincAnswerListLink file)
 - **THEN** the core import succeeds and the command exits 0
 - **AND** the output names each optional file that was not found
 
@@ -146,6 +146,24 @@ The system SHALL import the optional LOINC Part file (`AccessoryFiles/PartFile/P
 - **WHEN** a LoincPartLink_Primary.csv row has a part number that is neither in Part.csv nor in the database
 - **THEN** the whole import is rolled back
 - **AND** the error names the file and row
+
+### Requirement: LOINC panels and answer lists are imported
+The system SHALL import the optional answer-list file (`AccessoryFiles/AnswerFile/AnswerList.csv`) and the term-to-answer-list link file (`AccessoryFiles/AnswerFile/LoincAnswerListLink.csv`) in the same `import_loinc` transaction, idempotently, into `LoincAnswerList`, `LoincAnswer` and `LoincAnswerListLink`, each linked to the release `Source`. Answer lists SHALL be loaded before links. The Panels & Forms file (`PanelsAndForms.csv`) is not imported until its header is verified against a real release (Q54). A row whose LOINC code or answer list is neither imported nor already stored SHALL abort the whole import.
+
+#### Scenario: LOINC answer lists imported
+- **WHEN** `import_loinc` runs on a release that has `AnswerList.csv`
+- **THEN** each answer list is stored once per answer-list id as a `LoincAnswerList` and each answer once per list and answer code as a `LoincAnswer`, all linked to the release `Source`
+- **AND** a second run gives the same rows and values
+
+#### Scenario: LOINC answer-list links imported
+- **WHEN** `import_loinc` runs on a release that has `LoincAnswerListLink.csv`
+- **THEN** each row is stored as a `LoincAnswerListLink` from its `LoincTerm` to a `LoincAnswerList` with its link type
+- **AND** a second run does not duplicate any link
+
+#### Scenario: Panel or answer-list row referencing an unknown term or list aborts the import
+- **WHEN** a LoincAnswerListLink.csv row has a LOINC code that is not in the imported terms, or a link row has an answer-list id that is neither in AnswerList.csv nor in the database
+- **THEN** the whole import is rolled back
+- **AND** the error names the file and line
 
 ### Requirement: LOINC terms are searchable by name and code
 The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, and also on the imported consumer name (LoincConsumerName.consumer_name) and on the it-IT/zh-CN linguistic variant fields long_common_name, short_name, component and display_name (related_names is excluded in this part), using Postgres full-text and trigram matching plus a case-insensitive substring match on variant names. Each term SHALL be returned once however many names match, and `count` SHALL count terms. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search. The query SHALL be at most 200 characters after trimming, and searches SHALL be rate-limited per user.

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """`manage.py import_loinc [dir] --release-version V`: import Loinc.csv plus the optional
-ConsumerName, it-IT/zh-CN LinguisticVariants, Part and primary part link files
-(M01 TG-LOINC A, C1, D1)."""
+ConsumerName, it-IT/zh-CN LinguisticVariants, Part, primary part link,
+AnswerList and LoincAnswerListLink files (M01 TG-LOINC A, C1, D1, D2)."""
 
 from pathlib import Path
 from typing import Any
@@ -14,8 +14,8 @@ from terminology.loinc_importer import DEFAULT_DIR, LoincImportError, import_rel
 class Command(BaseCommand):
     help = (
         "Idempotently import the user-supplied LOINC core table (Loinc.csv) and the "
-        "optional ConsumerName, LinguisticVariants (it-IT, zh-CN), Part and LoincPartLink_Primary "
-        "files."
+        "optional ConsumerName, LinguisticVariants (it-IT, zh-CN), Part, LoincPartLink_Primary, "
+        "AnswerList and LoincAnswerListLink files."
     )
 
     def add_arguments(self, parser: CommandParser) -> None:
@@ -41,6 +41,12 @@ class Command(BaseCommand):
         )
         links = summary.part_links
         out(f"LoincPartLink: created {links.created}, updated {links.updated}")
+        for label, counts in (
+            ("LoincAnswerList", summary.answer_lists),
+            ("LoincAnswer", summary.answers),
+            ("LoincAnswerListLink", summary.answer_list_links),
+        ):
+            out(f"{label}: created {counts.created}, updated {counts.updated}")
         for language, count in sorted(summary.skipped_languages.items()):
             out(f"Skipped language {language}: {count} file(s) not imported")
         for name in summary.missing_optional:

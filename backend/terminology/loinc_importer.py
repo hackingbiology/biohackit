@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Import of the LOINC core table (Loinc.csv) and the optional ConsumerName, LinguisticVariants,
-Part and LoincPartLink_Primary accessory files from user-supplied files (M01 TG-LOINC A, C1, D1).
+Part, LoincPartLink_Primary, AnswerList and LoincAnswerListLink accessory
+files from user-supplied files (M01 TG-LOINC A, C1, D1, D2).
 
 Column names and file paths were verified from fetched sources, see
 docs/ecosystem/m01-terminology.md. Nothing from LOINC is stored in the repository.
@@ -13,10 +14,14 @@ from datetime import date
 from pathlib import Path
 
 from django.conf import settings
+from django.core.exceptions import FieldDoesNotExist
 from django.db import transaction
 from django.db.models import CharField, Model
 
 from terminology.models import (
+    LoincAnswer,
+    LoincAnswerList,
+    LoincAnswerListLink,
     LoincConsumerName,
     LoincLinguisticVariant,
     LoincPart,
@@ -78,6 +83,25 @@ PART_LINK_COLUMNS = {
     "Property": "property",
 }
 
+ANSWER_LIST_FILE = Path("AccessoryFiles/AnswerFile/AnswerList.csv")
+ANSWER_LIST_KEY = "AnswerListId"
+ANSWER_LIST_COLUMNS = {
+    "AnswerListName": "name",
+    "AnswerListOID": "oid",
+    "AnswerStringId": "answer_code",
+    "LocalAnswerCode": "local_answer_code",
+    "SequenceNumber": "sequence",
+    "DisplayText": "display_text",
+}
+ANSWER_LIST_FIELDS = ("name", "oid")
+
+ANSWER_LINK_FILE = Path("AccessoryFiles/AnswerFile/LoincAnswerListLink.csv")
+ANSWER_LINK_KEY = "LoincNumber"
+ANSWER_LINK_COLUMNS = {
+    "AnswerListId": "answer_list",
+    "AnswerListLinkType": "link_type",
+}
+
 ABSENT_HELP = (
     "LOINC release not found in {directory}. Obtain the LOINC release yourself "
     "(licence: https://loinc.org/license/), unpack it, and place Loinc.csv in "
@@ -104,6 +128,9 @@ class ImportSummary:
     linguistic_variants: Counts = Counts()
     parts: Counts = Counts()
     part_links: Counts = Counts()
+    answer_lists: Counts = Counts()
+    answers: Counts = Counts()
+    answer_list_links: Counts = Counts()
     missing_optional: tuple[str, ...] = ()
     skipped_languages: dict[str, int] = field(default_factory=dict)
 
@@ -129,25 +156,32 @@ def parse_csv(
     with path.open(newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
         header = reader.fieldnames or []
-        missing = [c for c in (key_column, *columns) if c not in header]
+        by_lower = {h.lower(): h for h in header}
+        missing = [c for c in (key_column, *columns) if c.lower() not in by_lower]
         if missing:
             raise LoincImportError(f"{path.name} line 1: missing column(s) {missing}")
+        actual = {c: by_lower[c.lower()] for c in (key_column, *columns)}
         rows: list[Row] = []
         for record in reader:
             where = f"{path.name} line {reader.line_num}"
             if None in record or any(v is None for v in record.values()):
                 raise LoincImportError(f"{where}: expected {len(header)} fields")
-            key = record[key_column].strip()
+            key = record[actual[key_column]].strip()
             if not key:
                 raise LoincImportError(f"{where}: empty {key_column}")
-            values = {name: record[col].strip() for col, name in columns.items()}
+            values = {
+                name: record[actual[col]].strip() for col, name in columns.items()
+            }
             check_lengths(model, values, where)
             rows.append(Row(where, key, values))
     return rows
 
 
 def char_limit(model: type[Model], field: str) -> int | None:
-    column = model._meta.get_field(field)
+    try:
+        column = model._meta.get_field(field)
+    except FieldDoesNotExist:
+        return None
     return column.max_length if isinstance(column, CharField) else None
 
 
@@ -284,6 +318,117 @@ def import_part_links(
     return Counts(created, updated)
 
 
+def parse_sequence(row: Row) -> int:
+    text = row.values["sequence"]
+    if not text.isascii() or not text.isdigit():
+        raise LoincImportError(f"{row.line}: sequence {text!r} is not a whole number")
+    return int(text)
+
+
+def parse_optional_sequence(row: Row) -> int | None:
+    return parse_sequence(row) if row.values["sequence"] else None
+
+
+def check_answer_rows(rows: list[Row]) -> None:
+    """Validate what parse_csv cannot: answer-list field lengths and the sequence."""
+    list_fields: dict[str, tuple[str, ...]] = {}
+    pairs: set[tuple[str, str]] = set()
+    for row in rows:
+        own = {k: row.values[k] for k in ANSWER_LIST_FIELDS}
+        check_lengths(LoincAnswerList, own, row.line)
+        fields = tuple(own.values())
+        if list_fields.setdefault(row.key, fields) != fields:
+            raise LoincImportError(
+                f"{row.line}: answer list {row.key!r} has a name/oid that differs "
+                "from an earlier row of the same list"
+            )
+        code = row.values["answer_code"]
+        if code:
+            if (row.key, code) in pairs:
+                raise LoincImportError(
+                    f"{row.line}: answer {code!r} repeated in answer list {row.key!r}"
+                )
+            pairs.add((row.key, code))
+        check_lengths(
+            LoincAnswer,
+            {k: v for k, v in row.values.items() if k not in ANSWER_LIST_FIELDS},
+            row.line,
+        )
+        parse_optional_sequence(row)
+
+
+def import_answer_lists(rows: list[Row], source: Source) -> tuple[Counts, Counts]:
+    """Upsert answer lists by id and their answers by (list, answer code); rows
+    without an AnswerStringId only define the list. Answers of a listed answer list
+    that the file no longer has are deleted; lists themselves are never deleted."""
+    lists_created = lists_updated = created = updated = 0
+    lists: dict[str, LoincAnswerList] = {}
+    kept: list[int] = []
+    for row in rows:
+        answer_list = lists.get(row.key)
+        if answer_list is None:
+            answer_list, was_created = LoincAnswerList.objects.update_or_create(
+                answer_list_id=row.key,
+                defaults={
+                    **{k: row.values[k] for k in ANSWER_LIST_FIELDS},
+                    "source": source,
+                },
+            )
+            lists[row.key] = answer_list
+            lists_created += was_created
+            lists_updated += not was_created
+        code = row.values["answer_code"]
+        if not code:
+            continue
+        answer, was_created = LoincAnswer.objects.update_or_create(
+            answer_list=answer_list,
+            answer_code=code,
+            defaults={
+                "local_answer_code": row.values["local_answer_code"],
+                "sequence": parse_optional_sequence(row),
+                "display_text": row.values["display_text"],
+                "source": source,
+            },
+        )
+        kept.append(answer.pk)
+        created += was_created
+        updated += not was_created
+    LoincAnswer.objects.filter(answer_list__in=lists.values()).exclude(
+        pk__in=kept
+    ).delete()
+    return Counts(lists_created, lists_updated), Counts(created, updated)
+
+
+def import_answer_list_links(
+    rows: list[Row], terms: dict[str, LoincTerm], source: Source, replace: bool
+) -> Counts:
+    """Upsert term -> answer list links; list ids must exist (imported now or earlier).
+    With replace (the file is present), links of the release's terms that the file no
+    longer has are deleted."""
+    lists = {a.answer_list_id: a for a in LoincAnswerList.objects.all()}
+    created = updated = 0
+    kept: list[int] = []
+    for row in rows:
+        list_id = row.values["answer_list"]
+        answer_list = lists.get(list_id)
+        if answer_list is None:
+            raise LoincImportError(f"{row.line}: unknown answer list {list_id!r}")
+        obj, was_created = LoincAnswerListLink.objects.update_or_create(
+            term=resolve_term(row, terms),
+            answer_list=answer_list,
+            link_type=row.values["link_type"],
+            defaults={"source": source},
+        )
+        kept.append(obj.pk)
+        created += was_created
+        updated += not was_created
+    if replace:
+        LoincAnswerListLink.objects.filter(term__in=terms.values()).exclude(
+            pk__in=kept
+        ).delete()
+    return Counts(created, updated)
+
+
 def read_optional(
     directory: Path,
     relative: Path,
@@ -341,6 +486,23 @@ def import_release(directory: Path, release_version: str) -> ImportSummary:
         LoincPartLink,
         missing,
     )
+    answer_rows, _ = read_optional(
+        directory,
+        ANSWER_LIST_FILE,
+        ANSWER_LIST_KEY,
+        ANSWER_LIST_COLUMNS,
+        LoincAnswerList,
+        missing,
+    )
+    check_answer_rows(answer_rows)
+    answer_link_rows, answer_links_present = read_optional(
+        directory,
+        ANSWER_LINK_FILE,
+        ANSWER_LINK_KEY,
+        ANSWER_LINK_COLUMNS,
+        LoincAnswerListLink,
+        missing,
+    )
     created = updated = 0
     with transaction.atomic():
         source, _ = Source.objects.get_or_create(
@@ -366,6 +528,20 @@ def import_release(directory: Path, release_version: str) -> ImportSummary:
         variants = import_variants(variant_rows, terms, source)
         parts = import_parts(part_rows, source)
         links = import_part_links(link_rows, terms, source, replace=links_present)
+        answer_lists, answers = import_answer_lists(answer_rows, source)
+        answer_links = import_answer_list_links(
+            answer_link_rows, terms, source, replace=answer_links_present
+        )
     return ImportSummary(
-        created, updated, consumer, variants, parts, links, tuple(missing), skipped
+        created,
+        updated,
+        consumer,
+        variants,
+        parts,
+        links,
+        answer_lists,
+        answers,
+        answer_links,
+        tuple(missing),
+        skipped,
     )

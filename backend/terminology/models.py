@@ -358,3 +358,71 @@ class LoincPartLink(SourcedModel):
 
     def __str__(self) -> str:
         return f"{self.term_id} -> {self.part_id}"
+
+
+class LoincAnswerList(SourcedModel):
+    """One answer list (LL id) of AnswerList.csv, user-supplied.
+
+    OMOP CONCEPT mapping: concept_code = answer_list_id (LL...), concept_name = name,
+    vocabulary_id = LOINC; `oid` is the list's OID as given.
+    """
+
+    answer_list_id = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=1000, blank=True, default="")
+    oid = models.CharField(max_length=1000, blank=True, default="")
+
+    def __str__(self) -> str:
+        return self.answer_list_id
+
+
+class LoincAnswer(SourcedModel):
+    """One answer (LA id, AnswerStringId) of an answer list.
+
+    OMOP CONCEPT mapping: concept_code = answer_code (LA...), concept_name =
+    display_text; CONCEPT_RELATIONSHIP list -> answer, ordered by `sequence`.
+    """
+
+    answer_list = models.ForeignKey(
+        LoincAnswerList, on_delete=models.CASCADE, related_name="answers"
+    )
+    answer_code = models.CharField(max_length=100)
+    local_answer_code = models.CharField(max_length=100, blank=True, default="")
+    sequence = models.PositiveIntegerField(null=True, blank=True)
+    display_text = models.CharField(max_length=1000, blank=True, default="")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["answer_list", "answer_code"], name="uniq_loinc_answer"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.answer_list_id} {self.answer_code}"
+
+
+class LoincAnswerListLink(SourcedModel):
+    """One row of LoincAnswerListLink.csv: a LOINC term uses an answer list.
+
+    OMOP CONCEPT_RELATIONSHIP mapping: concept_1 = term, concept_2 = answer list,
+    link_type (AnswerListLinkType, e.g. NORMATIVE) kept as given.
+    """
+
+    term = models.ForeignKey(
+        LoincTerm, on_delete=models.CASCADE, related_name="answer_list_links"
+    )
+    answer_list = models.ForeignKey(
+        LoincAnswerList, on_delete=models.CASCADE, related_name="term_links"
+    )
+    link_type = models.CharField(max_length=100, blank=True, default="")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["term", "answer_list", "link_type"],
+                name="uniq_loinc_answer_list_link",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.term_id} -> {self.answer_list_id}"
