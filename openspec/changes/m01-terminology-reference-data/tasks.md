@@ -10,9 +10,9 @@
 - [x] Tests: unknown unit rejected; conversion deterministic; row without source rejected
 
 ## TG3 — Coded analyte registry
-- [ ] Extend `Biomarker`: loinc_code required+unique, ucum unit FK, long name, system/specimen, source FK
-- [ ] Migration for existing stub rows; Measurement validated against analyte unit
-- [ ] Tests: persisting a measurement without LOINC/UCUM fails; lab+method missing ⇒ not aggregation-eligible
+- [x] Extend `Biomarker`: loinc_code required+unique, ucum unit FK, long name, system/specimen, source FK
+- [x] Migration for existing stub rows; Measurement validated against analyte unit
+- [x] Tests: persisting a measurement without LOINC/UCUM fails; lab+method missing ⇒ not aggregation-eligible
 
 ## TG4 — Three ranges & governance
   - Scan decision: no open reference-range dataset with a stated licence was found (Q11); ranges stay structure-only, no import

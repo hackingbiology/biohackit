@@ -142,6 +142,12 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 
 **Q46** · The changelog is written by hand and the export never reads `git log`, so later commits cannot break the sync test; a test checks that every cited commit and OpenSpec change exists. It is English only; IT and ZH fall back to EN. Default taken: **hand-written, cited commits verified by test, EN only**. Should it be generated from git instead, and should it be translated?
 
+## 2026-11-25 · M01 TG3 coded analyte registry
+
+**Q47** · LOINC codes are only checked for being non-empty and unique; there is no check-digit validator because no verified algorithm or source for it is cited in the repo. Default taken: **no check-digit validation**. Should one be added, and from which authoritative source (LOINC publishes a mod-10 rule, which we have not fetched or verified)?
+
+**Q48** · Legacy `core.Biomarker` rows without a LOINC code cannot be coded without inventing data. Default taken: **migrations `core/0003-0005` (fields, data, constraints; split so Postgres has no pending trigger events) fail loudly naming the row ids and never fill codes; the Source is never inferred: on a non-empty table the operator must set `BIOHACK_LEGACY_BIOMARKER_SOURCE` to the exact name of one stored `terminology.Source`**. Fresh and staging databases have no such rows. If production ever has them, should the operator fix the data by hand, or should we ship a reviewed mapping file?
+
 ## 2026-11-25 · M00c user guide
 
 **Q45** · The user guide is English only; IT and ZH fall back to EN as on /docs/architecture. The `/dashboard` page that sign-in redirects to does not exist yet, so the guide lists it under "Coming later". Default taken: **EN only, no translation yet**. Should the guide be translated to IT/ZH now, and should the sign-in redirect point somewhere that exists until the dashboard is built?

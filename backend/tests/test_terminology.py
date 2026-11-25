@@ -69,7 +69,9 @@ def test_analyte_specific_conversion_preferred(units, src):
     from core.models import Biomarker
 
     a, b = units
-    bm = Biomarker.objects.create(name="X", role="efficacy")
+    bm = Biomarker.objects.create(
+        name="X", role="efficacy", loinc_code="TEST-1", unit=a, source=src
+    )
     UnitConversion.objects.create(
         from_unit=a, to_unit=b, factor=Decimal("0.5"), source=src, biomarker=bm
     )
@@ -103,7 +105,9 @@ def test_conversion_selected_by_source_unit(units, src):
     assert from_mg.value == Decimal("0.10")
     assert from_mg.source_id == generic.source_id
 
-    bm = Biomarker.objects.create(name="Y", role="efficacy")
+    bm = Biomarker.objects.create(
+        name="Y", role="efficacy", loinc_code="TEST-2", unit=g_l, source=src
+    )
     UnitConversion.objects.create(
         from_unit=mmol, to_unit=g_l, factor=Decimal("3"), source=other, biomarker=bm
     )

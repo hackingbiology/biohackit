@@ -39,3 +39,5 @@ tools/autodev2/state/
 frontend/coverage/
 frontend/next-env.d.ts
 *.tsbuildinfo
+.coverage
+backend/.coverage*

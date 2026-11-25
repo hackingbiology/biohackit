@@ -1,8 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Base domain stubs (M00 TG3). Full logic arrives in M01 (ranges) and M03 (interventions)."""
 
+from typing import Any
+
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
+
+from terminology.services import normalize_value
 
 
 class InterventionSubtype(models.TextChoices):
@@ -34,17 +39,29 @@ class BiomarkerRole(models.TextChoices):
 
 
 class Biomarker(models.Model):
-    """Stub. The three distinct ranges (reference / optimal / safety) land in M01,
-    each with source and population."""
+    """Coded analyte (M01 TG3): LOINC code, UCUM unit and source are mandatory.
+    The three ranges (reference / optimal / safety) follow in M01 TG4."""
 
-    loinc_code = models.CharField(max_length=20, null=True, blank=True)
+    loinc_code = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=200)
+    long_name = models.CharField(max_length=255, blank=True, default="")
+    system = models.CharField(max_length=100, blank=True, default="")
     role = models.CharField(max_length=16, choices=BiomarkerRole.choices)
-    unit_ucum = models.CharField(max_length=64, null=True, blank=True)
+    unit = models.ForeignKey("terminology.Unit", on_delete=models.PROTECT)
+    source = models.ForeignKey("terminology.Source", on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if not self.loinc_code:
+            raise ValidationError("Biomarker requires a LOINC code")
+        if self.unit_id is None:
+            raise ValidationError("Biomarker requires a UCUM unit")
+        if self.source_id is None:
+            raise ValidationError("Biomarker requires a source")
+        super().save(*args, **kwargs)
 
 
 class Measurement(models.Model):
@@ -61,7 +78,13 @@ class Measurement(models.Model):
     method = models.CharField(max_length=200, null=True, blank=True)
     is_aggregation_eligible = models.BooleanField(default=False)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        # The analyte must be coded; the unit must be stored and equal to the analyte
+        # unit or convertible with a stored factor. value/unit_ucum stay as reported.
+        analyte = self.biomarker
+        if not analyte.loinc_code or analyte.unit_id is None:
+            raise ValidationError("Measurement requires a coded analyte (LOINC + UCUM)")
+        normalize_value(self.value, self.unit_ucum, analyte.unit.ucum_code, analyte)
         # Domain rule: without lab AND method a measurement is not aggregation-eligible.
         self.is_aggregation_eligible = bool(self.laboratory and self.method)
         super().save(*args, **kwargs)
