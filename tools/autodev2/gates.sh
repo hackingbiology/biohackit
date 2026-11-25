@@ -45,5 +45,8 @@ python3 tools/audit/pip_audit_gate.py || bad "pip-audit"
 step "openspec validate"
 python3 tools/openspec/validate_gate.py || bad "openspec validate"
 
+step "semgrep"
+python3 tools/semgrep/semgrep_gate.py || bad "semgrep"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL

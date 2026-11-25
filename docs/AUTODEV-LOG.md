@@ -39,3 +39,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M00c · TG2 spec discovery D2b2: hb-protocol-structure register (6 worksheets), 3 added requirements (per-weight posology gated on provenance, route and formulation, multi-ingredient products), test extended, Q38 · see git log
 2026-11-25 · M00c · TG2 spec discovery D2b3: foundation-html register (8 sections, 23 rows, all reuse part A foundation.md rows, no new requirement), test added, Q39; part D closed · see git log
 2026-11-25 · M00c · TG2 gates D: openspec validate gate (pinned @fission-ai/openspec 2.2.0 via pnpm dlx), 3 scenarios, m00-foundations delta header fixed · see git log
+2026-11-25 · M00c · TG2 gates E: semgrep gate (pinned semgrep 1.187.0 via uvx, p/django on backend, p/typescript on frontend/src), 0 findings, 11 offline tests, Q40 · see git log

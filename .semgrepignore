@@ -1,0 +1,8 @@
+# Replaces semgrep's built-in default ignore list (which skips tests/, vendor/, build/ ...).
+# Only dependency, generated and build output is excluded; tests ARE scanned.
+.venv/
+node_modules/
+migrations/
+.next/
+build/
+__pycache__/

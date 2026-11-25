@@ -13,7 +13,7 @@
   - [x] pip-audit (tools/audit/pip_audit_gate.py, pinned pip-audit 2.10.1 via uvx)
   - [x] B1 upgrade next to a patched release (no waiver for fixable high/critical advisories)
   - [ ] B2 pnpm audit --prod gate
-  - [ ] semgrep (p/django, p/typescript)
+  - [x] semgrep (p/django, p/typescript) (tools/semgrep/semgrep_gate.py, pinned semgrep 1.187.0 via uvx)
   - [x] openspec validate (tools/openspec/validate_gate.py, pinned @fission-ai/openspec 2.2.0 via pnpm dlx)
   - [ ] Playwright e2e + axe WCAG 2.2 AA
   - [ ] mutmut

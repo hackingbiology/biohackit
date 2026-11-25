@@ -160,3 +160,13 @@ Not in scope of this scan: a PWA/service-worker library (none is in `frontend/pa
 - **Last activity:** 2026-11-19
 - **Decision:** adopt as dependency
 - **Verified:** dev tool only, pinned `pip-audit==2.10.1` and run through `uvx` (isolated tool environment), never installed into `backend/.venv` because the licence gate scans that venv. Sources: pypi.org/pypi/pip-audit/json (version 2.10.1, classifier `License :: OSI Approved :: Apache Software License`) and api.github.com/repos/pypa/pip-audit (spdx `Apache-2.0`, pushed 2026-11-19, not archived), fetched 2026-11-25
+
+### semgrep
+- **URL:** https://github.com/semgrep/semgrep
+- **Licence:** LGPL-2.1-or-later
+- **AGPL-compatible:** unknown (the README licence table has no LGPL-2.1 row; moot because the tool is run as a separate process and is not linked into or shipped with our code, see docs/QUESTIONS.md Q40)
+- **Provisional:** yes
+- **Last activity:** 2026-11-25
+- **Decision:** adopt as dependency
+- **Verified:** pinned `semgrep==1.187.0` (latest on PyPI), run through `uvx` in an isolated tool environment by `tools/semgrep/semgrep_gate.py`, never installed into `backend/.venv` (the licence gate scans it) or `frontend/node_modules`. Sources: https://pypi.org/pypi/semgrep/json (version 1.187.0, `license_expression` LGPL-2.1-or-later) and https://api.github.com/repos/semgrep/semgrep (spdx `LGPL-2.1`, pushed 2026-11-25), fetched 2026-11-25.
+- **Licence note:** The GitHub API reports `LGPL-2.1`; PyPI `license_expression` says LGPL-2.1-or-later. The p/django and p/typescript Semgrep Registry rules, licence "Semgrep Rules License v1.0" (https://github.com/semgrep/semgrep-rules, LICENSE file; terms at https://semgrep.dev/legal/rules-license). Terms: use "only for your own internal business purposes"; no distribution of the rules or making them available "as a service". The gate downloads the rules at scan time and prints only findings; the rules are not copied into this repository or shipped. They are not open source, so they are a scan input only. Whether CI of an open project counts as "internal business purposes" is unknown, see Q40.

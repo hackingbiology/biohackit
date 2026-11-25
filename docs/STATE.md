@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M00c TG2 gates E done 2026-11-25: `tools/semgrep/semgrep_gate.py` runs `semgrep==1.187.0` via `uvx` (isolated, not in backend/.venv) with `p/django` on backend/ (excluding .venv, migrations) and `p/typescript` on frontend/src; exit 1 on ERROR findings, 2 when the scan cannot run. Result: 0 findings, so nothing fixed or suppressed. Rules licence question Q40. B2 (pnpm audit) is still blocked on Q34.
 - M00c TG2 gates D done 2026-11-25: `tools/openspec/validate_gate.py` runs `pnpm dlx @fission-ai/openspec@2.2.0 validate --all --json --no-interactive` from the repo root (no frontend manifest, lockfile or node_modules change). Errors fail (exit 1), cannot run exits 2; warnings (long requirement text, 11 items) do not fail, `--strict` is not used because it would need semantic requirement splits. Fixed the one structural error (m00-foundations spec used `## Requirements` instead of `## ADDED Requirements`). B2 still blocked on Q34.
 - X01 Ecosystem page done 2026-11-25: public `/ecosystem` renders `frontend/src/content/ecosystem.json`, generated from docs/ecosystem/ by `tools/ecosystem/export_page_data.py` (`--check` plus tests keep it in sync). Remaining x01 task: planner rule (scan precedes each module change).
 - M00c TG2 spec discovery part D2b3 done 2026-11-25: docs/spec-discovery/foundation-html.md (8 sections, 23 rows, all reuse part A foundation.md rows, no new ADDED requirement; Q39). Part D closed; B2 still blocked on Q34.
