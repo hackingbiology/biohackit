@@ -19,4 +19,12 @@
 - m00b archived 2026-11-21 (openspec/changes/archive/m00b-low-friction-login); Fabio's action list (rapamycin.news secret, OAuth apps) still open.
 - Next action: M01 TG3 (coded analyte registry). TG2 done 2026-11-24 (30 pytest green); its migration was hand-written because makemigrations needs a fresh DB — run `makemigrations --check` on a fresh DB to confirm no drift. Earlier note: M01 TG2 (terminology app, Source/Unit models) — M01 spec written 2026-11-23 (openspec/changes/m01-terminology-reference-data). M00 archive still awaits Fabio CI confirmation (tick CI items + archive when confirmed).
 - B1 done 2026-11-25: next/eslint-config-next 15.1.0 -> 15.5.29 (docs/security/frontend-advisories.md); B2 pnpm audit gate next; postcss left open (Q33).
+- Fix main (no .npmrc) done 2026-11-25: shared node_modules verified (lint, tsc, jest green); see the section at the end of this file.
 - Notes: the venv needed `pip --python backend/.venv/bin/python install "django-allauth[mfa,socialaccount]"` (pulls `requests`). The local dev DB has an inconsistent migration history (blocks `makemigrations`); use a fresh DB.
+
+## Shared frontend/node_modules: root cause and rules
+- **Symptom:** eslint/tsc/jest failed with MODULE_NOT_FOUND because links in the shared `frontend/node_modules` pointed into task worktrees that had been deleted.
+- **Repair (2026-11-25 13:02):** hoisted reinstall at the real path (`/home/gl-auditor/biohackit/frontend`); `node_modules/next` is now a real directory and `.bin/tsc` a relative link. In this worktree lint, type-check and jest (6 suites, 18 tests) pass.
+- **Why `.npmrc` was dropped:** attempts v2–v4 committed tests reading `frontend/.npmrc`, but the file never reached the task worktree (backend pytest FileNotFoundError, jest ENOENT); the cause is unconfirmed. No test or Dockerfile line may depend on it; the one optional `.npmrc` check left in `pnpm-build-policy.test.ts` was removed.
+- **Rule:** agents never run `pnpm install`, `add` or `remove` inside a worktree (it writes through the symlink into the shared install). Only `lint`, `type-check`, `test:ci`.
+- **Orchestrator proposal:** QUESTIONS Q34 (options A/B/C).

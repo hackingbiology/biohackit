@@ -47,7 +47,7 @@ describe("pnpm pinning and build-script policy", () => {
     const copy = deps.split("\n").find((l) => l.startsWith("COPY ")) ?? "";
     expect(copy).toContain("package.json");
     expect(copy).toContain("pnpm-lock.yaml");
-    for (const file of ["pnpm-workspace.yaml", ".npmrc"]) {
+    for (const file of ["pnpm-workspace.yaml"]) {
       let exists = true;
       try {
         read(file);
