@@ -4,6 +4,8 @@ Registers: `docs/spec-discovery/whitepaper.md` (part A), `docs/spec-discovery/pr
 
 Registers part C: `docs/spec-discovery/getbased-reuse.md`, `docs/spec-discovery/presentation.md`
 
+Registers part D1b: docs/spec-discovery/specs-html.md (sections 1–13)
+
 ## safety-guardrails
 - [ ] Implement "Platform describes and never prescribes" (copy review, AI narration check)
 - [ ] Implement "LLM-assisted curation requires human review"

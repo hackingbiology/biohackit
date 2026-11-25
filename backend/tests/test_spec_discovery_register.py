@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, replace
 from pathlib import Path
 
@@ -26,7 +27,10 @@ def parse_register(text: str) -> list[Row]:
     for line in text.splitlines():
         if not line.startswith("|"):
             continue
-        cells = [c.strip() for c in line.strip()[1:-1].split("|")]
+        cells = [
+            c.replace("\\|", "|").strip()
+            for c in re.split(r"(?<!\\)\|", line.strip()[1:-1])
+        ]
         if cells[0] == "Source":
             in_table = True
             continue
@@ -203,6 +207,42 @@ def test_project_spec_register_is_checked_and_a_bad_title_breaks_it() -> None:
     rows = parse_register(text)
     source = "docs/hackingbiology-project-spec.md"
     assert all(r.source.startswith(source) for r in rows)
+    assert check_rows(rows, specs, changes, ROOT) == []
+    covered = next(r for r in rows if r.status == "covered")
+    bad = replace(covered, requirement="protocols/No such requirement")
+    assert check_rows([bad], specs, changes, ROOT)
+
+
+SPECS_HTML_PART1_SECTIONS = (
+    "Principles & product posture",
+    "Domain Model (cross-cutting)",
+    "AI Uses, Provenance & Previous Work (cross-cutting)",
+    "Data Standards & Typing (scientific validity)",
+    "Scientific Method & Evidence (cross-cutting)",
+    "Statistical Methodology (cross-cutting)",
+    "Related Initiatives (ecosystem landscape)",
+    "Accounts & Profiles",
+    "Management & Delegation (Mentor / Longevity Doctor / Clinic)",
+    "Protocols (M1 — Protocol Builder & Library)",
+    "Interventions & Substance Catalog",
+    "Biomarkers & Lab Data — the Blood Layer (M2)",
+    "Measurement Planning (M3 — Scheduling & Measurement Planner)",
+    "Safety Guardrails (M7)",
+)
+
+
+# scenario: dev-process::register-rows-resolve
+def test_specs_html_part1_register_covers_its_sections() -> None:
+    specs = collect_titles(ROOT / "openspec/specs", "*/spec.md")
+    changes = collect_titles(ROOT / "openspec/changes", "*/specs/*/spec.md")
+    path = ROOT / "docs/spec-discovery/specs-html.md"
+    assert path.is_file()
+    rows = parse_register(path.read_text(encoding="utf-8"))
+    prefix = "docs/specs/biohackit-specification.html § "
+    assert rows
+    assert all(r.source.startswith(prefix) for r in rows)
+    cited = {r.source[len(prefix) :] for r in rows}
+    assert cited == set(SPECS_HTML_PART1_SECTIONS)
     assert check_rows(rows, specs, changes, ROOT) == []
     covered = next(r for r in rows if r.status == "covered")
     bad = replace(covered, requirement="protocols/No such requirement")
