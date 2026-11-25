@@ -4,10 +4,14 @@
 from datetime import date
 
 import pytest
+from django.conf import settings
+from django.core.cache import cache
 from django.db import connection
 from rest_framework.test import APIClient
+from rest_framework.throttling import ScopedRateThrottle
 
 from accounts.models import User
+from biohackit.dboptions import with_trgm_threshold
 from terminology.models import LoincTerm, Source
 from terminology.search import search_loinc
 
@@ -175,3 +179,61 @@ def test_trigram_and_fulltext_branches_use_indexes(source):
         "loinc_fts_idx",
     ):
         assert index in plan
+
+
+@pytest.fixture(autouse=True)
+def _clear_throttle_cache():
+    cache.clear()
+    yield
+    cache.clear()
+
+
+# scenario: terminology-reference-data::loinc-search-rejects-an-overlong-query
+def test_overlong_query_rejected_and_200_accepted(api, term, monkeypatch):
+    calls: list[str] = []
+    monkeypatch.setattr(
+        "terminology.views.search_loinc",
+        lambda q: calls.append(q) or LoincTerm.objects.none(),
+    )
+    resp = api.get(URL, {"q": "a" * 201})
+    assert resp.status_code == 400
+    assert "too long" in str(resp.json()["q"]).lower()
+    assert calls == []
+    assert api.get(URL, {"q": "a" * 200}).status_code == 200
+    assert api.get(URL, {"q": " " + "a" * 200 + " "}).status_code == 200
+
+
+# scenario: terminology-reference-data::loinc-search-is-rate-limited
+def test_search_is_rate_limited(api, term, monkeypatch):
+    monkeypatch.setattr(ScopedRateThrottle, "THROTTLE_RATES", {"loinc_search": "2/min"})
+    codes = [api.get(URL, {"q": "glucose"}).status_code for _ in range(3)]
+    assert codes == [200, 200, 429]
+
+
+def test_no_global_throttle_classes():
+    assert "DEFAULT_THROTTLE_CLASSES" not in settings.REST_FRAMEWORK
+    assert settings.REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"]["loinc_search"]
+
+
+@pytest.mark.parametrize(
+    ("given", "expected"),
+    [
+        ("", "-c pg_trgm.word_similarity_threshold=0.5"),
+        (
+            "-c search_path=foo",
+            "-c search_path=foo -c pg_trgm.word_similarity_threshold=0.5",
+        ),
+        (
+            "-c pg_trgm.word_similarity_threshold=0.3",
+            "-c pg_trgm.word_similarity_threshold=0.3",
+        ),
+    ],
+)
+def test_with_trgm_threshold(given, expected):
+    assert with_trgm_threshold(given) == expected
+
+
+def test_connection_threshold_is_applied(db):
+    with connection.cursor() as cur:
+        cur.execute("SHOW pg_trgm.word_similarity_threshold")
+        assert cur.fetchone()[0] == "0.5"

@@ -8,6 +8,8 @@ from pathlib import Path
 
 import environ
 
+from biohackit.dboptions import with_trgm_threshold
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
@@ -104,9 +106,8 @@ DATABASES["default"]["ENGINE"] = "timescale.db.backends.postgresql"
 # Cut-off used by the indexable `<%` word-similarity operator of the LOINC search
 # (terminology/search.py). pg_trgm's default 0.6 would miss a one-letter typo of a
 # six-letter word ("glucse" scores 0.571), so it is lowered for every connection.
-DATABASES["default"].setdefault("OPTIONS", {})["options"] = (
-    "-c pg_trgm.word_similarity_threshold=0.5"
-)
+_db_options = DATABASES["default"].setdefault("OPTIONS", {})
+_db_options["options"] = with_trgm_threshold(str(_db_options.get("options", "")))
 
 # --- Auth ------------------------------------------------------------------- #
 # Custom user model is added in TG2 (accounts app).  AUTH_USER_MODEL will be
@@ -213,6 +214,10 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    # Scoped throttles only apply to views that set `throttle_scope`.
+    "DEFAULT_THROTTLE_RATES": {
+        "loinc_search": env("LOINC_SEARCH_THROTTLE_RATE", default="60/min"),
+    },
 }
 
 SIMPLE_JWT = {

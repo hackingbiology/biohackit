@@ -159,3 +159,7 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 ## 2026-11-25 · M00c user guide
 
 **Q45** · The user guide is English only; IT and ZH fall back to EN as on /docs/architecture. The `/dashboard` page that sign-in redirects to does not exist yet, so the guide lists it under "Coming later". Default taken: **EN only, no translation yet**. Should the guide be translated to IT/ZH now, and should the sign-in redirect point somewhere that exists until the dashboard is built?
+
+## 2026-11-25 · M01 LOINC search hardening
+
+**Q51** · The LOINC search is rate-limited per user with a DRF scoped throttle (`loinc_search`) and queries are capped at 200 characters. Neither value comes from a cited source; both are operational limits that can be configured (LOINC_SEARCH_THROTTLE_RATE). Default taken: **60/min, 200 characters**. Are these limits right for staging and production, and should the throttle use a shared cache (Redis) instead of the per-process local-memory cache?

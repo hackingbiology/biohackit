@@ -9,6 +9,7 @@ from rest_framework.generics import ListAPIView  # type: ignore[import-untyped] 
 from rest_framework.pagination import PageNumberPagination  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.request import Request  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.response import Response  # type: ignore[import-untyped]  # DRF ships no stubs
+from rest_framework.throttling import ScopedRateThrottle  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
 from core.models import Biomarker
@@ -23,6 +24,8 @@ from .serializers import (
     ReferenceRangeSerializer,
     SafetyThresholdSerializer,
 )
+
+MAX_QUERY_LENGTH = 200
 
 
 def _parse_value(raw: str | None) -> Decimal | None:
@@ -48,11 +51,19 @@ class LoincSearchView(ListAPIView):  # type: ignore[misc]  # base is Any: DRF un
 
     serializer_class = LoincTermSerializer
     pagination_class = LoincSearchPagination
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "loinc_search"
 
     def get_queryset(self) -> QuerySet[LoincTerm]:
         q = self.request.query_params.get("q", "").strip()
         if not q:
             raise ValidationError({"q": "Enter a word or a LOINC code to search."})
+        if len(q) > MAX_QUERY_LENGTH:
+            raise ValidationError(
+                {
+                    "q": f"Search text is too long. Use at most {MAX_QUERY_LENGTH} characters."
+                }
+            )
         return search_loinc(q)
 
 

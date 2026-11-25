@@ -32,6 +32,7 @@
 - [ ] Scan decision: model LOINC tables so they map onto OMOP `CONCEPT` / `CONCEPT_RELATIONSHIP` (Part hierarchy as relationships); the release stays user-supplied until Q10 is answered; no Python LOINC loader was verified, so the importer is our own
 - [ ] (part B: search over long/short/component names + API done; consumer/variant names follow their import)
 - [ ] (part A: core table + synthetic fixture) Test with a tiny synthetic fixture in LOINC file format (no real table in git); if `data/vendor/loinc/` is absent, the importer exits cleanly with instructions
+- [x] (part B2) Search hardening: q longer than 200 characters rejected with HTTP 400 and a plain-language message; LoincSearchView has DRF ScopedRateThrottle scope `loinc_search` (rate in settings, Q51 default); pg_trgm.word_similarity_threshold appended to any existing DATABASE_URL `options` instead of replacing them
 ## TG-SNOMED
   - Scan decision: Snowstorm (Apache-2.0) and HAPI FHIR are read as references for RF2 / CodeSystem handling only; not adopted
 - [ ] Verify GPS licence text and URL (record in Source); if redistribution allowed, importer for GPS; generic BYO-SNOMED RF2 importer; SNOMED codes are optional cross-refs only

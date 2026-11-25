@@ -107,7 +107,7 @@ The system SHALL import the LOINC core table (Loinc.csv) from user-supplied file
 - **AND** the error names the file and line
 
 ### Requirement: LOINC terms are searchable by name and code
-The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, using Postgres full-text and trigram matching. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search.
+The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, using Postgres full-text and trigram matching. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search. The query SHALL be at most 200 characters after trimming, and searches SHALL be rate-limited per user.
 
 #### Scenario: LOINC search by name
 - **WHEN** an authenticated user searches for a word contained in a term's long name
@@ -129,6 +129,15 @@ The system SHALL return imported LOINC terms that match a query on loinc_num (ex
 #### Scenario: LOINC search rejects an empty query
 - **WHEN** `q` is missing or only whitespace
 - **THEN** the response is HTTP 400 with a plain-language message
+
+#### Scenario: LOINC search rejects an overlong query
+- **WHEN** `q` is longer than 200 characters after trimming
+- **THEN** the response is HTTP 400 with a plain-language message
+- **AND** no database search runs
+
+#### Scenario: LOINC search is rate-limited
+- **WHEN** an authenticated user exceeds the `loinc_search` throttle rate
+- **THEN** the response is HTTP 429
 
 #### Scenario: LOINC search requires authentication
 - **WHEN** an anonymous client searches
