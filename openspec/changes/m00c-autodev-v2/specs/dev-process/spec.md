@@ -112,3 +112,18 @@ The gates SHALL fail when pip-audit reports a vulnerability with a fix version i
 #### Scenario: Unfixed backend advisory reported
 - **WHEN** pip-audit reports a vulnerability with no fix version
 - **THEN** the gate prints it as unfixed and does not fail on it
+
+### Requirement: OpenSpec documents are structurally valid
+The gates SHALL fail when the pinned OpenSpec CLI reports an invalid specification or change under `openspec/`, and SHALL fail when the validator cannot run or its result cannot be read.
+
+#### Scenario: Invalid specification rejected
+- **WHEN** the OpenSpec validator reports a specification or change as invalid
+- **THEN** the gate exits 1 and prints the id and type of each invalid item with its messages
+
+#### Scenario: Specification validator cannot run
+- **WHEN** pnpm is missing, the CLI exits with an error, times out, or prints output that is not the expected JSON, or reports no items
+- **THEN** the gate prints that it cannot run and exits 2
+
+#### Scenario: Valid specifications pass
+- **WHEN** the validator reports every item as valid
+- **THEN** the gate prints the item count and exits 0

@@ -143,7 +143,7 @@ Not in scope of this scan: a PWA/service-worker library (none is in `frontend/pa
 - **AGPL-compatible:** yes (MIT)
 - **Last activity:** 2026-11-24
 - **Decision:** adopt as dependency
-- **Verified:** api.github.com/repos/Fission-AI/OpenSpec and registry.npmjs.org/@fission-ai%2Fopenspec (npm package `@fission-ai/openspec`), 2026-11-24
+- **Verified:** api.github.com/repos/Fission-AI/OpenSpec and registry.npmjs.org/@fission-ai%2Fopenspec (npm package `@fission-ai/openspec`), 2026-11-24; CLI pinned at `@fission-ai/openspec@2.2.0`, licence MIT, node >=22.20.0 (registry.npmjs.org/@fission-ai/openspec/latest, fetched 2026-11-25), run by `tools/openspec/validate_gate.py` through `pnpm dlx`
 
 ### get-based
 - **URL:** https://github.com/elkimek/get-based

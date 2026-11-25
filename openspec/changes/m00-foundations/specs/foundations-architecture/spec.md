@@ -6,7 +6,7 @@ Specifies the technical skeleton that all subsequent modules build on. This spec
 
 ---
 
-## Requirements
+## ADDED Requirements
 
 ### Requirement: Monorepo with backend and frontend roots
 The system SHALL live in a single git repository with `backend/` (Python/Django) and `frontend/` (Next.js/React) as first-class subdirectories at the repo root. No git submodules.

@@ -42,5 +42,8 @@ backend/.venv/bin/python tools/coverage/changed_coverage.py "$BASE" || bad "chan
 step "backend pip-audit"
 python3 tools/audit/pip_audit_gate.py || bad "pip-audit"
 
+step "openspec validate"
+python3 tools/openspec/validate_gate.py || bad "openspec validate"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL

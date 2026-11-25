@@ -14,7 +14,7 @@
   - [x] B1 upgrade next to a patched release (no waiver for fixable high/critical advisories)
   - [ ] B2 pnpm audit --prod gate
   - [ ] semgrep (p/django, p/typescript)
-  - [ ] openspec validate
+  - [x] openspec validate (tools/openspec/validate_gate.py, pinned @fission-ai/openspec 2.2.0 via pnpm dlx)
   - [ ] Playwright e2e + axe WCAG 2.2 AA
   - [ ] mutmut
 - [x] Spec discovery: compare whitepaper/, docs/presentation/, docs/*.md against openspec/specs; every feature not yet specified becomes a requirement in an OpenSpec change
