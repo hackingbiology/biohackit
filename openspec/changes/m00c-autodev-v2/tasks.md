@@ -25,5 +25,6 @@
     - [x] D1a: docs/slides/ (docs/spec-discovery/slides.md)
     - [x] D1b: docs/specs/biohackit-specification.html sections 1–14 (docs/spec-discovery/specs-html.md)
     - [x] D1c: docs/specs/biohackit-specification.html sections 15–27 (Daily Log … Agent Access)
-    - [ ] D2: docs/analysis/ + remaining docs/*.md
+    - [x] D2a: docs/analysis/competitive-landscape.html (docs/spec-discovery/competitive-landscape.md)
+    - [ ] D2b: docs/proposal-critique.html, docs/reference/hb-protocol-structure.xlsx, docs/foundation.html
 - [ ] Docs site generated from repo (MkDocs Material or Next route `/docs`): user guide, OpenAPI reference, architecture, AI surfaces map, changelog

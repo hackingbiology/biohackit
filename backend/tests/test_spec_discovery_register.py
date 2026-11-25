@@ -176,6 +176,7 @@ def test_part_c_registers_exist_and_resolve() -> None:
         "getbased-reuse.md": "docs/getbased-reuse-analysis.md",
         "presentation.md": "docs/presentation/biohackit-deck.pdf",
         "slides.md": "docs/slides/hacking-biology-project-presentation.pdf",
+        "competitive-landscape.md": "docs/analysis/competitive-landscape.html",
     }
     for name, source in sources.items():
         path = ROOT / "docs/spec-discovery" / name
@@ -212,6 +213,33 @@ def test_project_spec_register_is_checked_and_a_bad_title_breaks_it() -> None:
     covered = next(r for r in rows if r.status == "covered")
     bad = replace(covered, requirement="protocols/No such requirement")
     assert check_rows([bad], specs, changes, ROOT)
+
+
+COMPETITIVE_LANDSCAPE_SECTIONS = (
+    "What this maps",
+    "Category map",
+    "Feature matrix",
+    "Where the cells are empty",
+    "Where biohack.it sits",
+    "Emerging “Biohacker OS”",
+)
+
+
+# scenario: dev-process::register-rows-resolve
+def test_competitive_landscape_register_covers_all_sections() -> None:
+    path = ROOT / "docs/spec-discovery/competitive-landscape.md"
+    rows = parse_register(path.read_text(encoding="utf-8"))
+    prefix = "docs/analysis/competitive-landscape.html § "
+    cited = {r.source[len(prefix) :] for r in rows}
+    assert cited == set(COMPETITIVE_LANDSCAPE_SECTIONS)
+    html = (ROOT / "docs/analysis/competitive-landscape.html").read_text(
+        encoding="utf-8"
+    )
+    h2 = re.findall(r"<h2>(.*?)</h2>", html, re.S)
+    titles = [unescape(re.sub(r"<[^>]+>", "", h)).strip() for h in h2]
+    assert len(titles) == len(COMPETITIVE_LANDSCAPE_SECTIONS)
+    for title, section in zip(titles, COMPETITIVE_LANDSCAPE_SECTIONS, strict=True):
+        assert title.startswith(section)
 
 
 SPECS_HTML_PART1_SECTIONS = (

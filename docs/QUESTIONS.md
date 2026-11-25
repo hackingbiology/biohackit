@@ -98,6 +98,12 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 - **Staging demo data:** default = demo account only (`DEMO_USERNAME` as sign-in e-mail, `DEMO_PASSWORD`), no health values until M01 seed_reference and sourced data exist; please confirm or provide demo content.
 - **Q13 (licence gate, fido2 2.2.1):** package classifiers list BSD, Apache-2.0 and MPL-2.0, but upstream COPYING (fetched) is only the 2-clause BSD text and names no Apache/MPL files. Default: override records BSD-2-Clause only. Please confirm whether any bundled part is Apache/MPL (all are AGPL-compatible).
 
+## 2026-11-25 · M00c spec discovery D2a
+
+**Q35** · docs/analysis/competitive-landscape.html (Feature matrix) ticks "Causal inference" for biohack.it, but `scientific-method-and-evidence/Observed, never caused` forbids causal phrasing on every surface. Default taken: **the cell is treated as out-of-scope and no causal-inference requirement is added**. Please confirm whether the column means future causal-analysis methods or should read "no" for biohack.it.
+
+**Q36** · docs/analysis/competitive-landscape.html (Where biohack.it sits) says raw lab reports sit behind heightened consent, but `biomarkers-and-labs/Original report file retained and public raw` makes them public by default with no consent step. Default taken: **row is out-of-scope and no requirement is added; the existing spec stands**. Please confirm whether raw lab reports need a heightened-consent gate (then an ADDED requirement follows).
+
 ## 2026-11-25 · M00c shared frontend/node_modules
 
 **Q34** · Task worktrees symlink `frontend/node_modules` to the shared install, so deleting a worktree or running pnpm inside one breaks the shared links (MODULE_NOT_FOUND). `make_worktree` in `tools/autodev2/orchestrator.py` is out of reach for agents. Options: **A (default)** run `pnpm --dir frontend install --frozen-lockfile --offline --node-linker=hoisted` in each worktree instead of symlinking; **B** keep the symlink and run `pnpm install --node-linker=hoisted` at the root after every merge that changes `frontend/package.json` or `pnpm-lock.yaml`; **C** upgrade the `packageManager` pin to pnpm 10 and set `nodeLinker` in `pnpm-workspace.yaml`, as a separate task with its own staging check. Caveat: `pnpm help install` on pnpm 9.15.9 does not list `--node-linker` (0 matches), so whether the CLI flag works there is **unverified**; test A or B in a scratch directory before adopting. Please pick one.
