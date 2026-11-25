@@ -106,6 +106,11 @@ The system SHALL import the LOINC core table (Loinc.csv) from user-supplied file
 - **THEN** the whole import is rolled back
 - **AND** the error names the file and line
 
+#### Scenario: Overlong key in a LOINC file aborts the import
+- **WHEN** any imported LOINC file (core table or accessory file) has a row whose key value (LOINC_NUM, PartNumber, AnswerListId) is longer than the stored field allows
+- **THEN** the whole import is rolled back
+- **AND** the error names the file, line, field, actual length and maximum
+
 ### Requirement: LOINC consumer names and linguistic variants are imported
 The system SHALL import the optional LOINC ConsumerName file and the it-IT and zh-CN LinguisticVariants files in the same `import_loinc` transaction, idempotently, linking every row to an existing `LoincTerm` and to the release `Source`. Other languages SHALL be skipped and counted in the command output. Absent optional files SHALL NOT fail the import. A row for a LOINC code that is not imported SHALL abort the whole import.
 

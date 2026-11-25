@@ -60,3 +60,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M01 · TG-LOINC part C2: LOINC search also matches consumer names and it-IT/zh-CN variant names, each term once (migration 0007, 3 scenarios, tests) · see git log
 2026-11-25 · M01 · TG-LOINC part D1: import_loinc also imports optional Part and LoincPartLink_Primary into LoincPart/LoincPartLink (migration 0008, 3 scenarios + 2 extended, tests, Q53) · see git log
 2026-11-25 · M01 · TG-LOINC part D2: import_loinc also imports optional AnswerList and LoincAnswerListLink into LoincAnswerList/LoincAnswer/LoincAnswerListLink (migration 0009, 3 scenarios + 1 extended, tests); PanelsAndForms left out until its header is verified (Q54) · see git log
+2026-11-26 · M01 · TG-LOINC part D3: key length checked on every keyed LOINC file (parse_csv key_field), 1 scenario, tests · see git log

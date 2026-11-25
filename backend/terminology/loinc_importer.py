@@ -150,9 +150,15 @@ def find_table(directory: Path) -> Path:
 
 
 def parse_csv(
-    path: Path, key_column: str, columns: dict[str, str], model: type[Model]
+    path: Path,
+    key_column: str,
+    columns: dict[str, str],
+    model: type[Model],
+    key_field: str | None = None,
 ) -> list[Row]:
-    """Return validated rows; raise LoincImportError naming file and line."""
+    """Return validated rows; raise LoincImportError naming file and line.
+    key_field names the model field that stores the key (length-checked); leave it
+    None for a lookup-only key, where an unknown key already aborts the import."""
     with path.open(newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
         header = reader.fieldnames or []
@@ -172,6 +178,8 @@ def parse_csv(
             values = {
                 name: record[actual[col]].strip() for col, name in columns.items()
             }
+            if key_field is not None:
+                check_lengths(model, {key_field: key}, where)
             check_lengths(model, values, where)
             rows.append(Row(where, key, values))
     return rows
@@ -195,14 +203,7 @@ def check_lengths(model: type[Model], values: dict[str, str], where: str) -> Non
 
 
 def parse_term_rows(path: Path) -> list[Row]:
-    rows = parse_csv(path, KEY, COLUMNS, LoincTerm)
-    for row in rows:
-        limit = char_limit(LoincTerm, "loinc_num")
-        if limit is not None and len(row.key) > limit:
-            raise LoincImportError(
-                f"{row.line}: loinc_num is {len(row.key)} characters, maximum {limit}"
-            )
-    return rows
+    return parse_csv(path, KEY, COLUMNS, LoincTerm, key_field="loinc_num")
 
 
 def variant_files(directory: Path) -> tuple[dict[str, Path], dict[str, int]]:
@@ -436,13 +437,14 @@ def read_optional(
     columns: dict[str, str],
     model: type[Model],
     missing: list[str],
+    key_field: str | None = None,
 ) -> tuple[list[Row], bool]:
     """Rows of an optional file and whether it was present; absent is recorded."""
     path = directory / relative
     if not path.is_file():
         missing.append(str(relative))
         return [], False
-    return parse_csv(path, key, columns, model), True
+    return parse_csv(path, key, columns, model, key_field), True
 
 
 def import_release(directory: Path, release_version: str) -> ImportSummary:
@@ -476,7 +478,7 @@ def import_release(directory: Path, release_version: str) -> ImportSummary:
         for tag in sorted(VARIANT_LANGUAGES - files.keys())
     )
     part_rows, _ = read_optional(
-        directory, PART_FILE, PART_KEY, PART_COLUMNS, LoincPart, missing
+        directory, PART_FILE, PART_KEY, PART_COLUMNS, LoincPart, missing, "part_number"
     )
     link_rows, links_present = read_optional(
         directory,
@@ -493,6 +495,7 @@ def import_release(directory: Path, release_version: str) -> ImportSummary:
         ANSWER_LIST_COLUMNS,
         LoincAnswerList,
         missing,
+        "answer_list_id",
     )
     check_answer_rows(answer_rows)
     answer_link_rows, answer_links_present = read_optional(

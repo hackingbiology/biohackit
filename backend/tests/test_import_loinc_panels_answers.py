@@ -175,6 +175,19 @@ def test_bad_sequence_aborts(db, release, name, row, text):
     assert_nothing_written()
 
 
+# scenario: terminology-reference-data::overlong-key-in-a-loinc-file-aborts-the-import
+# scenario: terminology-reference-data::malformed-loinc-release-aborts-the-import
+def test_overlong_answer_list_id_aborts(db, release):
+    row = f'"{"L" * 101}","n","o","N",,,,,,,,,,,,,,,'
+    number = append_line(release / LIST_FILE, row)
+    message = (
+        rf"AnswerList\.csv line {number}: answer_list_id is 101 characters, maximum 100"
+    )
+    with pytest.raises(CommandError, match=message):
+        run(release)
+    assert_nothing_written()
+
+
 # scenario: terminology-reference-data::panel-or-answer-list-row-referencing-an-unknown-term-or-list-aborts-the-import
 def test_overlong_answer_list_name_aborts(db, release):
     row = f'"LL99999-4","{"n" * 1001}","o","N",,,,,,,,,,,,,,,'

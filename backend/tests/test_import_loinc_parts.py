@@ -162,3 +162,19 @@ def test_release_imports_without_part_folder(db, tmp_path):
     assert LoincPartLink.objects.count() == 0
     assert PART_FILE in output
     assert LINK_FILE in output
+
+
+# scenario: terminology-reference-data::overlong-key-in-a-loinc-file-aborts-the-import
+# scenario: terminology-reference-data::malformed-loinc-release-aborts-the-import
+def test_overlong_part_number_aborts(db, release):
+    lines = (release / PART_FILE).read_text().splitlines()
+    row = f'"{"P" * 101}","COMPONENT","c","d","ACTIVE"'
+    (release / PART_FILE).write_text("\n".join([*lines, row]) + "\n")
+    message = (
+        rf"Part\.csv line {len(lines) + 1}: part_number is 101 characters, maximum 100"
+    )
+    with pytest.raises(CommandError, match=message):
+        call_command("import_loinc", str(release), release_version="TEST-1")
+    assert LoincTerm.objects.count() == 0
+    assert LoincPart.objects.count() == 0
+    assert Source.objects.count() == 0
