@@ -50,3 +50,5 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-25 · M01 · TG4 part A: Reference/Optimal/SafetyThreshold models, displayable_optimal_range, range_status, TG3 residual fixes (blank + duplicate LOINC), Q49 · see git log
 2026-11-25 · M01 · TG4 part B: GET /api/terminology/biomarkers/<loinc>/ranges/ (three ranges separate, provenance, per-range status), 20 API tests · see git log
 2026-11-25 · M01 · TG5 part A: seed_reference loader + seed format + inspector, no data rows (UCUM in part B) · see git log
+2026-11-25 · M00c · TG2 gates B2: pnpm override postcss >=8.5.23 <9 + tools/audit/pnpm_audit_gate.py (3 scenarios, tests, gates.sh step) · see git log
+2026-11-25 · M00c · TG2 gates B2 review fixes: gate rejects pnpm.auditConfig waiver (new scenario + tests); build verification stays open (Q34) · see git log

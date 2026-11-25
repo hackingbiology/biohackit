@@ -36,8 +36,12 @@ Each row's URL is `https://github.com/advisories/<GHSA>`.
 | GHSA-2464-fhr4-w9xw | critical | next | >=15.5.28 |
 | GHSA-p3m5-59mp-jv5r | high | next | >=15.5.28 |
 
-## Still open (not `next` itself)
+## postcss (bundled inside `next`)
 
-After the upgrade `pnpm audit --prod` still reports `postcss` 8.4.31 (the copy bundled
-inside `next`): GHSA-6g55-p6wh-862q and GHSA-r28c-9q8g-f849 (high), GHSA-qx2v-qp2m-jg93
-and GHSA-fxqj-rqcc-2cmp (moderate). They are handled in B2; see QUESTIONS Q33.
+After the `next` upgrade `pnpm audit --prod` still reported `postcss` 8.4.31 (the copy
+bundled inside `next`): GHSA-6g55-p6wh-862q and GHSA-r28c-9q8g-f849 (high),
+GHSA-qx2v-qp2m-jg93 and GHSA-fxqj-rqcc-2cmp (moderate). The highest patched range among
+them is `>=8.5.23` (GHSA-fxqj-rqcc-2cmp). Fixed by the pnpm override
+`"postcss": ">=8.5.23 <9"` in `frontend/package.json`; the lockfile now resolves postcss
+8.5.32 only and the audit reports no vulnerability. No waiver exists; the gate
+`tools/audit/pnpm_audit_gate.py` has no ignore list (QUESTIONS Q33 default applied).

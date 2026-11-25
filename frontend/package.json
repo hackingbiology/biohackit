@@ -40,7 +40,10 @@
     ],
     "ignoredBuiltDependencies": [
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "postcss": ">=8.5.23 <9"
+    }
   },
   "engines": {
     "node": ">=18"

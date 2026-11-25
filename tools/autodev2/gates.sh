@@ -54,5 +54,8 @@ python3 tools/mypy/mypy_gate.py || bad "mypy"
 step "mutmut"
 python3 tools/mutmut/mutmut_gate.py || bad "mutmut"
 
+step "frontend pnpm audit"
+python3 tools/audit/pnpm_audit_gate.py || bad "pnpm audit"
+
 [ $FAIL = 0 ] && echo "ALL GATES PASSED" || echo "GATES FAILED"
 exit $FAIL

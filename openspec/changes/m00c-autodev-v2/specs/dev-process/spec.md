@@ -113,6 +113,25 @@ The gates SHALL fail when pip-audit reports a vulnerability with a fix version i
 - **WHEN** pip-audit reports a vulnerability with no fix version
 - **THEN** the gate prints it as unfixed and does not fail on it
 
+### Requirement: Frontend dependencies have no fixable known vulnerability
+The gates SHALL fail when `pnpm audit --prod` reports a high or critical advisory with a patched version in the production dependencies of `frontend/`, SHALL accept no ignore or waiver list, and SHALL fail when the audit cannot run.
+
+#### Scenario: Fixable frontend vulnerability rejected
+- **WHEN** pnpm audit reports a high or critical advisory that has a patched version for a production dependency
+- **THEN** the gate exits 1 and prints the module, version, advisory id and patched range
+
+#### Scenario: Frontend audit cannot run
+- **WHEN** pnpm is missing, the audit exits with an error, or its output is not JSON
+- **THEN** the gate prints that it cannot run and exits 2
+
+#### Scenario: Unfixed frontend advisory reported
+- **WHEN** pnpm audit reports a high or critical advisory with no patched version
+- **THEN** the gate prints it as unfixed and does not fail on it
+
+#### Scenario: Frontend audit waiver rejected
+- **WHEN** `frontend/package.json` declares a `pnpm.auditConfig` entry such as `ignoreCves` or `ignoreGhsas`
+- **THEN** the gate prints that waivers are forbidden and exits 1
+
 ### Requirement: OpenSpec documents are structurally valid
 The gates SHALL fail when the pinned OpenSpec CLI reports an invalid specification or change under `openspec/`, and SHALL fail when the validator cannot run or its result cannot be read.
 
