@@ -77,6 +77,40 @@ def test_analyte_specific_conversion_preferred(units, src):
     assert normalize_value("10", "mg/dL", "g/L").value == Decimal("0.10")
 
 
+# scenario: terminology-reference-data::conversion
+def test_conversion_selected_by_source_unit(units, src):
+    from core.models import Biomarker
+
+    mg_dl, g_l = units
+    other = Source.objects.create(
+        name="Synthetic test source",
+        version="0",
+        licence="test only",
+        url="https://example.invalid/test",
+        retrieved_at=date(2026, 11, 24),
+    )
+    mmol = Unit.objects.create(ucum_code="mmol/L", display="mmol/L", source=src)
+    # Synthetic test-only factors, not reference data.
+    UnitConversion.objects.create(
+        from_unit=mmol, to_unit=g_l, factor=Decimal("2"), source=other
+    )
+    generic = UnitConversion.objects.get(from_unit=mg_dl)
+
+    from_mmol = normalize_value("10", "mmol/L", "g/L")
+    assert from_mmol.value == Decimal("20")
+    assert from_mmol.source_id == other.pk
+    from_mg = normalize_value("10", "mg/dL", "g/L")
+    assert from_mg.value == Decimal("0.10")
+    assert from_mg.source_id == generic.source_id
+
+    bm = Biomarker.objects.create(name="Y", role="efficacy")
+    UnitConversion.objects.create(
+        from_unit=mmol, to_unit=g_l, factor=Decimal("3"), source=other, biomarker=bm
+    )
+    assert normalize_value("10", "mmol/L", "g/L", bm).value == Decimal("30")
+    assert normalize_value("10", "mg/dL", "g/L", bm).value == Decimal("0.10")
+
+
 def test_missing_conversion_rejected(units, src):
     Unit.objects.create(ucum_code="mmol/L", display="mmol/L", source=src)
     with pytest.raises(ValidationError, match="No conversion mg/dL -> mmol/L"):
