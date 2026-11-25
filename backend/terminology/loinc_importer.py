@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Import of the LOINC core table (Loinc.csv) and the optional ConsumerName and
-LinguisticVariants accessory files from user-supplied files (M01 TG-LOINC A, C1).
+"""Import of the LOINC core table (Loinc.csv) and the optional ConsumerName, LinguisticVariants,
+Part and LoincPartLink_Primary accessory files from user-supplied files (M01 TG-LOINC A, C1, D1).
 
 Column names and file paths were verified from fetched sources, see
 docs/ecosystem/m01-terminology.md. Nothing from LOINC is stored in the repository.
@@ -19,6 +19,8 @@ from django.db.models import CharField, Model
 from terminology.models import (
     LoincConsumerName,
     LoincLinguisticVariant,
+    LoincPart,
+    LoincPartLink,
     LoincTerm,
     Source,
 )
@@ -59,6 +61,23 @@ VARIANT_COLUMNS = {
     "LinguisticVariantDisplayName": "display_name",
 }
 
+PART_FILE = Path("AccessoryFiles/PartFile/Part.csv")
+PART_KEY = "PartNumber"
+PART_COLUMNS = {
+    "PartTypeName": "part_type_name",
+    "PartName": "part_name",
+    "PartDisplayName": "part_display_name",
+    "Status": "status",
+}
+
+PART_LINK_FILE = Path("AccessoryFiles/PartFile/LoincPartLink_Primary.csv")
+PART_LINK_KEY = "LoincNumber"
+PART_LINK_COLUMNS = {
+    "PartNumber": "part",
+    "LinkTypeName": "link_type_name",
+    "Property": "property",
+}
+
 ABSENT_HELP = (
     "LOINC release not found in {directory}. Obtain the LOINC release yourself "
     "(licence: https://loinc.org/license/), unpack it, and place Loinc.csv in "
@@ -83,6 +102,8 @@ class ImportSummary:
     updated: int
     consumer_names: Counts = Counts()
     linguistic_variants: Counts = Counts()
+    parts: Counts = Counts()
+    part_links: Counts = Counts()
     missing_optional: tuple[str, ...] = ()
     skipped_languages: dict[str, int] = field(default_factory=dict)
 
@@ -220,6 +241,65 @@ def import_variants(
     return Counts(created, updated)
 
 
+def import_parts(rows: list[Row], source: Source) -> Counts:
+    """Upsert parts by part_number. Parts are never deleted: they are shared
+    vocabulary, not owned by one release's terms."""
+    created = updated = 0
+    for row in rows:
+        _, was_created = LoincPart.objects.update_or_create(
+            part_number=row.key, defaults={**row.values, "source": source}
+        )
+        created += was_created
+        updated += not was_created
+    return Counts(created, updated)
+
+
+def import_part_links(
+    rows: list[Row], terms: dict[str, LoincTerm], source: Source, replace: bool
+) -> Counts:
+    """Upsert primary part links. With replace (the file is present), links of the
+    release's terms that the file no longer has are deleted."""
+    parts = {p.part_number: p for p in LoincPart.objects.all()}
+    created = updated = 0
+    kept: list[int] = []
+    for row in rows:
+        number = row.values["part"]
+        part = parts.get(number)
+        if part is None:
+            raise LoincImportError(f"{row.line}: unknown part number {number!r}")
+        obj, was_created = LoincPartLink.objects.update_or_create(
+            term=resolve_term(row, terms),
+            part=part,
+            link_type_name=row.values["link_type_name"],
+            property=row.values["property"],
+            defaults={"source": source},
+        )
+        kept.append(obj.pk)
+        created += was_created
+        updated += not was_created
+    if replace:
+        LoincPartLink.objects.filter(term__in=terms.values()).exclude(
+            pk__in=kept
+        ).delete()
+    return Counts(created, updated)
+
+
+def read_optional(
+    directory: Path,
+    relative: Path,
+    key: str,
+    columns: dict[str, str],
+    model: type[Model],
+    missing: list[str],
+) -> tuple[list[Row], bool]:
+    """Rows of an optional file and whether it was present; absent is recorded."""
+    path = directory / relative
+    if not path.is_file():
+        missing.append(str(relative))
+        return [], False
+    return parse_csv(path, key, columns, model), True
+
+
 def import_release(directory: Path, release_version: str) -> ImportSummary:
     """Upsert Loinc.csv rows by loinc_num, then the optional accessory files, in one
     transaction. Absent accessory files are reported, not an error."""
@@ -250,6 +330,17 @@ def import_release(directory: Path, release_version: str) -> ImportSummary:
         f"{VARIANT_DIR}/{tag} LinguisticVariant file"
         for tag in sorted(VARIANT_LANGUAGES - files.keys())
     )
+    part_rows, _ = read_optional(
+        directory, PART_FILE, PART_KEY, PART_COLUMNS, LoincPart, missing
+    )
+    link_rows, links_present = read_optional(
+        directory,
+        PART_LINK_FILE,
+        PART_LINK_KEY,
+        PART_LINK_COLUMNS,
+        LoincPartLink,
+        missing,
+    )
     created = updated = 0
     with transaction.atomic():
         source, _ = Source.objects.get_or_create(
@@ -273,4 +364,8 @@ def import_release(directory: Path, release_version: str) -> ImportSummary:
             consumer_rows, terms, source, replace=consumer_present
         )
         variants = import_variants(variant_rows, terms, source)
-    return ImportSummary(created, updated, consumer, variants, tuple(missing), skipped)
+        parts = import_parts(part_rows, source)
+        links = import_part_links(link_rows, terms, source, replace=links_present)
+    return ImportSummary(
+        created, updated, consumer, variants, parts, links, tuple(missing), skipped
+    )

@@ -120,14 +120,32 @@ The system SHALL import the optional LOINC ConsumerName file and the it-IT and z
 - **AND** files of other languages are not imported and the command output counts them
 
 #### Scenario: Optional LOINC accessory files absent
-- **WHEN** `import_loinc` runs and only Loinc.csv is present
+- **WHEN** `import_loinc` runs and only Loinc.csv is present (no ConsumerName, LinguisticVariants, Part or LoincPartLink_Primary file)
 - **THEN** the core import succeeds and the command exits 0
 - **AND** the output names each optional file that was not found
 
 #### Scenario: Accessory row for an unknown LOINC code aborts the import
-- **WHEN** an accessory file has a row whose LOINC code is not in the imported terms
+- **WHEN** an accessory file (including LoincPartLink_Primary.csv) has a row whose LOINC code is not in the imported terms
 - **THEN** the whole import is rolled back
 - **AND** the error names the file and line
+
+### Requirement: LOINC parts and part links are imported
+The system SHALL import the optional LOINC Part file (`AccessoryFiles/PartFile/Part.csv`) and primary part links (`AccessoryFiles/PartFile/LoincPartLink_Primary.csv`) in the same `import_loinc` transaction, idempotently, into `LoincPart` and `LoincPartLink`, each linked to the release `Source`. Parts SHALL be loaded before links. A link row whose part number is neither in Part.csv nor already stored SHALL abort the whole import.
+
+#### Scenario: LOINC parts imported
+- **WHEN** `import_loinc` runs on a release that has `AccessoryFiles/PartFile/Part.csv`
+- **THEN** each row is stored once per part number as a `LoincPart` with its type, name and display name, linked to the release `Source`
+- **AND** a second run gives the same rows and values
+
+#### Scenario: LOINC part links imported as relationships
+- **WHEN** `import_loinc` runs on a release that has `AccessoryFiles/PartFile/LoincPartLink_Primary.csv`
+- **THEN** each row is stored as a `LoincPartLink` from its `LoincTerm` to a `LoincPart` with its link type and property
+- **AND** a second run does not duplicate any link
+
+#### Scenario: Part link to an unknown part aborts the import
+- **WHEN** a LoincPartLink_Primary.csv row has a part number that is neither in Part.csv nor in the database
+- **THEN** the whole import is rolled back
+- **AND** the error names the file and row
 
 ### Requirement: LOINC terms are searchable by name and code
 The system SHALL return imported LOINC terms that match a query on loinc_num (exact, case-insensitive, trimmed), long_common_name, short_name or component, and also on the imported consumer name (LoincConsumerName.consumer_name) and on the it-IT/zh-CN linguistic variant fields long_common_name, short_name, component and display_name (related_names is excluded in this part), using Postgres full-text and trigram matching plus a case-insensitive substring match on variant names. Each term SHALL be returned once however many names match, and `count` SHALL count terms. Results SHALL be paginated and ranked deterministically (exact code match first, then descending relevance, then loinc_num ascending). Only authenticated users SHALL be able to search. The query SHALL be at most 200 characters after trimming, and searches SHALL be rate-limited per user.

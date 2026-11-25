@@ -28,8 +28,8 @@
 - [x] Tests: loader idempotent; unsourced row aborts
 
 ## TG-LOINC Full LOINC import (Fabio 2026-11-24)
-- [ ] (part A: core table; part C1: ConsumerName + LinguisticVariants it-IT/zh-CN) Importer `manage.py import_loinc <dir>`: Loinc table, ConsumerName, Panels&Forms, AnswerList, Part/LinkageFile, LinguisticVariants (it-IT, zh-CN at least); idempotent upsert, records `Source(name=LOINC, version)`; licence notice stored and shown in UI/exports
-- [ ] Scan decision: model LOINC tables so they map onto OMOP `CONCEPT` / `CONCEPT_RELATIONSHIP` (Part hierarchy as relationships); the release stays user-supplied until Q10 is answered; no Python LOINC loader was verified, so the importer is our own
+- [ ] (part A: core table; part C1: ConsumerName + LinguisticVariants it-IT/zh-CN; part D1: Part + LoincPartLink_Primary) Importer `manage.py import_loinc <dir>`: Loinc table, ConsumerName, Panels&Forms, AnswerList, Part/LinkageFile, LinguisticVariants (it-IT, zh-CN at least); idempotent upsert, records `Source(name=LOINC, version)`; licence notice stored and shown in UI/exports
+- [x] Scan decision: model LOINC tables so they map onto OMOP `CONCEPT` / `CONCEPT_RELATIONSHIP` (Part hierarchy as relationships); the release stays user-supplied until Q10 is answered; no Python LOINC loader was verified, so the importer is our own
 - [x] (part B: search over long/short/component names + API done; consumer/variant names: part C2)
 - [x] part C2: search over consumer names and linguistic variants (term ids UNIONed per source table, trigram GIN indexes in 0007)
 - [ ] (part A: core table + synthetic fixture) Test with a tiny synthetic fixture in LOINC file format (no real table in git); if `data/vendor/loinc/` is absent, the importer exits cleanly with instructions

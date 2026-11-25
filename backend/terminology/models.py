@@ -313,3 +313,48 @@ class LoincLinguisticVariant(SourcedModel):
 
     def __str__(self) -> str:
         return f"{self.term_id} {self.language}"
+
+
+class LoincPart(SourcedModel):
+    """One row of Part.csv, user-supplied.
+
+    OMOP CONCEPT mapping: concept_code = part_number, concept_name = part_display_name,
+    vocabulary_id = LOINC, concept_class_id derived from part_type_name.
+    """
+
+    part_number = models.CharField(max_length=100, unique=True)
+    part_type_name = models.CharField(max_length=255, blank=True, default="")
+    part_name = models.CharField(max_length=1000, blank=True, default="")
+    part_display_name = models.CharField(max_length=1000, blank=True, default="")
+    status = models.CharField(max_length=100, blank=True, default="")
+
+    def __str__(self) -> str:
+        return self.part_number
+
+
+class LoincPartLink(SourcedModel):
+    """One row of LoincPartLink_Primary.csv: a LOINC term linked to a part.
+
+    OMOP CONCEPT_RELATIONSHIP mapping: concept_1 = term, concept_2 = part, the
+    relationship derives from the part's type (link_type_name, property kept as given).
+    """
+
+    term = models.ForeignKey(
+        LoincTerm, on_delete=models.CASCADE, related_name="part_links"
+    )
+    part = models.ForeignKey(
+        LoincPart, on_delete=models.CASCADE, related_name="term_links"
+    )
+    link_type_name = models.CharField(max_length=255, blank=True, default="")
+    property = models.CharField(max_length=500, blank=True, default="")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["term", "part", "link_type_name", "property"],
+                name="uniq_loinc_part_link",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.term_id} -> {self.part_id}"
