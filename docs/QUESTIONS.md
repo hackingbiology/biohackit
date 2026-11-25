@@ -150,7 +150,11 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 
 ## 2026-11-25 · M01 TG4 part A ranges
 
-**Q49** · The evidence-grade vocabulary for `OptimalRange` is not defined, and several complete optimal rows may exist for one analyte (different populations or endpoints). Default taken: **`evidence_grade` is free text naming the grading system used by the cited source (no scale invented); `displayable_optimal_range()` returns None when more than one complete row exists and never picks one**. Which grading scale(s) should be allowed, and how should one be chosen among several complete rows (stratification is TG-STRATA)?
+**Q49** · The evidence-grade vocabulary for `OptimalRange` is not defined, and several complete optimal rows may exist for one analyte (different populations or endpoints). Default taken: **`evidence_grade` is free text naming the grading system used by the cited source (no scale invented); `displayable_optimal_range()` returns the most specific complete row that applies to the subject (TG-STRATA) and None when two or more tie at the highest specificity; it never picks one**. Which grading scale(s) should be allowed, and how should one be chosen among several complete rows (stratification is TG-STRATA)?
+
+## 2026-11-25 · M01 TG-STRATA
+
+**Q50** · Ancestry has no controlled vocabulary (`Profile.ethnicity` is free text, backend/accounts/models.py:60), so a range row's `ancestry` is matched against the subject exactly after strip() and casefold(). Default taken: **free text, exact match**. Which vocabulary should be used for ancestry (none is proposed or invented here)?
 
 ## 2026-11-25 · M00c user guide
 

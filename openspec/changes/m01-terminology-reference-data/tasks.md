@@ -36,4 +36,4 @@
   - Scan decision: Snowstorm (Apache-2.0) and HAPI FHIR are read as references for RF2 / CodeSystem handling only; not adopted
 - [ ] Verify GPS licence text and URL (record in Source); if redistribution allowed, importer for GPS; generic BYO-SNOMED RF2 importer; SNOMED codes are optional cross-refs only
 ## TG-STRATA
-- [ ] `OptimalRange`/`ReferenceRange` stratified by age band, sex, ancestry (nullable = all), with evidence grade; selector picks the most specific stratum with complete provenance
+- [x] `OptimalRange`/`ReferenceRange` stratified by age band, sex, ancestry (nullable = all), with evidence grade; selector picks the most specific stratum with complete provenance (selection rule and fields; API wiring and the profile-derived Subject deferred)

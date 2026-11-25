@@ -54,6 +54,29 @@ The system SHALL expose an optimal range only if it has source, population, endp
 - **WHEN** source, population, endpoint, evidence grade and last-reviewed date are all present
 - **THEN** the selector returns the range
 
+### Requirement: Ranges are stratified by age band, sex and ancestry
+`ReferenceRange` and `OptimalRange` SHALL carry optional `age_min_years` (inclusive), `age_max_years` (exclusive), `sex` and `ancestry`, where null means all. A row applies to a subject only if every non-null stratum field matches; a subject attribute that is unknown (None) matches only rows where that field is null. The selector SHALL return the applicable complete row with the most non-null stratum dimensions (the age band counts as one dimension if either bound is set), and SHALL return none when two or more rows tie at the highest specificity.
+
+#### Scenario: Most specific stratum wins
+- **WHEN** an unstratified complete row and a sex-matching complete row exist
+- **THEN** the sex-matching row is returned
+
+#### Scenario: Non-matching stratum is excluded
+- **WHEN** a row is for another sex or outside the subject's age band
+- **THEN** it is never returned
+
+#### Scenario: Unknown subject attribute
+- **WHEN** the subject's sex is None
+- **THEN** a sex-stratified row is not returned and an unstratified one is
+
+#### Scenario: Tie between equally specific strata
+- **WHEN** two complete rows match at the same highest specificity
+- **THEN** nothing is returned
+
+#### Scenario: Incomplete specific row does not win
+- **WHEN** the most specific matching row lacks provenance
+- **THEN** the next most specific complete row is returned
+
 ### Requirement: Licence-restricted vocabularies are not bundled
 The system SHALL NOT ship SNOMED or the full LOINC table; it SHALL load them only from user-supplied files.
 

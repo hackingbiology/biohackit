@@ -6,6 +6,8 @@ from typing import Any
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from accounts.models import Sex
+
 
 class Source(models.Model):
     name = models.CharField(max_length=200)
@@ -113,13 +115,51 @@ class RangeBase(SourcedModel):
         super().save(*args, **kwargs)
 
 
-class ReferenceRange(RangeBase):
+class StratifiedRange(RangeBase):
+    """Abstract: optional strata, null = all. Age band in whole years, min inclusive,
+    max exclusive. Ancestry is free text (no vocabulary defined, Q50)."""
+
+    age_min_years = models.PositiveSmallIntegerField(null=True, blank=True)
+    age_max_years = models.PositiveSmallIntegerField(null=True, blank=True)
+    sex = models.CharField(max_length=1, choices=Sex.choices, null=True, blank=True)
+    ancestry = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta(RangeBase.Meta):
+        abstract = True
+        constraints = [
+            *RangeBase.Meta.constraints,
+            models.CheckConstraint(
+                condition=models.Q(age_min_years__isnull=True)
+                | models.Q(age_max_years__isnull=True)
+                | models.Q(age_min_years__lt=models.F("age_max_years")),
+                name="%(app_label)s_%(class)s_age_min_lt_max",
+            ),
+        ]
+
+    def clean(self) -> None:
+        super().clean()
+        if (
+            self.age_min_years is not None
+            and self.age_max_years is not None
+            and self.age_min_years >= self.age_max_years
+        ):
+            raise ValidationError("age_min_years must be below age_max_years")
+        if self.sex is not None:
+            self.sex = self.sex.strip() or None
+        if self.sex is not None and self.sex not in Sex.values:
+            raise ValidationError(f"sex must be one of {', '.join(Sex.values)}")
+        if self.ancestry is not None:
+            self.ancestry = self.ancestry.strip() or None
+
+
+class ReferenceRange(StratifiedRange):
     lab = models.CharField(max_length=200, blank=True, default="")
     method = models.CharField(max_length=200, blank=True, default="")
     population = models.CharField(max_length=200, blank=True, default="")
+    evidence_grade = models.CharField(max_length=100, null=True, blank=True)
 
 
-class OptimalRange(RangeBase):
+class OptimalRange(StratifiedRange):
     """Provenance fields are nullable so incomplete rows can exist; the selector
     `displayable_optimal_range` gates what is shown. evidence_grade is free text naming
     the grading system of the cited source (Q49)."""
