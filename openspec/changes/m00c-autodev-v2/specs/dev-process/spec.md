@@ -90,3 +90,10 @@ Every feature promised by a project document SHALL be recorded in a register und
 #### Scenario: Unspecified feature captured
 - **WHEN** a register row has status added
 - **THEN** its requirement is in an open change and not yet in `openspec/specs/**`
+
+### Requirement: Frontend framework has no fixable high or critical advisory
+The frontend SHALL pin a `next` version that satisfies the patched range of every high or critical advisory recorded for it in `docs/security/frontend-advisories.md`.
+
+#### Scenario: Patched framework pinned
+- **WHEN** the frontend lockfile is read
+- **THEN** the resolved `next` version satisfies the patched range of every advisory listed in docs/security/frontend-advisories.md, and package.json and the lockfile agree

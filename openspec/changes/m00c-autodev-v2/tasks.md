@@ -11,7 +11,8 @@
   - [ ] mypy (strict on new apps)
   - [x] changed-file coverage ≥ 90% (tools/coverage/changed_coverage.py)
   - [ ] pip-audit
-  - [ ] pnpm audit --prod
+  - [x] B1 upgrade next to a patched release (no waiver for fixable high/critical advisories)
+  - [ ] B2 pnpm audit --prod gate
   - [ ] semgrep (p/django, p/typescript)
   - [ ] openspec validate
   - [ ] Playwright e2e + axe WCAG 2.2 AA

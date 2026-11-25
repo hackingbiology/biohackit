@@ -4,6 +4,10 @@ Format: date · module · question · default taken (work continues with the def
 
 ---
 
+## 2026-11-25 · m00c B1 next upgrade
+
+**Q33** · After upgrading `next` to 15.5.29, `pnpm audit --prod` still reports `postcss` 8.4.31 (bundled inside `next`; GHSA-6g55-p6wh-862q and GHSA-r28c-9q8g-f849, high, patched >=8.5.12 and >=8.5.18). Default taken: **B1 only fixes `next`; B2 adds a pnpm override for `postcss` to a patched version, with no waiver.** Please confirm the override approach.
+
 ## 2026-11-24 · s01 spec discovery C
 
 **Q25** · getbased trend alerts use thresholds on slope and R² plus jump detection (getbased analysis § A4) but the document gives no values. Default taken: **the requirement fixes no threshold or minimum point count**; they are declared in code with their rationale at implementation. Please set them if you have a view.

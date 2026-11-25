@@ -1,0 +1,56 @@
+{
+ "command": "pnpm --dir frontend audit --prod --json",
+ "run": "2026-11-25",
+ "state": "after upgrade",
+ "metadata": {
+  "vulnerabilities": {
+   "info": 0,
+   "low": 0,
+   "moderate": 2,
+   "high": 2,
+   "critical": 0
+  },
+  "dependencies": 93,
+  "devDependencies": 0,
+  "optionalDependencies": 0,
+  "totalDependencies": 93
+ },
+ "advisories": [
+  {
+   "github_advisory_id": "GHSA-6g55-p6wh-862q",
+   "module_name": "postcss",
+   "severity": "high",
+   "vulnerable_versions": "<=8.5.11",
+   "patched_versions": ">=8.5.12",
+   "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+   "title": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments"
+  },
+  {
+   "github_advisory_id": "GHSA-fxqj-rqcc-2cmp",
+   "module_name": "postcss",
+   "severity": "moderate",
+   "vulnerable_versions": "<=8.5.22",
+   "patched_versions": ">=8.5.23",
+   "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+   "title": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q \u2014 attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset"
+  },
+  {
+   "github_advisory_id": "GHSA-qx2v-qp2m-jg93",
+   "module_name": "postcss",
+   "severity": "moderate",
+   "vulnerable_versions": "<8.5.10",
+   "patched_versions": ">=8.5.10",
+   "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+   "title": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output"
+  },
+  {
+   "github_advisory_id": "GHSA-r28c-9q8g-f849",
+   "module_name": "postcss",
+   "severity": "high",
+   "vulnerable_versions": "<=8.5.17",
+   "patched_versions": ">=8.5.18",
+   "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+   "title": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure"
+  }
+ ]
+}

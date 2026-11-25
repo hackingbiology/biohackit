@@ -27,3 +27,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-24 · M00c · TG2 spec discovery A: whitepaper + foundation register (docs/spec-discovery/whitepaper.md), change s01-spec-discovery with 8 ADDED requirements, register-consistency test, dev-process requirement; Q16–Q17 · see git log
 2026-11-24 · M00c · TG2 spec discovery B: project-spec register (docs/spec-discovery/project-spec.md), 14 ADDED requirements plus the linked-data requirement in s01-spec-discovery, register test covers both registers; Q18–Q24; next part C (getbased analysis, presentation) · see git log
 2026-11-24 · M00c · TG2 spec discovery C: getbased-reuse and presentation registers, 14 ADDED requirements in s01-spec-discovery (new genomics delta), linked-data scenario public-only fix; Q25–Q30; next part D · see git log
+2026-11-25 · M00c · TG2 gates B1: next + eslint-config-next 15.1.0 -> 15.5.29, advisory register, offline test; Q33 · see git log
