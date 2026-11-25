@@ -32,6 +32,6 @@
 - [ ] Docs site generated from repo, as a Next route `/docs` (decision: Next route `/docs`, not MkDocs: no new deps, same pattern as /ecosystem)
     - [x] A: AI surfaces map (`docs/ai-surfaces.md` -> `/docs/ai-surfaces`)
     - [x] B: architecture (`docs/architecture.md` -> `/docs/architecture`)
-    - [ ] C: user guide
+    - [x] C: user guide (`docs/user-guide.md` -> `/docs/user-guide`)
     - [ ] D: OpenAPI reference
     - [ ] E: changelog

@@ -1,0 +1,90 @@
+{
+  "later": [
+    {
+      "feature": "Bring your lab reports during onboarding",
+      "requirement": "accounts-and-profiles/Onboarding \"bring your reports\""
+    },
+    {
+      "feature": "Privacy controls to keep a single item private",
+      "requirement": "accounts-and-profiles/Public-by-default profile"
+    },
+    {
+      "feature": "Add a passkey to your account",
+      "requirement": "accounts-and-profiles/Low-friction sign-in"
+    },
+    {
+      "feature": "Sign up with an email code, and sign in with other identity providers",
+      "requirement": "accounts-and-profiles/Low-friction sign-in"
+    },
+    {
+      "feature": "A dashboard page, which sign-in already points to",
+      "requirement": "dashboards-and-doctor-view/Public dashboard grouped by biomarker family"
+    },
+    {
+      "feature": "Daily check-off of what you took",
+      "requirement": "daily-log-and-adherence/Daily check-off with dose and slot pre-resolved"
+    },
+    {
+      "feature": "Manual entry of lab values",
+      "requirement": "biomarkers-and-labs/Manual entry of equal standing"
+    },
+    {
+      "feature": "Import from PDF, photo and CSV",
+      "requirement": "biomarkers-and-labs/Import from PDF, photo, and CSV with learned templates"
+    },
+    {
+      "feature": "Doctor protocol sheet",
+      "requirement": "dashboards-and-doctor-view/Doctor protocol sheet"
+    }
+  ],
+  "signin": [
+    {
+      "availability": "Always shown. It works only for an account that already exists. Type your email address, then type the code we send you.",
+      "method": "Email code",
+      "source": "frontend/src/components/SignInForm.tsx"
+    },
+    {
+      "availability": "Only if your browser supports passkeys. A \"Use a passkey\" button then appears. It works only with a passkey you already have for this site. You cannot add a passkey on the site yet.",
+      "method": "Passkey",
+      "source": "frontend/src/components/SignInForm.tsx"
+    },
+    {
+      "availability": "Only on a site that has the forum connection switched on. A \"Continue with rapamycin.news\" button then appears.",
+      "method": "rapamycin.news forum account",
+      "source": "backend/accounts/providers/discourse_connect"
+    }
+  ],
+  "steps": [
+    {
+      "action": "Read what biohack.it is for. From here you can start, sign in, open the ecosystem page or open the documentation.",
+      "route": "frontend/src/app/page.tsx",
+      "step": "Open the home page"
+    },
+    {
+      "action": "Choose \"Get started\". Sign-up and sign-in are the same page. An email code does not create a new account. A new account is created today only when you continue with the forum button, on a site that has it switched on.",
+      "route": "frontend/src/app/(auth)/sign-up/page.tsx",
+      "step": "Create your account"
+    },
+    {
+      "action": "Choose \"Sign in\" and pick one of the sign-in methods below.",
+      "route": "frontend/src/app/(auth)/sign-in/page.tsx",
+      "step": "Sign in"
+    },
+    {
+      "action": "If you start from \"Get started\" and sign in with an email code or a passkey, a welcome page opens. It explains that your profile is public by default. If you sign in with a provider button, you go to the dashboard address instead.",
+      "route": "frontend/src/app/onboarding/page.tsx",
+      "step": "Read about sharing"
+    },
+    {
+      "action": "The ecosystem page lists the open projects and open data that biohack.it reuses.",
+      "route": "frontend/src/app/ecosystem/page.tsx",
+      "step": "See what we build on"
+    },
+    {
+      "action": "The documentation index links to the AI surfaces map, the architecture page and this guide.",
+      "route": "frontend/src/app/docs/page.tsx",
+      "step": "Read the documentation"
+    }
+  ],
+  "title": "User guide — what you can do today"
+}

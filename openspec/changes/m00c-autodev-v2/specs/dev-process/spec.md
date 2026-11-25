@@ -168,3 +168,14 @@ The architecture page SHALL be generated from `docs/architecture.md`, SHALL cite
 #### Scenario: Architecture page in sync
 - **WHEN** `frontend/src/content/architecture.json` differs from the export of `docs/architecture.md`
 - **THEN** the test fails and `tools/docs/export_architecture.py --check` exits 1
+
+### Requirement: User guide describes only built features
+The user guide page SHALL be generated from `docs/user-guide.md`, SHALL cite for every built step a frontend route file that exists, and SHALL list planned features separately under "Coming later", each citing an existing OpenSpec requirement.
+
+#### Scenario: User guide steps exist
+- **WHEN** a built step in `docs/user-guide.md` cites a route file that does not exist, or a "Coming later" row cites a requirement that is not in `openspec/specs/**` or an open change
+- **THEN** the test fails naming the row
+
+#### Scenario: User guide page in sync
+- **WHEN** `frontend/src/content/user-guide.json` differs from the export of `docs/user-guide.md`
+- **THEN** the test fails and `tools/docs/export_user_guide.py --check` exits 1

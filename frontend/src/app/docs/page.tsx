@@ -4,7 +4,11 @@
 // Full license text: https://www.gnu.org/licenses/agpl-3.0.html
 
 import Link from "next/link";
-import { aiSurfacesStrings, architectureStrings } from "@/lib/i18n";
+import {
+  aiSurfacesStrings,
+  architectureStrings,
+  userGuideStrings,
+} from "@/lib/i18n";
 import { requestLocale } from "@/lib/request-locale";
 
 const focus =
@@ -19,6 +23,7 @@ export default async function DocsIndex() {
   const locale = await requestLocale();
   const t = aiSurfacesStrings[locale];
   const a = architectureStrings[locale];
+  const u = userGuideStrings[locale];
   return (
     <main className="mx-auto max-w-3xl space-y-6 p-4 sm:p-8">
       <h1 className="text-3xl font-bold tracking-tight">{t.docsIndex}</h1>
@@ -31,6 +36,11 @@ export default async function DocsIndex() {
         <li>
           <Link href="/docs/architecture" className={`underline ${focus}`}>
             {a.title}
+          </Link>
+        </li>
+        <li>
+          <Link href="/docs/user-guide" className={`underline ${focus}`}>
+            {u.title}
           </Link>
         </li>
       </ul>

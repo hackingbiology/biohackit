@@ -255,6 +255,52 @@ export const architectureStrings: Record<Locale, ArchitectureStrings> = {
   zh: architectureEn,
 };
 
+export interface UserGuideStrings {
+  title: string;
+  intro: string;
+  stepsCaption: string;
+  signinCaption: string;
+  laterCaption: string;
+  laterNote: string;
+  step: string;
+  action: string;
+  route: string;
+  method: string;
+  availability: string;
+  source: string;
+  feature: string;
+  requirement: string;
+  tableRegion: string;
+  back: string;
+}
+
+const userGuideEn: UserGuideStrings = {
+  title: "User guide",
+  intro:
+    "How to use biohack.it today. This guide describes only what is built. Features that are planned come last, in their own list.",
+  stepsCaption: "Steps you can take today",
+  signinCaption: "Ways to sign in",
+  laterCaption: "Coming later",
+  laterNote: "These features are specified but not built. Do not look for them yet.",
+  step: "Step",
+  action: "What you do",
+  route: "Page in the code",
+  method: "Method",
+  availability: "When it is available",
+  source: "Where in the code",
+  feature: "Feature",
+  requirement: "Requirement that specifies it",
+  tableRegion: "Scrollable table",
+  back: "Back to documentation",
+};
+
+// IT and ZH fall back to EN until translated, as for other pages.
+export const userGuideStrings: Record<Locale, UserGuideStrings> = {
+  en: userGuideEn,
+  it: userGuideEn,
+  zh: userGuideEn,
+};
+
 export function pickLocale(lang: string | undefined): Locale {
   const l = (lang ?? "en").toLowerCase();
   if (l.startsWith("it")) return "it";

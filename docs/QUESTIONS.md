@@ -137,3 +137,7 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 ## 2026-11-25 · M00c AI surfaces map: extraction conflict
 
 **Q44** · `biomarkers-and-labs/spec.md` ("Deterministic pipeline with a hard boundary") says extraction is deterministic and the LLM only writes narration, while `ai-uses-and-attribution/spec.md` lists lab-report extraction as an AI surface and "Import from PDF, photo, and CSV with learned templates" says known labs bypass the LLM. Default taken: **the map lists extraction as AI, used only when no learned template matches, with the user confirming values**. Should the hard-boundary requirement be amended to match?
+
+## 2026-11-25 · M00c user guide
+
+**Q45** · The user guide is English only; IT and ZH fall back to EN as on /docs/architecture. The `/dashboard` page that sign-in redirects to does not exist yet, so the guide lists it under "Coming later". Default taken: **EN only, no translation yet**. Should the guide be translated to IT/ZH now, and should the sign-in redirect point somewhere that exists until the dashboard is built?
