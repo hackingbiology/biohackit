@@ -37,6 +37,9 @@ services:
       FRONTEND_URL: "http://51.158.36.151:18800"
       DEMO_USERNAME: ${DEMO_USERNAME:-}
       DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+      PRIVATE_MEDIA_ROOT: /app/private_media
+    volumes:
+      - private-media-staging:/app/private_media
     depends_on:
       db:
         condition: service_healthy
@@ -56,3 +59,4 @@ services:
 
 volumes:
   pgdata-staging:
+  private-media-staging:

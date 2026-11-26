@@ -90,6 +90,15 @@ Otherwise one `LabReport` (`origin = import`, `import_name` = file name) and its
 stored in one transaction, with `validation_state = user_confirmed` (you checked every row in
 the preview); `201` with the report and results.
 
+The report JSON (confirm, `GET /api/labs/reports/<id>/`) carries `original_retained` (bool),
+`original_sha256` and `original_size` (bytes). The uploaded CSV is kept exactly as sent, in a
+private store under a generated name (never your file name), with no automatic expiry (Q57).
+It is never served, published or put into OpenData: no endpoint returns the file, a path or a
+URL. `DELETE /api/labs/reports/<id>/` removes the file after the rollback commits (Q65). If you
+send `redact_terms`, the original is **not** kept (it would defeat the redaction): the confirm
+answer has `original_retained: false` and `original_not_retained_reason` (Q76). The preview
+never stores a file; a refused confirm leaves none.
+
 ### Validation states and `PATCH /api/labs/results/<id>/validation/`
 
 | State | Meaning |

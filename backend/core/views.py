@@ -152,6 +152,9 @@ def _report_data(report: LabReport) -> dict[str, Any]:
         "import_name": report.import_name,
         "laboratory": report.laboratory,
         "created_at": report.created_at,
+        "original_retained": bool(report.original_file),
+        "original_sha256": report.original_sha256,
+        "original_size": report.original_size,
         "results": [_result_data(r) for r in results],
     }
 
@@ -272,7 +275,10 @@ class LabReportDetailView(APIView):  # type: ignore[misc]  # base is Any: DRF un
                 {"detail": "Only an import can be rolled back; a typed report cannot."},
                 status=status.HTTP_409_CONFLICT,
             )
-        report.delete()  # LabResult rows go with it (CASCADE); nothing else is touched
+        # LabResult rows go with it (CASCADE); the file goes after the commit
+        # via the post_delete receiver in core.models.
+        with transaction.atomic():
+            report.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request: Request, pk: int) -> Response:

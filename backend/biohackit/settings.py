@@ -239,5 +239,9 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# --- Private files ---------------------------------------------------------- #
+# Retained originals of imports (M02 TG-g). Not under STATIC_ROOT or any URL: no route serves it.
+PRIVATE_MEDIA_ROOT = env("PRIVATE_MEDIA_ROOT", default=str(BASE_DIR / "private_media"))
+
 # --- Misc ------------------------------------------------------------------- #
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

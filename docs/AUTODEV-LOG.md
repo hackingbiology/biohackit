@@ -76,3 +76,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M02 · TG-d part 1b: redaction overflow names redact_terms, linear-time matching, bounds and redaction see the stripped cell · see git log
 2026-11-26 · M02 · TG-j part 1: hand-written FHIR R4 DiagnosticReport/Observation Bundle of a lab report + owner-only GET /api/labs/reports/<id>/fhir/, Q73 · see git log
 2026-11-26 · M02 · Q63 applied: lab result states entered|user_confirmed|source_verified|disputed|retracted, eligibility needs a confirmed state, owner-only PATCH /api/labs/results/<id>/validation/, migration 0009, Q75 · see git log
+2026-11-26 · M02 · TG-g part 1: confirmed CSV kept as private file with SHA-256 on the LabReport, deleted on rollback, not kept with redaction, migration 0010, Q76 · see git log

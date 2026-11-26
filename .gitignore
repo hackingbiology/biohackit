@@ -15,6 +15,7 @@ __pycache__/
 .Python
 backend/.venv
 backend/staticfiles/
+backend/private_media/
 *.egg-info/
 dist/
 build/

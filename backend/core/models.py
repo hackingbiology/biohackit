@@ -6,7 +6,10 @@ from typing import Any
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.core.files.storage import FileSystemStorage
+from django.db import models, transaction
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 from terminology.models import Unit
 from terminology.services import normalize_value
@@ -192,6 +195,16 @@ AGGREGATION_STATES = frozenset(
 )
 
 
+def private_storage() -> FileSystemStorage:
+    """Private store for retained originals: no base_url, so it can never yield a URL."""
+    return FileSystemStorage(location=settings.PRIVATE_MEDIA_ROOT, base_url=None)
+
+
+def original_upload_to(instance: "LabReport", filename: str) -> str:
+    """Generated name only (the report pk); the user's file name can hold PII."""
+    return f"lab-reports/{instance.pk}.csv"
+
+
 class LabReport(models.Model):
     """One laboratory report: groups results and records where they came from."""
 
@@ -200,6 +213,15 @@ class LabReport(models.Model):
     import_name = models.CharField(max_length=200, blank=True, default="")
     laboratory = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # Retained original of an import (private, never served; Q57, Q65).
+    original_file = models.FileField(
+        upload_to=original_upload_to,
+        storage=private_storage,
+        null=True,
+        blank=True,
+    )
+    original_sha256 = models.CharField(max_length=64, null=True, blank=True)
+    original_size = models.PositiveIntegerField(null=True, blank=True)
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         if self.origin not in LabReportOrigin.values:
@@ -207,6 +229,17 @@ class LabReport(models.Model):
         if self.origin == LabReportOrigin.IMPORT and not self.import_name.strip():
             raise ValidationError("An imported LabReport requires an import name")
         super().save(*args, **kwargs)
+
+
+@receiver(post_delete, sender=LabReport)
+def delete_retained_original(
+    sender: type[LabReport], instance: LabReport, **kwargs: Any
+) -> None:
+    """Remove the private file once the row delete commits (rollback, owner cascade; Q65)."""
+    if instance.original_file:
+        storage = instance.original_file.storage
+        name = instance.original_file.name
+        transaction.on_commit(lambda: storage.delete(name))
 
 
 def _stripped(value: str | None) -> str | None:

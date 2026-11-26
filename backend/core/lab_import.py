@@ -5,12 +5,14 @@
 differently, and nothing is guessed (no name matching, no unit inference)."""
 
 import csv
+import hashlib
 import io
 import json
 from dataclasses import asdict, dataclass
 from typing import Any
 
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.files.base import ContentFile
 from django.db import transaction
 from rest_framework import status  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.exceptions import ValidationError  # type: ignore[import-untyped]  # DRF ships no stubs
@@ -325,6 +327,18 @@ def _prepare(
     return lines, name, laboratory, removals
 
 
+def _retain_original(report: LabReport, request: Request) -> None:
+    """Store exactly the uploaded bytes privately under a generated name and record their
+    SHA-256 and size on `report`."""
+    upload = request.FILES["file"]
+    upload.seek(0)
+    data = upload.read()
+    report.original_file.save("original.csv", ContentFile(data), save=False)
+    report.original_sha256 = hashlib.sha256(data).hexdigest()
+    report.original_size = len(data)
+    report.save()
+
+
 class CsvPreviewView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
     """POST: every row with its status. Nothing is stored: the evaluation runs in a
     transaction that is always rolled back."""
@@ -352,11 +366,22 @@ class CsvConfirmView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
 
     def post(self, request: Request) -> Response:
         lines, name, laboratory, _ = _prepare(request)
-        with transaction.atomic():
-            report, rows = _evaluate_all(request, lines, name, laboratory)
-            bad = [r for r in rows if r["status"] != "recognised"]
-            if bad or not rows:
-                transaction.set_rollback(True)
+        redacted = bool(redact_terms(request))
+        stored: LabReport | None = None
+        try:
+            with transaction.atomic():
+                report, rows = _evaluate_all(request, lines, name, laboratory)
+                bad = [r for r in rows if r["status"] != "recognised"]
+                if bad or not rows:
+                    transaction.set_rollback(True)
+                elif not redacted:
+                    _retain_original(report, request)
+                    stored = report
+        except Exception:
+            # The transaction is gone: do not leave its file behind.
+            if stored is not None:
+                stored.original_file.delete(save=False)
+            raise
         if bad:
             return Response(
                 {
@@ -368,4 +393,9 @@ class CsvConfirmView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
             )
         if not rows:
             raise _file_error("The file has no data rows.")
-        return Response(_report_data(report), status=status.HTTP_201_CREATED)
+        body = _report_data(report)
+        if redacted:
+            body["original_not_retained_reason"] = (
+                "You asked for redaction, so the original file is not kept."
+            )
+        return Response(body, status=status.HTTP_201_CREATED)

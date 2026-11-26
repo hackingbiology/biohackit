@@ -29,6 +29,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 
 ## TG-g — Original report file retained
 - [ ] Store the uploaded file with the report; retention per Q57; a rollback of the import removes the file (M02 scenario "Rollback removes the retained original", Q65). Private storage only: the file is never published or exposed in OpenData until Q62 is answered and a requirement covers it. Req: main "Original report file retained and public raw" (retention part). Blocked by: Q57, Q62.
+  - Part 1 done 2026-11-26 (stays unchecked): CSV import only. The confirmed CSV is kept as a private file with its `LabReport` (`original_file`, `original_sha256`, `original_size`, migration 0010, `PRIVATE_MEDIA_ROOT`), kept without automatic expiry (Q57), deleted on rollback via `transaction.on_commit` (Q65), never served. Default: with `redact_terms` the original is NOT retained (Q76). PDF/photo retention depends on TG-e/TG-f; the Q62 public-raw part is still open.
 
 ## TG-h — Completeness and freshness indicators
 - [ ] Completeness and freshness per organ system from stored results. Req: main "Completeness and freshness indicators". Depends on an organ-system grouping of analytes (not yet defined; record a question when the task starts).
