@@ -78,3 +78,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M02 · Q63 applied: lab result states entered|user_confirmed|source_verified|disputed|retracted, eligibility needs a confirmed state, owner-only PATCH /api/labs/results/<id>/validation/, migration 0009, Q75 · see git log
 2026-11-26 · M02 · TG-g part 1: confirmed CSV kept as private file with SHA-256 on the LabReport, deleted on rollback, not kept with redaction, migration 0010, Q76 · see git log
 2026-11-26 · M02 · Q56 applied: docs/research/phenoage-coefficients.md (PhenoAge + Bortz, sources compared, engine decision = hand-write), ecosystem entries, give-back rows, Q77, Q78; documentation only · see git log
+2026-11-26 · M02 · TG-i part 1: pure PhenoAge engine backend/core/phenoage.py (S2 + Q77 defaults, no imputation), D3 vectors tested, get-based ecosystem entry corrected; no dependency, no migration · see git log

@@ -6,7 +6,7 @@ Research task from Fabio's Q56 answer (docs/QUESTIONS.md, "Answers (Fabio 2026-1
 - Every number below was read from a page or file fetched on **2026-11-26** (the access date for every source). Each is cited by source id (S1, S2, ...) from the sources tables. Numbers marked "my computation" were calculated here from cited numbers, not fetched.
 - A value that could not be fetched is written `unknown (not fetched)`. Nothing is filled in from memory.
 - Where sources differ, "the paper prevails unless an erratum says otherwise" (Fabio, Q56). Where that rule does not settle the case (see D3), the choice is a question with a default (Q77), not a decision.
-- Documentation only. No number from this document is in code. The TG-i computation item stays unchecked.
+- Documentation only. The numbers of this document are in code only in backend/core/phenoage.py (TG-i part 1, S2 constants plus the Q77 defaults). The TG-i computation item stays unchecked until part 2.
 
 ---
 
