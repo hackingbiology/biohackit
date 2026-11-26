@@ -4,6 +4,7 @@
 or differently here."""
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Any
 
 from django.core.exceptions import ValidationError as DjangoValidationError
@@ -27,6 +28,8 @@ from .models import (
     LabResult,
     LabResultValidation,
 )
+from .phenoage import PhenoAgeRefusal, PhenoAgeResult, evaluate_phenoage
+from .phenoage_binding import inputs_from_report
 from .plausibility import RangeCandidate, check_plausibility
 
 TEXT_FIELDS = ("laboratory", "method", "device")
@@ -296,6 +299,58 @@ class LabReportFhirView(APIView):  # type: ignore[misc]  # base is Any: DRF unty
         return HttpResponse(
             render_fhir_json(lab_report_to_fhir_bundle(report)),
             content_type="application/fhir+json",
+        )
+
+
+PHENOAGE_METHOD = "PhenoAge (Levine 2018), docs/research/phenoage-coefficients.md"
+
+
+def _age_years(request: Request) -> float:
+    raw = request.query_params.get("age_years")
+    try:
+        age = Decimal(raw) if raw is not None else None
+    except ArithmeticError:  # decimal.InvalidOperation
+        age = None
+    if age is None or not age.is_finite():
+        raise ValidationError({"age_years": "Give age_years as a finite number."})
+    return float(age)
+
+
+class LabReportPhenoAgeView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """GET: PhenoAge computed from the caller's report; age_years is a request
+    parameter and nothing is stored. Another user's report is a 404."""
+
+    http_method_names = ["get", "head", "options"]
+
+    def get(self, request: Request, pk: int) -> Response:
+        report = get_object_or_404(LabReport, pk=pk, owner=request.user)
+        age = _age_years(request)
+        bound = inputs_from_report(report, age)
+        if isinstance(bound, PhenoAgeRefusal):
+            return Response({"refusal": {"reason": bound.reason, "field": bound.field}})
+        outcome = evaluate_phenoage(bound.inputs)
+        if not isinstance(outcome, PhenoAgeResult):
+            return Response(
+                {"refusal": {"reason": outcome.reason, "field": outcome.field}}
+            )
+        return Response(
+            {
+                "phenoage_years": outcome.phenoage_years,
+                "mortality_score": outcome.mortality_score,
+                "xb": outcome.xb,
+                "constants_version": outcome.constants_version,
+                "inputs": [
+                    {
+                        "field": u.field,
+                        "lab_result_id": u.lab_result_id,
+                        "value": u.value,
+                        "unit": u.unit,
+                        "converted": u.converted,
+                    }
+                    for u in bound.used
+                ],
+                "method": PHENOAGE_METHOD,
+            }
         )
 
 

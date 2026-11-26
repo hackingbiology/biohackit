@@ -101,6 +101,14 @@ The ten weights match across S2, S3, S4, S5, S6 and S8 except the ALP rounding (
 
 ---
 
+### 1.7 LOINC codes for the nine analytes (TG-i part 2)
+
+No code is mapped. On 2026-11-26 loinc.org returned HTTP 403 to WebFetch and curl for the analyte pages, so no code could be verified and `LOINC_BY_FIELD` in `backend/core/phenoage_binding.py` is empty (the API refuses with `analyte_not_mapped`). Open question Q79. Table to fill once a code is verified:
+
+| field | S2 unit | LOINC code | URL | fetch date | LOINC long name |
+|---|---|---|---|---|---|
+| all nine | see 1.3 | none verified | n/a | 2026-11-26 (HTTP 403) | n/a |
+
 ## Part 2. Bortz blood-age clock
 
 ### 2.1 Sources

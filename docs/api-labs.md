@@ -148,3 +148,19 @@ characters); the file must be UTF-8.
 
 Rolls back an import: removes the report and its results, nothing else. `204`; `404` for another
 user's report; `409` for a manual report. The retained original file is not stored yet (TG-g).
+
+### `GET /api/labs/reports/<id>/phenoage/?age_years=<number>`
+
+PhenoAge (Levine 2018) computed from the nine analytes of one of your reports (TG-i part 2).
+`age_years` is a request parameter and is never stored (Q79); a missing or non-finite value is
+`400` naming `age_years`. Another user's or a missing report is `404`; anonymous is 401/403.
+Each analyte is found by the LOINC code of its biomarker; `retracted` and `disputed` results are
+ignored. The value is used as is when its UCUM unit equals the PhenoAge unit, otherwise only a
+stored unit conversion is applied. Nothing is written.
+
+`200` with the result: `{"phenoage_years", "mortality_score", "xb", "constants_version",
+"inputs": [{"field", "lab_result_id", "value", "unit", "converted"}], "method"}`; or `200` with
+`{"refusal": {"reason", "field"}}`. Reasons: `analyte_not_mapped` (no verified LOINC code for
+the analyte; **currently every analyte, see Q79**), `missing_input`, `ambiguous_analyte` (two
+usable results for one analyte), `unit_not_convertible` (no stored conversion), and the engine's
+`not_finite_input`, `crp_not_positive`, `mortality_score_out_of_range`.

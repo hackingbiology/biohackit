@@ -79,3 +79,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M02 · TG-g part 1: confirmed CSV kept as private file with SHA-256 on the LabReport, deleted on rollback, not kept with redaction, migration 0010, Q76 · see git log
 2026-11-26 · M02 · Q56 applied: docs/research/phenoage-coefficients.md (PhenoAge + Bortz, sources compared, engine decision = hand-write), ecosystem entries, give-back rows, Q77, Q78; documentation only · see git log
 2026-11-26 · M02 · TG-i part 1: pure PhenoAge engine backend/core/phenoage.py (S2 + Q77 defaults, no imputation), D3 vectors tested, get-based ecosystem entry corrected; no dependency, no migration · see git log
+2026-11-26 · M02 · TG-i part 2: owner-only GET /api/labs/reports/<id>/phenoage/ and core/phenoage_binding.py (LOINC binding, stored unit conversions only); loinc.org returned 403 so the code map is empty and every request refuses analyte_not_mapped (Q79); no dependency, no migration · see git log
