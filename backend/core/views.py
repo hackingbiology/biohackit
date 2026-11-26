@@ -23,6 +23,7 @@ from terminology.models import ReferenceRange, Source, Unit
 from terminology.selectors import Subject
 from terminology.services import normalize_value
 
+from .calculated_markers import compute_ratios
 from .fhir import lab_report_to_fhir_bundle, render_fhir_json
 from .models import (
     Biomarker,
@@ -328,6 +329,22 @@ class LabReportOmopView(APIView):  # type: ignore[misc]  # base is Any: DRF unty
                 "rows": [lab_result_to_omop_measurement(r) for r in results],
             }
         )
+
+
+class LabReportCalculatedView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """GET: stored ratio definitions computed from this report's results, labelled
+    calculated, inputs and dates listed; a missing input gives no value (Q83).
+    Another user's report is a 404."""
+
+    http_method_names = ["get", "head", "options"]
+
+    def get(self, request: Request, pk: int) -> Response:
+        report = get_object_or_404(LabReport, pk=pk, owner=request.user)
+        markers = compute_ratios(report)
+        body: dict[str, Any] = {"report_id": report.pk, "markers": markers}
+        if not markers:
+            body["note"] = "no_definitions_stored"
+        return Response(body)
 
 
 PHENOAGE_METHOD = "PhenoAge (Levine 2018), docs/research/phenoage-coefficients.md"

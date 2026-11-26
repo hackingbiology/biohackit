@@ -64,6 +64,12 @@
     },
     {
       "kind": "deterministic",
+      "status": "implemented",
+      "surface": "Calculated ratio markers (stored definitions, quotient)",
+      "where": "backend/core/calculated_markers.py"
+    },
+    {
+      "kind": "deterministic",
       "status": "specified",
       "surface": "Calculated markers (PhenoAge)",
       "where": "openspec/specs/biomarkers-and-labs/spec.md: Deterministic PhenoAge computation from the standard panel"

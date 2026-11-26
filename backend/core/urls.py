@@ -8,6 +8,7 @@ urlpatterns = [
     path("reports/<int:pk>/", views.LabReportDetailView.as_view()),
     path("reports/<int:pk>/fhir/", views.LabReportFhirView.as_view()),
     path("reports/<int:pk>/omop/", views.LabReportOmopView.as_view()),
+    path("reports/<int:pk>/calculated/", views.LabReportCalculatedView.as_view()),
     path("reports/<int:pk>/phenoage/", views.LabReportPhenoAgeView.as_view()),
     path("results/<int:pk>/convert/", views.LabResultConvertView.as_view()),
     path("results/<int:pk>/ranges/", views.LabResultRangesView.as_view()),

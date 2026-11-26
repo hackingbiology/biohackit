@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M02 TG-n part 1 done 2026-11-26: `core.CalculatedRatioDefinition` (migration 0011, table only, nothing seeded) and owner-only `GET /api/labs/reports/<id>/calculated/` computing stored quotient markers in code (calculated, inputs and dates listed, missing input gives null value; Q83). No dependency. Next: Q83 answer (sources of ratios), then HOMA-IR / free water deficit part.
 - M02 TG-m part 1 done 2026-11-26: owner-only `GET /api/labs/results/<id>/ranges/` shows a result against its reference range, optimal range (only if `displayable_optimal_range` passes) and safety threshold, kept separate, each with provenance and a computed status (Subject unknown, Q82). No dependency, no migration. Next: next unblocked group per tasks.md.
 - M02 TG-l part 1 done 2026-11-26: owner-only `GET /api/labs/results/<id>/convert/?unit=<ucum>` converts with stored, sourced `UnitConversion` only and always returns the reported value and unit; no conversion known → unconverted (s01 "Unit conversion between unit systems" tested); SI/US labelling waits on Q81. No dependency, no migration. Next: next unblocked group per tasks.md.
 - M02 TG-j part 2 done 2026-11-26: owner-only `GET /api/labs/reports/<id>/omop/` returns the non-retracted results as OMOP v5.4 MEASUREMENT rows via the existing mapper (concept ids and person_id null, Q69; Q80 default). TG-j complete. No dependency, no migration. Next: next unblocked group per tasks.md.

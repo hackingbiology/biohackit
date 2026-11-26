@@ -11,7 +11,7 @@ from django.db import models, transaction
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
-from terminology.models import Unit
+from terminology.models import SourcedModel, Unit
 from terminology.services import normalize_value
 
 
@@ -391,3 +391,49 @@ class LabResult(models.Model):
         self.normalised_value = result.value
         self.normalised_unit = result.unit
         self.normalised_source_id = result.source_id
+
+
+class CalculatedRatioDefinition(SourcedModel):
+    """A plain quotient marker: numerator / denominator, each input in a stated UCUM
+    unit. The cited `source` states the method and unit convention. Nothing is seeded
+    (Q83); the ratio is computed per report in code and never stored."""
+
+    name = models.CharField(max_length=100, unique=True)
+    numerator = models.ForeignKey(Biomarker, on_delete=models.PROTECT, related_name="+")
+    denominator = models.ForeignKey(
+        Biomarker, on_delete=models.PROTECT, related_name="+"
+    )
+    numerator_unit = models.ForeignKey(Unit, on_delete=models.PROTECT, related_name="+")
+    denominator_unit = models.ForeignKey(
+        Unit, on_delete=models.PROTECT, related_name="+"
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "numerator",
+                    "denominator",
+                    "numerator_unit",
+                    "denominator_unit",
+                ],
+                name="uniq_calculated_ratio_inputs",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(numerator=models.F("denominator")),
+                name="calculated_ratio_inputs_differ",
+            ),
+        ]
+
+    def clean(self) -> None:
+        if self.source_id is None:
+            raise ValidationError({"source": "A ratio definition requires a source"})
+        if self.numerator_id == self.denominator_id:
+            raise ValidationError("Numerator and denominator must differ")
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.name

@@ -54,5 +54,9 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 - [ ] Owner-only view of a stored LabResult against reference range, optimal range and safety threshold, kept separate, each with its provenance and a deterministic status. Req: main "Three ranges per analyte", main "Optimal-range governance" (inspection part; the contested-range scenario waits on community-and-social).
   - Part 1 done 2026-11-26 (stays unchecked): `GET /api/labs/results/<id>/ranges/` (`LabResultRangesView`, `core/result_ranges.py`), tests in test_lab_result_ranges.py; Q82.
 
+## TG-n — Calculated markers (no new dependency)
+- [ ] Deterministic calculated markers from stored, sourced definitions; nothing seeded; computed per report by code, labelled calculated, inputs and dates listed; a missing input gives not computable with no value. Req: s01 "Deterministic calculated markers". Part 1 = quotient markers (numerator / denominator) + owner-only API; HOMA-IR and free water deficit (constants or extra terms) are a later part.
+  - Part 1 done 2026-11-26 (stays unchecked): `core.CalculatedRatioDefinition` (migration 0011, table only), `core/calculated_markers.py`, `GET /api/labs/reports/<id>/calculated/` (`LabReportCalculatedView`), tests in test_lab_calculated_markers.py; Q83.
+
 ## TG-k — Extraction benchmark
 - [ ] Synthetic report with a verified answer key; measure extraction accuracy of TG-e/TG-f. Req: s01 "Extraction benchmark on a synthetic report". Blocked by: TG-e.

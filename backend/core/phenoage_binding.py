@@ -61,7 +61,7 @@ class Binding:
     used: list[UsedInput]
 
 
-def _in_target_unit(result: LabResult, target: str) -> tuple[Decimal, bool] | None:
+def in_target_unit(result: LabResult, target: str) -> tuple[Decimal, bool] | None:
     """Value in the S2 unit and whether a conversion was applied, or None."""
     if result.reported_unit == target:
         return result.reported_value, False
@@ -85,7 +85,7 @@ def _bind_field(
         return PhenoAgeRefusal(REASON_AMBIGUOUS, field)
     result = candidates[0]
     target = S2_UNITS[field]
-    found = _in_target_unit(result, target)
+    found = in_target_unit(result, target)
     if found is None:
         return PhenoAgeRefusal(REASON_UNIT_NOT_CONVERTIBLE, field)
     number = float(found[0])

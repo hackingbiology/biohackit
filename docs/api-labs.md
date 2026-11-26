@@ -222,3 +222,21 @@ stored unit conversion is applied. Nothing is written.
 the analyte; **currently every analyte, see Q79**), `missing_input`, `ambiguous_analyte` (two
 usable results for one analyte), `unit_not_convertible` (no stored conversion), and the engine's
 `not_finite_input`, `crp_not_positive`, `mortality_score_out_of_range`.
+
+### `GET /api/labs/reports/<id>/calculated/`
+
+Calculated quotient markers for one of your reports (TG-n part 1). Each stored
+`CalculatedRatioDefinition` (numerator and denominator analyte, the UCUM unit each input must be
+in, and a cited Source) is computed in code with `Decimal` (28 digits, half-even, not rounded).
+No definition is seeded (Q83), so until some are stored the answer is
+`{"report_id", "markers": [], "note": "no_definitions_stored"}`. Another user's or a missing
+report is `404`; anonymous is 401/403. Only this report's results are used; `retracted` and
+`disputed` results are ignored; a value is used as reported when its unit matches, otherwise only
+a stored unit conversion applies. Nothing is written.
+
+Each marker has `name`, `calculated: true` and `source`. Computed: `status: "computed"`, `value`
+(string), `unit_note` (the two input units; no unit is invented for the ratio) and `inputs`
+(`role`, `lab_result_id`, `loinc_code`, `value_used`, `unit_used`, `reported_value`,
+`reported_unit`, `collected_at`, `reported_at`, `converted`, `conversion_source` — the stored conversion's Source, null when not converted). Otherwise `status: "not_computable"`,
+`value: null` and `reasons`: `missing_input:<role>`, `ambiguous_input:<role>`,
+`unit_not_convertible:<role>`, `denominator_zero`.
