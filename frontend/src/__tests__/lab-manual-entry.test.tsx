@@ -160,3 +160,51 @@ test("a row-level non_field_errors message and a laboratory error are shown", as
   expect(lab).toHaveAccessibleDescription(/Too long/);
   expect(lab).toHaveAttribute("aria-invalid", "true");
 });
+
+test("the intro does not promise undo and says a typed report cannot be undone", () => {
+  // scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
+  render(<LabNewPage />);
+  const main = screen.getByRole("main");
+  expect(main).not.toHaveTextContent("you can undo");
+  expect(main).toHaveTextContent("cannot be undone after saving");
+});
+
+test("removing a row keeps focus in the form and announces the removal", async () => {
+  // scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
+  const user = userEvent.setup();
+  render(<LabNewPage />);
+  await user.click(screen.getByRole("button", { name: "Add another result" }));
+  await user.click(screen.getByRole("button", { name: "Add another result" }));
+  await user.click(screen.getByRole("button", { name: "Remove result 2" }));
+  const second = within(screen.getByRole("group", { name: "Result 2" }));
+  expect(document.activeElement).toBe(second.getByLabelText("LOINC code"));
+  expect(screen.getByRole("status")).toHaveTextContent("Result 2 removed.");
+});
+
+test("removing the last row moves focus to the previous row", async () => {
+  // scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
+  const user = userEvent.setup();
+  render(<LabNewPage />);
+  await user.click(screen.getByRole("button", { name: "Add another result" }));
+  await user.click(screen.getByRole("button", { name: "Remove result 2" }));
+  const first = within(screen.getByRole("group", { name: "Result 1" }));
+  expect(document.activeElement).not.toBe(document.body);
+  expect(document.activeElement).toBe(first.getByLabelText("LOINC code"));
+  expect(screen.getByRole("status")).toHaveTextContent("Result 2 removed.");
+});
+
+test("removing result 2 twice replaces the announcement node each time", async () => {
+  // scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
+  const user = userEvent.setup();
+  render(<LabNewPage />);
+  for (let i = 0; i < 3; i++) {
+    await user.click(screen.getByRole("button", { name: "Add another result" }));
+  }
+  await user.click(screen.getByRole("button", { name: "Remove result 2" }));
+  const firstNode = screen.getByRole("status").firstElementChild;
+  await user.click(screen.getByRole("button", { name: "Remove result 2" }));
+  const secondNode = screen.getByRole("status").firstElementChild;
+  expect(secondNode).not.toBeNull();
+  expect(secondNode).not.toBe(firstNode);
+  expect(screen.getByRole("status")).toHaveTextContent("Result 2 removed.");
+});

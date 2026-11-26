@@ -441,6 +441,7 @@ export interface LabStrings {
   newIntro: string;
   reportLaboratory: string;
   resultHeading: string;
+  rowRemoved: string;
   addRow: string;
   removeRow: string;
   loincCode: string;
@@ -505,7 +506,8 @@ const labEn: LabStrings = {
   newLink: "Type a report by hand instead",
   viewReport: "View report",
   newTitle: "Enter lab results by hand",
-  newIntro: "Type each result as your lab reported it. Nothing is stored until you save, and you can undo a saved report.",
+  newIntro: "Type each result as your lab reported it. Nothing is stored until you save. A report you type by hand cannot be undone after saving, so check each value first.",
+  rowRemoved: "Result {n} removed.",
   reportLaboratory: "Laboratory for the whole report (optional)",
   resultHeading: "Result {n}",
   addRow: "Add another result",

@@ -7,7 +7,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createReport,
   withOffset,
@@ -68,6 +68,8 @@ export default function LabNewPage() {
   const [reportErrors, setReportErrors] = useState<Record<string, string[]>>({});
   const [detail, setDetail] = useState("");
   const [busy, setBusy] = useState(false);
+  const [removed, setRemoved] = useState<{ n: number; at: number; count: number } | null>(null);
+  const addRef = useRef<HTMLButtonElement>(null);
 
   const fieldLabel: Record<Field, string> = {
     loinc_code: t.loincCode,
@@ -95,7 +97,19 @@ export default function LabNewPage() {
   function removeRow(index: number) {
     setDrafts((prev) => prev.filter((_, i) => i !== index));
     setErrors({});
+    setRemoved((prev) => ({ n: index + 1, at: index, count: (prev?.count ?? 0) + 1 }));
   }
+
+  // After a removal the focused Remove button is gone: move focus to the first
+  // input of the row now at that index, else the previous row, else "Add".
+  useEffect(() => {
+    if (removed === null) return;
+    const target =
+      document.getElementById(`r${removed.at}-loinc_code`) ??
+      document.getElementById(`r${removed.at - 1}-loinc_code`) ??
+      addRef.current;
+    target?.focus();
+  }, [removed]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -218,6 +232,14 @@ export default function LabNewPage() {
         )}
       </div>
 
+      <p role="status" aria-live="polite">
+        {removed !== null && (
+          <span key={removed.count}>
+            {t.rowRemoved.replace("{n}", String(removed.n))}
+          </span>
+        )}
+      </p>
+
       <form onSubmit={onSubmit} noValidate className="space-y-6">
         <div className="space-y-1">
           <label htmlFor="report-laboratory" className="block font-semibold">
@@ -269,7 +291,7 @@ export default function LabNewPage() {
         ))}
 
         <div className="flex flex-wrap gap-3">
-          <button type="button" className={button} onClick={addRow}>
+          <button type="button" ref={addRef} className={button} onClick={addRow}>
             {t.addRow}
           </button>
           <button type="submit" className={button} disabled={busy}>

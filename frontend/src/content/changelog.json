@@ -5,6 +5,11 @@
       "entries": [
         {
           "change": "m02-blood-layer",
+          "commit": "915e07a",
+          "summary": "The page for typing a lab report by hand no longer says a saved report can be undone, and after you remove a result, focus moves to the next field and the removal is announced."
+        },
+        {
+          "change": "m02-blood-layer",
           "commit": "77f6eb3",
           "summary": "A page for importing lab results from a CSV file now lets you check each row, save only when all are recognised, and undo the import."
         }
