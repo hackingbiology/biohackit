@@ -87,7 +87,9 @@ nothing is stored. Matching is exact and case-insensitive. Overlapping or adjace
 removal (one placeholder) naming the term with the longest match, so no part of a longer
 match is kept. There are no built-in patterns (Q72). Each removal becomes `[REDACTED]`. The
 terms may match at most 1000 places in a file, otherwise `400` naming `redact_terms`. Row
-count and field lengths are checked on the raw file before redaction runs.
+count and field lengths are checked on the raw file before redaction runs (`400` naming `file`).
+If a cell only exceeds its limit because `[REDACTED]` is longer than the term, the `400` names
+`redact_terms`. Cells are trimmed before they are checked and redacted, so offsets are relative to the trimmed cell.
 
 Redaction is applied cell by cell to the data rows, to the file name (`import_name`) and to the
 `laboratory` form field, before the rows are evaluated; the header is not touched. The preview

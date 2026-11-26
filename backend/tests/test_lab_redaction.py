@@ -234,3 +234,84 @@ def test_redact_text_is_deterministic_and_does_not_echo():
 def test_redact_text_rejects_blank_term(term):
     with pytest.raises(ValueError):
         redact_text("x", [term])
+
+
+# scenario: biomarkers-and-labs::user-opts-to-obfuscate
+@pytest.mark.parametrize("url", [PREVIEW, CONFIRM])
+@pytest.mark.parametrize("column", ["laboratory", "method"])
+def test_cell_overflowing_only_after_redaction_names_redact_terms(
+    client, analyte, url, column
+):
+    cell = "q-" * 100  # 200 characters: within the limit before redaction
+    lab = cell if column == "laboratory" else "lab"
+    method = cell if column == "method" else "m"
+    row = "0000-0,1,xa/L,,," + lab + "," + method + "\n"
+    resp = post(client, url, HEAD + row, redact_terms=["q"])
+    assert resp.status_code == 400
+    assert "redact_terms" in resp.json()
+    assert "file" not in resp.json()
+    assert counts() == (0, 0)
+
+
+@pytest.mark.parametrize("terms", [[], ["zzz"]])
+def test_cell_over_limit_in_file_names_file(client, analyte, terms):
+    row = "0000-0,1,xa/L,,," + "a" * 201 + ",m\n"
+    resp = post(client, PREVIEW, HEAD + row, redact_terms=terms)
+    assert resp.status_code == 400
+    assert "file" in resp.json()
+    assert "redact_terms" not in resp.json()
+
+
+def test_whitespace_padded_cell_is_rejected_not_scanned(client, analyte):
+    # Chosen behaviour: the csv module's own 128 KiB field limit rejects the padded cell
+    # as a file problem before any term is scanned; a smaller padded cell is stripped by
+    # both the bounds check and the redaction, so the padding is never scanned.
+    pad = " " * (1024 * 1024 - 300)
+    row = "0000-0,1,xa/L,,,x" + pad + ",m\n"
+    resp = post(client, PREVIEW, HEAD + row, redact_terms=["a", "b", "c", "d"])
+    assert resp.status_code == 400
+    assert "file" in resp.json()
+    assert "redact_terms" not in resp.json()
+    small = "0000-0,1,xa/L,,,zq" + " " * 100000 + ",m\n"
+    ok = post(client, PREVIEW, HEAD + small, redact_terms=["zq"])
+    assert ok.status_code == 200
+    removals = ok.json()["redaction"]["removals"]
+    assert [(r["column"], r["start"], r["end"]) for r in removals] == [
+        ("laboratory", 0, 2)
+    ]
+
+
+def test_redact_text_overlapping_hits_in_repeated_text():
+    result = redact_text("aaaa", ["aa"])
+    assert [(r.start, r.end, r.term_index) for r in result.removals] == [(0, 4, 0)]
+    assert result.redacted == PLACEHOLDER
+
+
+def test_redact_text_case_insensitive_multiline_lines():
+    result = redact_text("x\nMarIo\nmario", ["MARIO"])
+    spans = [(r.start, r.end, r.line) for r in result.removals]
+    assert spans == [(2, 7, 2), (8, 13, 3)]
+    assert result.redacted == "x\n" + PLACEHOLDER + "\n" + PLACEHOLDER
+
+
+# scenario: biomarkers-and-labs::user-opts-to-obfuscate
+@pytest.mark.parametrize(
+    ("text", "term"),
+    [
+        ("ΚΩΣΤΑΣΑΚΗΣ", "ΚΩΣΤΑΣ"),
+        ("ΟΣΑ", "ΟΣ"),
+        ("İLKER", "ilker"),
+        ("Roſſi", "rossi"),
+    ],
+)
+def test_redact_text_keeps_regex_case_rules_for_unicode(text, term):
+    result = redact_text(text, [term])
+    assert len(result.removals) == 1
+    assert PLACEHOLDER in result.redacted
+
+
+def test_redaction_module_has_no_per_term_regex_scan():
+    import core.redaction as module
+
+    with open(module.__file__) as handle:
+        assert "finditer" not in handle.read()

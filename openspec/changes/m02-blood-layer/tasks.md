@@ -19,6 +19,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 ## TG-d — Deterministic PII redaction
 - [ ] Rule-based redaction of extracted text before review, with a diff the user sees, optional per Q58. Req: main "Optional PII obfuscation on import". Blocked by: Q58.
   - Part 1 done 2026-11-26 (stays unchecked): opt-in exact-term redaction for the CSV import (`core/redaction.py`, `redact_terms` on preview/confirm, diff in the preview, Q72; default off per Q58). Still pending: redaction of PDF/OCR text (TG-e/TG-f) and what is retained of the original (TG-g).
+  - Part 1b done 2026-11-26 (stays unchecked): a laboratory or method cell that overflows only because of redaction gives `400` naming `redact_terms`; matching is linear (`str.find`); bounds and redaction both see the stripped cell.
 
 ## TG-e — Add pdfplumber (dependency)
 - [ ] `uv add pdfplumber` after fetching and recording its licence (licence gate); text and table extraction into the review step. Req: main "Import from PDF, photo, and CSV with learned templates" (PDF part).

@@ -73,3 +73,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M02 · TG-b part 2: reported_value ≤40 chars, ≤200 results per report, O(n) trailing-zero strip (review 1795662883) · see git log
 2026-11-26 · M02 · TG-c part 1: CSV lab import preview/confirm + DELETE rollback of an import (stdlib csv, Q71) · see git log
 2026-11-26 · M02 · TG-d part 1: opt-in deterministic exact-term PII redaction for the CSV import, diff in preview, Q72 · see git log
+2026-11-26 · M02 · TG-d part 1b: redaction overflow names redact_terms, linear-time matching, bounds and redaction see the stripped cell · see git log

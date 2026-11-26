@@ -147,6 +147,18 @@ def _check_bounds(lines: list[CsvLine]) -> None:
                 )
 
 
+def _check_redacted_bounds(lines: list[CsvLine]) -> None:
+    """Same limits after redaction: the placeholder can be longer than the term, so the
+    overflow is caused by `redact_terms`, not by the file."""
+    for line in lines:
+        for column, limit in FIELD_LIMITS.items():
+            if len(line.cells.get(column, "").strip()) > limit:
+                raise _terms_error(
+                    f"After redaction row {line.number}: {column} is longer than "
+                    f"{limit} characters."
+                )
+
+
 def _redact_line(
     number: int,
     header: list[str],
@@ -160,7 +172,11 @@ def _redact_line(
     blocked: str | None = None
     for i, column in enumerate(header[: len(cells)]):
         before = len(removals)
-        out[i] = _redact(cells[i], terms, {"row": number, "column": column}, removals)
+        # The stripped cell is what the bounds check measures and the rules store, so it is
+        # also what is scanned (offsets are relative to it).
+        out[i] = _redact(
+            cells[i].strip(), terms, {"row": number, "column": column}, removals
+        )
         if len(removals) > before and column in STRUCTURED_COLUMNS and blocked is None:
             blocked = column
     return CsvLine(
@@ -202,7 +218,7 @@ def read_lines(
     )
     lines = [_redact_line(n, header, c, terms, removals) for n, c in raw]
     if terms:
-        _check_bounds(lines)
+        _check_redacted_bounds(lines)
     return lines, removals
 
 

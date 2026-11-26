@@ -26,12 +26,16 @@ class RedactionResult:
 
 
 def _spans(text: str, terms: list[str]) -> list[tuple[int, int, int]]:
-    """Every occurrence of every term as (start, end, term_index), overlaps included."""
+    """Every occurrence of every term as (start, end, term_index), overlaps included.
+    Each term is compiled once with re.IGNORECASE (the engine's own case rules, so offsets stay
+    on the original text) and searched from one past the previous hit: linear per term."""
     found: list[tuple[int, int, int]] = []
     for index, term in enumerate(terms):
-        # A lookahead lets finditer report occurrences that overlap each other.
-        for match in re.finditer(f"(?=({re.escape(term)}))", text, re.IGNORECASE):
-            found.append((match.start(), match.end(1), index))
+        pattern = re.compile(re.escape(term), re.IGNORECASE)
+        match = pattern.search(text)
+        while match is not None:
+            found.append((match.start(), match.end(), index))
+            match = pattern.search(text, match.start() + 1)
     found.sort()
     return found
 
