@@ -25,6 +25,9 @@ TEXT_FIELDS = ("laboratory", "method", "device")
 TIME_FIELDS = ("collected_at", "reported_at")
 
 
+# Abuse protection, not scientific limits (see docs/api-labs.md).
+MAX_REPORTED_VALUE_CHARS = 40
+MAX_RESULTS_PER_REPORT = 200
 MAX_LENGTH = {"laboratory": 200, "method": 200, "device": 200, "reported_unit": 64}
 
 
@@ -160,6 +163,13 @@ def _create_result(report: LabReport, item: Any) -> LabResult:
         raise ValidationError(
             {"reported_value": "reported_value must be a decimal number in a string."}
         )
+    if len(value.strip()) > MAX_REPORTED_VALUE_CHARS:
+        raise ValidationError(
+            {
+                "reported_value": "reported_value is too long "
+                f"(at most {MAX_REPORTED_VALUE_CHARS} characters)."
+            }
+        )
     unit = _text(item.get("reported_unit"), "reported_unit")
     if unit is None or not unit.strip():
         raise ValidationError({"reported_unit": "Give the unit as reported."})
@@ -206,6 +216,10 @@ class LabReportCreateView(APIView):  # type: ignore[misc]  # base is Any: DRF un
         results = data.get("results")
         if not isinstance(results, list) or not results:
             raise ValidationError({"results": "Give at least one result."})
+        if len(results) > MAX_RESULTS_PER_REPORT:
+            raise ValidationError(
+                {"results": f"At most {MAX_RESULTS_PER_REPORT} results per report."}
+            )
         laboratory = _text(data.get("laboratory"), "laboratory")
         try:
             with transaction.atomic():

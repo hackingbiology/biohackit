@@ -35,6 +35,15 @@ transaction.
   index and field, e.g. `{"results": {"1": {"reported_value": ["..."]}}}`; nothing is stored.
 - `401` when not logged in.
 
+### Input limits
+
+- `reported_value` is at most **40 characters** (after trimming); longer gives a 400 naming
+  `reported_value` and the result index.
+- A report holds at most **200 results**; more gives a 400 naming `results`, before anything is stored.
+
+These are abuse protection, not scientific limits: a 20-digit value with 6 decimals needs far
+fewer than 40 characters. In both cases nothing is stored. Defaults are open in Q70.
+
 ## `GET /api/labs/reports/<id>/`
 
 The report with its results. `404` for a report owned by someone else.

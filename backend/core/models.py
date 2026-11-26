@@ -296,8 +296,10 @@ class LabResult(models.Model):
         exponent = int(raw_exponent)
         if not any(digits):
             digits, exponent = (0,), 0
-        while len(digits) > 1 and digits[-1] == 0:
-            digits, exponent = digits[:-1], exponent + 1
+        else:
+            trailing = next((i for i, d in enumerate(reversed(digits)) if d), 0)
+            if trailing:
+                digits, exponent = digits[:-trailing], exponent + trailing
         if -exponent > places:
             raise ValidationError(
                 {"reported_value": f"reported_value allows at most {places} decimals."}

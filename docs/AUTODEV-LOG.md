@@ -70,3 +70,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M02 · TG-a part 2: Biomarker.category + category_source (Q66, migration 0008), DEXA/microbiome LabResult refused without laboratory/method, Q68 · see git log
 2026-11-26 · M02 · TG-a part 3: LabResult -> OMOP MEASUREMENT mapping doc (DDL v5.4.0) + pure mapper core/omop.py, Q69 · see git log
 2026-11-26 · M02 · TG-b: POST/GET /api/labs/reports/ manual lab entry (same save path as imports) + deterministic plausibility from stored cited ReferenceRange rows, Q70 · see git log
+2026-11-26 · M02 · TG-b part 2: reported_value ≤40 chars, ≤200 results per report, O(n) trailing-zero strip (review 1795662883) · see git log

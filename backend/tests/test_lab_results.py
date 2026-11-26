@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """LabReport / LabResult (M02 TG-a part 1). Synthetic rows only: no real ranges or factors."""
 
+import time
 from datetime import UTC, date, datetime
 from decimal import Decimal
 
@@ -243,6 +244,20 @@ def test_trailing_zeros_beyond_six_decimals_are_accepted(report, analyte):
     row = result(report, analyte, reported_value=Decimal("5.1000000"))
     row.refresh_from_db()
     assert row.reported_value == Decimal("5.1")
+
+
+def test_huge_trailing_zero_run_is_rejected_fast(report, analyte):
+    # scenario: biomarkers-and-labs::a-stored-result-keeps-the-reported-value
+    row = LabResult(
+        report=report,
+        biomarker=analyte,
+        reported_value="1" + "0" * 100000,
+        reported_unit="xa/L",
+    )
+    start = time.monotonic()
+    with pytest.raises(ValidationError, match="digits before the decimal point"):
+        row._exact_reported_value()
+    assert time.monotonic() - start < 2
 
 
 def test_float_input_has_no_binary_noise(report, analyte):

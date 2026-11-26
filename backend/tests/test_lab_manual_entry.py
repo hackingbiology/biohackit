@@ -135,6 +135,37 @@ def test_typed_value_equals_directly_created(client, user, analyte, extra):
     )
 
 
+# scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
+def test_overlong_reported_value_is_rejected_and_nothing_stored(client, analyte):
+    # '1.' + 39 zeros is an exact value the model would store, so only the
+    # length bound can reject it.
+    resp = client.post(URL, body(reported_value="1." + "0" * 39), format="json")
+    assert resp.status_code == 400
+    message = resp.json()["results"]["0"]["reported_value"][0]
+    assert "too long" in message
+    assert LabReport.objects.count() == 0 and LabResult.objects.count() == 0
+
+
+# scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
+def test_reported_value_of_exactly_40_characters_passes_the_length_check(
+    client, analyte
+):
+    value = "1." + "0" * 38
+    assert len(value) == 40
+    resp = client.post(URL, body(reported_value=value), format="json")
+    assert resp.status_code == 201
+    assert Decimal(resp.json()["results"][0]["reported_value"]) == Decimal("1")
+
+
+# scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
+def test_too_many_results_is_rejected_and_nothing_stored(client, analyte):
+    item = body()["results"][0]
+    resp = client.post(URL, {"results": [item] * 201}, format="json")
+    assert resp.status_code == 400
+    assert "results" in resp.json()
+    assert LabReport.objects.count() == 0 and LabResult.objects.count() == 0
+
+
 def test_report_laboratory_is_inherited_like_the_model(client, analyte):
     payload = {**body(method="M"), "laboratory": "Lab R"}
     row = client.post(URL, payload, format="json").json()["results"][0]
