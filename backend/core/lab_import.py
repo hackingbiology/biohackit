@@ -6,7 +6,8 @@ differently, and nothing is guessed (no name matching, no unit inference)."""
 
 import csv
 import io
-from dataclasses import dataclass
+import json
+from dataclasses import asdict, dataclass
 from typing import Any
 
 from django.core.exceptions import ValidationError as DjangoValidationError
@@ -18,6 +19,7 @@ from rest_framework.response import Response  # type: ignore[import-untyped]  # 
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
 from .models import LabReport, LabReportOrigin, LabResultValidation
+from .redaction import redact_text
 from .views import (
     MAX_REPORTED_VALUE_CHARS,
     _create_result,
@@ -46,6 +48,12 @@ FIELD_LIMITS = {
 FIELD_OF = {"value": "reported_value", "unit": "reported_unit"}
 COLUMN_OF = {v: k for k, v in FIELD_OF.items()}
 IMPORT_NAME_MAX = 200
+LABORATORY_MAX = 200
+# Opt-in redaction (TG-d part 1). Redacting these columns would change a stored value.
+MAX_REDACT_TERMS = 20
+MAX_REDACT_TERM_CHARS = 200
+MAX_REMOVALS = 1000
+STRUCTURED_COLUMNS = ("loinc_code", "value", "unit", "collected_at", "reported_at")
 
 
 @dataclass(frozen=True)
@@ -53,6 +61,7 @@ class CsvLine:
     number: int  # 1-based data line (the header is not counted)
     cells: dict[str, str]
     ragged: bool  # the line has a different number of cells than the header
+    blocked: str | None = None  # structured column hit by a redaction term
 
 
 def _file_error(message: str) -> ValidationError:
@@ -64,6 +73,55 @@ def upload_name(request: Request) -> str:
     if len(name) > IMPORT_NAME_MAX:
         raise _file_error(f"The file name is longer than {IMPORT_NAME_MAX} characters.")
     return name
+
+
+def _terms_error(message: str) -> ValidationError:
+    return ValidationError({"redact_terms": message})
+
+
+def redact_terms(request: Request) -> list[str]:
+    """The optional `redact_terms`: repeated multipart fields, a JSON list in one field, or
+    a JSON array in a JSON body. Absent or empty means no redaction."""
+    data = request.data
+    raw: Any = (
+        data.getlist("redact_terms")
+        if hasattr(data, "getlist")
+        else data.get("redact_terms")
+    )
+    if (
+        isinstance(raw, list)
+        and len(raw) == 1
+        and isinstance(raw[0], str)
+        and raw[0].startswith("[")
+    ):
+        try:
+            raw = json.loads(raw[0])
+        except ValueError as exc:
+            raise _terms_error("Send a list of strings.") from exc
+    if raw is None:
+        return []
+    if not isinstance(raw, list) or not all(isinstance(t, str) for t in raw):
+        raise _terms_error("Send a list of strings.")
+    if len(raw) > MAX_REDACT_TERMS:
+        raise _terms_error(f"Use at most {MAX_REDACT_TERMS} terms.")
+    if any(not t.strip() for t in raw):
+        raise _terms_error("A term must not be empty or whitespace-only.")
+    if any(len(t) > MAX_REDACT_TERM_CHARS for t in raw):
+        raise _terms_error(f"A term is longer than {MAX_REDACT_TERM_CHARS} characters.")
+    return list(raw)
+
+
+def _redact(
+    value: str, terms: list[str], where: dict[str, Any], removals: list[dict[str, Any]]
+) -> str:
+    """Redact one field; the removals (offsets relative to the field) join `removals`."""
+    result = redact_text(value, terms)
+    removals.extend({**where, **asdict(r)} for r in result.removals)
+    if len(removals) > MAX_REMOVALS:
+        raise _terms_error(
+            f"The terms match more than {MAX_REMOVALS} places in the file."
+        )
+    return result.redacted
 
 
 def _check_header(header: list[str]) -> None:
@@ -89,9 +147,35 @@ def _check_bounds(lines: list[CsvLine]) -> None:
                 )
 
 
-def read_lines(request: Request) -> list[CsvLine]:
-    """The data lines of the uploaded file. A file-level problem (size, encoding, header,
-    row count, field length) raises a 400 naming it, before anything is evaluated."""
+def _redact_line(
+    number: int,
+    header: list[str],
+    cells: list[str],
+    terms: list[str],
+    removals: list[dict[str, Any]],
+) -> CsvLine:
+    """Redact each cell of a data line. A hit in a structured column blocks the row: the
+    value is never silently changed."""
+    out = list(cells)
+    blocked: str | None = None
+    for i, column in enumerate(header[: len(cells)]):
+        before = len(removals)
+        out[i] = _redact(cells[i], terms, {"row": number, "column": column}, removals)
+        if len(removals) > before and column in STRUCTURED_COLUMNS and blocked is None:
+            blocked = column
+    return CsvLine(
+        number, dict(zip(header, out, strict=False)), len(cells) != len(header), blocked
+    )
+
+
+def read_lines(
+    request: Request, terms: list[str] | None = None
+) -> tuple[list[CsvLine], list[dict[str, Any]]]:
+    """The data lines of the uploaded file and the redaction removals (none without
+    `terms`). A file-level problem (size, encoding, header, row count, field length)
+    raises a 400 naming it, before anything is evaluated."""
+    terms = terms or []
+    removals: list[dict[str, Any]] = []
     upload = request.FILES.get("file")
     if upload is None:
         raise _file_error("Send the CSV as the multipart field 'file'.")
@@ -105,17 +189,21 @@ def read_lines(request: Request) -> list[CsvLine]:
         reader = csv.reader(io.StringIO(text, newline=""))
         header = [h.strip() for h in next(reader, [])]
         _check_header(header)
-        lines = [
-            CsvLine(
-                n, dict(zip(header, cells, strict=False)), len(cells) != len(header)
-            )
+        raw = [
+            (n, cells)
             for n, cells in enumerate(reader, start=1)
             if any(cell.strip() for cell in cells)
         ]
     except csv.Error as exc:
         raise _file_error(f"The file is not valid CSV: {exc}") from exc
-    _check_bounds(lines)
-    return lines
+    # Bounds on the raw lines first, so redaction never runs on an oversized file.
+    _check_bounds(
+        [CsvLine(n, dict(zip(header, c, strict=False)), False) for n, c in raw]
+    )
+    lines = [_redact_line(n, header, c, terms, removals) for n, c in raw]
+    if terms:
+        _check_bounds(lines)
+    return lines, removals
 
 
 def _reason(exc: Any) -> str:
@@ -156,6 +244,12 @@ def _evaluate(report: LabReport, line: CsvLine) -> dict[str, Any]:
         "unit": line.cells.get("unit", "").strip(),
         "plausibility": None,
     }
+    if line.blocked:
+        row["reason"] = (
+            f"{line.blocked}: matches a redaction term; the value is not changed. "
+            "Remove the term from the list or fix the file."
+        )
+        return row
     if line.ragged:
         row["reason"] = "row: the number of cells differs from the header."
         return row
@@ -175,17 +269,42 @@ def _report_laboratory(request: Request) -> str | None:
 
 
 def _evaluate_all(
-    request: Request, lines: list[CsvLine], name: str
+    request: Request, lines: list[CsvLine], name: str, laboratory: str | None
 ) -> tuple[LabReport, list[dict[str, Any]]]:
     """Must run inside `transaction.atomic`; the caller decides to keep or discard."""
     report = LabReport(
         owner=request.user,
         origin=LabReportOrigin.IMPORT,
         import_name=name,
-        laboratory=_report_laboratory(request),
+        laboratory=laboratory,
     )
     report.save()
     return report, [_evaluate(report, line) for line in lines]
+
+
+def _prepare(
+    request: Request,
+) -> tuple[list[CsvLine], str, str | None, list[dict[str, Any]]]:
+    """Lines, file name and report laboratory with the opt-in redaction applied, plus every
+    removal. Without `redact_terms` nothing changes."""
+    terms = redact_terms(request)
+    lines, removals = read_lines(request, terms)
+    name = upload_name(request)
+    laboratory = _report_laboratory(request)
+    name = _redact(name, terms, {"row": None, "column": "import_name"}, removals)
+    if laboratory is not None:
+        laboratory = _redact(
+            laboratory, terms, {"row": None, "column": "laboratory"}, removals
+        )
+    if terms and len(name) > IMPORT_NAME_MAX:
+        raise _terms_error(
+            f"After redaction the file name is longer than {IMPORT_NAME_MAX} characters."
+        )
+    if terms and laboratory is not None and len(laboratory) > LABORATORY_MAX:
+        raise _terms_error(
+            f"After redaction the laboratory is longer than {LABORATORY_MAX} characters."
+        )
+    return lines, name, laboratory, removals
 
 
 class CsvPreviewView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
@@ -195,12 +314,16 @@ class CsvPreviewView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
     http_method_names = ["post", "options"]
 
     def post(self, request: Request) -> Response:
-        lines = read_lines(request)
-        name = upload_name(request)
+        lines, name, laboratory, removals = _prepare(request)
         with transaction.atomic():
-            _, rows = _evaluate_all(request, lines, name)
+            _, rows = _evaluate_all(request, lines, name, laboratory)
             transaction.set_rollback(True)
-        return Response({"rows": rows})
+        body: dict[str, Any] = {"rows": rows}
+        if redact_terms(request):
+            body["redaction"] = {"applied": True, "removals": removals}
+        else:
+            body["redaction"] = {"applied": False, "removals": []}
+        return Response(body)
 
 
 class CsvConfirmView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
@@ -210,10 +333,9 @@ class CsvConfirmView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
     http_method_names = ["post", "options"]
 
     def post(self, request: Request) -> Response:
-        lines = read_lines(request)
-        name = upload_name(request)
+        lines, name, laboratory, _ = _prepare(request)
         with transaction.atomic():
-            report, rows = _evaluate_all(request, lines, name)
+            report, rows = _evaluate_all(request, lines, name, laboratory)
             bad = [r for r in rows if r["status"] != "recognised"]
             if bad or not rows:
                 transaction.set_rollback(True)

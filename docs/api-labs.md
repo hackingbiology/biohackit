@@ -78,6 +78,27 @@ Same file again, plus an optional `laboratory` form field for the report. If any
 Otherwise one `LabReport` (`origin = import`, `import_name` = file name) and its results are
 stored in one transaction, with `validation_state = reviewed`; `201` with the report and results.
 
+### PII redaction (opt-in)
+
+Off by default. Both import endpoints accept an optional `redact_terms`: the exact strings to
+remove (your name, IDs), as repeated multipart fields, one JSON list, or a JSON array. At most
+20 terms, each 1..200 characters and not blank; a breach gives `400` naming `redact_terms` and
+nothing is stored. Matching is exact and case-insensitive. Overlapping or adjacent matches merge into one
+removal (one placeholder) naming the term with the longest match, so no part of a longer
+match is kept. There are no built-in patterns (Q72). Each removal becomes `[REDACTED]`. The
+terms may match at most 1000 places in a file, otherwise `400` naming `redact_terms`. Row
+count and field lengths are checked on the raw file before redaction runs.
+
+Redaction is applied cell by cell to the data rows, to the file name (`import_name`) and to the
+`laboratory` form field, before the rows are evaluated; the header is not touched. The preview
+answers `redaction: {"applied": bool, "removals": [{"row", "column", "term_index", "start",
+"end", "line", "replacement"}]}`. `row` is the data line (null for the file name and form
+field), `start`/`end`/`line` locate the match inside that field, and `term_index` is the
+position in your list. The removed text is never echoed back. Confirm re-applies the same terms,
+so only the placeholder is stored. A term that hits `loinc_code`, `value`, `unit`, `collected_at`
+or `reported_at` makes that row `not_recognised` naming the column (a value is never silently
+changed), so confirm refuses. Without `redact_terms`, `applied` is `false` and nothing changes.
+
 ### Limits (`400` naming the limit, nothing stored)
 
 File at most 1 MiB; at most 200 data rows; each field at most its model length (`value` 40
