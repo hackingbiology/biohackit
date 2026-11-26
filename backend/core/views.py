@@ -3,6 +3,7 @@
 `LabReport.save` / `LabResult.save` rules as an import; nothing is validated twice
 or differently here."""
 
+import math
 from datetime import datetime
 from decimal import Decimal
 from typing import Any
@@ -309,11 +310,12 @@ def _age_years(request: Request) -> float:
     raw = request.query_params.get("age_years")
     try:
         age = Decimal(raw) if raw is not None else None
-    except ArithmeticError:  # decimal.InvalidOperation
-        age = None
-    if age is None or not age.is_finite():
+        value = float(age) if age is not None and age.is_finite() else None
+    except (ArithmeticError, OverflowError):  # decimal.InvalidOperation
+        value = None
+    if value is None or not math.isfinite(value):
         raise ValidationError({"age_years": "Give age_years as a finite number."})
-    return float(age)
+    return value
 
 
 class LabReportPhenoAgeView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped

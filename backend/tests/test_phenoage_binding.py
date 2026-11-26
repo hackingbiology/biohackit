@@ -277,12 +277,24 @@ def test_access_rules(user, report, full):
 
 # scenario: biomarkers-and-labs::phenoage-from-routine-bloods
 @pytest.mark.parametrize(
-    "query", ["", "?age_years=", "?age_years=abc", "?age_years=nan", "?age_years=inf"]
+    "query",
+    [
+        "",
+        "?age_years=",
+        "?age_years=abc",
+        "?age_years=nan",
+        "?age_years=inf",
+        "?age_years=1e400",
+        "?age_years=-1e400",
+        "?age_years=1E400",
+    ],
 )
 def test_bad_age_is_400_naming_age_years(user, report, full, query):
+    counts = (LabResult.objects.count(), LabReport.objects.count())
     response = call(user, report.pk, query)
     assert response.status_code == 400
     assert "age_years" in response.json()
+    assert (LabResult.objects.count(), LabReport.objects.count()) == counts
 
 
 def test_no_conversion_factor_literal_in_binding():

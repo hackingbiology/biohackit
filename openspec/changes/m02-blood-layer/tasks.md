@@ -39,6 +39,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 - [ ] Deterministic computation from the standard panel; coefficients entered only with a citation to the original paper, following docs/research/phenoage-coefficients.md and the Q77 default. Req: main "Deterministic PhenoAge computation from the standard panel".
   - Part 1 done 2026-11-26 (stays unchecked): pure engine in backend/core/phenoage.py (S2 constants + Q77 defaults, nine analytes in S2 units, no result on missing/non-finite/CRP <= 0/M outside (0, 1)), tests in backend/tests/test_phenoage.py. Pending (part 2): binding to stored LabResults by LOINC code (codes fetched from loinc.org) with stored unit conversions only, and an owner-only API.
   - Part 2 done 2026-11-26 (stays unchecked): `core/phenoage_binding.py` + `GET /api/labs/reports/<id>/phenoage/`, tests in test_phenoage_binding.py. Open: loinc.org returned 403, so no LOINC code is verified and the map is empty (every request refuses `analyte_not_mapped`, Q79); storing the result and a cross-report view are later tasks.
+  - Part 2b done 2026-11-26 (stays unchecked): age_years too large for a float (e.g. 1e400) is a 400 naming age_years; review 1795694970
 
 ## TG-j — FHIR and OMOP export
 - [x] TG-j part 1 (2026-11-26): hand-written FHIR DiagnosticReport/Observation Bundle (`core/fhir.py`, docs/fhir/lab-report-mapping.md, `GET /api/labs/reports/<id>/fhir/`, Q73); the five FHIR scenarios are tested. The OMOP export endpoint is still to decide, so the item below stays open.

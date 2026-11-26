@@ -152,8 +152,8 @@ user's report; `409` for a manual report. The retained original file is not stor
 ### `GET /api/labs/reports/<id>/phenoage/?age_years=<number>`
 
 PhenoAge (Levine 2018) computed from the nine analytes of one of your reports (TG-i part 2).
-`age_years` is a request parameter and is never stored (Q79); a missing or non-finite value is
-`400` naming `age_years`. Another user's or a missing report is `404`; anonymous is 401/403.
+`age_years` is a request parameter and is never stored (Q79); a missing value, or one that is not a
+finite number or is too large to fit one (for example `1e400`), is `400` naming `age_years`. Another user's or a missing report is `404`; anonymous is 401/403.
 Each analyte is found by the LOINC code of its biomarker; `retracted` and `disputed` results are
 ignored. The value is used as is when its UCUM unit equals the PhenoAge unit, otherwise only a
 stored unit conversion is applied. Nothing is written.
