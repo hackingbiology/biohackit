@@ -437,3 +437,25 @@ class CalculatedRatioDefinition(SourcedModel):
 
     def __str__(self) -> str:
         return self.name
+
+
+class OrganSystemPanel(SourcedModel):
+    """A named group of expected Biomarkers (an organ system). The cited `source`
+    states where the grouping comes from. Nothing is seeded (Q84); completeness and
+    freshness are computed in code and never stored."""
+
+    name = models.CharField(max_length=100, unique=True)
+    expected_biomarkers = models.ManyToManyField(
+        Biomarker, related_name="+", blank=True
+    )
+
+    def clean(self) -> None:
+        if self.source_id is None:
+            raise ValidationError({"source": "An organ-system panel requires a source"})
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.name

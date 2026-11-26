@@ -4,6 +4,7 @@ from django.urls import path
 from . import lab_import, views
 
 urlpatterns = [
+    path("completeness/", views.LabCompletenessView.as_view()),
     path("reports/", views.LabReportCreateView.as_view()),
     path("reports/<int:pk>/", views.LabReportDetailView.as_view()),
     path("reports/<int:pk>/fhir/", views.LabReportFhirView.as_view()),

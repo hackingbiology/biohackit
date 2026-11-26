@@ -33,6 +33,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 
 ## TG-h — Completeness and freshness indicators
 - [ ] Completeness and freshness per organ system from stored results. Req: main "Completeness and freshness indicators". Depends on an organ-system grouping of analytes (not yet defined; record a question when the task starts).
+  - Part 1 done 2026-11-26: `core.OrganSystemPanel` (migration 0012, nothing seeded) and owner-only `GET /api/labs/completeness/` (n of m, newest date; Q84). The UI sentence and sparse-index annotation remain a frontend part.
 
 ## TG-i — PhenoAge computation
 - [x] Research (2026-11-26, Fabio's Q56 answer): compare PhenoAge and Bortz coefficients/constants/units/transformations across the original papers (with supplements and errata) and maintained implementations (biolearn, pyaging, get-based, others found); record them in docs/research/phenoage-coefficients.md; adopt a well-maintained AGPL-compatible library as the engine if one exists, checked against the papers (paper prevails unless an erratum says otherwise); no numbers in code before this comparison. Done: the document exists; recommendation is to hand-write PhenoAge against the original supplement (no suitable library); Bortz stays blocked on Q78 (the reference repository has no licence); open constant choice in Q77.

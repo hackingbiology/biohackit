@@ -240,3 +240,17 @@ Each marker has `name`, `calculated: true` and `source`. Computed: `status: "com
 `reported_unit`, `collected_at`, `reported_at`, `converted`, `conversion_source` — the stored conversion's Source, null when not converted). Otherwise `status: "not_computable"`,
 `value: null` and `reasons`: `missing_input:<role>`, `ambiguous_input:<role>`,
 `unit_not_convertible:<role>`, `denominator_zero`.
+
+### `GET /api/labs/completeness/`
+
+Completeness and freshness per organ system (TG-h part 1). Each stored `OrganSystemPanel` (a name,
+its expected analytes and a cited Source) is listed, ordered by name. No panel is seeded (Q84),
+so until some are stored the answer is `{"panels": []}`. Anonymous is 401/403. Only your own
+results count, across all of your reports; `retracted` and `disputed` results are ignored.
+Nothing is written.
+
+Each panel has `name`, `source`, `expected_count`, `present_count`, `present` and `missing`
+(`biomarker_id`, `loinc_code`), `last_collected_at` (newest `collected_at`, else `reported_at`;
+null when no present result has a date), `age_days` (whole days from that date to now, or null) and
+`sparse` (true when `present_count < expected_count`). A panel with no expected analytes is 0/0,
+not sparse, with a null date.

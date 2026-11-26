@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from rest_framework import status  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.exceptions import ValidationError  # type: ignore[import-untyped]  # DRF ships no stubs
@@ -24,6 +25,7 @@ from terminology.selectors import Subject
 from terminology.services import normalize_value
 
 from .calculated_markers import compute_ratios
+from .completeness import panel_completeness
 from .fhir import lab_report_to_fhir_bundle, render_fhir_json
 from .models import (
     Biomarker,
@@ -31,6 +33,7 @@ from .models import (
     LabReportOrigin,
     LabResult,
     LabResultValidation,
+    OrganSystemPanel,
 )
 from .omop import MEASUREMENT_COLUMNS, OMOP_CDM_VERSION, lab_result_to_omop_measurement
 from .phenoage import PhenoAgeRefusal, PhenoAgeResult, evaluate_phenoage
@@ -345,6 +348,23 @@ class LabReportCalculatedView(APIView):  # type: ignore[misc]  # base is Any: DR
         if not markers:
             body["note"] = "no_definitions_stored"
         return Response(body)
+
+
+class LabCompletenessView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """GET: per stored organ-system panel, how many expected markers the caller has
+    results for and when the newest was collected (Q84). Own data only."""
+
+    http_method_names = ["get", "head", "options"]
+
+    def get(self, request: Request) -> Response:
+        panels = (
+            OrganSystemPanel.objects.select_related("source")
+            .prefetch_related("expected_biomarkers")
+            .order_by("name")
+        )
+        return Response(
+            {"panels": panel_completeness(request.user, panels, timezone.now())}
+        )
 
 
 PHENOAGE_METHOD = "PhenoAge (Levine 2018), docs/research/phenoage-coefficients.md"
