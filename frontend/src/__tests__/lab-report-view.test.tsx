@@ -44,8 +44,10 @@ let fetchMock: jest.Mock<typeof fetch>;
 beforeEach(() => {
   replies = [];
   document.cookie = "csrftoken=tok123";
-  fetchMock = jest.fn(async () => {
-    const r = replies.shift() ?? { status: 500, body: {} };
+  fetchMock = jest.fn(async (url: unknown) => {
+    // Range requests (TG-m part 2) are covered in lab-result-ranges.test.tsx.
+    const isRanges = String(url).includes("/ranges/");
+    const r = (isRanges ? undefined : replies.shift()) ?? { status: 500, body: {} };
     return {
       status: r.status,
       json: async () => r.body,
@@ -146,11 +148,11 @@ test("undo calls DELETE only after confirm", async () => {
   render(<LabReportPage />);
   const undo = await screen.findByRole("button", { name: "Undo this report" });
   await user.click(undo);
-  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls.filter(([u]) => !String(u).includes("/ranges/"))).toHaveLength(1);
   await user.click(undo);
   const heading = await screen.findByRole("heading", { name: /Report undone/ });
   expect(heading).toHaveFocus();
-  const [url, init] = fetchMock.mock.calls[1];
+  const [url, init] = fetchMock.mock.calls.filter(([u]) => !String(u).includes("/ranges/"))[1];
   expect(String(url)).toContain("/api/labs/reports/9/");
   expect(init?.method).toBe("DELETE");
   confirm.mockRestore();

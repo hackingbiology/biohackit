@@ -54,6 +54,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 ## TG-m — Result against its three ranges (no new dependency)
 - [ ] Owner-only view of a stored LabResult against reference range, optimal range and safety threshold, kept separate, each with its provenance and a deterministic status. Req: main "Three ranges per analyte", main "Optimal-range governance" (inspection part; the contested-range scenario waits on community-and-social).
   - Part 1 done 2026-11-26 (stays unchecked): `GET /api/labs/results/<id>/ranges/` (`LabResultRangesView`, `core/result_ranges.py`), tests in test_lab_result_ranges.py; Q82.
+  - Part 2 done 2026-11-26 (stays unchecked): three ranges shown per result on `/labs/reports/<id>` (`frontend/src/components/ResultRanges.tsx`, `fetchResultRanges` in `frontend/src/lib/labs.ts`, strings in `LabStrings`), optimal range provenance in a `<details>`; tests in `frontend/src/__tests__/lab-result-ranges.test.tsx`; Q88. The contested-range scenario still waits on community-and-social.
 
 ## TG-n — Calculated markers (no new dependency)
 - [ ] Deterministic calculated markers from stored, sourced definitions; nothing seeded; computed per report by code, labelled calculated, inputs and dates listed; a missing input gives not computable with no value. Req: s01 "Deterministic calculated markers". Part 1 = quotient markers (numerator / denominator) + owner-only API; HOMA-IR and free water deficit (constants or extra terms) are a later part.

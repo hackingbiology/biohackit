@@ -5,6 +5,11 @@
       "entries": [
         {
           "change": "m02-blood-layer",
+          "commit": "5636c1f",
+          "summary": "The saved-report page now shows each result against its three ranges, kept separate: the laboratory reference range, the longevity-optimal range and the safety threshold, each with its status in words and its source; the optimal range's provenance opens in one click."
+        },
+        {
+          "change": "m02-blood-layer",
           "commit": "915e07a",
           "summary": "The page for typing a lab report by hand no longer says a saved report can be undone, and after you remove a result, focus moves to the next field and the removal is announced."
         },

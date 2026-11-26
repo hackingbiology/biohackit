@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { RangeCheck } from "@/components/RangeCheck";
+import { ResultRanges } from "@/components/ResultRanges";
 import {
   fetchReport,
   rollbackReport,
@@ -232,6 +233,23 @@ export default function LabReportPage() {
           </tbody>
         </table>
       </div>
+
+      <section aria-labelledby="ranges-heading" className="space-y-4">
+        <h2 id="ranges-heading" className="text-xl font-semibold">
+          {t.rangesHeading}
+        </h2>
+        <p>{t.rangesIntro}</p>
+        {report.results.map((r) => (
+          <ResultRanges
+            key={r.id}
+            resultId={r.id}
+            loinc={r.loinc_code}
+            value={r.reported_value}
+            unit={r.reported_unit}
+            t={t}
+          />
+        ))}
+      </section>
 
       {report.origin === "import" ? (
         <button type="button" className={button} disabled={busy} onClick={onUndo}>

@@ -265,6 +265,62 @@ export async function fetchReport(id: string): Promise<FetchReportResult> {
   };
 }
 
+export type RangeStatus =
+  | "inside"
+  | "below"
+  | "above"
+  | "no_range"
+  | "not_comparable";
+
+export interface RangeSourceRef {
+  name?: string;
+  version?: string;
+  url?: string;
+}
+
+/** One of the three ranges; every field except status may be absent. */
+export interface RangeObject {
+  status: RangeStatus;
+  reason?: string;
+  low?: string | null;
+  high?: string | null;
+  unit?: string;
+  source?: RangeSourceRef | null;
+  lab?: string;
+  method?: string;
+  population?: string;
+  endpoint?: string;
+  evidence_grade?: string;
+  last_reviewed?: string;
+}
+
+export interface ResultRanges {
+  result_id?: number;
+  reported_value?: string;
+  reported_unit?: string;
+  reference_range?: RangeObject | null;
+  optimal_range?: RangeObject | null;
+  safety_threshold?: RangeObject | null;
+  comparison_value?: string | null;
+  comparison_unit?: string;
+  converted?: boolean;
+  conversion_source?: RangeSourceRef | null;
+}
+
+export type FetchRangesResult =
+  | { kind: "ok"; ranges: ResultRanges }
+  | { kind: "not_found" | "unauthorised" | "error" };
+
+/** Placement of one stored result against its three ranges (docs/api-labs.md). */
+export async function fetchResultRanges(id: number): Promise<FetchRangesResult> {
+  const res = await request("GET", `/api/labs/results/${id}/ranges/`);
+  if (res.status === 404) return { kind: "not_found" };
+  if (res.status === 401 || res.status === 403) return { kind: "unauthorised" };
+  const body = await readJson(res);
+  if (res.status !== 200) return { kind: "error" };
+  return { kind: "ok", ranges: body as ResultRanges };
+}
+
 /** A datetime-local value read as browser-local time, with its UTC offset. */
 export function withOffset(local: string): string {
   const date = new Date(local);

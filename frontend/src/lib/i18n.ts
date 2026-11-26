@@ -499,6 +499,33 @@ export interface LabStrings {
   undoConflict: string;
   originUnknown: string;
   rowProblem: string;
+  rangesHeading: string;
+  rangesIntro: string;
+  rangesLoading: string;
+  rangesNotFound: string;
+  rangesSignIn: string;
+  rangesError: string;
+  rangeReference: string;
+  rangeOptimal: string;
+  rangeSafety: string;
+  statusInside: string;
+  statusBelow: string;
+  statusAbove: string;
+  statusNoRange: string;
+  statusNotComparable: string;
+  statusAmbiguous: string;
+  noOptimal: string;
+  noLowerLimit: string;
+  noUpperLimit: string;
+  boundsLine: string;
+  sourceLabel: string;
+  aboutOptimal: string;
+  populationLabel: string;
+  endpointLabel: string;
+  evidenceLabel: string;
+  reviewedLabel: string;
+  convertedLine: string;
+  compareFor: string;
 }
 
 const labEn: LabStrings = {
@@ -567,6 +594,33 @@ const labEn: LabStrings = {
   undoConflict: "This report cannot be undone because it was typed by hand. It is still saved.",
   originUnknown: "Unknown origin",
   rowProblem: "Problem with this result:",
+  rangesHeading: "Each result against its three ranges",
+  rangesIntro: "The three ranges are shown separately and are never merged into one verdict.",
+  rangesLoading: "Loading ranges…",
+  rangesNotFound: "Ranges for this result were not found.",
+  rangesSignIn: "Sign in to see the ranges for this result.",
+  rangesError: "The ranges for this result could not be loaded.",
+  rangeReference: "Laboratory reference range",
+  rangeOptimal: "Longevity-optimal range",
+  rangeSafety: "Safety threshold",
+  statusInside: "Inside the range",
+  statusBelow: "Below the range",
+  statusAbove: "Above the range",
+  statusNoRange: "No range available",
+  statusNotComparable: "Cannot compare: no value in the analyte's unit",
+  statusAmbiguous: "Several thresholds exist, none chosen",
+  noOptimal: "No optimal range available",
+  noLowerLimit: "no lower limit",
+  noUpperLimit: "no upper limit",
+  boundsLine: "From {low} to {high}",
+  sourceLabel: "Source:",
+  aboutOptimal: "About this optimal range",
+  populationLabel: "Population:",
+  endpointLabel: "Endpoint:",
+  evidenceLabel: "Evidence grade:",
+  reviewedLabel: "Last reviewed:",
+  convertedLine: "Compared using the stored normalised value {value} {unit} (conversion source: {source})",
+  compareFor: "Ranges for result {loinc}, reported {value} {unit}",
 };
 
 // IT and ZH fall back to EN until translated (Q86).
