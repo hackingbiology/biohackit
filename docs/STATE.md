@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M02 TG-b done 2026-11-26: authenticated `POST /api/labs/reports/` (origin=manual, one transaction, same `LabResult.save` rules; a bad result gives 400 naming index and field and stores nothing) and owner-only `GET /api/labs/reports/<id>/`; each result carries `plausibility` (within|outside|not_checked + range Source) from `core.plausibility`, using one unstratified stored ReferenceRange in the same unit only; Q70; docs/api-labs.md. Next: TG-c (CSV import).
 - M02 TG-a part 3 done 2026-11-26: docs/omop/measurement-mapping.md (OMOP v5.4.0 MEASUREMENT DDL, SHA recorded) and pure `core.omop.lab_result_to_omop_measurement`; concept ids left empty (Q69). TG-a complete. Next: TG-b (manual entry API).
 - M02 TG-a part 2 done 2026-11-26: `Biomarker.category` + `category_source` (Q66; NULL = blood; migration 0008, no category assigned to any analyte); `LabResult.save` refuses a DEXA/microbiome result without laboratory or method (ValidationError names the missing fields); Q68. Next: TG-a part 3 (OMOP MEASUREMENT mapping after fetching the CDM DDL).
 - M02 TG-a part 1b done 2026-11-26: `LabResult` no longer rounds `reported_value`; a value the column cannot hold exactly (over 6 decimals, over 14 integer digits, NaN/Infinity) raises ValidationError and nothing is stored; floats go through `Decimal(str(v))`; no migration. Refs review ticket 1795656017. Next: TG-a part 2 (analyte category Q66, DEXA/microbiome rule, OMOP mapping).
