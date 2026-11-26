@@ -17,3 +17,27 @@ The project SHALL evaluate candidate medical models with a reproducible harness 
 #### Scenario: Evaluation report published
 - **WHEN** the harness runs for a model
 - **THEN** it records precision and recall of verified rows per language (it, en, zh) in docs/research/model-evaluation.md
+
+### Requirement: Model governance record before adoption
+Before any AI model is enabled for users, the project SHALL publish a governance record for it, covering technical, legal, ethical and political dimensions, and SHALL record the adoption decision and its rationale publicly. The record SHALL cover at least:
+- origin;
+- licence;
+- jurisdiction;
+- data flows;
+- training-data transparency;
+- behavioural audit;
+- regulatory fit;
+- supply-chain safety;
+- alternatives.
+
+#### Scenario: Governance record complete
+- **WHEN** a model is proposed for enablement
+- **THEN** `docs/research/model-governance/<model>.md` exists, with each dimension either filled from cited sources or marked unknown, and the decision (adopt / adopt with limits / reject) is in docs/ecosystem and the AI surfaces map
+
+#### Scenario: Behavioural audit across languages
+- **WHEN** the behavioural audit runs
+- **THEN** the same probe set is answered in it, en and zh by the candidate and by at least two comparison models from different jurisdictions, and differences are reported. The probes cover medical accuracy, refusals, censorship or topic avoidance, commercial steering (e.g. towards products or services) and safety on supplements and doses.
+
+#### Scenario: No silent provider choice
+- **WHEN** a user-facing feature uses a model
+- **THEN** the feature names the model and its origin, and where practical the instance operator can switch to an alternative model
