@@ -1,12 +1,36 @@
 ## ADDED Requirements
 
 ### Requirement: Lab result provenance and OMOP MEASUREMENT alignment
-The system SHALL store each lab result as a `LabResult` row, separate from `core.Measurement`, with its source (its `LabReport` and the report's origin: manual entry or a named import), a validation state, its laboratory, method, device (when reported), collected and reported timestamps, the value and unit as reported and the normalised value and unit, linked to a LOINC-coded analyte. A `LabResult` SHALL accept a reported unit for which no conversion exists (it is not rejected as `Measurement` rejects it). The system SHALL keep these fields mappable to the columns of the OMOP MEASUREMENT table. A normalised value and unit SHALL be stored when the reported unit equals the analyte's unit or a stored conversion factor exists for the result's analyte and unit pair, as in `s01-spec-discovery` "Unit conversion between unit systems". A blood-analyte `LabResult` persisted without a laboratory or method SHALL be stored and flagged as not aggregation-eligible, as domain-model "Measurement provenance" requires of `Measurement`. For a `LabResult` whose analyte is a body-composition (DEXA) or microbiome analyte, the system SHALL ask for the missing laboratory or method before storing it, as in `s01-spec-discovery` "Body composition and microbiome results are accepted as measurements", scenario "Result without provenance" (Q66). The validation state values are not defined by domain-model or code; the default is `unreviewed` | `reviewed` (Q63).
+The system SHALL store each lab result as a `LabResult` row, separate from `core.Measurement`, with its source (its `LabReport` and the report's origin: manual entry or a named import), a validation state, its laboratory, method, device (when reported), collected and reported timestamps, the value and unit as reported and the normalised value and unit, linked to a LOINC-coded analyte. A `LabResult` SHALL accept a reported unit for which no conversion exists (it is not rejected as `Measurement` rejects it). The system SHALL keep these fields mappable to the columns of the OMOP MEASUREMENT table. A normalised value and unit SHALL be stored when the reported unit equals the analyte's unit or a stored conversion factor exists for the result's analyte and unit pair, as in `s01-spec-discovery` "Unit conversion between unit systems". A blood-analyte `LabResult` persisted without a laboratory or method SHALL be stored and flagged as not aggregation-eligible, as domain-model "Measurement provenance" requires of `Measurement`. For a `LabResult` whose analyte is a body-composition (DEXA) or microbiome analyte, the system SHALL ask for the missing laboratory or method before storing it, as in `s01-spec-discovery` "Body composition and microbiome results are accepted as measurements", scenario "Result without provenance" (Q66). The validation state SHALL be one of: `entered` (typed or imported, not yet checked), `user_confirmed` (the user checked it against their own report), `source_verified` (the original document is attached and the value matches it, checked by deterministic extraction or by a second person), `disputed` (flagged as possibly wrong), `retracted` (withdrawn by the user, excluded from statistics, kept for audit) (Q63, Fabio 2026-11-26). A blood-analyte `LabResult` SHALL be aggregation-eligible only when it has a laboratory and a method AND its state is `user_confirmed` or `source_verified`. The owner of a result SHALL be able to set its state to `user_confirmed`, `disputed` or `retracted`; the system SHALL NOT let the owner declare `source_verified` until an attached-original check exists, and SHALL keep a retracted result retracted.
 
 #### Scenario: A result records its source
 - **WHEN** a lab result is persisted
 - **THEN** it references its `LabReport` and the report's origin (manual entry or a named import)
 - **AND** it carries a validation state
+
+#### Scenario: A new result starts as entered
+- **WHEN** a result is entered manually
+- **THEN** it is stored with validation state `entered`
+
+#### Scenario: Only confirmed results are aggregation-eligible
+- **WHEN** a result has a laboratory and a method and its state is `entered`, `disputed` or `retracted`
+- **THEN** it is not aggregation-eligible
+- **AND** in `user_confirmed` or `source_verified` it is aggregation-eligible
+
+#### Scenario: A retracted result is kept but excluded
+- **WHEN** the owner retracts a result
+- **THEN** the row still exists with its values
+- **AND** it is not aggregation-eligible
+
+#### Scenario: The owner confirms a result
+- **WHEN** the owner sets `user_confirmed` on a result that has a laboratory and a method
+- **THEN** the result becomes aggregation-eligible
+- **AND** when another user makes the same request they get 404 and nothing changes
+
+#### Scenario: Source verification cannot be self-declared
+- **WHEN** a request to the owner endpoint sets `source_verified`
+- **THEN** the system answers 400 naming `validation_state`
+- **AND** nothing changes, because no attached-original check exists yet
 
 #### Scenario: A result without laboratory or method is not aggregation-eligible
 - **WHEN** a blood-analyte `LabResult` is persisted without a laboratory or method

@@ -91,11 +91,20 @@ def test_report_laboratory_alone_does_not_satisfy_method(report, unit, source):
     assert LabResult.objects.count() == 0
 
 
-def test_dexa_with_provenance_is_stored_and_eligible(report, unit, source):
+def test_dexa_with_provenance_is_stored_and_eligible_once_confirmed(
+    report, unit, source
+):
     # scenario: biomarkers-and-labs::dexa-result-recorded
     dexa = analyte(unit, source, "1-1", AnalyteCategory.BODY_COMPOSITION)
     when = datetime(2026, 11, 1, 9, 0, tzinfo=UTC)
-    row = add(report, dexa, laboratory="Lab X", method="M", collected_at=when)
+    row = add(
+        report,
+        dexa,
+        laboratory="Lab X",
+        method="M",
+        collected_at=when,
+        validation_state="user_confirmed",
+    )
     row.refresh_from_db()
     assert (row.laboratory, row.method, row.collected_at) == ("Lab X", "M", when)
     assert row.aggregation_eligible is True

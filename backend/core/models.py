@@ -178,9 +178,18 @@ class LabReportOrigin(models.TextChoices):
 
 
 class LabResultValidation(models.TextChoices):
-    # Default values taken for Q63; the owner has not chosen the states yet.
-    UNREVIEWED = "unreviewed", "Unreviewed"
-    REVIEWED = "reviewed", "Reviewed"
+    # The five states Fabio chose for Q63 (2026-11-26).
+    ENTERED = "entered", "Entered"
+    USER_CONFIRMED = "user_confirmed", "Confirmed by the user"
+    SOURCE_VERIFIED = "source_verified", "Verified against the source"
+    DISPUTED = "disputed", "Disputed"
+    RETRACTED = "retracted", "Retracted"
+
+
+# Aggregations and public statistics use only these states and above (Q63).
+AGGREGATION_STATES = frozenset(
+    {LabResultValidation.USER_CONFIRMED, LabResultValidation.SOURCE_VERIFIED}
+)
 
 
 class LabReport(models.Model):
@@ -244,7 +253,7 @@ class LabResult(models.Model):
     validation_state = models.CharField(
         max_length=16,
         choices=LabResultValidation.choices,
-        default=LabResultValidation.UNREVIEWED,
+        default=LabResultValidation.ENTERED,
     )
     aggregation_eligible = models.BooleanField(default=False, editable=False)
 
@@ -256,8 +265,22 @@ class LabResult(models.Model):
             self.laboratory = _stripped(self.report.laboratory)
         self._require_provenance()
         self._normalise()
-        self.aggregation_eligible = bool(self.laboratory and self.method)
+        self.aggregation_eligible = self._eligible()
         super().save(*args, **kwargs)
+
+    def _eligible(self) -> bool:
+        return bool(
+            self.laboratory
+            and self.method
+            and self.validation_state in AGGREGATION_STATES
+        )
+
+    def set_validation_state(self, state: str) -> None:
+        """Change only the state and the eligibility flag. Stored values and their
+        normalisation are kept as they were (audit), so `_normalise` is not re-run."""
+        self.validation_state = state
+        self.aggregation_eligible = self._eligible()
+        super().save(update_fields=["validation_state", "aggregation_eligible"])
 
     def _require_provenance(self) -> None:
         """DEXA and microbiome results are refused without laboratory and method."""

@@ -271,7 +271,9 @@ def _evaluate(report: LabReport, line: CsvLine) -> dict[str, Any]:
         return row
     try:
         with transaction.atomic():
-            result = _create_result(report, _item(line), LabResultValidation.REVIEWED)
+            result = _create_result(
+                report, _item(line), LabResultValidation.USER_CONFIRMED
+            )
     except (DjangoValidationError, ValidationError) as exc:
         row["reason"] = _reason(exc)
         return row

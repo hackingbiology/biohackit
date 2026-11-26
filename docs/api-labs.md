@@ -27,8 +27,8 @@ transaction.
 ```
 
 - `201` with the report and its results. Each result has the stored fields,
-  `validation_state` (`unreviewed`), `aggregation_eligible` (true only with laboratory
-  and method), `normalised_value` / `normalised_unit` (empty unless a stored conversion
+  `validation_state` (`entered`), `aggregation_eligible` (true only with laboratory,
+  method and a confirmed state, see below), `normalised_value` / `normalised_unit` (empty unless a stored conversion
   exists) and `plausibility`.
 - `400` if any result is invalid (unknown LOINC code, more than 6 decimals, DEXA or
   microbiome without laboratory and method, naive time, ...). The body names the result
@@ -87,7 +87,25 @@ status `inferred` exists in the review vocabulary but this parser never emits it
 Same file again, plus an optional `laboratory` form field for the report. If any row is
 `not_recognised` the answer is `400` with `detail` and the `rows`, and nothing is stored.
 Otherwise one `LabReport` (`origin = import`, `import_name` = file name) and its results are
-stored in one transaction, with `validation_state = reviewed`; `201` with the report and results.
+stored in one transaction, with `validation_state = user_confirmed` (you checked every row in
+the preview); `201` with the report and results.
+
+### Validation states and `PATCH /api/labs/results/<id>/validation/`
+
+| State | Meaning |
+|---|---|
+| `entered` | typed or imported, not yet checked (typed entries start here) |
+| `user_confirmed` | the user checked it against their own report |
+| `source_verified` | the original document is attached and the value matches it (deterministic extraction or a second person) |
+| `disputed` | flagged as possibly wrong |
+| `retracted` | withdrawn by the user, excluded from statistics, kept for audit |
+
+A result is `aggregation_eligible` only with a laboratory, a method **and** the state
+`user_confirmed` or `source_verified`. The owner changes the state with
+`{"validation_state": "<state>"}`: `user_confirmed`, `disputed` or `retracted` give `200`
+with the result as in `GET /api/labs/reports/<id>/`. `entered` and `source_verified` (no
+attached-original check exists yet), and any change away from `retracted`, give `400` naming
+`validation_state`. Another user's or a missing result gives `404`. Nothing changes on `400`/`404`.
 
 ### PII redaction (opt-in)
 

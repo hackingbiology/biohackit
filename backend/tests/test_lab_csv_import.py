@@ -161,7 +161,7 @@ def test_confirm_stores_one_import_report_with_shared_save_rules(
     first, second = LabResult.objects.order_by("pk")
     assert first.reported_value == Decimal("2.5")
     assert first.aggregation_eligible is True
-    assert first.validation_state == "reviewed"
+    assert first.validation_state == "user_confirmed"
     assert second.normalised_value == Decimal("6")
     assert second.normalised_unit == "xa/L"
     assert second.laboratory == "Rep Lab" and second.method is None

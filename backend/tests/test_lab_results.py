@@ -78,7 +78,7 @@ def test_result_records_its_source(user, analyte):
     row.refresh_from_db()
     assert row.report.origin == "import"
     assert row.report.import_name == "synthetic.csv"
-    assert row.validation_state == LabResultValidation.UNREVIEWED
+    assert row.validation_state == LabResultValidation.ENTERED
 
 
 def test_import_requires_a_name(user):
@@ -91,7 +91,13 @@ def test_no_method_is_stored_and_not_eligible(report, analyte):
     # scenario: biomarkers-and-labs::a-result-without-laboratory-or-method-is-not-aggregation-eligible
     row = result(report, analyte, laboratory="Lab X")
     assert LabResult.objects.get(pk=row.pk).aggregation_eligible is False
-    full = result(report, analyte, laboratory="Lab X", method="Method Y")
+    full = result(
+        report,
+        analyte,
+        laboratory="Lab X",
+        method="Method Y",
+        validation_state=LabResultValidation.USER_CONFIRMED,
+    )
     assert full.aggregation_eligible is True
 
 

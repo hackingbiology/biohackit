@@ -159,7 +159,7 @@ def _report_data(report: LabReport) -> dict[str, Any]:
 def _create_result(
     report: LabReport,
     item: Any,
-    validation_state: str = LabResultValidation.UNREVIEWED,
+    validation_state: str = LabResultValidation.ENTERED,
 ) -> LabResult:
     if not isinstance(item, dict):
         raise ValidationError({"non_field_errors": "Each result must be an object."})
@@ -291,3 +291,43 @@ class LabReportFhirView(APIView):  # type: ignore[misc]  # base is Any: DRF unty
             render_fhir_json(lab_report_to_fhir_bundle(report)),
             content_type="application/fhir+json",
         )
+
+
+# States the owner may set. `entered` is the starting state; `source_verified` needs an
+# attached original and a deterministic check, which do not exist yet (Q63, Q75).
+OWNER_SETTABLE_STATES = (
+    LabResultValidation.USER_CONFIRMED,
+    LabResultValidation.DISPUTED,
+    LabResultValidation.RETRACTED,
+)
+
+
+class LabResultValidationView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """PATCH: the owner changes the validation state of one of their results.
+    Eligibility is recomputed by `LabResult.save`. A retracted result stays retracted.
+    Another user's or a missing result is a 404."""
+
+    http_method_names = ["patch", "options"]
+
+    def patch(self, request: Request, pk: int) -> Response:
+        result = get_object_or_404(
+            LabResult.objects.select_related("biomarker__unit", "report"),
+            pk=pk,
+            report__owner=request.user,
+        )
+        data = request.data
+        state = data.get("validation_state") if isinstance(data, dict) else None
+        if state not in OWNER_SETTABLE_STATES:
+            allowed = ", ".join(OWNER_SETTABLE_STATES)
+            raise ValidationError(
+                {"validation_state": f"validation_state must be one of: {allowed}."}
+            )
+        if (
+            result.validation_state == LabResultValidation.RETRACTED
+            and state != LabResultValidation.RETRACTED
+        ):
+            raise ValidationError(
+                {"validation_state": "A retracted result stays retracted."}
+            )
+        result.set_validation_state(state)
+        return Response(_result_data(result))

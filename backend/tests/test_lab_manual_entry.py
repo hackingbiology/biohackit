@@ -128,11 +128,9 @@ def test_typed_value_equals_directly_created(client, user, analyte, extra):
     ):
         assert getattr(stored, name) == getattr(direct, name), name
     row = data["results"][0]
-    assert row["validation_state"] == "unreviewed"
+    assert row["validation_state"] == "entered"
     assert row["aggregation_eligible"] is direct.aggregation_eligible
-    assert row["aggregation_eligible"] is bool(
-        extra.get("laboratory") and extra.get("method")
-    )
+    assert row["aggregation_eligible"] is False  # entered, not yet confirmed
 
 
 # scenario: biomarkers-and-labs::typed-value-gets-the-same-treatment
@@ -170,7 +168,7 @@ def test_report_laboratory_is_inherited_like_the_model(client, analyte):
     payload = {**body(method="M"), "laboratory": "Lab R"}
     row = client.post(URL, payload, format="json").json()["results"][0]
     assert row["laboratory"] == "Lab R"
-    assert row["aggregation_eligible"] is True
+    assert row["aggregation_eligible"] is False  # entered, not yet confirmed
 
 
 def test_normalised_filled_only_with_stored_conversion(client, analyte, unit_b, source):

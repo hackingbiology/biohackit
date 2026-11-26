@@ -234,3 +234,5 @@ Q66 implementation note: `Biomarker.category` (blood | body_composition | microb
   
   Aggregations and public statistics use only `user_confirmed` and above.
 - **Q65:** OK. Rollback also deletes the retained original file.
+
+**Q75** · Q63 states applied (M02, 2026-11-26). Three points Fabio's answer left open, with the defaults taken (defaults, not decisions): (1) a **confirmed CSV/PDF import is stored as `user_confirmed`**, because the user checks every row in the preview against their own report before confirming; a typed entry is stored as `entered`. (2) The owner endpoint `PATCH /api/labs/results/<id>/validation/` lets the owner set `user_confirmed`, `disputed` or `retracted`; **`source_verified` cannot be self-declared** (it needs an attached original and a deterministic or second-person check, which do not exist yet), and `entered` cannot be set back. (3) **A retracted result stays retracted** (audit default); a disputed one can be confirmed again. Is that right, or should a user be able to un-retract?

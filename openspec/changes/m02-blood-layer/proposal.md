@@ -43,7 +43,7 @@ No value, range, coefficient or code is invented. PhenoAge coefficients are ente
 | D8 | Location | results in `backend/core`; import code in a new app named in TG-a (Q59) |
 | D9 | Publication of originals | the main spec makes the raw original public by default, which conflicts with redaction being off. Default: the original stays private until the user explicitly publishes it; no MODIFIED requirement is made yet (Q62) |
 | D10 | Lab result model | `LabResult` is separate from `core.Measurement` because `Measurement` rejects unconvertible units (Q61) |
-| D11 | Validation state values | domain-model names a validation state but defines no values; default `unreviewed` \| `reviewed` (Q63) |
+| D11 | Validation state values | domain-model names a validation state but defines no values; Fabio chose `entered` \| `user_confirmed` \| `source_verified` \| `disputed` \| `retracted` (Q63, 2026-11-26) |
 | D12 | Valid UCUM | exact match with a stored terminology `Unit.ucum_code`. Full UCUM grammar validation (ucumvert, m01 TG5 B1) can widen the definition later |
 
 ## UCUM system URL
