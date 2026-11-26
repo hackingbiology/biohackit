@@ -189,3 +189,9 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 **Q61** · `core.Measurement.save` rejects a unit with no conversion, but lab imports must keep such results as reported. Default taken: **`LabResult` is a separate model that accepts unconvertible units and leaves the normalised value empty**. Or should `Measurement` be relaxed instead?
 
 **Q62** · The main spec makes the raw original report public by default, while PII redaction is off by default, so names and IDs could be published. Default taken: **the original stays private until the user explicitly publishes it; TG-g stores privately only**. Should the main spec be changed with a MODIFIED requirement?
+
+**Q63** · domain-model "Measurement provenance" names a validation state but neither it nor the code defines its values. Default taken (a default, not a decision): **`unreviewed` | `reviewed`**. Which states do you want?
+
+**Q64** · s01 puts body composition and microbiome results in the same time series model as blood analytes, but Q61 makes `LabResult` separate from `core.Measurement`. Default taken: **DEXA and microbiome lab results are stored as `LabResult` (the lab time series); `core.Measurement` stays for self-tracked values; a later MODIFIED requirement unifies them if you prefer**.
+
+**Q65** · Should rolling back an import also delete the retained original report file? Default taken: **yes, rollback removes the file stored with that `LabReport`, so no uploaded document (possibly with PII) is left behind**. Should the file instead be kept with a notice to the user?

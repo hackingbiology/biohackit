@@ -43,3 +43,11 @@ No value, range, coefficient or code is invented. PhenoAge coefficients are ente
 | D8 | Location | results in `backend/core`; import code in a new app named in TG-a (Q59) |
 | D9 | Publication of originals | the main spec makes the raw original public by default, which conflicts with redaction being off. Default: the original stays private until the user explicitly publishes it; no MODIFIED requirement is made yet (Q62) |
 | D10 | Lab result model | `LabResult` is separate from `core.Measurement` because `Measurement` rejects unconvertible units (Q61) |
+| D11 | Validation state values | domain-model names a validation state but defines no values; default `unreviewed` \| `reviewed` (Q63) |
+| D12 | Valid UCUM | exact match with a stored terminology `Unit.ucum_code`. Full UCUM grammar validation (ucumvert, m01 TG5 B1) can widen the definition later |
+
+## UCUM system URL
+`http://unitsofmeasure.org` is copied from the FHIR R4 UCUM page, https://hl7.org/fhir/R4/ucum.html (fetched 2026-11-26): "The URI http://unitsofmeasure.org identifies UCUM codes".
+
+## Relation to s01
+`s01-spec-discovery` "Import can be rolled back" (removing the measurements an import created) and "Body composition and microbiome results ... same time series model as blood analytes" apply to `LabResult` for lab-reported results. The delta adds "Lab report import can be rolled back" for `LabResult`. DEXA and microbiome lab results are stored as `LabResult`; `core.Measurement` stays for self-tracked values (Q64). `s01-spec-discovery` is not edited.

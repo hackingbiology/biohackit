@@ -63,3 +63,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M01 · TG-LOINC part D3: key length checked on every keyed LOINC file (parse_csv key_field), 1 scenario, tests · see git log
 2026-11-26 · X01 · M02 ecosystem scan docs/ecosystem/m02-blood-layer.md (15 entries, Q55), /ecosystem page data regenerated · see git log
 2026-11-26 · M02 · TG1: OpenSpec change m02-blood-layer (proposal, tasks TG-a..k, spec delta, Q56–Q60), ecosystem test covers it · see git log
+2026-11-26 · M02 · TG1b: spec review fixes (LabResult source/validation/eligibility, UCUM = stored Unit.ucum_code, rollback, s01 relation), Q63–Q64 · see git log

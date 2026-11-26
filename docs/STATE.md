@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M02 TG1b done 2026-11-26: the three review findings fixed in the m02-blood-layer spec (LabResult source, validation state, aggregation eligibility; valid UCUM = stored Unit.ucum_code; rollback requirement and s01 relation); Q63, Q64. Spec only. Next: M02 TG-a.
 - M02 TG1 done 2026-11-26: OpenSpec change `m02-blood-layer` written (proposal citing docs/ecosystem/m02-blood-layer.md, tasks TG-a..TG-k, spec delta with 2 requirements, Q56–Q60); ecosystem test now covers it. No code, no dependency. Next: M02 TG-a (lab report/result models).
 - X01 M02 scan done 2026-11-26: docs/ecosystem/m02-blood-layer.md (PDF/OCR/CSV, FHIR, OMOP MEASUREMENT, PhenoAge, PII, get-based import); licence question Q55. No dependency added. Next: write the M02 OpenSpec change citing docs/ecosystem/m02-blood-layer.md.
 - M01 TG-LOINC part D3 done 2026-11-26: the key column of every keyed LOINC file (Loinc.csv loinc_num, Part.csv part_number, AnswerList.csv answer_list_id) is length-checked against its model field in `parse_csv`; an overlong key aborts with a LoincImportError naming file/line/field, never a raw DataError. Lookup-only keys (LoincNumber in ConsumerName, LinguisticVariant, PartLink, AnswerListLink) need no check because an unknown key aborts. Panels&Forms (Q54) and the licence notice (Q10) still open.
