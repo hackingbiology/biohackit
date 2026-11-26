@@ -20,6 +20,7 @@ from rest_framework.response import Response  # type: ignore[import-untyped]  # 
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
 from terminology.models import ReferenceRange, Source, Unit
+from terminology.selectors import Subject
 from terminology.services import normalize_value
 
 from .fhir import lab_report_to_fhir_bundle, render_fhir_json
@@ -34,6 +35,7 @@ from .omop import MEASUREMENT_COLUMNS, OMOP_CDM_VERSION, lab_result_to_omop_meas
 from .phenoage import PhenoAgeRefusal, PhenoAgeResult, evaluate_phenoage
 from .phenoage_binding import inputs_from_report
 from .plausibility import RangeCandidate, check_plausibility
+from .result_ranges import result_ranges
 
 TEXT_FIELDS = ("laboratory", "method", "device")
 TIME_FIELDS = ("collected_at", "reported_at")
@@ -447,6 +449,30 @@ class LabResultConvertView(APIView):  # type: ignore[misc]  # base is Any: DRF u
             conversion_source=_source_data(Source.objects.get(pk=outcome.source_id)),
         )
         return Response(body)
+
+
+class LabResultRangesView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """GET: the caller's result against its reference range, optimal range and safety
+    threshold, kept separate, each with provenance and a computed status (Q82). The
+    subject is unknown (no profile data stored). Retracted results stay viewable.
+    Another user's result is a 404."""
+
+    http_method_names = ["get", "head", "options"]
+
+    def get(self, request: Request, pk: int) -> Response:
+        result = get_object_or_404(
+            LabResult.objects.select_related("biomarker__unit"),
+            pk=pk,
+            report__owner=request.user,
+        )
+        return Response(
+            {
+                "result_id": result.pk,
+                "reported_value": str(result.reported_value),
+                "reported_unit": result.reported_unit,
+                **result_ranges(result, Subject()),
+            }
+        )
 
 
 # States the owner may set. `entered` is the starting state; `source_verified` needs an

@@ -10,6 +10,7 @@ urlpatterns = [
     path("reports/<int:pk>/omop/", views.LabReportOmopView.as_view()),
     path("reports/<int:pk>/phenoage/", views.LabReportPhenoAgeView.as_view()),
     path("results/<int:pk>/convert/", views.LabResultConvertView.as_view()),
+    path("results/<int:pk>/ranges/", views.LabResultRangesView.as_view()),
     path("results/<int:pk>/validation/", views.LabResultValidationView.as_view()),
     path("imports/csv/preview/", lab_import.CsvPreviewView.as_view()),
     path("imports/csv/confirm/", lab_import.CsvConfirmView.as_view()),

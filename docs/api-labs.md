@@ -89,6 +89,34 @@ decimals are strings, not rounded.
 Retracted results can still be viewed by their owner (Q81). `404` for another user's result;
 `401`/`403` when not signed in.
 
+## `GET /api/labs/results/<id>/ranges/`
+
+Places one of your results against three separate ranges, never merged:
+`{result_id, reported_value, reported_unit, reference_range, optimal_range, safety_threshold,
+comparison_value, comparison_unit, converted, conversion_source}`. Each range object has `status` and, when a range applies,
+`low`, `high` (decimal strings, `null` = open), `unit` and `source` (`name, version, url`).
+
+- Comparison value: `reported_value` if reported in the analyte's unit, else the stored
+  `normalised_value` (only when it is in that unit), else none. Nothing is converted on the fly. `converted` is `true` when the stored normalised
+  value was used; `conversion_source` is then that stored Source (`name, version, url`), else `null`.
+  A lab+method tier is chosen only among rows that apply to the subject, so a stratified
+  lab-specific row never hides a generic row.
+- Status rule: `below` if value < low, `above` if value > high, `inside` otherwise (bounds
+  inclusive, a null bound is open); `no_range` if none applies (no bounds returned);
+  `not_comparable` (`reason: "no_value_in_analyte_unit"`) when there is no comparison value.
+- `reference_range` adds `lab, method, population, evidence_grade`. Only rows in the analyte's
+  unit whose lab and method are empty or equal (trimmed, casefolded) to the result's apply;
+  rows matching lab and method beat generic ones; a tie gives `no_range`.
+- `optimal_range` is shown only if `displayable_optimal_range` passes (source, population,
+  endpoint, evidence grade and last-reviewed date all present); it adds `population, endpoint,
+  evidence_grade, last_reviewed`.
+- `safety_threshold`: exactly one row is used; several give `no_range` with
+  `reason: "ambiguous_several_thresholds"`.
+
+The subject is unknown (no age, sex or ancestry stored), so only unstratified rows apply (Q82).
+Retracted results can still be viewed by their owner. `404` for another user's result;
+`401`/`403` when not signed in.
+
 ## Plausibility
 
 `plausibility = {"status": "within" | "outside" | "not_checked", "range_source": {...} | null}`.

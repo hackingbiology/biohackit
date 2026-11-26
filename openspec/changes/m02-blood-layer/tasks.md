@@ -50,5 +50,9 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 - [ ] Owner-only view of a stored result in a requested UCUM unit using stored UnitConversion rows only; reported value and unit always returned; no conversion known → reported value shown unconverted. Req: s01 "Unit conversion between unit systems". Part 1 = API; SI/US labelling of units waits on Q81.
   - Part 1 done 2026-11-26 (stays unchecked): `GET /api/labs/results/<id>/convert/?unit=<ucum>` (`LabResultConvertView`), tests in test_lab_unit_conversion_view.py; Q81.
 
+## TG-m — Result against its three ranges (no new dependency)
+- [ ] Owner-only view of a stored LabResult against reference range, optimal range and safety threshold, kept separate, each with its provenance and a deterministic status. Req: main "Three ranges per analyte", main "Optimal-range governance" (inspection part; the contested-range scenario waits on community-and-social).
+  - Part 1 done 2026-11-26 (stays unchecked): `GET /api/labs/results/<id>/ranges/` (`LabResultRangesView`, `core/result_ranges.py`), tests in test_lab_result_ranges.py; Q82.
+
 ## TG-k — Extraction benchmark
 - [ ] Synthetic report with a verified answer key; measure extraction accuracy of TG-e/TG-f. Req: s01 "Extraction benchmark on a synthetic report". Blocked by: TG-e.
