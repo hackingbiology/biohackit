@@ -86,6 +86,16 @@
       "step": "Import lab results from a CSV file"
     },
     {
+      "action": "Open \"Enter lab results by hand\" (a link on the import page, or /labs/new) after you sign in. For each result type the LOINC code, the value exactly as your lab printed it, and the unit. Laboratory, method, device and dates are optional. Use \"Add another result\" for more rows. \"Save report\" opens the saved report. If a value is refused, the reason is shown next to that result and field, and nothing you typed is cleared.",
+      "route": "frontend/src/app/labs/new/page.tsx",
+      "step": "Type a lab report by hand"
+    },
+    {
+      "action": "Open a saved report (the link after saving, or /labs/reports/<number>). Each result shows the value and unit as reported, laboratory, method, device and dates, its validation state, whether it is counted in aggregations, and a range check in words. A typed result looks the same as an imported one. \"Undo this report\" appears only for imported reports and deletes the report after you confirm; a report you typed by hand cannot be undone.",
+      "route": "frontend/src/app/labs/reports/[id]/page.tsx",
+      "step": "Look at a saved report"
+    },
+    {
       "action": "The documentation index links to the AI surfaces map, the architecture page and this guide.",
       "route": "frontend/src/app/docs/page.tsx",
       "step": "Read the documentation"

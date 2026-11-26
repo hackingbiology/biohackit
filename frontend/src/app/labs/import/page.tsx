@@ -13,9 +13,9 @@ import {
   rollbackReport,
   type ConfirmedReport,
   type PreviewRow,
-  type Plausibility,
 } from "@/lib/labs";
-import { labImportStrings, pickLocale } from "@/lib/i18n";
+import { RangeCheck } from "@/components/RangeCheck";
+import { labImportStrings, labStrings, pickLocale } from "@/lib/i18n";
 
 const button =
   "inline-flex items-center justify-center rounded-lg bg-slate-900 dark:bg-slate-100 px-5 py-3 text-sm font-semibold text-white dark:text-slate-900 disabled:opacity-50";
@@ -25,6 +25,14 @@ type Message = "" | "signIn" | "genericError" | "confirmRefused" | "noFile" | "u
 export default function LabImportPage() {
   const t =
     labImportStrings[
+      pickLocale(
+        typeof document === "undefined"
+          ? undefined
+          : document.documentElement.lang,
+      )
+    ];
+  const lab =
+    labStrings[
       pickLocale(
         typeof document === "undefined"
           ? undefined
@@ -133,19 +141,17 @@ export default function LabImportPage() {
         ? t.inferred
         : t.notRecognised;
 
-  const rangeText = (p: Plausibility | null) =>
-    p?.status === "within"
-      ? t.rangeWithin
-      : p?.status === "outside"
-        ? t.rangeOutside
-        : t.rangeNotChecked;
-
   const locked = report !== null && !undone;
 
   return (
     <main className="mx-auto max-w-3xl space-y-6 p-4 sm:p-8">
       <h1 className="text-2xl font-bold">{t.title}</h1>
       <p>{t.intro}</p>
+      <p>
+        <Link href="/labs/new" className="underline">
+          {lab.newLink}
+        </Link>
+      </p>
 
       <div role="alert" aria-live="assertive">
         {message !== "" && (
@@ -240,18 +246,7 @@ export default function LabImportPage() {
                     <td>{statusText(r.status)}</td>
                     <td>{r.reason}</td>
                     <td>
-                      {rangeText(r.plausibility)}
-                      {r.plausibility?.range_source && (
-                        <>
-                          {" "}
-                          <a
-                            href={r.plausibility.range_source.url}
-                            className="underline"
-                          >
-                            {t.rangeSource} {r.plausibility.range_source.name}
-                          </a>
-                        </>
-                      )}
+                      <RangeCheck plausibility={r.plausibility} t={t} />
                     </td>
                   </tr>
                 ))}
@@ -289,6 +284,11 @@ export default function LabImportPage() {
           {!undone && (
             <>
               <p>{t.savedBody.replace("{id}", String(report.id))}</p>
+              <p>
+                <Link href={`/labs/reports/${report.id}`} className="underline">
+                  {lab.viewReport}
+                </Link>
+              </p>
               <p>
                 {report.original_retained ? t.originalKept : t.originalNotKept}
               </p>

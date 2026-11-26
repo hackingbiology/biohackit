@@ -433,6 +433,147 @@ export const labImportStrings: Record<Locale, LabImportStrings> = {
   zh: labImportEn,
 };
 
+export interface LabStrings {
+  importLink: string;
+  newLink: string;
+  viewReport: string;
+  newTitle: string;
+  newIntro: string;
+  reportLaboratory: string;
+  resultHeading: string;
+  addRow: string;
+  removeRow: string;
+  loincCode: string;
+  reportedValue: string;
+  reportedUnit: string;
+  laboratory: string;
+  method: string;
+  device: string;
+  collectedAt: string;
+  reportedAt: string;
+  dateHelp: string;
+  submit: string;
+  submitting: string;
+  required: string;
+  fixErrors: string;
+  signIn: string;
+  signInLink: string;
+  genericError: string;
+  reportTitle: string;
+  loading: string;
+  notFound: string;
+  origin: string;
+  originManual: string;
+  originCsv: string;
+  originRetainedYes: string;
+  originRetainedNo: string;
+  laboratoryLabel: string;
+  colLoinc: string;
+  colValue: string;
+  colUnit: string;
+  colNormalised: string;
+  colLaboratory: string;
+  colMethod: string;
+  colDevice: string;
+  colCollected: string;
+  colReported: string;
+  colState: string;
+  colAggregation: string;
+  colRange: string;
+  tableCaption: string;
+  tableRegion: string;
+  notGiven: string;
+  stateEntered: string;
+  stateUserConfirmed: string;
+  stateSourceVerified: string;
+  stateDisputed: string;
+  stateRetracted: string;
+  aggregationYes: string;
+  aggregationNo: string;
+  undo: string;
+  undoConfirm: string;
+  undone: string;
+  undoFailed: string;
+  undoManualNote: string;
+  undoConflict: string;
+  originUnknown: string;
+  rowProblem: string;
+}
+
+const labEn: LabStrings = {
+  importLink: "Import a CSV file instead",
+  newLink: "Type a report by hand instead",
+  viewReport: "View report",
+  newTitle: "Enter lab results by hand",
+  newIntro: "Type each result as your lab reported it. Nothing is stored until you save, and you can undo a saved report.",
+  reportLaboratory: "Laboratory for the whole report (optional)",
+  resultHeading: "Result {n}",
+  addRow: "Add another result",
+  removeRow: "Remove result {n}",
+  loincCode: "LOINC code",
+  reportedValue: "Reported value",
+  reportedUnit: "Reported unit",
+  laboratory: "Laboratory (optional)",
+  method: "Method (optional)",
+  device: "Device (optional)",
+  collectedAt: "Collected at (optional)",
+  reportedAt: "Reported at (optional)",
+  dateHelp: "Dates are sent with your browser's UTC offset, so the time you type is read as your local time.",
+  submit: "Save report",
+  submitting: "Saving…",
+  required: "This field is required.",
+  fixErrors: "The report was not saved. Fix the marked fields and try again.",
+  signIn: "Please sign in to save lab results.",
+  signInLink: "Go to sign in",
+  genericError: "Something went wrong. Nothing was saved. Try again.",
+  reportTitle: "Lab report {id}",
+  loading: "Loading…",
+  notFound: "Report not found",
+  origin: "Origin:",
+  originManual: "Typed by hand",
+  originCsv: "Imported from a CSV file",
+  originRetainedYes: "The original file was kept privately.",
+  originRetainedNo: "No original file was kept.",
+  laboratoryLabel: "Laboratory:",
+  colLoinc: "LOINC code",
+  colValue: "Reported value",
+  colUnit: "Reported unit",
+  colNormalised: "Normalised value",
+  colLaboratory: "Laboratory",
+  colMethod: "Method",
+  colDevice: "Device",
+  colCollected: "Collected at",
+  colReported: "Reported at",
+  colState: "Validation state",
+  colAggregation: "Used in aggregations",
+  colRange: "Range check",
+  tableCaption: "Results of this report, as reported",
+  tableRegion: "Scrollable table",
+  notGiven: "Not given",
+  stateEntered: "Entered, not yet confirmed",
+  stateUserConfirmed: "Confirmed by the user",
+  stateSourceVerified: "Verified against the source",
+  stateDisputed: "Disputed",
+  stateRetracted: "Retracted",
+  aggregationYes: "Yes, counted in aggregations",
+  aggregationNo: "No, not counted in aggregations",
+  undo: "Undo this report",
+  undoConfirm: "Undo this report? The report and its results will be deleted.",
+  undone: "Report undone. It was deleted.",
+  undoFailed: "The report was not undone. It is still saved. Try again.",
+  undoManualNote: "A report you typed by hand cannot be undone.",
+  undoConflict: "This report cannot be undone because it was typed by hand. It is still saved.",
+  originUnknown: "Unknown origin",
+  rowProblem: "Problem with this result:",
+};
+
+// IT and ZH fall back to EN until translated (Q86).
+export const labStrings: Record<Locale, LabStrings> = {
+  en: labEn,
+  it: labEn,
+  zh: labEn,
+};
+
 export function pickLocale(lang: string | undefined): Locale {
   const l = (lang ?? "en").toLowerCase();
   if (l.startsWith("it")) return "it";

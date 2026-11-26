@@ -70,14 +70,19 @@ async function readJson(res: Response): Promise<Record<string, unknown>> {
 }
 
 function request(
-  method: "POST" | "DELETE",
+  method: "GET" | "POST" | "DELETE",
   path: string,
-  body?: FormData,
+  body?: FormData | string,
 ): Promise<Response> {
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    "X-CSRFToken": csrfToken(),
+  };
+  if (typeof body === "string") headers["Content-Type"] = "application/json";
   return fetch(`${API_URL}${path}`, {
     method,
     credentials: "include",
-    headers: { Accept: "application/json", "X-CSRFToken": csrfToken() },
+    headers,
     body,
   });
 }
@@ -133,4 +138,139 @@ export async function rollbackReport(id: number): Promise<RollbackResult> {
   const res = await request("DELETE", `/api/labs/reports/${id}/`);
   const body = await readJson(res);
   return { status: res.status, detail: detailOf(body) };
+}
+
+/** One typed result. reported_value is a string and is sent unchanged. */
+export interface ManualResultInput {
+  loinc_code: string;
+  reported_value: string;
+  reported_unit: string;
+  laboratory?: string;
+  method?: string;
+  device?: string;
+  collected_at?: string;
+  reported_at?: string;
+}
+
+/** Field messages by result index; index -1 holds messages about the list itself. */
+export type FieldErrors = Record<number, Record<string, string[]>>;
+
+export interface CreateResult {
+  status: number;
+  id: number | null;
+  errors: FieldErrors;
+  /** Messages about report-level fields such as laboratory. */
+  reportErrors: Record<string, string[]>;
+  detail: string;
+}
+
+function messages(value: unknown): string[] {
+  if (typeof value === "string") return [value];
+  return Array.isArray(value)
+    ? value.filter((m): m is string => typeof m === "string")
+    : [];
+}
+
+/** Reads {results: {<index>: {<field>: [msg]}}} or {results: [msg]}. */
+function fieldErrorsOf(body: Record<string, unknown>): FieldErrors {
+  const out: FieldErrors = {};
+  const results = body.results;
+  if (Array.isArray(results)) {
+    const list = messages(results);
+    if (list.length > 0) out[-1] = { results: list };
+  } else if (typeof results === "object" && results !== null) {
+    for (const [index, fields] of Object.entries(results)) {
+      if (typeof fields !== "object" || fields === null) continue;
+      const byField: Record<string, string[]> = {};
+      for (const [field, msg] of Object.entries(fields)) {
+        byField[field] = messages(msg);
+      }
+      out[Number(index)] = byField;
+    }
+  }
+  return out;
+}
+
+/** Reads the report-level keys of a 400 body (everything except results). */
+function reportErrorsOf(body: Record<string, unknown>): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [key, value] of Object.entries(body)) {
+    if (key === "results") continue;
+    const list = messages(value);
+    if (list.length > 0) out[key] = list;
+  }
+  return out;
+}
+
+export async function createReport(
+  laboratory: string,
+  results: ManualResultInput[],
+): Promise<CreateResult> {
+  const payload = laboratory ? { laboratory, results } : { results };
+  const res = await request(
+    "POST",
+    "/api/labs/reports/",
+    JSON.stringify(payload),
+  );
+  const body = await readJson(res);
+  return {
+    status: res.status,
+    id: res.status === 201 && typeof body.id === "number" ? body.id : null,
+    errors: res.status === 400 ? fieldErrorsOf(body) : {},
+    reportErrors: res.status === 400 ? reportErrorsOf(body) : {},
+    detail: detailOf(body),
+  };
+}
+
+export interface ReportResult {
+  id: number;
+  loinc_code: string;
+  laboratory: string;
+  method: string;
+  device: string;
+  collected_at: string | null;
+  reported_at: string | null;
+  reported_value: string;
+  reported_unit: string;
+  normalised_value: string | null;
+  normalised_unit: string;
+  validation_state: string;
+  aggregation_eligible: boolean;
+  plausibility: Plausibility | null;
+}
+
+export interface StoredReport {
+  id: number;
+  origin: string;
+  laboratory: string;
+  original_retained: boolean;
+  results: ReportResult[];
+}
+
+export interface FetchReportResult {
+  status: number;
+  report: StoredReport | null;
+}
+
+export async function fetchReport(id: string): Promise<FetchReportResult> {
+  const res = await request(
+    "GET",
+    `/api/labs/reports/${encodeURIComponent(id)}/`,
+  );
+  const body = await readJson(res);
+  const ok = res.status === 200 && Array.isArray(body.results);
+  return {
+    status: res.status,
+    report: ok ? (body as unknown as StoredReport) : null,
+  };
+}
+
+/** A datetime-local value read as browser-local time, with its UTC offset. */
+export function withOffset(local: string): string {
+  const date = new Date(local);
+  const offset = -date.getTimezoneOffset();
+  const sign = offset < 0 ? "-" : "+";
+  const pad = (n: number) => String(Math.floor(Math.abs(n))).padStart(2, "0");
+  const base = local.length === 16 ? `${local}:00` : local;
+  return `${base}${sign}${pad(offset / 60)}:${pad(offset % 60)}`;
 }
