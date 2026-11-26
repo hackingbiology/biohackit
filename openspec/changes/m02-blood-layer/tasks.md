@@ -35,7 +35,8 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 - [ ] Completeness and freshness per organ system from stored results. Req: main "Completeness and freshness indicators". Depends on an organ-system grouping of analytes (not yet defined; record a question when the task starts).
 
 ## TG-i — PhenoAge computation
-- [ ] Deterministic computation from the standard panel; coefficients entered only with a citation to the original paper. Req: main "Deterministic PhenoAge computation from the standard panel". Blocked by: Q56.
+- [x] Research (2026-11-26, Fabio's Q56 answer): compare PhenoAge and Bortz coefficients/constants/units/transformations across the original papers (with supplements and errata) and maintained implementations (biolearn, pyaging, get-based, others found); record them in docs/research/phenoage-coefficients.md; adopt a well-maintained AGPL-compatible library as the engine if one exists, checked against the papers (paper prevails unless an erratum says otherwise); no numbers in code before this comparison. Done: the document exists; recommendation is to hand-write PhenoAge against the original supplement (no suitable library); Bortz stays blocked on Q78 (the reference repository has no licence); open constant choice in Q77.
+- [ ] Deterministic computation from the standard panel; coefficients entered only with a citation to the original paper, following docs/research/phenoage-coefficients.md and the Q77 default. Req: main "Deterministic PhenoAge computation from the standard panel".
 
 ## TG-j — FHIR and OMOP export
 - [x] TG-j part 1 (2026-11-26): hand-written FHIR DiagnosticReport/Observation Bundle (`core/fhir.py`, docs/fhir/lab-report-mapping.md, `GET /api/labs/reports/<id>/fhir/`, Q73); the five FHIR scenarios are tested. The OMOP export endpoint is still to decide, so the item below stays open.

@@ -114,6 +114,7 @@ Method, decision categories and licence table: [README.md](README.md). Capabilit
 - **Decision:** learn-from only
 - **Verified:** api.github.com/repos/lucascamillomd/pyaging and pypi.org/pypi/pyaging/json (license_expression `MIT`, version 0.6.3; project_urls point to this repository), 2026-11-26
 - **Licence note:** assessment: a clock library built around epigenetic and omics data with a large dependency set. Its model files and data licences were not checked. Our PhenoAge is a closed-form formula over routine blood markers, with the published coefficients to be taken from the paper (Levine 2018) when M02 is specified, not from memory; this library is read for method only.
+- **Engine decision (Q56 research, 2026-11-26):** not adopted as the computation engine; hand-write against the original paper. Source read: raw.githubusercontent.com/lucascamillomd/pyaging at commit db77b4bc263c82bfd2d5330029f232c71f2b33ec. It does carry the clinical formula (`PhenoAge` class), but it requires torch >= 2.2.0 and downloads the weights at runtime, and its current mortality-to-age constants (141.50 and 0.09165, from Kuo 2021) differ from the original supplement (141.50225 and 0.090165), which moves a result by 1 to 2 years. Details: docs/research/phenoage-coefficients.md (D3).
 
 ### biolearn
 - **URL:** https://github.com/bio-learn/biolearn
@@ -123,6 +124,7 @@ Method, decision categories and licence table: [README.md](README.md). Capabilit
 - **Decision:** learn-from only
 - **Verified:** api.github.com/repos/bio-learn/biolearn (licence `NOASSERTION`) and pypi.org/pypi/biolearn/json (licence text "new BSD", classifier "OSI Approved", version 0.9.1), 2026-11-26
 - **Licence note:** the clause count (2 or 3) was not determined, so no SPDX id is claimed. Read for method only; no code is imported.
+- **Engine decision (Q56 research, 2026-11-26):** not adopted. At commit 0d714f5a0c0ad5743b6315f3edab1f86112d394f (raw.githubusercontent.com/bio-learn/biolearn) its `PhenoAge` is the DNA-methylation clock; only a clinical unit registry exists, no blood-chemistry formula was found. Details: docs/research/phenoage-coefficients.md (D7).
 
 ### get-based (PhenoAge and Bortz, calculated markers)
 - **URL:** https://github.com/elkimek/get-based
@@ -132,6 +134,34 @@ Method, decision categories and licence table: [README.md](README.md). Capabilit
 - **Decision:** learn-from only
 - **Verified:** api.github.com/repos/elkimek/get-based, 2026-11-26 (the same entry is in m00-foundations.md, verified 2026-11-24)
 - **Licence note:** `docs/getbased-reuse-analysis.md` §A3 says get-based has PhenoAge and Bortz as deterministic closed formulas. That statement comes from the analysis document; the source file was not read in this scan. Code is not copied here: the backend is Python and each coefficient needs a citation, so M02 verifies it against the paper.
+- **Engine decision (Q56 research, 2026-11-26):** the source file was read (raw.githubusercontent.com/elkimek/get-based at commit 3fba237f89f004cad915fa5c7767aaf9efe1d9d6, `js/data-calculated-markers.ts` lines 336-437): PhenoAge uses the original supplement's constants; its Bortz variant omits 4 of the 25 biomarkers, rounds the coefficients and caps inputs without a cited source. It is TypeScript, so it cannot be a Python engine. Still learn-from only. Details: docs/research/phenoage-coefficients.md (E1-E4).
+
+### Bortz blood-age reference repository (bortzjd/bloodmarker_BA_estimation)
+- **URL:** https://github.com/bortzjd/bloodmarker_BA_estimation
+- **Licence:** unknown
+- **AGPL-compatible:** no — no licence file (GitHub reports none) and the paper claims the code and models as Humanity Inc IP; treated as not usable until Q78 is answered
+- **Last activity:** 2023-09-29
+- **Decision:** learn-from only
+- **Verified:** api.github.com/repos/bortzjd/bloodmarker_BA_estimation (`license: null`, `pushed_at` 2023-09-29, commit 789db0ec99853a8278bcc5036b5f419de4b96c89) and raw.githubusercontent.com at that commit, 2026-11-26
+- **Licence note:** it holds the authors' coefficients and means for the Full ENC model (Data/coefficients_and_means.csv) and an R example. The coefficients are cited in docs/research/phenoage-coefficients.md for comparison only; no Bortz number enters code until Q78 is answered.
+
+### mcp-phenoage-clock
+- **URL:** https://github.com/199-mcp/mcp-phenoage-clock
+- **Licence:** MIT
+- **AGPL-compatible:** yes (MIT)
+- **Last activity:** 2025-05-31
+- **Decision:** reject
+- **Verified:** api.github.com/repos/199-mcp/mcp-phenoage-clock and raw.githubusercontent.com at commit 67bbb0440839ffcd49c8a6d17bbf8f2136729ce0, 2026-11-26
+- **Licence note:** rejected as a source: it accepts albumin in g/dL, creatinine in mg/dL, glucose in mg/dL and CRP in mg/L and applies them to coefficients defined for g/L, umol/L, mmol/L and mg/dL without a conversion (`src/phenoage.ts` lines 81-91 and 99-108). Details: docs/research/phenoage-coefficients.md (D5).
+
+### BioAge (R package)
+- **URL:** https://github.com/dayoonkwon/BioAge
+- **Licence:** GPL-3.0
+- **AGPL-compatible:** unknown — the GPL-3.0 row of the README table is `unknown`; question in docs/QUESTIONS.md
+- **Last activity:** 2026-04-02
+- **Decision:** learn-from only
+- **Verified:** api.github.com/repos/dayoonkwon/BioAge and raw.githubusercontent.com at commit b1f9fc02f086cd4aa74185f2335ab1366082e7fe, 2026-11-26
+- **Licence note:** an R package that refits the PhenoAge model on supplied data instead of applying the published constants, so it cannot serve as a computation engine in a Python backend.
 
 ## PII detection and redaction
 
@@ -164,6 +194,6 @@ No dependency is added in this task: adoption happens in M02 tasks, each with a 
 - **CSV import:** learn-from only for pandas; use the standard-library `csv` module, as `import_loinc` does.
 - **FHIR lab resources:** learn-from only; the spec licence is unknown (Q55) and fhir.resources waits for Q9, so DiagnosticReport/Observation are built by hand against the spec.
 - **OMOP MEASUREMENT:** reuse schema (OMOP CDM DDL, Apache-2.0) as the alignment target for lab results.
-- **PhenoAge / biological clocks:** learn-from only for pyaging, biolearn and get-based; coefficients come from the original paper with a citation, computed by deterministic code.
+- **PhenoAge / biological clocks:** learn-from only for pyaging, biolearn and get-based; coefficients come from the original paper with a citation, computed by deterministic code. Q56 research done 2026-11-26 (docs/research/phenoage-coefficients.md): no library is adopted as the engine; PhenoAge is hand-written against the original supplement, and Bortz waits for the licence question (Q78).
 - **PII redaction:** learn-from only for Presidio; start with deterministic redaction, decide on Presidio after a measurement.
 - **get-based import components:** learn-from only; reuse the pipeline design (review modal, rollback, benchmark), not the JavaScript.
