@@ -46,3 +46,7 @@ Implemented by `lab_result_to_omop_measurement` in `backend/core/omop.py` (pure 
 | `value_source_value` | varchar(50) NULL | `LabResult.reported_value` as plain decimal text (stored scale 6) |
 | `measurement_event_id` | bigint NULL | none (left empty) |
 | `meas_event_field_concept_id` | integer NULL | none (left empty) |
+
+## Export endpoint
+
+`GET /api/labs/reports/<id>/omop/` (owner only) returns the mapper output of every non-retracted result of a report, in result id order, with `omop_cdm_version` `5.4` and the column list above. It adds nothing to the mapper: the NOT NULL columns `person_id`, `measurement_concept_id` and `measurement_type_concept_id` stay `null`, so the rows are not loadable into an OMOP database until a cited source for them exists (Q69, Q80). See docs/api-labs.md.

@@ -43,7 +43,8 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 
 ## TG-j — FHIR and OMOP export
 - [x] TG-j part 1 (2026-11-26): hand-written FHIR DiagnosticReport/Observation Bundle (`core/fhir.py`, docs/fhir/lab-report-mapping.md, `GET /api/labs/reports/<id>/fhir/`, Q73); the five FHIR scenarios are tested. The OMOP export endpoint is still to decide, so the item below stays open.
-- [ ] Hand-written FHIR DiagnosticReport/Observation representation and OMOP MEASUREMENT-shaped export of stored results. Req: M02 "FHIR representation of a stored lab result" (valid UCUM = exact match with a stored `Unit.ucum_code`; no UCUM validator blocker), M02 "Lab result provenance and OMOP MEASUREMENT alignment". Blocked by: Q55, TG-a.
+  - Part 2 done 2026-11-26: owner-only `GET /api/labs/reports/<id>/omop/` (`LabReportOmopView`, retracted excluded, concept ids null, Q69/Q80), tests in test_lab_omop_export.py.
+- [x] Hand-written FHIR DiagnosticReport/Observation representation and OMOP MEASUREMENT-shaped export of stored results. Req: M02 "FHIR representation of a stored lab result" (valid UCUM = exact match with a stored `Unit.ucum_code`; no UCUM validator blocker), M02 "Lab result provenance and OMOP MEASUREMENT alignment". Blocked by: Q55, TG-a.
 
 ## TG-k — Extraction benchmark
 - [ ] Synthetic report with a verified answer key; measure extraction accuracy of TG-e/TG-f. Req: s01 "Extraction benchmark on a synthetic report". Blocked by: TG-e.

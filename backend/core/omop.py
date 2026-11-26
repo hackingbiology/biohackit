@@ -11,6 +11,8 @@ from typing import Any
 
 from core.models import LabResult
 
+OMOP_CDM_VERSION = "5.4"  # docs/omop/measurement-mapping.md, tag v5.4.0
+
 MEASUREMENT_COLUMNS: tuple[str, ...] = (
     "measurement_id",
     "person_id",

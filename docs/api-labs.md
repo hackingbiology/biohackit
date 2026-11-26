@@ -59,6 +59,17 @@ reported unit exactly equals a stored `Unit.ucum_code`; otherwise only `unit` te
 when stored. `status` is `unknown` and no patient is referenced (Q73). `404` for another user's
 report; `401`/`403` when not signed in. Element sources: docs/fhir/lab-report-mapping.md.
 
+## `GET /api/labs/reports/<id>/omop/`
+
+The report's results as OMOP CDM v5.4 MEASUREMENT-shaped rows (JSON only, no CSV yet):
+`{"omop_cdm_version": "5.4", "columns": [...], "rows": [...]}`. `columns` is the DDL order
+(`core.omop.MEASUREMENT_COLUMNS`); there is one row per result, ordered by result id, each built
+only by `lab_result_to_omop_measurement` with every column present. Retracted results are not
+exported; disputed and entered ones are (the export is the owner's own data, Q80). Every
+`*_concept_id`, `person_id` and other column without a stored, cited source is `null`: no
+vocabulary content is stored, so none is invented (Q69). `404` for another user's report;
+`401`/`403` when not signed in. Column sources: docs/omop/measurement-mapping.md.
+
 ## Plausibility
 
 `plausibility = {"status": "within" | "outside" | "not_checked", "range_source": {...} | null}`.

@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M02 TG-j part 2 done 2026-11-26: owner-only `GET /api/labs/reports/<id>/omop/` returns the non-retracted results as OMOP v5.4 MEASUREMENT rows via the existing mapper (concept ids and person_id null, Q69; Q80 default). TG-j complete. No dependency, no migration. Next: next unblocked group per tasks.md.
 - M02 TG-i part 2b done 2026-11-26: an `age_years` too large for a float (e.g. `1e400`) is a 400 naming `age_years`, not a 200 engine refusal (review 1795694970). No dependency, no migration.
 - M02 TG-i part 2 done 2026-11-26: `GET /api/labs/reports/<id>/phenoage/` and `core/phenoage_binding.py`; loinc.org returned 403, so the LOINC map is empty and the API refuses `analyte_not_mapped` until the codes are verified (Q79). Next: Q79 answer, then fill the map.
 - M02 Q56 research done 2026-11-26: docs/research/phenoage-coefficients.md compares PhenoAge (original supplement, 2019 correction, Kuo 2021, pyaging, get-based, biolearn, others) and Bortz (paper, authors' coefficient file, get-based) with a citation and commit SHA per value; 8 PhenoAge and 6 Bortz differences recorded; engine decision in docs/ecosystem/m02-blood-layer.md (hand-write, no library); Q77 (constants), Q78 (Bortz licence). Documentation only: no code, dependency or migration. Next: TG-i implementation (PhenoAge by hand per Q77 default), or the next unblocked group.

@@ -29,6 +29,7 @@ from .models import (
     LabResult,
     LabResultValidation,
 )
+from .omop import MEASUREMENT_COLUMNS, OMOP_CDM_VERSION, lab_result_to_omop_measurement
 from .phenoage import PhenoAgeRefusal, PhenoAgeResult, evaluate_phenoage
 from .phenoage_binding import inputs_from_report
 from .plausibility import RangeCandidate, check_plausibility
@@ -300,6 +301,29 @@ class LabReportFhirView(APIView):  # type: ignore[misc]  # base is Any: DRF unty
         return HttpResponse(
             render_fhir_json(lab_report_to_fhir_bundle(report)),
             content_type="application/fhir+json",
+        )
+
+
+class LabReportOmopView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """GET: the caller's non-retracted results as OMOP MEASUREMENT rows (Q80).
+    Another user's report is a 404. No concept id is filled (Q69)."""
+
+    http_method_names = ["get", "head", "options"]
+
+    def get(self, request: Request, pk: int) -> Response:
+        report = get_object_or_404(LabReport, pk=pk, owner=request.user)
+        results = (
+            LabResult.objects.filter(report=report)
+            .exclude(validation_state=LabResultValidation.RETRACTED)
+            .select_related("biomarker")
+            .order_by("pk")
+        )
+        return Response(
+            {
+                "omop_cdm_version": OMOP_CDM_VERSION,
+                "columns": list(MEASUREMENT_COLUMNS),
+                "rows": [lab_result_to_omop_measurement(r) for r in results],
+            }
         )
 
 
