@@ -215,3 +215,22 @@ Q66 implementation note: `Biomarker.category` (blood | body_composition | microb
 **Q73** · How is a stored lab report represented in FHIR (M02 TG-j part 1)? Defaults taken: **a `collection` Bundle with one DiagnosticReport, one Observation per result and one Organization (name only) per distinct laboratory, referenced from `Observation.performer`; the method is `Observation.method.text`. FHIR requires `status` (and `code` on the DiagnosticReport) but nothing stored says either, so `status` is `unknown` (a code in both R4 value sets) and the DiagnosticReport `code` is only the text "Laboratory report", no coding; no patient `subject` is emitted. Nothing else is invented**. Should the laboratory instead be a coded identifier, and should `status` be derived from `validation_state`?
 
 **Q74** · Can pdfplumber be added for M02 TG-e part 1? Blocked 2026-11-26: the implementer sandbox refused `uv add --project backend pdfplumber` (approval requested, none given), so the package and its transitive licences could not be fetched or locked; the rule is to stop rather than add an unverified dependency. Default taken: **nothing added; no PDF code, route or test written; TG-e stays unchecked**. Please run `uv add pdfplumber` in backend/ (or allow it for the implementer), then re-run TG-e part 1.
+
+**Answers (Fabio 2026-11-26):**
+- **Q56, biological-age clocks: a research task, not a single rule.**
+  - **Compare sources:** compare the PhenoAge coefficients and constants across every source: the original Levine 2018 paper with its supplement, later errata, biolearn, pyaging, get-based and other maintained implementations.
+  - **Document differences:** record every difference in values, units or transformations in `docs/research/phenoage-coefficients.md`, with a citation for each source.
+  - **Bortz:** add the Bortz blood age clock (Bortz et al.) with the same analysis.
+  - **Library preference:** if a well-maintained, AGPL-compatible library implements these clocks, adopt it as the computation engine, following the x01 ecosystem rule. Its numbers must still be checked against the papers; a mismatch is documented and the paper prevails, unless an erratum says otherwise.
+  - **Numbers in code:** no numbers enter the code without that comparison.
+- **Q57, retention of the original report:** it is kept while the user wants the data available for research purposes. When closing the account, the user may choose to **leave their data public for research**. Account erasure must therefore offer a choice: delete everything, or keep the de-identified data and reports public for research. This links to the consent model in M12 / analytics-and-open-data.
+- **Q58:** OK. Redaction is off by default, opt-in, and the user sees a diff before confirming.
+- **Q63, measurement validation states:** Fabio asked what the states mean. Proposed richer set, to be used as the default unless he says otherwise:
+  - `entered`: typed or imported, not yet checked;
+  - `user_confirmed`: the user checked it against their own report;
+  - `source_verified`: the original document is attached and the value matches it, checked by deterministic extraction or by a second person;
+  - `disputed`: flagged as possibly wrong;
+  - `retracted`: withdrawn by the user and excluded from statistics, but kept for audit.
+  
+  Aggregations and public statistics use only `user_confirmed` and above.
+- **Q65:** OK. Rollback also deletes the retained original file.
