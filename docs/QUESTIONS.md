@@ -173,3 +173,19 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 **Q54** · The header of PanelsAndForms.csv was not seen in any fetched source (HAPI has no panel key; its fixture under PanelsAndForms/ is a copy of Loinc.csv). Only the OHDSI staging DDL names (PARENTLOINC, LOINC, LSEQUENCE) are verified, and they are used case-insensitively. Default taken: **PanelsAndForms.csv is NOT imported (no model, no fixture) until a real header is verified**. Please check the header against a real release and tell us the actual names if they differ.
 
 **Q55** · Two M02 scan candidates have a licence that cannot be fixed to an SPDX id: the HL7 FHIR specification repository (GitHub `NOASSERTION`; its LICENSE file says the source is under multiple licences and the specification itself under a different one) and biolearn ("new BSD" on PyPI, clause count unknown). Default taken: **both stay learn-from only, nothing is imported from either**; DiagnosticReport/Observation are written by hand against the spec. Please say whether the FHIR specification's licence allows us to ship profiles or value sets derived from it.
+
+## 2026-11-26 · M02 Blood Layer change
+
+**Q56** · PhenoAge coefficients are not stored anywhere in the repo. Default taken: **coefficients are taken from the original paper only and entered with a citation; pyaging, biolearn and get-based are not a source of numbers**. May that be the rule, and which paper edition is authoritative?
+
+**Q57** · How long is the original uploaded report file retained? Default taken: **kept until the user deletes it or erases the account**. Should there be a fixed limit?
+
+**Q58** · Is PII redaction on by default at import? The main spec ("Optional PII obfuscation on import") says the original is retained raw unless the user opts in. Default taken: **off by default (as the spec says); the user may opt in and sees a diff of what was removed**. What is retained after opt-in (raw or redacted) is left undecided. Should redaction be on or mandatory instead? That would need a MODIFIED requirement.
+
+**Q59** · Where does the import code live? Default taken: **results stay in `backend/core` next to `Measurement`; import and redaction code go in a new Django app named in TG-a**. Is a separate app preferred?
+
+**Q60** · The M02 module issue number could not be verified (`gh` was not permitted to the implementer). Default taken: **"Module issue: unknown" in the proposal**. What is the right issue number?
+
+**Q61** · `core.Measurement.save` rejects a unit with no conversion, but lab imports must keep such results as reported. Default taken: **`LabResult` is a separate model that accepts unconvertible units and leaves the normalised value empty**. Or should `Measurement` be relaxed instead?
+
+**Q62** · The main spec makes the raw original report public by default, while PII redaction is off by default, so names and IDs could be published. Default taken: **the original stays private until the user explicitly publishes it; TG-g stores privately only**. Should the main spec be changed with a MODIFIED requirement?

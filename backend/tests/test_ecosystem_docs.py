@@ -11,6 +11,7 @@ CHANGES = REPO / "openspec" / "changes"
 MODULE_CHANGES = {
     "m00-foundations": "m00-foundations.md",
     "m01-terminology-reference-data": "m01-terminology.md",
+    "m02-blood-layer": "m02-blood-layer.md",
 }
 
 MANDATORY = (
