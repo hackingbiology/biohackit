@@ -199,8 +199,31 @@ def test_report_requires_a_valid_origin(user, origin):
     assert not LabReport.objects.exists()
 
 
-def test_reported_value_is_rounded_before_normalising(report, analyte, unit_b):
-    # scenario: biomarkers-and-labs::a-stored-factor-yields-the-normalised-value
+@pytest.mark.parametrize(
+    "bad",
+    [
+        Decimal("1.2345678"),
+        Decimal("123456789012345"),
+        Decimal("1.0000000000000000000000000001"),
+    ],
+)
+def test_value_that_does_not_fit_is_rejected(report, analyte, bad):
+    # scenario: biomarkers-and-labs::a-stored-result-keeps-the-reported-value
+    with pytest.raises(ValidationError):
+        result(report, analyte, reported_value=bad)
+    assert not LabResult.objects.exists()
+
+
+@pytest.mark.parametrize("bad", [Decimal("NaN"), Decimal("Infinity")])
+def test_non_finite_value_is_rejected(report, analyte, bad):
+    # scenario: biomarkers-and-labs::a-stored-result-keeps-the-reported-value
+    with pytest.raises(ValidationError):
+        result(report, analyte, reported_value=bad)
+    assert not LabResult.objects.exists()
+
+
+def test_six_decimals_round_trip_exactly(report, analyte, unit_b):
+    # scenario: biomarkers-and-labs::a-stored-result-keeps-the-reported-value
     UnitConversion.objects.create(
         from_unit=unit_b,
         to_unit=analyte.unit,
@@ -208,7 +231,22 @@ def test_reported_value_is_rounded_before_normalising(report, analyte, unit_b):
         source=analyte.source,
     )
     row = result(
-        report, analyte, reported_value=Decimal("1.2345675"), reported_unit="xb/L"
+        report, analyte, reported_value=Decimal("1.234567"), reported_unit="xb/L"
     )
     row.refresh_from_db()
-    assert row.reported_value * 3 == row.normalised_value
+    assert row.reported_value == Decimal("1.234567")
+    assert row.normalised_value == Decimal("1.234567") * 3
+
+
+def test_trailing_zeros_beyond_six_decimals_are_accepted(report, analyte):
+    # scenario: biomarkers-and-labs::a-stored-result-keeps-the-reported-value
+    row = result(report, analyte, reported_value=Decimal("5.1000000"))
+    row.refresh_from_db()
+    assert row.reported_value == Decimal("5.1")
+
+
+def test_float_input_has_no_binary_noise(report, analyte):
+    # scenario: biomarkers-and-labs::a-stored-result-keeps-the-reported-value
+    row = result(report, analyte, reported_value=0.1)
+    row.refresh_from_db()
+    assert row.reported_value == Decimal("0.1")

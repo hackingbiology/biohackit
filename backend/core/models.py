@@ -194,6 +194,42 @@ class LabResult(models.Model):
         self.aggregation_eligible = bool(self.laboratory and self.method)
         super().save(*args, **kwargs)
 
+    def _exact_reported_value(self) -> Decimal:
+        """The reported value, unchanged, or ValidationError if the column cannot
+        hold it exactly (never rounded: the stored value is what the lab reported)."""
+        field = self._meta.get_field("reported_value")
+        max_digits = int(field.max_digits)  # type: ignore[attr-defined]
+        places = int(field.decimal_places)  # type: ignore[attr-defined]
+        try:
+            value = Decimal(str(self.reported_value))
+        except ArithmeticError as exc:
+            raise ValidationError(
+                {"reported_value": "reported_value is not a number."}
+            ) from exc
+        if not value.is_finite():
+            raise ValidationError({"reported_value": "reported_value must be finite."})
+        # Drop trailing zeros on the digit tuple itself: Decimal.normalize() would
+        # round to the ambient context precision (28 digits) and hide real digits.
+        sign, digits, raw_exponent = value.as_tuple()
+        del sign
+        exponent = int(raw_exponent)
+        if not any(digits):
+            digits, exponent = (0,), 0
+        while len(digits) > 1 and digits[-1] == 0:
+            digits, exponent = digits[:-1], exponent + 1
+        if -exponent > places:
+            raise ValidationError(
+                {"reported_value": f"reported_value allows at most {places} decimals."}
+            )
+        if len(digits) + exponent > max_digits - places:
+            raise ValidationError(
+                {
+                    "reported_value": "reported_value allows at most "
+                    f"{max_digits - places} digits before the decimal point."
+                }
+            )
+        return value
+
     def _normalise(self) -> None:
         self.reported_unit_ref = Unit.objects.filter(
             ucum_code=self.reported_unit
@@ -201,8 +237,7 @@ class LabResult(models.Model):
         self.normalised_value = None
         self.normalised_unit = None
         self.normalised_source = None
-        # Round as the column does, so the stored pair stays consistent.
-        self.reported_value = Decimal(self.reported_value).quantize(Decimal("0.000001"))
+        self.reported_value = self._exact_reported_value()
         if self.reported_unit_ref is None:
             return
         try:
