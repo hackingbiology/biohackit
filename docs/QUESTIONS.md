@@ -203,3 +203,5 @@ Q66 implementation note: `Biomarker.category` (blood | body_composition | microb
 **Q68** · The s01 requirement text says DEXA/microbiome provenance is "laboratory or device, method, date". May a device stand in for the laboratory? Default taken: **no, laboratory and method are both required, as in the M02 delta; `device` alone does not satisfy the rule**.
 
 **Q67** · Does a `LabResult` inherit `LabReport.laboratory`? Default taken: **yes, only when the result has none and the report states one; never invented. `reported_unit_ref` is set only on an exact `Unit.ucum_code` match, and a unit not stored, or with no stored factor, leaves the normalised pair empty**. Should the result require its own laboratory instead?
+
+**Q69** · OMOP MEASUREMENT `*_concept_id` columns need OMOP vocabulary content (Athena) that is not in the repo. Default taken: **left empty until OMOP vocabularies are imported with provenance; LOINC and the reported unit go to the `*_source_value` columns. `person_id` and `measurement_type_concept_id` are likewise left empty by the mapper (TG-j fills them from a cited source)**.

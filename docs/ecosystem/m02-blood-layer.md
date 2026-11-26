@@ -102,7 +102,7 @@ Method, decision categories and licence table: [README.md](README.md). Capabilit
 - **Last activity:** 2026-10-28
 - **Decision:** reuse schema or dataset
 - **Verified:** api.github.com/repos/OHDSI/CommonDataModel and raw.githubusercontent.com/OHDSI/CommonDataModel/main/DESCRIPTION (`License: Apache License 2.0`), 2026-11-24
-- **Licence note:** same verdict as m01-terminology.md and integrations.md; cited, not re-decided. The MEASUREMENT table is the alignment target for lab results (column names must be checked against the DDL when M02 is specified).
+- **Licence note:** same verdict as m01-terminology.md and integrations.md; cited, not re-decided. The MEASUREMENT table is the alignment target for lab results Column names checked against the v5.4.0 DDL (commit dd85c0d30bb3dd4bd16c5dbef7dbf9dd93075fa2, https://raw.githubusercontent.com/OHDSI/CommonDataModel/v5.4.0/inst/ddl/5.4/postgresql/OMOPCDM_postgresql_5.4_ddl.sql, 2026-11-26); mapping in docs/omop/measurement-mapping.md.
 
 ## PhenoAge / biological-age implementations
 
