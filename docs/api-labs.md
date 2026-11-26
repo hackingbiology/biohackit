@@ -48,6 +48,17 @@ fewer than 40 characters. In both cases nothing is stored. Defaults are open in 
 
 The report with its results. `404` for a report owned by someone else.
 
+## `GET /api/labs/reports/<id>/fhir/`
+
+The report as a FHIR R4 `collection` Bundle (`application/fhir+json`): one DiagnosticReport whose
+`result` references one Observation per result, plus an Organization (name only) per distinct
+laboratory. Each Observation has the LOINC code and the value as reported (a JSON number, not
+rounded). `valueQuantity` has `system` `http://unitsofmeasure.org` and `code` only when the
+reported unit exactly equals a stored `Unit.ucum_code`; otherwise only `unit` text. `method`,
+`performer` (laboratory), `effectiveDateTime` (collected) and `issued` (reported) appear only
+when stored. `status` is `unknown` and no patient is referenced (Q73). `404` for another user's
+report; `401`/`403` when not signed in. Element sources: docs/fhir/lab-report-mapping.md.
+
 ## Plausibility
 
 `plausibility = {"status": "within" | "outside" | "not_checked", "range_source": {...} | null}`.

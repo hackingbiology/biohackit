@@ -8,6 +8,7 @@ from typing import Any
 
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.dateparse import parse_datetime
 from rest_framework import status  # type: ignore[import-untyped]  # DRF ships no stubs
@@ -18,6 +19,7 @@ from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF 
 
 from terminology.models import ReferenceRange, Source
 
+from .fhir import lab_report_to_fhir_bundle, render_fhir_json
 from .models import (
     Biomarker,
     LabReport,
@@ -276,3 +278,16 @@ class LabReportDetailView(APIView):  # type: ignore[misc]  # base is Any: DRF un
     def get(self, request: Request, pk: int) -> Response:
         report = get_object_or_404(LabReport, pk=pk, owner=request.user)
         return Response(_report_data(report))
+
+
+class LabReportFhirView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """GET: the caller's report as a FHIR R4 collection Bundle. Another user's is a 404."""
+
+    http_method_names = ["get", "head", "options"]
+
+    def get(self, request: Request, pk: int) -> HttpResponse:
+        report = get_object_or_404(LabReport, pk=pk, owner=request.user)
+        return HttpResponse(
+            render_fhir_json(lab_report_to_fhir_bundle(report)),
+            content_type="application/fhir+json",
+        )
