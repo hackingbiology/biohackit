@@ -70,6 +70,25 @@ exported; disputed and entered ones are (the export is the owner's own data, Q80
 vocabulary content is stored, so none is invented (Q69). `404` for another user's report;
 `401`/`403` when not signed in. Column sources: docs/omop/measurement-mapping.md.
 
+## `GET /api/labs/results/<id>/convert/?unit=<ucum>`
+
+Shows one of your results in the UCUM unit you name. The original value and unit are always
+kept and always returned; nothing is written. `unit` is required, at most 64 characters, and
+must be a stored UCUM code (otherwise `400` naming `unit`). Response:
+`{result_id, reported_value, reported_unit, value, unit, converted, reason, conversion_source}`;
+decimals are strings, not rounded.
+
+- `converted: true`: a stored, sourced conversion exists (an analyte-specific one is preferred);
+  `value` is `reported_value` times its factor, `unit` is the requested unit and
+  `conversion_source` is the stored Source (`id, name, version, licence, url, retrieved_at`).
+- `converted: false, reason: "same_unit"`: the requested unit is the reported one.
+- `converted: false, reason: "no_conversion_known"`: no stored direct conversion (an inverse or
+  a chain is never used) or the reported unit is not stored; `value`/`unit` are the reported
+  ones.
+
+Retracted results can still be viewed by their owner (Q81). `404` for another user's result;
+`401`/`403` when not signed in.
+
 ## Plausibility
 
 `plausibility = {"status": "within" | "outside" | "not_checked", "range_source": {...} | null}`.

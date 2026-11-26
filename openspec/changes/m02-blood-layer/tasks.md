@@ -46,5 +46,9 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
   - Part 2 done 2026-11-26: owner-only `GET /api/labs/reports/<id>/omop/` (`LabReportOmopView`, retracted excluded, concept ids null, Q69/Q80), tests in test_lab_omop_export.py.
 - [x] Hand-written FHIR DiagnosticReport/Observation representation and OMOP MEASUREMENT-shaped export of stored results. Req: M02 "FHIR representation of a stored lab result" (valid UCUM = exact match with a stored `Unit.ucum_code`; no UCUM validator blocker), M02 "Lab result provenance and OMOP MEASUREMENT alignment". Blocked by: Q55, TG-a.
 
+## TG-l — Unit conversion view (no new dependency)
+- [ ] Owner-only view of a stored result in a requested UCUM unit using stored UnitConversion rows only; reported value and unit always returned; no conversion known → reported value shown unconverted. Req: s01 "Unit conversion between unit systems". Part 1 = API; SI/US labelling of units waits on Q81.
+  - Part 1 done 2026-11-26 (stays unchecked): `GET /api/labs/results/<id>/convert/?unit=<ucum>` (`LabResultConvertView`), tests in test_lab_unit_conversion_view.py; Q81.
+
 ## TG-k — Extraction benchmark
 - [ ] Synthetic report with a verified answer key; measure extraction accuracy of TG-e/TG-f. Req: s01 "Extraction benchmark on a synthetic report". Blocked by: TG-e.

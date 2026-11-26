@@ -41,7 +41,7 @@ Registers part D1c: docs/spec-discovery/specs-html.md (sections 15–27)
 - [ ] Implement "Import from wearable export files"
 - [ ] Implement "Deterministic calculated markers"
 - [ ] Implement "Deterministic Bortz clock computation"
-- [ ] Implement "Unit conversion between unit systems"
+- [x] Implement "Unit conversion between unit systems"
 - [ ] Implement "Cycle-phase-dependent ranges"
 - [ ] Implement "Import can be rolled back"
 - [ ] Implement "Extraction benchmark on a synthetic report"

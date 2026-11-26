@@ -5,7 +5,7 @@ or differently here."""
 
 import math
 from datetime import datetime
-from decimal import Decimal
+from decimal import Decimal, localcontext
 from typing import Any
 
 from django.core.exceptions import ValidationError as DjangoValidationError
@@ -19,7 +19,8 @@ from rest_framework.request import Request  # type: ignore[import-untyped]  # DR
 from rest_framework.response import Response  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
-from terminology.models import ReferenceRange, Source
+from terminology.models import ReferenceRange, Source, Unit
+from terminology.services import normalize_value
 
 from .fhir import lab_report_to_fhir_bundle, render_fhir_json
 from .models import (
@@ -378,6 +379,74 @@ class LabReportPhenoAgeView(APIView):  # type: ignore[misc]  # base is Any: DRF 
                 "method": PHENOAGE_METHOD,
             }
         )
+
+
+MAX_UNIT_CHARS = 64
+
+
+def _target_unit(request: Request) -> str:
+    raw = request.query_params.get("unit")
+    if not raw or len(raw) > MAX_UNIT_CHARS:
+        raise ValidationError(
+            {
+                "unit": f"Give unit as a UCUM code of at most {MAX_UNIT_CHARS} characters."
+            }
+        )
+    if "\x00" in raw:
+        raise ValidationError({"unit": "unit must not contain NUL characters."})
+    if not Unit.objects.filter(ucum_code=raw).exists():
+        raise ValidationError({"unit": f"Unknown UCUM unit: {raw}."})
+    return raw
+
+
+class LabResultConvertView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    """GET: the caller's result shown in the UCUM unit named by `unit`, using only a stored,
+    sourced UnitConversion (Q81). The reported value and unit are always returned and
+    nothing is written. Retracted results stay viewable. Another user's result is a 404."""
+
+    http_method_names = ["get", "head", "options"]
+
+    def get(self, request: Request, pk: int) -> Response:
+        result = get_object_or_404(
+            LabResult.objects.select_related("biomarker"),
+            pk=pk,
+            report__owner=request.user,
+        )
+        target = _target_unit(request)
+        reported = str(result.reported_value)
+        body: dict[str, Any] = {
+            "result_id": result.pk,
+            "reported_value": reported,
+            "reported_unit": result.reported_unit,
+            "value": reported,
+            "unit": result.reported_unit,
+            "converted": False,
+            "reason": None,
+            "conversion_source": None,
+        }
+        if target == result.reported_unit:
+            body["reason"] = "same_unit"
+            return Response(body)
+        try:
+            # 20-digit value x 30-digit factor needs <= 50 digits: prec 60 never rounds.
+            with localcontext() as ctx:
+                ctx.prec = 60
+                outcome = normalize_value(
+                    result.reported_value,
+                    result.reported_unit,
+                    target,
+                    biomarker=result.biomarker,
+                )
+        except DjangoValidationError:
+            body["reason"] = "no_conversion_known"
+            return Response(body)
+        body.update(
+            value=str(outcome.value),
+            unit=target,
+            converted=True,
+            conversion_source=_source_data(Source.objects.get(pk=outcome.source_id)),
+        )
+        return Response(body)
 
 
 # States the owner may set. `entered` is the starting state; `source_verified` needs an
