@@ -52,10 +52,21 @@ test("every scan entry is a link to its URL with licence and decision", async ()
 test("each table has a caption", async () => {
   await renderPage();
   const tables = screen.getAllByRole("table");
-  expect(tables).toHaveLength(data.scans.length + 1);
+  const withEntries = data.scans.filter((s) => s.entries.length > 0);
+  expect(tables).toHaveLength(withEntries.length + 1);
   for (const table of tables) {
     expect(table.querySelector("caption")).not.toBeNull();
   }
+});
+
+// scenario: ecosystem-reuse::page-lists-every-scan-entry
+test("a scan without entries shows a plain line instead of an empty table", async () => {
+  await renderPage();
+  const empty = data.scans.filter((s) => s.entries.length === 0);
+  expect(empty.length).toBeGreaterThan(0);
+  expect(screen.getAllByText(ecosystemStrings.en.noEntries)).toHaveLength(
+    empty.length,
+  );
 });
 
 // scenario: ecosystem-reuse::page-lists-give-back-proposals

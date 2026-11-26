@@ -93,6 +93,7 @@ export interface EcosystemStrings {
   status: string;
   date: string;
   tableRegion: string;
+  noEntries: string;
   link: string;
   back: string;
 }
@@ -119,6 +120,7 @@ export const ecosystemStrings: Record<Locale, EcosystemStrings> = {
     status: "Status",
     date: "Date",
     tableRegion: "Scrollable table",
+    noEntries: "This document has no catalogue entries.",
     link: "Link",
     back: "Back to home",
   },
@@ -144,6 +146,7 @@ export const ecosystemStrings: Record<Locale, EcosystemStrings> = {
     status: "Stato",
     date: "Data",
     tableRegion: "Tabella scorrevole",
+    noEntries: "Questo documento non contiene voci di catalogo.",
     link: "Link",
     back: "Torna alla home",
   },
@@ -167,6 +170,7 @@ export const ecosystemStrings: Record<Locale, EcosystemStrings> = {
     status: "状态",
     date: "日期",
     tableRegion: "可滚动表格",
+    noEntries: "本文档没有目录条目。",
     link: "链接",
     back: "返回首页",
   },

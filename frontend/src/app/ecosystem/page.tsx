@@ -42,6 +42,9 @@ export default async function EcosystemPage() {
             <h3 id={`scan-${scan.file}`} className="mb-2 text-lg font-semibold">
               {scan.title}
             </h3>
+            {scan.entries.length === 0 ? (
+              <p>{t.noEntries}</p>
+            ) : (
             <div
               role="region"
               aria-label={`${scan.title}: ${t.tableRegion}`}
@@ -96,6 +99,7 @@ export default async function EcosystemPage() {
                 </tbody>
               </table>
             </div>
+            )}
           </section>
         ))}
       </section>
