@@ -1,6 +1,16 @@
 {
   "days": [
     {
+      "date": "2026-11-26",
+      "entries": [
+        {
+          "change": "m02-blood-layer",
+          "commit": "04027e2",
+          "summary": "A page for importing lab results from a CSV file now lets you check each row, save only when all are recognised, and undo the import."
+        }
+      ]
+    },
+    {
       "date": "2026-11-25",
       "entries": [
         {

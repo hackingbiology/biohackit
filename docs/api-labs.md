@@ -5,6 +5,13 @@ Authenticated (JWT) endpoints under `/api/labs/`. A typed report uses the same
 same provenance fields, unit normalisation, validation state and aggregation
 eligibility. Spec: `biomarkers-and-labs` "Manual entry of equal standing".
 
+## Browser access
+
+The API accepts either a JWT (`Authorization: Bearer ...`) or the browser sign-in session
+cookie. A session request that changes data (POST, PATCH, DELETE) must also send the
+`X-CSRFToken` header with the value of the `csrftoken` cookie, otherwise the answer is `403`
+and nothing is stored. A request with no valid credentials is still refused with `401`.
+
 ## `POST /api/labs/reports/`
 
 Creates a report with `origin = manual`, owned by the caller, and all its results in one

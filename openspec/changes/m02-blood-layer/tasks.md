@@ -61,3 +61,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 
 ## TG-k — Extraction benchmark
 - [ ] Synthetic report with a verified answer key; measure extraction accuracy of TG-e/TG-f. Req: s01 "Extraction benchmark on a synthetic report". Blocked by: TG-e.
+
+## TG-o — Lab pages (frontend)
+- [ ] Browser pages for the lab layer on the existing API: CSV import review (upload, per-row recognised/not recognised with reason, confirm only when all are recognised, undo import), then manual entry and report view. Req: main "Human review before persistence", main "Import from PDF, photo, and CSV with learned templates" (CSV part), s01 "Import can be rolled back". Part 1 = CSV import review page + session authentication for the browser.
+  - Part 1 done 2026-11-26 (stays unchecked): `frontend/src/app/labs/import/page.tsx`, `frontend/src/lib/labs.ts`, `LabImportStrings` (EN; IT/ZH fall back, Q86); `SessionAuthentication` added after JWT in `REST_FRAMEWORK` (CSRF enforced, no view changed, anonymous stays 401); tests `backend/tests/test_session_api_auth.py`, `frontend/src/__tests__/lab-import.test.tsx`. Next: manual entry page and report view.

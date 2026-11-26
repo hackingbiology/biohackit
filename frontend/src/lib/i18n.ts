@@ -331,6 +331,92 @@ export const changelogStrings: Record<Locale, ChangelogStrings> = {
   zh: changelogEn,
 };
 
+export interface LabImportStrings {
+  title: string;
+  intro: string;
+  headerHelp: string;
+  fileLabel: string;
+  check: string;
+  checking: string;
+  tableCaption: string;
+  colRow: string;
+  colLoinc: string;
+  colValue: string;
+  colUnit: string;
+  colStatus: string;
+  colReason: string;
+  recognised: string;
+  notRecognised: string;
+  inferred: string;
+  summary: string;
+  save: string;
+  saving: string;
+  saveBlocked: string;
+  noFile: string;
+  savedTitle: string;
+  savedBody: string;
+  originalKept: string;
+  originalNotKept: string;
+  undo: string;
+  undoConfirm: string;
+  undone: string;
+  signIn: string;
+  signInLink: string;
+  genericError: string;
+  confirmRefused: string;
+  tableRegion: string;
+  undoFailed: string;
+}
+
+const labImportEn: LabImportStrings = {
+  title: "Import lab results (CSV)",
+  intro:
+    "Choose a CSV file, check it, and save it only when every row is recognised. Nothing is stored until you save, and you can undo a saved import.",
+  headerHelp:
+    "The first line must be: loinc_code,value,unit. Optional columns after that: collected_at, reported_at, laboratory, method. Times need a UTC offset.",
+  fileLabel: "Lab results file (.csv)",
+  check: "Check file",
+  checking: "Checking…",
+  tableCaption: "Rows of your file and whether each one is recognised",
+  colRow: "Row",
+  colLoinc: "LOINC code",
+  colValue: "Value",
+  colUnit: "Unit",
+  colStatus: "Status",
+  colReason: "Reason",
+  recognised: "Recognised",
+  notRecognised: "Not recognised",
+  inferred: "Inferred",
+  summary: "{recognised} of {total} rows recognised",
+  save: "Save report",
+  saving: "Saving…",
+  saveBlocked:
+    "Save is not available because at least one row is not recognised. Fix the file and check it again.",
+  noFile: "Choose a CSV file first.",
+  savedTitle: "Report saved",
+  savedBody: "Report number {id} was saved.",
+  originalKept: "The original file was kept privately.",
+  originalNotKept: "The original file was not kept.",
+  undo: "Undo this import",
+  undoConfirm: "Undo this import? The report and its results will be deleted.",
+  undone: "Import undone. The report was deleted.",
+  signIn: "Please sign in to import lab results.",
+  signInLink: "Go to sign in",
+  genericError: "Something went wrong. Nothing was saved. Try again.",
+  confirmRefused:
+    "The file was not saved because some rows are not recognised.",
+  tableRegion: "Scrollable table",
+  undoFailed:
+    "The import was not undone. The report is still saved. Try again.",
+};
+
+// IT and ZH fall back to EN until translated (Q86).
+export const labImportStrings: Record<Locale, LabImportStrings> = {
+  en: labImportEn,
+  it: labImportEn,
+  zh: labImportEn,
+};
+
 export function pickLocale(lang: string | undefined): Locale {
   const l = (lang ?? "en").toLowerCase();
   if (l.startsWith("it")) return "it";

@@ -20,7 +20,7 @@ export interface AllauthResult {
   body: any;
 }
 
-function csrfToken(): string {
+export function csrfToken(): string {
   if (typeof document === "undefined") return "";
   const m = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
   return m ? decodeURIComponent(m[1]) : "";

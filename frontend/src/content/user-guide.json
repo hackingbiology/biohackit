@@ -81,6 +81,11 @@
       "step": "See what we build on"
     },
     {
+      "action": "Open \"Import lab results (CSV)\" on the home page after you sign in. Choose a file and press \"Check file\". Each row is marked Recognised or Not recognised, with the reason. \"Save report\" works only when every row is recognised. After saving you can press \"Undo this import\".",
+      "route": "frontend/src/app/labs/import/page.tsx",
+      "step": "Import lab results from a CSV file"
+    },
+    {
       "action": "The documentation index links to the AI surfaces map, the architecture page and this guide.",
       "route": "frontend/src/app/docs/page.tsx",
       "step": "Read the documentation"
