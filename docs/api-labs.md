@@ -254,3 +254,9 @@ Each panel has `name`, `source`, `expected_count`, `present_count`, `present` an
 null when no present result has a date), `age_days` (whole days from that date to now, or null) and
 `sparse` (true when `present_count < expected_count`). A panel with no expected analytes is 0/0,
 not sparse, with a null date.
+
+## `GET|POST /api/auth/me/erase/` (account erasure)
+
+Owner-only (JWT). `GET` returns the plain-language notice (copies already cloned by others are outside the instance's control), what is deleted, and the two choices; `keep_for_research` is marked `available: false` with its reason.
+
+`POST` with `choice` = `delete_everything` and `confirm` = `true` deletes the user, profile, lab reports, results, measurements and the retained original files in one transaction (files are removed once it commits). Without `confirm` true, or with an unknown choice: 400, nothing deleted. `keep_for_research`: 409 "de-identification not implemented yet", nothing deleted. Unauthenticated: 401. Defaults: Q85.

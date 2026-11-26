@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- S01 account erasure part 1 done 2026-11-26: owner-only `GET/POST /api/auth/me/erase/` (clones notice; `delete_everything` removes user, data and retained originals; `keep_for_research` refused 409 until M12 de-identification; Q85). No migration, no dependency. Next: research-retention path (M12) and the UI.
 - M02 TG-h part 1 done 2026-11-26: `core.OrganSystemPanel` (migration 0012, table only, nothing seeded) and owner-only `GET /api/labs/completeness/` giving per panel n of m expected markers present and the newest collected date (own results, disputed/retracted excluded; Q84). No dependency. Next: Q84 answer (source of organ systems), then the frontend sentence.
 - M02 TG-n part 1 done 2026-11-26: `core.CalculatedRatioDefinition` (migration 0011, table only, nothing seeded) and owner-only `GET /api/labs/reports/<id>/calculated/` computing stored quotient markers in code (calculated, inputs and dates listed, missing input gives null value; Q83). No dependency. Next: Q83 answer (sources of ratios), then HOMA-IR / free water deficit part.
 - M02 TG-m part 1 done 2026-11-26: owner-only `GET /api/labs/results/<id>/ranges/` shows a result against its reference range, optimal range (only if `displayable_optimal_range` passes) and safety threshold, kept separate, each with provenance and a computed status (Subject unknown, Q82). No dependency, no migration. Next: next unblocked group per tasks.md.

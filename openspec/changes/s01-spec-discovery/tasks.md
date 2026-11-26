@@ -14,6 +14,7 @@ Registers part D1c: docs/spec-discovery/specs-html.md (sections 15–27)
 ## accounts-and-profiles
 - [ ] Implement "Full personal data export"
 - [ ] Implement "Personal data erasure"
+  - Part 1 done: owner-only `GET/POST /api/auth/me/erase/` implements "delete everything" (user, reports, results, measurements, retained originals). The research-retention path (needs M12 de-identification; refused with 409) and the UI remain.
 - [ ] Implement "Consent to public-by-default is explicit and revocable"
 - [ ] Implement "Lifestyle context cards"
 

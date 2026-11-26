@@ -23,6 +23,11 @@ The system SHALL let a user delete their account and personal data, and SHALL st
 - **WHEN** the user starts a deletion
 - **THEN** the system states that copies already cloned by others are outside its control
 
+#### Scenario: Erasure offers a research-retention choice
+- **WHEN** a user starts a deletion
+- **THEN** the system offers "delete everything" or "keep de-identified data and reports public for research" (Q57, Fabio 2026-11-26)
+- **AND** the system links the choice to the consent model in analytics-and-open-data
+
 ### Requirement: Consent to public-by-default is explicit and revocable
 The system SHALL record one explicit consent to the public-by-default posture at onboarding, SHALL keep per-item withholding available, and SHALL let the user revoke that consent or withhold or unpublish any item at any time. This refines, and does not replace, the public-by-default requirement. (Source: docs/hackingbiology-project-spec.md § 7 Dati, privacy; the default-private part of that source is superseded, see QUESTIONS.md Q21.)
 
