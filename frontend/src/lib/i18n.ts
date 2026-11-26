@@ -345,6 +345,13 @@ export interface LabImportStrings {
   colUnit: string;
   colStatus: string;
   colReason: string;
+  colRange: string;
+  rangeWithin: string;
+  rangeOutside: string;
+  rangeNotChecked: string;
+  rangeFlagNote: string;
+  rangeSource: string;
+  savedLock: string;
   recognised: string;
   notRecognised: string;
   inferred: string;
@@ -384,6 +391,15 @@ const labImportEn: LabImportStrings = {
   colUnit: "Unit",
   colStatus: "Status",
   colReason: "Reason",
+  colRange: "Range check",
+  rangeWithin: "Within the cited reference range",
+  rangeOutside: "Outside the cited reference range",
+  rangeNotChecked: "Not checked",
+  rangeFlagNote:
+    "The range check is only a flag. It never stops you from saving.",
+  rangeSource: "Range source:",
+  savedLock:
+    "Report number {id} is saved. Undo it before you check another file.",
   recognised: "Recognised",
   notRecognised: "Not recognised",
   inferred: "Inferred",

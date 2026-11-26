@@ -13,6 +13,7 @@ import {
   rollbackReport,
   type ConfirmedReport,
   type PreviewRow,
+  type Plausibility,
 } from "@/lib/labs";
 import { labImportStrings, pickLocale } from "@/lib/i18n";
 
@@ -132,6 +133,15 @@ export default function LabImportPage() {
         ? t.inferred
         : t.notRecognised;
 
+  const rangeText = (p: Plausibility | null) =>
+    p?.status === "within"
+      ? t.rangeWithin
+      : p?.status === "outside"
+        ? t.rangeOutside
+        : t.rangeNotChecked;
+
+  const locked = report !== null && !undone;
+
   return (
     <main className="mx-auto max-w-3xl space-y-6 p-4 sm:p-8">
       <h1 className="text-2xl font-bold">{t.title}</h1>
@@ -171,7 +181,18 @@ export default function LabImportPage() {
         <p id="lab-file-help" className="text-sm">
           {t.headerHelp}
         </p>
-        <button type="button" className={button} disabled={busy} onClick={onCheck}>
+        {locked && report && (
+          <p id="saved-lock" className="font-medium">
+            {t.savedLock.replace("{id}", String(report.id))}
+          </p>
+        )}
+        <button
+          type="button"
+          className={button}
+          disabled={busy || locked}
+          aria-describedby={locked ? "saved-lock" : undefined}
+          onClick={onCheck}
+        >
           {busy && !report ? t.checking : t.check}
         </button>
       </div>
@@ -206,6 +227,7 @@ export default function LabImportPage() {
                   <th scope="col">{t.colUnit}</th>
                   <th scope="col">{t.colStatus}</th>
                   <th scope="col">{t.colReason}</th>
+                  <th scope="col">{t.colRange}</th>
                 </tr>
               </thead>
               <tbody>
@@ -217,11 +239,26 @@ export default function LabImportPage() {
                     <td>{r.unit}</td>
                     <td>{statusText(r.status)}</td>
                     <td>{r.reason}</td>
+                    <td>
+                      {rangeText(r.plausibility)}
+                      {r.plausibility?.range_source && (
+                        <>
+                          {" "}
+                          <a
+                            href={r.plausibility.range_source.url}
+                            className="underline"
+                          >
+                            {t.rangeSource} {r.plausibility.range_source.name}
+                          </a>
+                        </>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <p>{t.rangeFlagNote}</p>
           {!canSave && (
             <p id="save-blocked" className="font-medium">
               {t.saveBlocked}

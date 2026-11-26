@@ -216,3 +216,60 @@ test("every request carries credentials and the CSRF header", async () => {
     );
   }
 });
+
+const outsideRow = {
+  ...row(1, "recognised"),
+  plausibility: {
+    status: "outside",
+    range_source: {
+      name: "Synthetic source",
+      version: "1",
+      licence: "CC0-1.0",
+      url: "https://example.org/range",
+      retrieved_at: "2026-01-01T00:00:00+00:00",
+    },
+  },
+};
+
+// scenario: biomarkers-and-labs::unrecognised-line-item
+test("an outside row shows the range check in words and Save stays enabled", async () => {
+  replies = [{ status: 200, body: { rows: [outsideRow] } }];
+  await checkFile();
+  expect(
+    await screen.findByText("Outside the cited reference range"),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("link", { name: "Range source: Synthetic source" }),
+  ).toHaveAttribute("href", "https://example.org/range");
+  expect(screen.getByRole("columnheader", { name: "Range check" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Save report" })).toBeEnabled();
+});
+
+// scenario: biomarkers-and-labs::unrecognised-line-item
+test("a null plausibility shows Not checked", async () => {
+  replies = [{ status: 200, body: { rows: [row(1, "recognised")] } }];
+  await checkFile();
+  expect(await screen.findByText("Not checked")).toBeInTheDocument();
+});
+
+// scenario: biomarkers-and-labs::undo-an-import
+test("after a save Check file is disabled and Undo stays; after Undo it is enabled", async () => {
+  replies = [
+    { status: 200, body: okRows },
+    { status: 201, body: { id: 7, original_retained: true } },
+    { status: 204, body: {} },
+  ];
+  jest.spyOn(window, "confirm").mockReturnValue(true);
+  const { user } = await checkFile();
+  await user.click(await screen.findByRole("button", { name: "Save report" }));
+  const undo = await screen.findByRole("button", { name: "Undo this import" });
+  expect(screen.getByRole("button", { name: "Check file" })).toBeDisabled();
+  expect(
+    screen.getByText("Report number 7 is saved. Undo it before you check another file."),
+  ).toBeVisible();
+  await user.click(undo);
+  await screen.findByRole("heading", {
+    name: "Import undone. The report was deleted.",
+  });
+  expect(screen.getByRole("button", { name: "Check file" })).toBeEnabled();
+});

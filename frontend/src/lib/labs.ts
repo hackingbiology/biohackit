@@ -12,6 +12,19 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export type RowStatus = "recognised" | "not_recognised" | "inferred";
 
+export interface RangeSource {
+  name: string;
+  version: string;
+  licence: string;
+  url: string;
+  retrieved_at: string;
+}
+
+export interface Plausibility {
+  status: "within" | "outside" | "not_checked";
+  range_source: RangeSource | null;
+}
+
 export interface PreviewRow {
   row: number;
   status: RowStatus;
@@ -19,7 +32,7 @@ export interface PreviewRow {
   loinc_code: string;
   value: string | number | null;
   unit: string;
-  plausibility: unknown;
+  plausibility: Plausibility | null;
 }
 
 export interface PreviewResult {
