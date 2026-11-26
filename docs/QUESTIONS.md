@@ -197,3 +197,5 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 **Q65** · Should rolling back an import also delete the retained original report file? Default taken: **yes, rollback removes the file stored with that `LabReport`, so no uploaded document (possibly with PII) is left behind**. Should the file instead be kept with a notice to the user?
 
 **Q66** · How is an analyte classed as blood, body composition (DEXA) or microbiome? Not defined anywhere yet. Default taken: **TG-a adds an explicit category on the analyte (or the `LabResult`), set only from a cited source or by the user, never guessed; an uncategorised analyte is treated as blood, so its result is stored and flagged and nothing is silently dropped**.
+
+**Q67** · Does a `LabResult` inherit `LabReport.laboratory`? Default taken: **yes, only when the result has none and the report states one; never invented. `reported_unit_ref` is set only on an exact `Unit.ucum_code` match, and a unit not stored, or with no stored factor, leaves the normalised pair empty**. Should the result require its own laboratory instead?

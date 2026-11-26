@@ -65,3 +65,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M02 · TG1: OpenSpec change m02-blood-layer (proposal, tasks TG-a..k, spec delta, Q56–Q60), ecosystem test covers it · see git log
 2026-11-26 · M02 · TG1b: spec review fixes (LabResult source/validation/eligibility, UCUM = stored Unit.ucum_code, rollback, s01 relation), Q63–Q64 · see git log
 2026-11-26 · M02 · TG1c: stored-and-flagged rule blood-only, DEXA/microbiome follow s01 Result without provenance, Q66 · see git log
+2026-11-26 · M02 · TG-a part 1: LabReport/LabResult models + migration 0006, normalisation via normalize_value, aggregation eligibility, Q67 · see git log

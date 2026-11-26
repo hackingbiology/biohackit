@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Base domain stubs (M00 TG3). Full logic arrives in M01 (ranges) and M03 (interventions)."""
 
+from decimal import Decimal
 from typing import Any
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from terminology.models import Unit
 from terminology.services import normalize_value
 
 
@@ -112,3 +114,106 @@ class Measurement(models.Model):
         # Domain rule: without lab AND method a measurement is not aggregation-eligible.
         self.is_aggregation_eligible = bool(self.laboratory and self.method)
         super().save(*args, **kwargs)
+
+
+class LabReportOrigin(models.TextChoices):
+    MANUAL = "manual", "Manual entry"
+    IMPORT = "import", "Import"
+
+
+class LabResultValidation(models.TextChoices):
+    # Default values taken for Q63; the owner has not chosen the states yet.
+    UNREVIEWED = "unreviewed", "Unreviewed"
+    REVIEWED = "reviewed", "Reviewed"
+
+
+class LabReport(models.Model):
+    """One laboratory report: groups results and records where they came from."""
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    origin = models.CharField(max_length=16, choices=LabReportOrigin.choices)
+    import_name = models.CharField(max_length=200, blank=True, default="")
+    laboratory = models.CharField(max_length=200, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self.origin not in LabReportOrigin.values:
+            raise ValidationError("A LabReport requires an origin: manual or import")
+        if self.origin == LabReportOrigin.IMPORT and not self.import_name.strip():
+            raise ValidationError("An imported LabReport requires an import name")
+        super().save(*args, **kwargs)
+
+
+class LabResult(models.Model):
+    """Lab-measured value of a coded analyte, separate from `Measurement` (Q61).
+    The value and unit stay as reported; the normalised pair is filled only when
+    a stored conversion exists. A result is always kept, never rejected for its unit."""
+
+    report = models.ForeignKey(LabReport, on_delete=models.CASCADE)
+    biomarker = models.ForeignKey(Biomarker, on_delete=models.PROTECT)
+    laboratory = models.CharField(max_length=200, null=True, blank=True)
+    method = models.CharField(max_length=200, null=True, blank=True)
+    device = models.CharField(max_length=200, null=True, blank=True)
+    collected_at = models.DateTimeField(null=True, blank=True)
+    reported_at = models.DateTimeField(null=True, blank=True)
+    reported_value = models.DecimalField(max_digits=20, decimal_places=6)
+    reported_unit = models.CharField(max_length=64)
+    reported_unit_ref = models.ForeignKey(
+        "terminology.Unit",
+        null=True,
+        blank=True,
+        editable=False,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
+    normalised_value = models.DecimalField(
+        max_digits=30, decimal_places=12, null=True, blank=True, editable=False
+    )
+    normalised_unit = models.CharField(
+        max_length=64, null=True, blank=True, editable=False
+    )
+    normalised_source = models.ForeignKey(
+        "terminology.Source",
+        null=True,
+        blank=True,
+        editable=False,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )  # source of the stored factor; NULL for identity or no normalisation
+    validation_state = models.CharField(
+        max_length=16,
+        choices=LabResultValidation.choices,
+        default=LabResultValidation.UNREVIEWED,
+    )
+    aggregation_eligible = models.BooleanField(default=False, editable=False)
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if not self.laboratory and self.report.laboratory:
+            self.laboratory = self.report.laboratory  # only when the report states it
+        self._normalise()
+        self.aggregation_eligible = bool(self.laboratory and self.method)
+        super().save(*args, **kwargs)
+
+    def _normalise(self) -> None:
+        self.reported_unit_ref = Unit.objects.filter(
+            ucum_code=self.reported_unit
+        ).first()
+        self.normalised_value = None
+        self.normalised_unit = None
+        self.normalised_source = None
+        # Round as the column does, so the stored pair stays consistent.
+        self.reported_value = Decimal(self.reported_value).quantize(Decimal("0.000001"))
+        if self.reported_unit_ref is None:
+            return
+        try:
+            result = normalize_value(
+                self.reported_value,
+                self.reported_unit,
+                self.biomarker.unit.ucum_code,
+                self.biomarker,
+            )
+        except ValidationError:  # no stored conversion: keep as reported
+            return
+        self.normalised_value = result.value
+        self.normalised_unit = result.unit
+        self.normalised_source_id = result.source_id
