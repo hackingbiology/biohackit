@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: Lab result provenance and OMOP MEASUREMENT alignment
-The system SHALL store each lab result as a `LabResult` row, separate from `core.Measurement`, with its source (its `LabReport` and the report's origin: manual entry or a named import), a validation state, its laboratory, method, device (when reported), collected and reported timestamps, the value and unit as reported and the normalised value and unit, linked to a LOINC-coded analyte. A `LabResult` SHALL accept a reported unit for which no conversion exists (it is not rejected as `Measurement` rejects it). The system SHALL keep these fields mappable to the columns of the OMOP MEASUREMENT table. A normalised value and unit SHALL be stored when the reported unit equals the analyte's unit or a stored conversion factor exists for the result's analyte and unit pair, as in `s01-spec-discovery` "Unit conversion between unit systems". A `LabResult` persisted without a laboratory or method SHALL be stored and flagged as not aggregation-eligible, as domain-model "Measurement provenance" requires of `Measurement`. The validation state values are not defined by domain-model or code; the default is `unreviewed` | `reviewed` (Q63).
+The system SHALL store each lab result as a `LabResult` row, separate from `core.Measurement`, with its source (its `LabReport` and the report's origin: manual entry or a named import), a validation state, its laboratory, method, device (when reported), collected and reported timestamps, the value and unit as reported and the normalised value and unit, linked to a LOINC-coded analyte. A `LabResult` SHALL accept a reported unit for which no conversion exists (it is not rejected as `Measurement` rejects it). The system SHALL keep these fields mappable to the columns of the OMOP MEASUREMENT table. A normalised value and unit SHALL be stored when the reported unit equals the analyte's unit or a stored conversion factor exists for the result's analyte and unit pair, as in `s01-spec-discovery` "Unit conversion between unit systems". A blood-analyte `LabResult` persisted without a laboratory or method SHALL be stored and flagged as not aggregation-eligible, as domain-model "Measurement provenance" requires of `Measurement`. For a `LabResult` whose analyte is a body-composition (DEXA) or microbiome analyte, the system SHALL ask for the missing laboratory or method before storing it, as in `s01-spec-discovery` "Body composition and microbiome results are accepted as measurements", scenario "Result without provenance" (Q66). The validation state values are not defined by domain-model or code; the default is `unreviewed` | `reviewed` (Q63).
 
 #### Scenario: A result records its source
 - **WHEN** a lab result is persisted
@@ -9,9 +9,14 @@ The system SHALL store each lab result as a `LabResult` row, separate from `core
 - **AND** it carries a validation state
 
 #### Scenario: A result without laboratory or method is not aggregation-eligible
-- **WHEN** a `LabResult` is persisted without a laboratory or method
+- **WHEN** a blood-analyte `LabResult` is persisted without a laboratory or method
 - **THEN** it is still stored
 - **AND** it is flagged as not aggregation-eligible
+
+#### Scenario: A DEXA or microbiome result without provenance is not stored
+- **WHEN** a user submits a DEXA or microbiome `LabResult` without a laboratory or method
+- **THEN** the system asks for the missing provenance before it is stored
+- **AND** no `LabResult` row is created until it is supplied
 
 #### Scenario: A stored result keeps the reported value
 - **WHEN** a lab result is persisted

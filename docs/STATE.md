@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M02 TG1c done 2026-11-26: stored-and-flagged rule limited to blood analytes; DEXA/microbiome LabResults follow s01 "Result without provenance"; new scenario, Q66. Next: M02 TG-a.
 - M02 TG1b done 2026-11-26: the three review findings fixed in the m02-blood-layer spec (LabResult source, validation state, aggregation eligibility; valid UCUM = stored Unit.ucum_code; rollback requirement and s01 relation); Q63, Q64. Spec only. Next: M02 TG-a.
 - M02 TG1 done 2026-11-26: OpenSpec change `m02-blood-layer` written (proposal citing docs/ecosystem/m02-blood-layer.md, tasks TG-a..TG-k, spec delta with 2 requirements, Q56–Q60); ecosystem test now covers it. No code, no dependency. Next: M02 TG-a (lab report/result models).
 - X01 M02 scan done 2026-11-26: docs/ecosystem/m02-blood-layer.md (PDF/OCR/CSV, FHIR, OMOP MEASUREMENT, PhenoAge, PII, get-based import); licence question Q55. No dependency added. Next: write the M02 OpenSpec change citing docs/ecosystem/m02-blood-layer.md.

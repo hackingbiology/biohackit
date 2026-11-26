@@ -192,6 +192,8 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 
 **Q63** · domain-model "Measurement provenance" names a validation state but neither it nor the code defines its values. Default taken (a default, not a decision): **`unreviewed` | `reviewed`**. Which states do you want?
 
-**Q64** · s01 puts body composition and microbiome results in the same time series model as blood analytes, but Q61 makes `LabResult` separate from `core.Measurement`. Default taken: **DEXA and microbiome lab results are stored as `LabResult` (the lab time series); `core.Measurement` stays for self-tracked values; a later MODIFIED requirement unifies them if you prefer**.
+**Q64** · s01 puts body composition and microbiome results in the same time series model as blood analytes, but Q61 makes `LabResult` separate from `core.Measurement`. Default taken: **DEXA and microbiome lab results are stored as `LabResult` (the lab time series); `core.Measurement` stays for self-tracked values; a later MODIFIED requirement unifies them if you prefer**. Outcome: s01 "Result without provenance" (ask before storing) applies to DEXA and microbiome `LabResult`s; the stored-and-flagged rule applies to blood analytes only.
 
 **Q65** · Should rolling back an import also delete the retained original report file? Default taken: **yes, rollback removes the file stored with that `LabReport`, so no uploaded document (possibly with PII) is left behind**. Should the file instead be kept with a notice to the user?
+
+**Q66** · How is an analyte classed as blood, body composition (DEXA) or microbiome? Not defined anywhere yet. Default taken: **TG-a adds an explicit category on the analyte (or the `LabResult`), set only from a cited source or by the user, never guessed; an uncategorised analyte is treated as blood, so its result is stored and flagged and nothing is silently dropped**.
