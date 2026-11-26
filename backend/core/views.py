@@ -18,7 +18,13 @@ from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF 
 
 from terminology.models import ReferenceRange, Source
 
-from .models import Biomarker, LabReport, LabReportOrigin, LabResult
+from .models import (
+    Biomarker,
+    LabReport,
+    LabReportOrigin,
+    LabResult,
+    LabResultValidation,
+)
 from .plausibility import RangeCandidate, check_plausibility
 
 TEXT_FIELDS = ("laboratory", "method", "device")
@@ -141,18 +147,27 @@ def _report_data(report: LabReport) -> dict[str, Any]:
     return {
         "id": report.pk,
         "origin": report.origin,
+        "import_name": report.import_name,
         "laboratory": report.laboratory,
         "created_at": report.created_at,
         "results": [_result_data(r) for r in results],
     }
 
 
-def _create_result(report: LabReport, item: Any) -> LabResult:
+def _create_result(
+    report: LabReport,
+    item: Any,
+    validation_state: str = LabResultValidation.UNREVIEWED,
+) -> LabResult:
     if not isinstance(item, dict):
         raise ValidationError({"non_field_errors": "Each result must be an object."})
     code = item.get("loinc_code")
     if not isinstance(code, str) or not code.strip():
         raise ValidationError({"loinc_code": "Give the LOINC code of the analyte."})
+    if "\x00" in code:
+        raise ValidationError(
+            {"loinc_code": "loinc_code must not contain NUL characters."}
+        )
     biomarker = (
         Biomarker.objects.select_related("unit").filter(loinc_code=code.strip()).first()
     )
@@ -180,6 +195,7 @@ def _create_result(report: LabReport, item: Any) -> LabResult:
         biomarker=biomarker,
         reported_value=value.strip(),
         reported_unit=unit.strip(),
+        validation_state=validation_state,
         **extra,
     )
     result.save()
@@ -242,9 +258,20 @@ class LabReportCreateView(APIView):  # type: ignore[misc]  # base is Any: DRF un
 
 
 class LabReportDetailView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
-    """GET: a report of the caller. Another user's report is a 404."""
+    """GET: a report of the caller. DELETE: roll back an import (report and results).
+    Another user's report is a 404; a manual report cannot be rolled back (409)."""
 
-    http_method_names = ["get", "head", "options"]
+    http_method_names = ["get", "delete", "head", "options"]
+
+    def delete(self, request: Request, pk: int) -> Response:
+        report = get_object_or_404(LabReport, pk=pk, owner=request.user)
+        if report.origin != LabReportOrigin.IMPORT:
+            return Response(
+                {"detail": "Only an import can be rolled back; a typed report cannot."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        report.delete()  # LabResult rows go with it (CASCADE); nothing else is touched
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request: Request, pk: int) -> Response:
         report = get_object_or_404(LabReport, pk=pk, owner=request.user)

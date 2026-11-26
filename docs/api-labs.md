@@ -55,3 +55,35 @@ It compares the value only with a stored, cited `ReferenceRange` of the same ana
 unit equals the reported unit (or the normalised unit). Only a single range without age,
 sex, ancestry or population strata, and whose lab and method are empty or equal to the result's, is used; otherwise the status is `not_checked`. It is a flag: the
 value is stored in every case. No range is invented or seeded (Q70).
+
+## CSV import (two steps)
+
+Header (UTF-8, comma-separated): `loinc_code,value,unit,collected_at,reported_at,laboratory,method`.
+The first three columns are required; the last four are optional. Any other or duplicate column
+rejects the whole file with a `400` naming the header. Empty cells are treated as absent.
+Rows go through the same rules as manual entry. Nothing is guessed (Q71).
+
+### `POST /api/labs/imports/csv/preview/`
+
+Multipart field `file`. Stores nothing. Returns
+`{"rows": [{"row": 1, "status": "recognised" | "not_recognised", "reason": "", "loinc_code", "value", "unit", "plausibility"}]}`
+with `row` the 1-based data line. `not_recognised` carries a reason naming the column (unknown
+LOINC code, empty unit, bad number, time without UTC offset, ...) and `plausibility` null. The
+status `inferred` exists in the review vocabulary but this parser never emits it.
+
+### `POST /api/labs/imports/csv/confirm/`
+
+Same file again, plus an optional `laboratory` form field for the report. If any row is
+`not_recognised` the answer is `400` with `detail` and the `rows`, and nothing is stored.
+Otherwise one `LabReport` (`origin = import`, `import_name` = file name) and its results are
+stored in one transaction, with `validation_state = reviewed`; `201` with the report and results.
+
+### Limits (`400` naming the limit, nothing stored)
+
+File at most 1 MiB; at most 200 data rows; each field at most its model length (`value` 40
+characters); the file must be UTF-8.
+
+### `DELETE /api/labs/reports/<id>/`
+
+Rolls back an import: removes the report and its results, nothing else. `204`; `404` for another
+user's report; `409` for a manual report. The retained original file is not stored yet (TG-g).

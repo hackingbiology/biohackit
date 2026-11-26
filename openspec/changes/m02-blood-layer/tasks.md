@@ -14,7 +14,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 - [x] (done: `POST /api/labs/reports/`, owner-only `GET /api/labs/reports/<id>/`, one transaction, `core.plausibility`, docs/api-labs.md, Q70) Authenticated API to create a lab report with results by hand, same models and same review/persist path as imports. Req: main "Manual entry of equal standing". Part 2: input bounds and O(n) trailing-zero strip, review 1795662883.
 
 ## TG-c — CSV import with review and rollback (stdlib csv)
-- [ ] Parse CSV with `csv`, show parsed rows for review, persist only after confirmation, roll back a whole import. Req: main "Import from PDF, photo, and CSV with learned templates" (CSV part), main "Human review before persistence", M02 "Lab report import can be rolled back" (LabResult, LabReport and retained original file, scenario "Rollback removes the retained original"; s01 "Import can be rolled back" applies to LabResult).
+- [x] (part 1 done 2026-11-26: preview, confirm, DELETE rollback of results and report; the retained original file and its scenario "Rollback removes the retained original" stay with TG-g) Parse CSV with `csv`, show parsed rows for review, persist only after confirmation, roll back a whole import. Req: main "Import from PDF, photo, and CSV with learned templates" (CSV part), main "Human review before persistence", M02 "Lab report import can be rolled back" (LabResult, LabReport and retained original file, scenario "Rollback removes the retained original"; s01 "Import can be rolled back" applies to LabResult).
 
 ## TG-d — Deterministic PII redaction
 - [ ] Rule-based redaction of extracted text before review, with a diff the user sees, optional per Q58. Req: main "Optional PII obfuscation on import". Blocked by: Q58.
