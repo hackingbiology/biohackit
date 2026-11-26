@@ -13,6 +13,10 @@ import { ResultRanges } from "@/components/ResultRanges";
 import {
   fetchReport,
   rollbackReport,
+  setValidationState,
+  type OwnerValidationState,
+  type ReportResult,
+  type ValidationOutcome,
   type StoredReport,
 } from "@/lib/labs";
 import {
@@ -45,6 +49,34 @@ function stateText(state: string, t: LabStrings): string {
   }
 }
 
+const small =
+  "rounded border border-slate-700 px-3 py-2 text-sm font-semibold disabled:opacity-50";
+
+const ACTIONS: { state: OwnerValidationState; label: keyof LabStrings }[] = [
+  { state: "user_confirmed", label: "actConfirm" },
+  { state: "disputed", label: "actDispute" },
+  { state: "retracted", label: "actRetract" },
+];
+
+/** Transitions the API accepts; nothing leaves a retracted result. */
+function offered(state: string): OwnerValidationState[] {
+  if (state === "retracted") return [];
+  return ACTIONS.map((a) => a.state).filter((s) => s !== state);
+}
+
+function validationProblem(out: ValidationOutcome, t: LabStrings): string {
+  switch (out.kind) {
+    case "invalid":
+      return out.detail || t.validationError;
+    case "not_found":
+      return t.validationNotFound;
+    case "unauthorised":
+      return t.validationSignIn;
+    default:
+      return t.validationError;
+  }
+}
+
 export default function LabReportPage() {
   const params = useParams<{ id: string }>();
   const id = params.id;
@@ -58,6 +90,10 @@ export default function LabReportPage() {
   const [undone, setUndone] = useState(false);
   const [message, setMessage] = useState<Message>("");
   const [busy, setBusy] = useState(false);
+  const [errors, setErrors] = useState<Record<number, string>>({});
+  const [announce, setAnnounce] = useState("");
+  const [pending, setPending] = useState<number | null>(null);
+  const stateLines = useRef<Record<number, HTMLParagraphElement | null>>({});
   const undoneHeading = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -95,6 +131,38 @@ export default function LabReportPage() {
       setMessage("undoFailed");
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function onValidate(r: ReportResult, n: number, to: OwnerValidationState) {
+    if (pending !== null) return;
+    const warning = report?.origin === "import" ? t.retractConfirmImport : t.retractConfirm;
+    if (to === "retracted" && !window.confirm(warning)) return;
+    setPending(r.id);
+    setErrors((e) => ({ ...e, [r.id]: "" }));
+    try {
+      const out = await setValidationState(r.id, to);
+      if (out.kind === "ok") {
+        const next = out.result;
+        setReport((rep) =>
+          rep
+            ? { ...rep, results: rep.results.map((x) => (x.id === next.id ? next : x)) }
+            : rep,
+        );
+        // The pressed button may disappear; the result's state line is the stable target.
+        setTimeout(() => stateLines.current[next.id]?.focus(), 0);
+        setAnnounce(
+          t.validationAnnounce
+            .replace("{n}", String(n))
+            .replace("{state}", stateText(next.validation_state, t)),
+        );
+      } else {
+        setErrors((e) => ({ ...e, [r.id]: validationProblem(out, t) }));
+      }
+    } catch {
+      setErrors((e) => ({ ...e, [r.id]: t.validationError }));
+    } finally {
+      setPending(null);
     }
   }
 
@@ -233,6 +301,58 @@ export default function LabReportPage() {
           </tbody>
         </table>
       </div>
+
+      <section aria-labelledby="validation-heading" className="space-y-4">
+        <h2 id="validation-heading" className="text-xl font-semibold">
+          {t.validationHeading}
+        </h2>
+        <p role="status" aria-live="polite" className="sr-only">
+          {announce}
+        </p>
+        <ul className="space-y-4">
+          {report.results.map((r, i) => {
+            const n = i + 1;
+            const who = t.validationControlsFor
+              .replace("{n}", String(n))
+              .replace("{loinc}", r.loinc_code);
+            const errId = `validation-error-${r.id}`;
+            const allowed = offered(r.validation_state);
+            return (
+              <li key={r.id} className="space-y-2">
+                <p
+                  tabIndex={-1}
+                  ref={(el) => {
+                    stateLines.current[r.id] = el;
+                  }}
+                >
+                  <strong>{who}:</strong> {stateText(r.validation_state, t)}
+                  {r.validation_state === "retracted" && ` (${report.origin === "import" ? t.retractedNoteImport : t.retractedNote})`}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {ACTIONS.filter((a) => allowed.includes(a.state)).map((a) => (
+                    <button
+                      key={a.state}
+                      type="button"
+                      className={small}
+                      aria-disabled={pending === r.id}
+                      aria-describedby={errors[r.id] ? errId : undefined}
+                      aria-label={`${t[a.label]} (${who})`}
+                      onClick={() => onValidate(r, n, a.state)}
+                    >
+                      {t[a.label]}
+                    </button>
+                  ))}
+                </div>
+                {errors[r.id] ? (
+                  <p id={errId} role="alert" className="rounded border border-red-700 p-2">
+                    {errors[r.id]}
+                  </p>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
       <section aria-labelledby="ranges-heading" className="space-y-4">
         <h2 id="ranges-heading" className="text-xl font-semibold">

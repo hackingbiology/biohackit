@@ -70,7 +70,7 @@ async function readJson(res: Response): Promise<Record<string, unknown>> {
 }
 
 function request(
-  method: "GET" | "POST" | "DELETE",
+  method: "GET" | "POST" | "DELETE" | "PATCH",
   path: string,
   body?: FormData | string,
 ): Promise<Response> {
@@ -329,4 +329,32 @@ export function withOffset(local: string): string {
   const pad = (n: number) => String(Math.floor(Math.abs(n))).padStart(2, "0");
   const base = local.length === 16 ? `${local}:00` : local;
   return `${base}${sign}${pad(offset / 60)}:${pad(offset % 60)}`;
+}
+
+export type OwnerValidationState = "user_confirmed" | "disputed" | "retracted";
+
+export type ValidationOutcome =
+  | { kind: "ok"; result: ReportResult }
+  | { kind: "invalid"; detail: string }
+  | { kind: "not_found" | "unauthorised" | "error" };
+
+/** Owner changes one result's validation state (docs/api-labs.md). */
+export async function setValidationState(
+  id: number,
+  state: OwnerValidationState,
+): Promise<ValidationOutcome> {
+  const res = await request(
+    "PATCH",
+    `/api/labs/results/${id}/validation/`,
+    JSON.stringify({ validation_state: state }),
+  );
+  if (res.status === 404) return { kind: "not_found" };
+  if (res.status === 401 || res.status === 403) return { kind: "unauthorised" };
+  const body = await readJson(res);
+  if (res.status === 400) {
+    const list = messages(body.validation_state);
+    return { kind: "invalid", detail: list[0] ?? detailOf(body) };
+  }
+  if (res.status !== 200 || typeof body.id !== "number") return { kind: "error" };
+  return { kind: "ok", result: body as unknown as ReportResult };
 }

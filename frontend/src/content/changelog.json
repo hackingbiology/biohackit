@@ -6,6 +6,11 @@
         {
           "change": "m02-blood-layer",
           "commit": "5636c1f",
+          "summary": "On a saved lab report you can now confirm each result against your own report, mark it as possibly wrong, or withdraw it (after a confirmation); the page shows right away whether it counts in statistics."
+        },
+        {
+          "change": "m02-blood-layer",
+          "commit": "5636c1f",
           "summary": "The saved-report page now shows each result against its three ranges, kept separate: the laboratory reference range, the longevity-optimal range and the safety threshold, each with its status in words and its source; the optimal range's provenance opens in one click."
         },
         {

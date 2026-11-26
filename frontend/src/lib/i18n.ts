@@ -530,6 +530,19 @@ export interface LabStrings {
   reviewedLabel: string;
   convertedLine: string;
   compareFor: string;
+  validationHeading: string;
+  actConfirm: string;
+  actDispute: string;
+  actRetract: string;
+  retractConfirm: string;
+  retractedNote: string;
+  retractConfirmImport: string;
+  retractedNoteImport: string;
+  validationNotFound: string;
+  validationSignIn: string;
+  validationError: string;
+  validationAnnounce: string;
+  validationControlsFor: string;
 }
 
 const labEn: LabStrings = {
@@ -586,8 +599,8 @@ const labEn: LabStrings = {
   stateEntered: "Entered, not yet confirmed",
   stateUserConfirmed: "Confirmed by the user",
   stateSourceVerified: "Verified against the source",
-  stateDisputed: "Disputed",
-  stateRetracted: "Retracted",
+  stateDisputed: "Marked as possibly wrong, not counted in statistics",
+  stateRetracted: "Withdrawn",
   aggregationYes: "Yes, counted in aggregations",
   aggregationNo: "No, not counted in aggregations",
   undo: "Undo this report",
@@ -625,6 +638,20 @@ const labEn: LabStrings = {
   reviewedLabel: "Last reviewed:",
   convertedLine: "Compared using the stored normalised value {value} {unit} (conversion source: {source})",
   compareFor: "Ranges for result {loinc}, reported {value} {unit}",
+  validationHeading: "Check each result",
+  actConfirm: "I checked it against my report",
+  actDispute: "Mark as possibly wrong",
+  actRetract: "Withdraw this result",
+  retractConfirm: "Withdraw this result? It is kept for audit, no longer counts in statistics and cannot be restored.",
+  retractedNote: "Withdrawn, kept for audit",
+  retractConfirmImport:
+    "Withdraw this result? It no longer counts in statistics and cannot be restored. It is kept only while this imported report exists: undoing the import deletes the report and all its results, withdrawn ones included.",
+  retractedNoteImport: "Withdrawn, deleted if you undo this import",
+  validationNotFound: "This result was not found. Nothing was changed.",
+  validationSignIn: "Sign in to change this result.",
+  validationError: "The change was not saved. Try again.",
+  validationAnnounce: "Result {n} is now: {state}",
+  validationControlsFor: "result {n}, {loinc}",
 };
 
 // IT and ZH fall back to EN until translated (Q86).
