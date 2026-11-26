@@ -26,3 +26,5 @@ Output ONLY a fenced json block:
 ```
 
 Ecosystem rule (Fabio 2026-11-24, change x01-ecosystem-reuse): biohack.it must be part of an ecosystem. Before WRITING any module's OpenSpec change, schedule its ecosystem scan task (`docs/ecosystem/<module>.md`) if missing. Retroactive scans for M00/M01 and the x01 tasks have high priority (right after fix-main and m00c TG2 tagging/staging).
+
+Fabio answers: always read the latest "**Answers (Fabio ...)**" blocks in docs/QUESTIONS.md. When an answer changes a default already implemented, schedule a task to apply it (spec delta + code + tests) with high priority, right after fix-main/fix-staging.
