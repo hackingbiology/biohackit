@@ -67,3 +67,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-26 · M02 · TG1c: stored-and-flagged rule blood-only, DEXA/microbiome follow s01 Result without provenance, Q66 · see git log
 2026-11-26 · M02 · TG-a part 1: LabReport/LabResult models + migration 0006, normalisation via normalize_value, aggregation eligibility, Q67 · see git log
 2026-11-26 · M02 · TG-a part 1b: LabResult.reported_value never rounded, out-of-range precision rejected · see git log
+2026-11-26 · M02 · TG-a part 2: Biomarker.category + category_source (Q66, migration 0008), DEXA/microbiome LabResult refused without laboratory/method, Q68 · see git log

@@ -198,4 +198,8 @@ Default taken: **set up in M00** — avoids a painful later migration that may n
 
 **Q66** · How is an analyte classed as blood, body composition (DEXA) or microbiome? Not defined anywhere yet. Default taken: **TG-a adds an explicit category on the analyte (or the `LabResult`), set only from a cited source or by the user, never guessed; an uncategorised analyte is treated as blood, so its result is stored and flagged and nothing is silently dropped**.
 
+Q66 implementation note: `Biomarker.category` (blood | body_composition | microbiome) plus `Biomarker.category_source` (FK `terminology.Source`) are set together or both empty; NULL = uncategorised = blood; no analyte is categorised by a migration.
+
+**Q68** · The s01 requirement text says DEXA/microbiome provenance is "laboratory or device, method, date". May a device stand in for the laboratory? Default taken: **no, laboratory and method are both required, as in the M02 delta; `device` alone does not satisfy the rule**.
+
 **Q67** · Does a `LabResult` inherit `LabReport.laboratory`? Default taken: **yes, only when the result has none and the report states one; never invented. `reported_unit_ref` is set only on an exact `Unit.ucum_code` match, and a unit not stored, or with no stored factor, leaves the normalised pair empty**. Should the result require its own laboratory instead?

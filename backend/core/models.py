@@ -40,6 +40,12 @@ class BiomarkerRole(models.TextChoices):
     BASELINE = "baseline", "Baseline"
 
 
+class AnalyteCategory(models.TextChoices):
+    BLOOD = "blood", "Blood"
+    BODY_COMPOSITION = "body_composition", "Body composition (DEXA)"
+    MICROBIOME = "microbiome", "Microbiome"
+
+
 class Biomarker(models.Model):
     """Coded analyte (M01 TG3): LOINC code, UCUM unit and source are mandatory.
     The three ranges (reference / optimal / safety) follow in M01 TG4."""
@@ -51,10 +57,30 @@ class Biomarker(models.Model):
     role = models.CharField(max_length=16, choices=BiomarkerRole.choices)
     unit = models.ForeignKey("terminology.Unit", on_delete=models.PROTECT)
     source = models.ForeignKey("terminology.Source", on_delete=models.PROTECT)
+    # Q66: NULL = uncategorised (treated as blood); set only with a cited source.
+    category = models.CharField(
+        max_length=32, choices=AnalyteCategory.choices, null=True, blank=True
+    )
+    category_source = models.ForeignKey(
+        "terminology.Source",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.name
+
+    @property
+    def requires_provenance_before_storing(self) -> bool:
+        """DEXA and microbiome analytes need laboratory and method to be stored;
+        blood and uncategorised analytes are stored and flagged instead (Q66)."""
+        return self.category in (
+            AnalyteCategory.BODY_COMPOSITION,
+            AnalyteCategory.MICROBIOME,
+        )
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         if not (self.loinc_code or "").strip():
@@ -63,8 +89,38 @@ class Biomarker(models.Model):
             raise ValidationError("Biomarker requires a UCUM unit")
         if self.source_id is None:
             raise ValidationError("Biomarker requires a source")
+        if self.category is not None and self.category not in AnalyteCategory.values:
+            raise ValidationError("Biomarker category is not a known category")
+        if (self.category is None) != (self.category_source_id is None):
+            raise ValidationError(
+                "Biomarker category and its source are set together: "
+                "a category needs a cited source, and a source needs a category"
+            )
         self._check_unit_change_keeps_ranges_consistent()
+        self._check_recategorising_keeps_results_provenanced()
         super().save(*args, **kwargs)
+
+    def _check_recategorising_keeps_results_provenanced(self) -> None:
+        """A DEXA or microbiome category cannot be set while stored results of this
+        analyte lack laboratory or method: they would be unprovenanced (Q66)."""
+        if self.pk is None or not self.requires_provenance_before_storing:
+            return
+        lacking = (
+            LabResult.objects.filter(biomarker_id=self.pk)
+            .filter(
+                models.Q(laboratory__isnull=True)
+                | models.Q(laboratory="")
+                | models.Q(method__isnull=True)
+                | models.Q(method="")
+            )
+            .values_list("pk", flat=True)
+        )
+        ids = list(lacking[:10])
+        if ids:
+            raise ValidationError(
+                "Biomarker cannot become DEXA or microbiome while stored results "
+                f"lack a laboratory or method; add provenance first (result ids: {ids})"
+            )
 
     def _check_unit_change_keeps_ranges_consistent(self) -> None:
         """Range bounds are stored in the analyte's unit and never converted, so the
@@ -144,6 +200,11 @@ class LabReport(models.Model):
         super().save(*args, **kwargs)
 
 
+def _stripped(value: str | None) -> str | None:
+    """Trimmed text, or None when empty or whitespace-only."""
+    return (value or "").strip() or None
+
+
 class LabResult(models.Model):
     """Lab-measured value of a coded analyte, separate from `Measurement` (Q61).
     The value and unit stay as reported; the normalised pair is filled only when
@@ -188,11 +249,31 @@ class LabResult(models.Model):
     aggregation_eligible = models.BooleanField(default=False, editable=False)
 
     def save(self, *args: Any, **kwargs: Any) -> None:
-        if not self.laboratory and self.report.laboratory:
-            self.laboratory = self.report.laboratory  # only when the report states it
+        self.laboratory = _stripped(self.laboratory)
+        self.method = _stripped(self.method)
+        if not self.laboratory:
+            # only when the report states it
+            self.laboratory = _stripped(self.report.laboratory)
+        self._require_provenance()
         self._normalise()
         self.aggregation_eligible = bool(self.laboratory and self.method)
         super().save(*args, **kwargs)
+
+    def _require_provenance(self) -> None:
+        """DEXA and microbiome results are refused without laboratory and method."""
+        if not self.biomarker.requires_provenance_before_storing:
+            return
+        missing = [
+            name
+            for name in ("laboratory", "method")
+            if not (getattr(self, name) or "").strip()
+        ]
+        if missing:
+            raise ValidationError(
+                "This result cannot be stored yet. Please provide: "
+                + " and ".join(missing)
+                + "."
+            )
 
     def _exact_reported_value(self) -> Decimal:
         """The reported value, unchanged, or ValidationError if the column cannot
