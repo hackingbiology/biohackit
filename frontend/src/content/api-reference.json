@@ -311,6 +311,80 @@
       "title": "M02 lab report API (manual entry)"
     },
     {
+      "file": "docs/api-protocols.md",
+      "sections": [
+        {
+          "anchor": "api-protocols-get-post-api-protocols",
+          "body": "`GET` lists your protocols. `POST` creates a protocol in `draft` (`201`) from `title` plus any facets, `level`, `in_effect_since` (date), `history` (`analytic` default, or `synthesized`) and `lineage_note` (only with `history=synthesized`, else `400`). A draft response has `missing`: what is still absent in plain words (for example \"No efficacy markers yet.\"); it never blocks the save. `origin` is `community` by default; `curated` is `403` unless the user is staff.\n\nAlready running: `already_running: true` needs `in_effect_since` (today or earlier) and `level`; it sets `tracked_since` to today, state `active`, and creates version 1 with reason \"imported as already running\" followed by your optional `reason` text. The response has `notes` saying that adding past measurements is invited, not required.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/protocols/"
+            },
+            {
+              "method": "POST",
+              "path": "/api/protocols/"
+            }
+          ],
+          "heading": "`GET|POST /api/protocols/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-protocols-get-patch-api-protocols-id",
+          "body": "`GET` returns the protocol, `latest_version` (null in draft). `PATCH` while `draft` edits in place: no version, no reason, `in_effect_since`, `history` and `lineage_note` can change. Moving `state` to `active` leaves draft: it creates version 1 and needs a non-blank `reason` and a `level`, else `400` and the protocol stays `draft`. After that every change of `title`, `level`, `state` or a facet creates version N+1 with one change event per changed field, and a non-blank `reason` is mandatory (`400`, nothing created). A request that changes nothing is `400`. Allowed state moves: draft to active; active to paused or completed; paused to active or completed. The response has the protocol and, when one was created, `version`. Correcting the latest version is a new version, never an edit of it.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/protocols/<id>/"
+            },
+            {
+              "method": "PATCH",
+              "path": "/api/protocols/<id>/"
+            }
+          ],
+          "heading": "`GET|PATCH /api/protocols/<id>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-protocols-get-api-protocols-id-versions",
+          "body": "Every version, oldest first: `number`, `created_at`, `actor`, `reason`, `snapshot` (the tracked fields) and `events`: `[{field, old, new, timestamp, actor, reason}]`. `field` is a path such as `interventions[0].amount` or `state`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/protocols/<id>/versions/"
+            }
+          ],
+          "heading": "`GET /api/protocols/<id>/versions/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-protocols-get-api-protocols-id-versions-number",
+          "body": "One version. Read-only: there is no update or delete route, `PATCH`, `PUT` and `DELETE` return `405`, and the version stays as it was. In code, `save()` on an existing row, queryset `update()` and `delete()` raise.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/protocols/<id>/versions/<number>/"
+            }
+          ],
+          "heading": "`GET /api/protocols/<id>/versions/<number>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-protocols-get-api-protocols-id-diff-from-n-to-m",
+          "body": "Deterministic field-level diff of two versions (stdlib `difflib`, no AI). Returns `facets` (`interventions` = name and schedule, `doses` = amount and unit per intervention, `cycles`, `measures`), each `{changed, unified}` with unified diff lines over the canonical JSON, and `changes`: `[{field, old, new}]`, for example `{\"field\": \"doses[0].amount\", \"old\": \"6\", \"new\": \"8\"}`. Missing or non-numeric `from`/`to` is `400`; an unknown version is `404`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/protocols/<id>/diff/"
+            }
+          ],
+          "heading": "`GET /api/protocols/<id>/diff/?from=<n>&to=<m>`",
+          "level": 2
+        }
+      ],
+      "title": "M03 protocols API (TG-f part 1)"
+    },
+    {
       "file": "docs/api-terminology.md",
       "sections": [
         {
@@ -451,6 +525,41 @@
       "anchor": "api-accounts-get-api-profiles-display-name",
       "method": "GET",
       "path": "/api/profiles/<display_name>/"
+    },
+    {
+      "anchor": "api-protocols-get-post-api-protocols",
+      "method": "GET",
+      "path": "/api/protocols/"
+    },
+    {
+      "anchor": "api-protocols-get-post-api-protocols",
+      "method": "POST",
+      "path": "/api/protocols/"
+    },
+    {
+      "anchor": "api-protocols-get-patch-api-protocols-id",
+      "method": "GET",
+      "path": "/api/protocols/<id>/"
+    },
+    {
+      "anchor": "api-protocols-get-patch-api-protocols-id",
+      "method": "PATCH",
+      "path": "/api/protocols/<id>/"
+    },
+    {
+      "anchor": "api-protocols-get-api-protocols-id-diff-from-n-to-m",
+      "method": "GET",
+      "path": "/api/protocols/<id>/diff/"
+    },
+    {
+      "anchor": "api-protocols-get-api-protocols-id-versions",
+      "method": "GET",
+      "path": "/api/protocols/<id>/versions/"
+    },
+    {
+      "anchor": "api-protocols-get-api-protocols-id-versions-number",
+      "method": "GET",
+      "path": "/api/protocols/<id>/versions/<number>/"
     },
     {
       "anchor": "api-terminology-get-api-terminology-biomarkers-loinc-code-ranges",

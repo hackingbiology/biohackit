@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "accounts",
     "core",
     "terminology",
+    "protocols",
 ]
 
 MIDDLEWARE = [

@@ -12,4 +12,5 @@ urlpatterns: list = [
     path("", include("accounts.urls")),
     path("terminology/", include("terminology.urls")),
     path("labs/", include("core.urls")),
+    path("protocols/", include("protocols.urls")),
 ]

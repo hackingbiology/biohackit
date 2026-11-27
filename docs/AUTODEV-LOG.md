@@ -102,3 +102,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-27 · M00c · docs part D: `/docs/api` from `docs/api-*.md`, exporter checked against the URL resolver, tests; Q104 (no OpenAPI file yet) · see git log
 2026-11-27 · X01 · M03 ecosystem scan (interventions catalog + protocols): docs/ecosystem/m03-interventions-protocols.md, Q105-Q107, give-back rows; docs only · see git log
 2026-11-27 · M03 · OpenSpec change m03-interventions-protocols (proposal, tasks TG-a..TG-l, spec deltas), Q108-Q112; spec and docs only · see git log
+2026-11-27 · M03 · TG-f part 1: protocols app (Protocol, immutable ProtocolVersion and ChangeEvent, owner-only API, stdlib difflib diff), Q114; no dependency · see git log
