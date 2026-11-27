@@ -181,6 +181,13 @@ class LabReportOrigin(models.TextChoices):
     IMPORT = "import", "Import"
 
 
+class LabReportImportSource(models.TextChoices):
+    GETBASED = "getbased", "get-based"
+
+
+GETBASED_IMPORT_FORMATS = ("getbased-export", "getbased-database")
+
+
 class LabResultValidation(models.TextChoices):
     # The five states Fabio chose for Q63 (2026-11-26).
     ENTERED = "entered", "Entered"
@@ -223,6 +230,31 @@ class LabReport(models.Model):
     )
     original_sha256 = models.CharField(max_length=64, null=True, blank=True)
     original_size = models.PositiveIntegerField(null=True, blank=True)
+    # Where an import came from (X01 part 2b). All three are set together, only for an
+    # import; a CSV or manual report leaves them empty.
+    import_source = models.CharField(
+        max_length=16, choices=LabReportImportSource.choices, blank=True, default=""
+    )
+    import_format = models.CharField(max_length=32, blank=True, default="")
+    import_format_version = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(import_source="")
+                    & models.Q(import_format="")
+                    & models.Q(import_format_version__isnull=True)
+                )
+                | (
+                    ~models.Q(import_source="")
+                    & ~models.Q(import_format="")
+                    & models.Q(import_format_version__isnull=False)
+                    & models.Q(origin=LabReportOrigin.IMPORT)
+                ),
+                name="labreport_import_source_all_or_none",
+            ),
+        ]
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         if self.origin not in LabReportOrigin.values:
@@ -392,6 +424,65 @@ class LabResult(models.Model):
         self.normalised_value = result.value
         self.normalised_unit = result.unit
         self.normalised_source_id = result.source_id
+
+
+class GetbasedFlag(models.TextChoices):
+    """The per-value origin flags of the preview (X01 part 2a), kept on the result."""
+
+    AI_READ = "ai_read", "Read by an AI model"
+    MAY_BE_AI_READ = "may_be_ai_read", "May have been read by an AI model"
+    ORIGIN_NOT_SHOWN = "origin_not_shown", "Origin not shown in get-based"
+    ORIGIN_UNKNOWN = "origin_unknown", "Origin unknown"
+
+
+class LabResultGetbasedProvenance(models.Model):
+    """get-based's per-value provenance of one imported result (X01 part 2b), kept as it
+    was in the archive: `markerSources` (reported, file, at, snapshotId; `at` verbatim,
+    not parsed), `manuallyEdited` and the entry-level `importedWith`. `importedWith` is
+    the last import into the entry's date, not proof of the model of this value. The
+    sample date has no time zone, so it is kept here and `collected_at` stays empty."""
+
+    result = models.OneToOneField(
+        LabResult, on_delete=models.CASCADE, related_name="getbased_provenance"
+    )
+    has_marker_sources = models.BooleanField()
+    ms_reported = models.BooleanField(null=True)
+    ms_file = models.TextField(null=True)
+    ms_at = models.TextField(null=True)
+    ms_snapshot_id = models.TextField(null=True)
+    manually_edited = models.BooleanField()
+    imported_with_present = models.BooleanField()
+    imported_with_model_id = models.CharField(max_length=200, null=True)
+    imported_with_provider = models.CharField(max_length=200, null=True)
+    flag = models.CharField(max_length=16, choices=GetbasedFlag.choices)
+    entry_date = models.DateField()
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(has_marker_sources=True)
+                | (
+                    models.Q(ms_reported__isnull=True)
+                    & models.Q(ms_file__isnull=True)
+                    & models.Q(ms_at__isnull=True)
+                    & models.Q(ms_snapshot_id__isnull=True)
+                    & models.Q(manually_edited=False)
+                ),
+                name="getbased_prov_no_sources_no_fields",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(imported_with_present=True)
+                | (
+                    models.Q(imported_with_model_id__isnull=True)
+                    & models.Q(imported_with_provider__isnull=True)
+                ),
+                name="getbased_prov_no_importedwith_no_model",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(flag__in=GetbasedFlag.values),
+                name="getbased_prov_flag_known",
+            ),
+        ]
 
 
 class CalculatedRatioDefinition(SourcedModel):

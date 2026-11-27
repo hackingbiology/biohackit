@@ -105,6 +105,10 @@ A marker value with **no** `markerSources` entry: a legacy or purely manual valu
 - A **version of the marker catalogue**: none found.
 - Round trip **import of the migration archive into a non-get-based system**: not described.
 
+## Implemented
+
+Part 2b (2026-11-27) reads the single-client export and the all-clients bundle, version 2, and stores a confirmed import: one `LabReport` (`import_source` `getbased`, `import_format` `getbased-export` or `getbased-database`, version 2, fixed file name `getbased-export.json`) and one `LabResult` per matched marker, each with a `LabResultGetbasedProvenance` row holding `markerSources` (`reported`, `file`, `at`, `snapshotId`), `manuallyEdited` and the entry-level `importedWith` (`modelId`, `provider`). Results are stored `entered`. Not yet: `labcharts-backup` and the migration archive. API: `docs/api-labs.md`. Defaults: Q101, Q102.
+
 ## Consequences for the importer (links to the spec)
 Spec: `openspec/changes/x01-ecosystem-reuse/specs/biomarkers-and-labs/spec.md`, requirement "Import of a get-based archive". Decisions and defaults: docs/QUESTIONS.md Q91 to Q96. The mapping from get-based marker keys to LOINC-coded analytes has **no source yet**: it must be a stored, cited table; none is invented here.
 

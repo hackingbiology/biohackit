@@ -17,4 +17,5 @@ urlpatterns = [
     path("imports/csv/preview/", lab_import.CsvPreviewView.as_view()),
     path("imports/csv/confirm/", lab_import.CsvConfirmView.as_view()),
     path("imports/getbased/preview/", getbased_views.GetbasedPreviewView.as_view()),
+    path("imports/getbased/confirm/", getbased_views.GetbasedConfirmView.as_view()),
 ]

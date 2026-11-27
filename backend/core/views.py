@@ -27,11 +27,13 @@ from terminology.services import normalize_value
 from .calculated_markers import compute_ratios
 from .completeness import panel_completeness
 from .fhir import lab_report_to_fhir_bundle, render_fhir_json
+from .getbased_import import EDITED_TEXT, FLAG_TEXT, QUALIFIER
 from .models import (
     Biomarker,
     LabReport,
     LabReportOrigin,
     LabResult,
+    LabResultGetbasedProvenance,
     LabResultValidation,
     OrganSystemPanel,
 )
@@ -131,6 +133,36 @@ def _plausibility(result: LabResult) -> dict[str, Any]:
     return {"status": outcome.status, "range_source": source}
 
 
+def _getbased_provenance(
+    prov: LabResultGetbasedProvenance | None,
+) -> dict[str, Any] | None:
+    """get-based's provenance of a result in plain words; None for any other result."""
+    if prov is None:
+        return None
+    imported = None
+    if prov.imported_with_present:
+        imported = {
+            "model_id": prov.imported_with_model_id or "unknown",
+            "provider": prov.imported_with_provider or "unknown",
+            "qualifier": QUALIFIER,
+        }
+    return {
+        "flag": prov.flag,
+        "flag_text": FLAG_TEXT[prov.flag],  # type: ignore[index]  # a stored flag is a known one
+        "edited_label": EDITED_TEXT if prov.manually_edited else None,
+        "manually_edited": prov.manually_edited,
+        "entry_date": prov.entry_date.isoformat(),
+        "has_marker_sources": prov.has_marker_sources,
+        "marker_sources": {
+            "reported": prov.ms_reported,
+            "file": prov.ms_file,
+            "at": prov.ms_at,
+            "snapshot_id": prov.ms_snapshot_id,
+        },
+        "imported_with": imported,
+    }
+
+
 def _result_data(result: LabResult) -> dict[str, Any]:
     return {
         "id": result.pk,
@@ -149,19 +181,25 @@ def _result_data(result: LabResult) -> dict[str, Any]:
         "validation_state": result.validation_state,
         "aggregation_eligible": result.aggregation_eligible,
         "plausibility": _plausibility(result),
+        "getbased_provenance": _getbased_provenance(
+            getattr(result, "getbased_provenance", None)
+        ),
     }
 
 
 def _report_data(report: LabReport) -> dict[str, Any]:
     results = (
         LabResult.objects.filter(report=report)
-        .select_related("biomarker__unit")
+        .select_related("biomarker__unit", "getbased_provenance")
         .order_by("pk")
     )
     return {
         "id": report.pk,
         "origin": report.origin,
         "import_name": report.import_name,
+        "import_source": report.import_source,
+        "import_format": report.import_format,
+        "import_format_version": report.import_format_version,
         "laboratory": report.laboratory,
         "created_at": report.created_at,
         "original_retained": bool(report.original_file),

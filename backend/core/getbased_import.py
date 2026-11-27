@@ -13,10 +13,19 @@ from datetime import date
 from decimal import Decimal
 from typing import Any, NoReturn
 
+from django.core.exceptions import ValidationError as DjangoValidationError
+
 from .models import (
     GETBASED_CALCULATED_PREFIX,
+    GetbasedFlag,
     GetbasedMarkerKind,
     GetbasedMarkerMapping,
+    LabReport,
+    LabReportImportSource,
+    LabReportOrigin,
+    LabResult,
+    LabResultGetbasedProvenance,
+    LabResultValidation,
 )
 
 SUPPORTED_VERSION = 2
@@ -30,6 +39,18 @@ SUPPORTED_TEXT = (
     "all-clients bundle ('type': 'database', has 'profiles', version 2)."
 )
 QUALIFIER = "last import into this date; the model for this value is unknown"
+FLAG_TEXT = {
+    GetbasedFlag.ORIGIN_UNKNOWN: "origin unknown, check against your report",
+    GetbasedFlag.ORIGIN_NOT_SHOWN: "origin not shown in get-based, check against your report",
+    GetbasedFlag.AI_READ: "read by an AI model, check against your report",
+    GetbasedFlag.MAY_BE_AI_READ: "may have been read by an AI model, check against your report",
+}
+EDITED_TEXT = "edited in get-based after import"
+EDITED_CODE = "edited_after_import"
+FORMAT_NAME = {
+    "single-client export": "getbased-export",
+    "all-clients bundle": "getbased-database",
+}
 
 DELETED = "not imported: deleted in get-based"
 CALCULATED = "not imported: calculated"
@@ -146,45 +167,32 @@ def _text(value: Any) -> str:
     return "unknown"
 
 
-def _flags(source: Any, entry: dict[str, Any]) -> list[dict[str, str]]:
-    """Per-value provenance flags, fail closed (Q92). Computed here, stored nowhere."""
+def _flag_code(source: Any, entry: dict[str, Any]) -> GetbasedFlag:
+    """The one origin flag of a value, fail closed (Q92): exempt only when `importedWith`
+    positively shows a non-AI path, which the archive cannot show, so none is exempt."""
     if not isinstance(source, dict):
-        return [
-            {
-                "code": "origin_unknown",
-                "text": "origin unknown, check against your report",
-            }
-        ]
-    flags: list[dict[str, str]] = []
+        return GetbasedFlag.ORIGIN_UNKNOWN
     if not (source.get("snapshotId") or source.get("file")):
-        flags.append(
-            {
-                "code": "origin_not_shown",
-                "text": "origin not shown in get-based, check against your report",
-            }
-        )
-    elif isinstance(entry.get("importedWith"), dict):
+        return GetbasedFlag.ORIGIN_NOT_SHOWN
+    if isinstance(entry.get("importedWith"), dict):
+        return GetbasedFlag.AI_READ
+    return GetbasedFlag.MAY_BE_AI_READ
+
+
+def _flags(source: Any, entry: dict[str, Any]) -> list[dict[str, str]]:
+    """Per-value provenance flags of the preview."""
+    code = _flag_code(source, entry)
+    flag = {"code": code.value, "text": FLAG_TEXT[code]}
+    if code == GetbasedFlag.AI_READ:
         imported = entry["importedWith"]
-        flags.append(
-            {
-                "code": "ai_read",
-                "text": "read by an AI model, check against your report",
-                "model_id": _text(imported.get("modelId")),
-                "provider": _text(imported.get("provider")),
-                "qualifier": QUALIFIER,
-            }
+        flag.update(
+            model_id=_text(imported.get("modelId")),
+            provider=_text(imported.get("provider")),
+            qualifier=QUALIFIER,
         )
-    else:
-        flags.append(
-            {
-                "code": "may_be_ai_read",
-                "text": "may have been read by an AI model, check against your report",
-            }
-        )
-    if source.get("manuallyEdited") is True:
-        flags.append(
-            {"code": "edited_after_import", "text": "edited in get-based after import"}
-        )
+    flags = [flag]
+    if isinstance(source, dict) and source.get("manuallyEdited") is True:
+        flags.append({"code": EDITED_CODE, "text": EDITED_TEXT})
     return flags
 
 
@@ -252,10 +260,24 @@ def _left_out_reason(
     return None
 
 
+@dataclass(frozen=True)
+class Candidate:
+    """One matched value, with exactly the archive fields that are stored. Nothing else of
+    the entry is carried."""
+
+    value: int | Decimal
+    day: date
+    mapping: GetbasedMarkerMapping
+    source: Any  # the markerSources record of this key, as found
+    imported_with: Any  # the entry's importedWith, as found
+    flag: GetbasedFlag
+
+
 def _rows(
     data: dict[str, Any], mappings: dict[str, GetbasedMarkerMapping]
-) -> list[dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], list[Candidate]]:
     rows: list[dict[str, Any]] = []
+    candidates: list[Candidate] = []
     entries = data.get("entries")
     entries = entries if isinstance(entries, list) else []
     if len(entries) > MAX_ENTRIES:
@@ -272,6 +294,17 @@ def _rows(
         for key, value in markers.items():
             left_out = _left_out_reason(key, entry, sources, mappings)
             status, reason, details = _classify(value, day, left_out, mappings.get(key))
+            if status == MATCHED and day is not None:
+                candidates.append(
+                    Candidate(
+                        value,
+                        date.fromisoformat(day),
+                        mappings[key],
+                        sources.get(key),
+                        entry.get("importedWith"),
+                        _flag_code(sources.get(key), entry),
+                    )
+                )
             numeric = not isinstance(value, bool) and isinstance(value, int | Decimal)
             rows.append(
                 {
@@ -288,7 +321,7 @@ def _rows(
                     "flags": _flags(sources.get(key), entry),
                 }
             )
-    return rows
+    return rows, candidates
 
 
 def _summary(rows: list[dict[str, Any]]) -> dict[str, int]:
@@ -307,6 +340,15 @@ def _summary(rows: list[dict[str, Any]]) -> dict[str, int]:
     }
 
 
+def _mappings() -> dict[str, GetbasedMarkerMapping]:
+    return {
+        m.getbased_key: m
+        for m in GetbasedMarkerMapping.objects.select_related(
+            "source", "unit", "biomarker__unit"
+        )
+    }
+
+
 def build_preview(raw: bytes, profile_id: str | None = None) -> dict[str, Any]:
     """The preview of one chosen profile, or the list of profile ids to choose from.
     Raises `GetbasedImportError` for anything unsupported. Stores nothing."""
@@ -319,13 +361,7 @@ def build_preview(raw: bytes, profile_id: str | None = None) -> dict[str, Any]:
             "profile_ids": container.ids,
             "detail": "Choose exactly one profile to preview.",
         }
-    mappings = {
-        m.getbased_key: m
-        for m in GetbasedMarkerMapping.objects.select_related(
-            "source", "unit", "biomarker"
-        )
-    }
-    rows = _rows(data, mappings)
+    rows, _ = _rows(data, _mappings())
     summary = _summary(rows)
     return {
         "status": "preview",
@@ -335,3 +371,108 @@ def build_preview(raw: bytes, profile_id: str | None = None) -> dict[str, Any]:
         "summary": summary,
         "can_confirm": summary["not_recognised"] == 0 and summary["matched"] > 0,
     }
+
+
+@dataclass(frozen=True)
+class ConfirmPlan:
+    """What a confirm would store: the matched values, the rows that block it and the
+    counts of rows left out."""
+
+    import_format: str
+    candidates: list[Candidate]
+    not_recognised: list[dict[str, Any]]
+    left_out_calculated: int
+    left_out_deleted: int
+
+
+def build_confirm_plan(raw: bytes, profile_id: str | None) -> ConfirmPlan:
+    """Parse the upload again with the preview's rules. Raises `GetbasedImportError` for an
+    unsupported file or while no profile is chosen. Stores nothing."""
+    container = detect(_parse(raw))
+    data = _choose(container, profile_id)
+    if data is None:
+        _refuse("Choose exactly one profile to import: send its profile_id.")
+    rows, candidates = _rows(data, _mappings())
+    summary = _summary(rows)
+    return ConfirmPlan(
+        FORMAT_NAME[container.kind],
+        candidates,
+        [r for r in rows if r["status"] == NOT_RECOGNISED],
+        summary["left_out_calculated"],
+        summary["left_out_deleted"],
+    )
+
+
+# The archive's own file name can carry the client's name, so a fixed name is stored.
+IMPORT_NAME = "getbased-export.json"
+
+
+def _verbatim(value: Any) -> str | None:
+    """Text or number as found (a number such as the `at` milliseconds is kept as its
+    digits); booleans and other types are stored as empty."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (str, int, Decimal)):
+        return str(value)
+    return None
+
+
+def _known_text(imported: dict[str, Any] | None, key: str) -> str | None:
+    text = _text(imported.get(key)) if imported else "unknown"
+    return None if text == "unknown" else text
+
+
+def _provenance(result: LabResult, c: Candidate) -> LabResultGetbasedProvenance:
+    """The archive's provenance fields of one value, as found. Nothing is parsed or
+    corrected; a field of another type than the format says is stored as empty."""
+    source = c.source if isinstance(c.source, dict) else None
+    imported = c.imported_with if isinstance(c.imported_with, dict) else None
+    reported = source.get("reported") if source else None
+    return LabResultGetbasedProvenance(
+        result=result,
+        has_marker_sources=source is not None,
+        ms_reported=reported if isinstance(reported, bool) else None,
+        ms_file=_verbatim(source.get("file")) if source else None,
+        ms_at=_verbatim(source.get("at")) if source else None,
+        ms_snapshot_id=_verbatim(source.get("snapshotId")) if source else None,
+        manually_edited=bool(source) and source.get("manuallyEdited") is True,
+        imported_with_present=imported is not None,
+        imported_with_model_id=_known_text(imported, "modelId"),
+        imported_with_provider=_known_text(imported, "provider"),
+        flag=c.flag,
+        entry_date=c.day,
+    )
+
+
+def store_plan(plan: ConfirmPlan, owner: Any) -> LabReport:
+    """Store one report and one result per matched value. Must run inside
+    `transaction.atomic`. Every result is `entered` and keeps its provenance; the unit is
+    the mapping's cited unit, never read from the archive. `collected_at` stays empty
+    (the sample date has no time zone, Q101). Raises `GetbasedImportError` when the shared
+    result rules refuse a value, so the caller rolls everything back."""
+    report = LabReport(
+        owner=owner,
+        origin=LabReportOrigin.IMPORT,
+        import_name=IMPORT_NAME,
+        import_source=LabReportImportSource.GETBASED,
+        import_format=plan.import_format,
+        import_format_version=SUPPORTED_VERSION,
+    )
+    report.save()
+    for c in plan.candidates:
+        unit = c.mapping.unit
+        if unit is None:  # a matched row always has one
+            _refuse("A mapped marker has no cited unit.")
+        result = LabResult(
+            report=report,
+            biomarker=c.mapping.biomarker,
+            reported_value=Decimal(str(c.value)),
+            reported_unit=unit.ucum_code,
+            validation_state=LabResultValidation.ENTERED,
+        )
+        try:
+            result.save()
+        except DjangoValidationError as exc:
+            _refuse(f"{c.mapping.getbased_key}: {' '.join(exc.messages)}")
+        _provenance(result, c).save()
+    return report

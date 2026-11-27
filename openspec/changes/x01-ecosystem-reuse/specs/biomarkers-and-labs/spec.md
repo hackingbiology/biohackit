@@ -32,7 +32,8 @@ The system SHALL let a user import lab results from a get-based export, backup o
 
 #### Scenario: Origin of the import is recorded
 - **WHEN** an import is confirmed
-- **THEN** the stored report records its origin as get-based, the archive format name and version, and the file name
+- **THEN** the stored report records its origin as get-based, the archive format name and version, and a fixed import name
+- **AND** the uploaded file name is not kept, because it can carry the client's name (Q101 item 5)
 
 #### Scenario: Values read by an AI model are flagged and stay unconfirmed
 - **WHEN** an archive entry carries `importedWith` and a result in it has an import origin in `markerSources` (a `snapshotId` or a `file`)
