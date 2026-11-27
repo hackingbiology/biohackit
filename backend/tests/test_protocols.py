@@ -361,6 +361,25 @@ def test_facet_validation_keeps_amounts_exact(client):
     assert Protocol.objects.count() == 1
 
 
+@pytest.mark.parametrize(
+    "amount", ["1_0", "٦", "6E-1", "1e3", " ", "1.", ".5", "+1", "9" * 31]
+)
+def test_non_plain_amounts_are_refused_on_create_and_edit(client, amount):
+    item = {"name": "x", "amount": amount, "unit": "mg"}
+    r = client.post(URL, {"title": "T", "interventions": [item]}, format="json")
+    assert r.status_code == 400 and "interventions[0].amount" in r.json()
+    pid = _create(client)["id"]
+    r = client.patch(f"{URL}{pid}/", {"interventions": [item]}, format="json")
+    assert r.status_code == 400 and "interventions[0].amount" in r.json()
+
+
+@pytest.mark.parametrize("amount", ["6", "0.5", "0", "9" * 30])
+def test_plain_amounts_are_still_accepted(client, amount):
+    item = {"name": "x", "amount": amount, "unit": "mg"}
+    r = client.post(URL, {"title": "T", "interventions": [item]}, format="json")
+    assert r.status_code == 201 and r.json()["interventions"][0]["amount"] == amount
+
+
 def _iv(**kw: Any) -> list[dict[str, Any]]:
     return [{"name": "n", "amount": "1", "unit": "mg", **kw}]
 

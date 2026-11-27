@@ -2,7 +2,7 @@
 """Validated shape of the protocol facets. Names and units are kept as entered (no catalog or
 UCUM lookup until M03 TG-a/TG-b); amounts are exact decimal strings, never floats."""
 
-from decimal import Decimal, InvalidOperation
+import re
 from typing import Any
 
 from rest_framework.exceptions import ValidationError  # type: ignore[import-untyped]  # DRF ships no stubs
@@ -11,7 +11,12 @@ FACETS = ("interventions", "cycles", "measures", "goals")
 PURPOSES = ("efficacy", "safety", "baseline")
 MAX_ITEMS = 100
 MAX_TEXT = 500
-AMOUNT_HINT = 'must be a decimal string such as "6" or "0.5".'
+MAX_AMOUNT = 30
+AMOUNT_HINT = (
+    'must be a plain decimal string such as "6" or "0.5" '
+    f"(ASCII digits only, at most {MAX_AMOUNT} characters)."
+)
+PLAIN_AMOUNT = re.compile(r"[0-9]+(\.[0-9]+)?", re.ASCII)
 
 
 def _text(raw: Any, where: str, required: bool = True) -> str:
@@ -35,12 +40,8 @@ def _amount(raw: Any, where: str) -> str:
     if not isinstance(raw, str):
         raise ValidationError({where: AMOUNT_HINT})
     text = raw.strip()
-    try:
-        value = Decimal(text)
-    except InvalidOperation:
-        raise ValidationError({where: AMOUNT_HINT}) from None
-    if not value.is_finite() or value < 0:
-        raise ValidationError({where: "must be a finite number, zero or more."})
+    if len(text) > MAX_AMOUNT or not PLAIN_AMOUNT.fullmatch(text):
+        raise ValidationError({where: AMOUNT_HINT})
     return text
 
 

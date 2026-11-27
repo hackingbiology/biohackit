@@ -35,7 +35,7 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 - [ ] Seed the principal peptides as ordinary substances only for names listed in a source that is cited per row (with its codes and synonyms from TG-a and TG-b). No peptide row is seeded without a cited source; BPC-157, ipamorelin and semaglutide in the main spec are examples, not a seed list. Req: main-IC "Principal peptides present in the catalog". Blocked by: Q111, TG-a, TG-b.
 
 ## TG-j — Export mappings (FHIR, OMOP)
-- [ ] OMOP DRUG_EXPOSURE mapping document and function for a tracked intervention: fetch the OMOP CDM DDL and record its commit SHA, check column names against it; concept ids empty until the vocabularies are loaded. Follows docs/omop/measurement-mapping.md. Req: M03 "Protocol export mappings cite their target schema". Scan (c).
+- [x] OMOP DRUG_EXPOSURE mapping document and function for a tracked intervention: fetch the OMOP CDM DDL and record its commit SHA, check column names against it; concept ids empty until the vocabularies are loaded. Follows docs/omop/measurement-mapping.md. Req: M03 "Protocol export mappings cite their target schema". Scan (c).
 - [ ] FHIR MedicationStatement (intervention) and PlanDefinition (protocol) mapping, written by hand against the spec. Req: same. Blocked by: Q55 (FHIR licence).
 
 ## TG-k — Visibility, origin and level
