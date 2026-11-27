@@ -163,3 +163,96 @@ class SubstanceReviewItem(models.Model):
                 name="substance_review_one_open",
             ),
         ]
+
+
+class ExtractionItemStatus(models.TextChoices):
+    RESOLVED = "resolved"
+    NOT_UNDERSTOOD = "not_understood"
+
+
+class ExtractionDecision(models.TextChoices):
+    CORRECTED = "corrected"
+    LEFT_OUT = "left_out"
+
+
+class AmbiguityReason(models.TextChoices):
+    NOT_IN_ENUM = "not_in_enum"
+    TOO_LONG = "too_long"
+    NOT_TEXT = "not_text"
+    UNKNOWN_FIELD = "unknown_field"
+
+
+class Extraction(models.Model):
+    """A staged batch resolve owned by one user. Nothing is attached to a protocol or a
+    substance until the owner commits it (M03 TG-c)."""
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    committed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["id"]
+
+
+class ExtractionItem(models.Model):
+    extraction = models.ForeignKey(
+        Extraction, on_delete=models.CASCADE, related_name="items"
+    )
+    position = models.PositiveIntegerField()
+    submitted_name = models.CharField(max_length=200)
+    normalised_name = models.CharField(max_length=200)
+    language = models.CharField(max_length=35, blank=True, default="")
+    status = models.CharField(max_length=14, choices=ExtractionItemStatus.choices)
+    substance = models.ForeignKey(
+        Substance, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    review_item = models.ForeignKey(
+        SubstanceReviewItem,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    candidate_substance_ids = models.JSONField(default=list)
+    decision = models.CharField(
+        max_length=10, choices=ExtractionDecision.choices, blank=True, default=""
+    )
+    decided_substance = models.ForeignKey(
+        Substance, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    decided_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    decided_at = models.DateTimeField(null=True, blank=True)
+    # Proposed values that passed the validator, keyed by constrained column.
+    accepted_fields = models.JSONField(default=dict)
+    # Free-text proposals: wide, never a constrained column.
+    notes = models.TextField(blank=True, default="")
+
+    class Meta:
+        ordering = ["position"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["extraction", "position"], name="extraction_item_position"
+            ),
+        ]
+
+
+class ExtractionAmbiguity(models.Model):
+    """A proposed value the validator refused to write, kept whole (never truncated)."""
+
+    item = models.ForeignKey(
+        ExtractionItem, on_delete=models.CASCADE, related_name="ambiguities"
+    )
+    field = models.TextField()
+    value = models.TextField()
+    reason = models.CharField(max_length=14, choices=AmbiguityReason.choices)
+
+    class Meta:
+        ordering = ["id"]

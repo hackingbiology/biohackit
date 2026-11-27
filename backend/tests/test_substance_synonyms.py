@@ -2,7 +2,9 @@
 """Synonyms, name resolution and the review queue (M03 TG-b). Synthetic values only."""
 
 import pytest
+from django.conf import settings
 from rest_framework.test import APIClient
+from rest_framework.throttling import ScopedRateThrottle
 
 from accounts.models import User
 from substances.models import (
@@ -104,6 +106,43 @@ def test_a_synonym_without_a_reviewer_does_not_resolve(member, substance):
     item = SubstanceReviewItem.objects.get()
     assert item.status == "open"
     assert item.pk == body["review_item_id"]
+
+
+def test_a_synonym_whose_reviewer_was_erased_does_not_resolve(
+    member, staff, substance, staff_user
+):
+    # scenario: interventions-and-catalog::a-synonym-without-a-reviewer-does-not-resolve
+    _synonym(substance, "rapamycin", "en", staff_user)
+    assert _resolve(member, "rapamycin").json()["status"] == "resolved"
+    staff_user.delete()
+    body = _resolve(member, "rapamycin").json()
+    assert body["status"] == "ambiguous"
+    assert body["reason"] == "unreviewed_synonym"
+    near = _resolve(staff, "rapamycn").json()
+    assert near["reason"] == "no_match"
+    assert near["candidates"] == []
+
+
+def test_a_synonym_whose_reviewer_was_erased_can_be_approved_again(
+    member, staff, substance
+):
+    other = User.objects.create_user(
+        email="other@example.com", password="correct-horse-9", is_staff=True
+    )
+    syn = _synonym(substance, "rapamycin", "en", other)
+    other.delete()
+    assert _resolve(member, "rapamycin").json()["status"] == "ambiguous"
+    assert staff.post(f"{URL}synonyms/{syn.pk}/approve/").status_code == 200
+    assert _resolve(member, "rapamycin").json()["status"] == "resolved"
+
+
+def test_resolve_is_rate_limited(member, monkeypatch):
+    monkeypatch.setattr(
+        ScopedRateThrottle, "THROTTLE_RATES", {"substance_resolve": "2/min"}
+    )
+    codes = [_resolve(member, "zzz").status_code for _ in range(3)]
+    assert codes == [200, 200, 429]
+    assert settings.REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"]["substance_resolve"]
 
 
 def test_a_member_never_sees_the_substance_behind_an_unreviewed_match(

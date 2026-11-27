@@ -15,16 +15,22 @@ from rest_framework.permissions import (  # type: ignore[import-untyped]  # DRF 
 )
 from rest_framework.request import Request  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.response import Response  # type: ignore[import-untyped]  # DRF ships no stubs
+from rest_framework.throttling import ScopedRateThrottle  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
+from . import extraction as extraction_service
 from . import services, synonyms
 from .models import (
+    Extraction,
+    ExtractionItem,
+    ExtractionItemStatus,
     ReviewStatus,
     Substance,
     SubstanceCode,
     SubstanceReviewItem,
     SubstanceSynonym,
 )
+from .throttles import PerEntryScopedRateThrottle
 
 
 class StaffWritesOnly(BasePermission):  # type: ignore[misc]  # base is Any: DRF untyped
@@ -187,6 +193,8 @@ class ReviewItemRejectView(_StaffBase):
 
 class ResolveNameView(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
     permission_classes = [IsAuthenticated]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "substance_resolve"
 
     def post(self, request: Request) -> Response:
         body = _body(request)
@@ -215,6 +223,89 @@ class ResolveNameView(APIView):  # type: ignore[misc]  # base is Any: DRF untype
                 ),
             }
         )
+
+
+def _extraction_item_data(item: ExtractionItem, staff: bool) -> dict[str, Any]:
+    understood = item.status == ExtractionItemStatus.RESOLVED
+    return {
+        "id": item.pk,
+        "submitted_name": item.submitted_name,
+        "language": item.language,
+        "status": item.status,
+        "substance": item.substance_id,
+        "review_item_id": item.review_item_id,
+        # Candidates may come from unreviewed links: staff only, as for /resolve/.
+        "candidates": (
+            item.candidate_substance_ids if staff and not understood else []
+        ),
+        "decision": item.decision,
+        "decided_substance": item.decided_substance_id,
+        "decided_at": item.decided_at.isoformat() if item.decided_at else None,
+        "accepted_fields": item.accepted_fields,
+        "notes": item.notes,
+        "ambiguous": [
+            {"field": a.field, "value": a.value, "reason": a.reason}
+            for a in item.ambiguities.all()
+        ],
+    }
+
+
+def _extraction_data(extraction: Extraction, staff: bool) -> dict[str, Any]:
+    items = extraction.items.prefetch_related("ambiguities")
+    return {
+        "id": extraction.pk,
+        "created_at": extraction.created_at.isoformat(),
+        "committed_at": (
+            extraction.committed_at.isoformat() if extraction.committed_at else None
+        ),
+        **extraction_service.summary(extraction),
+        "items": [_extraction_item_data(i, staff) for i in items],
+    }
+
+
+class _ExtractionBase(APIView):  # type: ignore[misc]  # base is Any: DRF untyped
+    permission_classes = [IsAuthenticated]
+
+    def owned(self, request: Request, extraction_id: int) -> Extraction:
+        return get_object_or_404(Extraction, pk=extraction_id, owner=request.user)
+
+
+class ExtractionCreateView(_ExtractionBase):
+    throttle_classes = [PerEntryScopedRateThrottle]
+    throttle_scope = "substance_extraction"
+
+    def post(self, request: Request) -> Response:
+        extraction = _run(
+            lambda: extraction_service.submit(request.user, _body(request))
+        )
+        return Response(
+            _extraction_data(extraction, request.user.is_staff),
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class ExtractionDetailView(_ExtractionBase):
+    def get(self, request: Request, extraction_id: int) -> Response:
+        extraction = self.owned(request, extraction_id)
+        return Response(_extraction_data(extraction, request.user.is_staff))
+
+
+class ExtractionDecideView(_ExtractionBase):
+    def post(self, request: Request, extraction_id: int, item_id: int) -> Response:
+        extraction = self.owned(request, extraction_id)
+        item = get_object_or_404(ExtractionItem, pk=item_id, extraction=extraction)
+        body = _body(request)
+        item = _run(
+            lambda: extraction_service.decide(extraction, item, body, request.user)
+        )
+        return Response(_extraction_item_data(item, request.user.is_staff))
+
+
+class ExtractionCommitView(_ExtractionBase):
+    def post(self, request: Request, extraction_id: int) -> Response:
+        extraction = self.owned(request, extraction_id)
+        _run(lambda: extraction_service.commit(extraction))
+        return Response(_extraction_data(extraction, request.user.is_staff))
 
 
 class CodeDetailView(_Base):

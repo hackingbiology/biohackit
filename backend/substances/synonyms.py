@@ -28,6 +28,9 @@ LANGUAGE_MAX = 35
 # A code parameter (Q117), not a cited threshold: difflib's own default is 0.6.
 NEAR_MATCH_CUTOFF = 0.8
 NEAR_MATCH_LIMIT = 5
+# A synonym counts as reviewed only with a date and a reviewer still on record: an
+# erased reviewer (SET_NULL) means the review can no longer be vouched for (Q123).
+REVIEWED = {"reviewed_at__isnull": False, "reviewer__isnull": False}
 SERVER_FIELDS = ("reviewer", "reviewed_at", "normalised_name")
 
 
@@ -77,7 +80,7 @@ def create_synonym(data: dict[str, Any]) -> SubstanceSynonym:
 
 
 def approve_synonym(synonym: SubstanceSynonym, reviewer: Any) -> SubstanceSynonym:
-    if synonym.reviewed_at is not None:
+    if synonym.reviewed_at is not None and synonym.reviewer_id is not None:
         raise SubstanceError({"detail": "This synonym is already reviewed."})
     synonym.reviewer = reviewer
     synonym.reviewed_at = timezone.now()
@@ -92,7 +95,7 @@ def _substance_ids(rows: Any) -> list[int]:
 def _classify(normalised: str) -> tuple[str, list[int]]:
     """Return (reason, candidate substance ids); reason "resolved" has one candidate."""
     exact = SubstanceSynonym.objects.filter(normalised_name=normalised)
-    reviewed = _substance_ids(exact.filter(reviewed_at__isnull=False))
+    reviewed = _substance_ids(exact.filter(**REVIEWED))
     if len(reviewed) == 1:
         return "resolved", reviewed
     if len(reviewed) > 1:
@@ -100,7 +103,7 @@ def _classify(normalised: str) -> tuple[str, list[int]]:
     unreviewed = _substance_ids(exact)
     if unreviewed:
         return ReviewReason.UNREVIEWED_SYNONYM, unreviewed
-    known = SubstanceSynonym.objects.filter(reviewed_at__isnull=False)
+    known = SubstanceSynonym.objects.filter(**REVIEWED)
     close = get_close_matches(
         normalised,
         sorted(set(known.values_list("normalised_name", flat=True))),

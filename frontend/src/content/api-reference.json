@@ -508,7 +508,7 @@
         },
         {
           "anchor": "api-substances-post-api-substances-resolve",
-          "body": "Any signed-in user. Body `{name, language?}`. Returns `{status, reason, substance, codes, review_item_id, candidates}`. `status` is `resolved` (with `substance` and its stored `codes`) or `ambiguous` (`substance` is `null`, `codes` empty, and the open queue item id is returned). Repeating a request reuses the open item. Near-match candidates use stdlib `difflib` with cutoff 0.8 over reviewed names and are only listed, never attached (Q117). `candidates` is filled only for staff users; for everyone else it is `[]` and only `review_item_id` is returned, so an unreviewed link never reaches end users. `language` is stored on the queue item and does not filter the match (Q118).",
+          "body": "Any signed-in user, throttled per user (scope `substance_resolve`, default 60/min, `SUBSTANCE_RESOLVE_THROTTLE_RATE`; `429` beyond it; Q125). A synonym counts as reviewed only while its reviewer account still exists (Q123). Body `{name, language?}`. Returns `{status, reason, substance, codes, review_item_id, candidates}`. `status` is `resolved` (with `substance` and its stored `codes`) or `ambiguous` (`substance` is `null`, `codes` empty, and the open queue item id is returned). Repeating a request reuses the open item. Near-match candidates use stdlib `difflib` with cutoff 0.8 over reviewed names and are only listed, never attached (Q117). `candidates` is filled only for staff users; for everyone else it is `[]` and only `review_item_id` is returned, so an unreviewed link never reaches end users. `language` is stored on the queue item and does not filter the match (Q118).",
           "endpoints": [
             {
               "method": "POST",
@@ -516,6 +516,61 @@
             }
           ],
           "heading": "`POST /api/substances/resolve/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-batch-resolve-and-staged-commit-tg-c",
+          "body": "All four routes below belong to the signed-in owner of the extraction: another user gets `404`, an anonymous request `401`. Nothing is attached to a protocol or substance, and no LLM or network call is made. The names are resolved by the same resolver as `/resolve/`, so each unresolved name also lands in the review queue.",
+          "endpoints": [],
+          "heading": "Batch resolve and staged commit (TG-c)",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-extractions",
+          "body": "Throttled per user (scope `substance_extraction`, default 60 names/min, `SUBSTANCE_EXTRACTION_THROTTLE_RATE`; `429` beyond it). Body `{entries: [{name, language?, proposed?}]}` with 1 to 50 entries (Q121); each entry uses one slot of the rate, so a batch of N names costs N (Q125). Returns `201` with `{id, created_at, committed_at, submitted, recognised, not_understood, items}`; the counts are computed by code and `submitted = recognised + not_understood`. Each item has `{id, submitted_name, language, status, substance, review_item_id, candidates, decision, decided_substance, decided_at, accepted_fields, notes, ambiguous}`. `status` is `resolved` (with `substance`) or `not_understood`. `candidates` (difflib near-matches, never resolved) is filled for staff only. Duplicate names are each counted and share one decision (Q120). A non-text name, an empty or over-long name (over 200), a NUL character or more than 50 entries is `400` and nothing is stored.\n\n`proposed` is an optional `{field: value}` map from an extractor, checked by the constrained-column validator against `system`, `code` and `source` of the substance code model. A value is written to `accepted_fields` only if it is an exact member of the `system` enum or fits the field's maximum length. `notes` (free text, any length) goes to the item's `notes`. Any other value, an unknown field or a non-text value is listed in `ambiguous` as `{field, value, reason}` (`not_in_enum`, `too_long`, `not_text`, `unknown_field`) with the full original value, never truncated; the other fields and entries are still stored.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/extractions/"
+            }
+          ],
+          "heading": "`POST /api/substances/extractions/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-get-api-substances-extractions-id",
+          "body": "Returns the same object as the submit response, with the current decisions.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/substances/extractions/<id>/"
+            }
+          ],
+          "heading": "`GET /api/substances/extractions/<id>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-extractions-id-items-item-id-decide",
+          "body": "Body `{decision: \"corrected\", substance: <id>}` or `{decision: \"left_out\"}`; only for a `not_understood` item of an uncommitted extraction (`400` otherwise, including an unknown substance). A correction is recorded with actor and time and creates no synonym (Q122). Can be changed until commit. Returns the item.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/extractions/<id>/items/<item_id>/decide/"
+            }
+          ],
+          "heading": "`POST /api/substances/extractions/<id>/items/<item_id>/decide/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-extractions-id-commit",
+          "body": "`400` with a plain message while any not-understood item has no decision, or if already committed. Otherwise sets `committed_at` and returns the extraction (Q124).",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/extractions/<id>/commit/"
+            }
+          ],
+          "heading": "`POST /api/substances/extractions/<id>/commit/`",
           "level": 2
         }
       ],
@@ -727,6 +782,26 @@
       "anchor": "api-substances-patch-api-substances-id-codes-code-id",
       "method": "PATCH",
       "path": "/api/substances/<id>/codes/<code_id>/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-extractions",
+      "method": "POST",
+      "path": "/api/substances/extractions/"
+    },
+    {
+      "anchor": "api-substances-get-api-substances-extractions-id",
+      "method": "GET",
+      "path": "/api/substances/extractions/<id>/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-extractions-id-commit",
+      "method": "POST",
+      "path": "/api/substances/extractions/<id>/commit/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-extractions-id-items-item-id-decide",
+      "method": "POST",
+      "path": "/api/substances/extractions/<id>/items/<item_id>/decide/"
     },
     {
       "anchor": "api-substances-post-api-substances-resolve",
