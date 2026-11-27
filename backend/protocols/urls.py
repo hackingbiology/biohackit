@@ -8,5 +8,6 @@ urlpatterns = [
     path("<int:pk>/", views.ProtocolDetailView.as_view()),
     path("<int:pk>/versions/", views.VersionListView.as_view()),
     path("<int:pk>/versions/<int:number>/", views.VersionDetailView.as_view()),
+    path("<int:pk>/ingredient-totals/", views.IngredientTotalsView.as_view()),
     path("<int:pk>/diff/", views.DiffView.as_view()),
 ]

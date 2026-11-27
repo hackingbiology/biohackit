@@ -14,6 +14,8 @@ from rest_framework.exceptions import (  # type: ignore[import-untyped]  # DRF s
     ValidationError,
 )
 
+from substances.models import Product
+
 from .diffing import changed_fields
 from .facets import FACETS, MAX_TEXT, animal_derived, clean_facet, untagged_per_weight
 from .models import (
@@ -164,6 +166,19 @@ def clean_acknowledge(raw: Any) -> bool:
     return raw
 
 
+def check_products(actor: AbstractBaseUser, interventions: list[Any]) -> None:
+    """Every `product_id` must be a product of this user; the 400 names the path."""
+    wanted = {i["product_id"] for i in interventions if "product_id" in i}
+    own = set(
+        Product.objects.filter(owner=actor, pk__in=wanted).values_list("pk", flat=True)
+    )
+    for index, item in enumerate(interventions):
+        if "product_id" in item and item["product_id"] not in own:
+            raise ValidationError(
+                {f"interventions[{index}].product_id": "is not one of your products."}
+            )
+
+
 def _check_doses(interventions: list[Any]) -> None:
     names = untagged_per_weight(interventions)
     if names:
@@ -222,6 +237,8 @@ def edit(
     """Apply validated `fields`. Returns the new version, or None for an in-place Draft edit.
     The caller holds a row lock on `protocol` inside a transaction."""
     new = {**snapshot(protocol), **{k: v for k, v in fields.items() if k in TRACKED}}
+    if "interventions" in fields:
+        check_products(actor, new["interventions"])
     draft_only = {k: v for k, v in fields.items() if k in DRAFT_ONLY}
     if protocol.state == State.DRAFT:
         _check_lineage(
@@ -296,6 +313,7 @@ def create(
         protocol = Protocol(
             owner=actor, origin=origin, tracked_since=timezone.localdate()
         )
+        check_products(actor, fields.get("interventions", []))
         for key, value in fields.items():
             setattr(protocol, key, value)
         _check_lineage(protocol.history, protocol.lineage_note)

@@ -76,11 +76,13 @@ def intervention_to_omop_drug_exposure(
     """Map intervention `index` of a stored version to a DRUG_EXPOSURE-shaped dict.
 
     `drug_source_value` and `dose_unit_source_value` are the stored text unchanged.
-    The amount and the schedule go to no column (see the mapping document).
+    `route_source_value` is the stored route label (no concept id).
+    The amount, the formulation and the schedule go to no column (see the mapping document).
     """
     item = version.snapshot["interventions"][index]
     row: dict[str, Any] = dict.fromkeys(DRUG_EXPOSURE_COLUMNS)
     row["drug_exposure_start_date"] = _start_date(version, item)
     row["drug_source_value"] = item["name"]
     row["dose_unit_source_value"] = item["unit"] or None
+    row["route_source_value"] = item.get("route") or None
     return row

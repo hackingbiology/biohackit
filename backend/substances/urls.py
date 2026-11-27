@@ -1,10 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 from django.urls import path
 
-from . import views
+from . import product_views, views
 
 urlpatterns = [
     path("", views.SubstanceListCreateView.as_view()),
+    path("products/", product_views.ProductListCreateView.as_view()),
+    path("products/<int:pk>/", product_views.ProductDetailView.as_view()),
+    path(
+        "products/<int:pk>/ingredients/", product_views.IngredientCreateView.as_view()
+    ),
+    path(
+        "products/<int:pk>/ingredients/<int:ingredient_id>/",
+        product_views.IngredientDetailView.as_view(),
+    ),
     path("resolve/", views.ResolveNameView.as_view()),
     path("extractions/", views.ExtractionCreateView.as_view()),
     path("extractions/<int:extraction_id>/", views.ExtractionDetailView.as_view()),

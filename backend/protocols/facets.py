@@ -3,6 +3,7 @@
 UCUM lookup until M03 TG-a/TG-b); amounts are exact decimal strings, never floats."""
 
 import re
+from decimal import Decimal
 from typing import Any
 
 from rest_framework.exceptions import ValidationError  # type: ignore[import-untyped]  # DRF ships no stubs
@@ -15,6 +16,18 @@ MAX_AMOUNT = 30
 BASES = ("absolute", "per_body_weight")
 PROVENANCES = ("human-derived", "animal-derived")
 PER_WEIGHT = "per_body_weight"
+# Plain labels, not SNOMED/EDQM/FHIR codes (Q130, a default, not a cited list).
+ROUTES = (
+    "oral",
+    "sublingual",
+    "topical",
+    "intranasal",
+    "inhaled",
+    "subcutaneous",
+    "intramuscular",
+    "other",
+)
+MAX_FORMULATION = 100
 AMOUNT_HINT = (
     'must be a plain decimal string such as "6" or "0.5" '
     f"(ASCII digits only, at most {MAX_AMOUNT} characters)."
@@ -103,9 +116,44 @@ def _posology(item: dict[str, Any], where: str) -> dict[str, str]:
     return out
 
 
-def _intervention(raw: Any, where: str) -> dict[str, str]:
+def _formulation(raw: Any, where: str) -> str:
+    text = _text(raw, where, False)
+    if len(text) > MAX_FORMULATION:
+        raise ValidationError(
+            {where: f"must be at most {MAX_FORMULATION} characters; it is never cut."}
+        )
+    return text
+
+
+def _product_use(item: dict[str, Any], where: str) -> dict[str, Any]:
+    """Optional `product_id` and `units_per_day`, written only when set. Neither sets or
+    changes the amount: they only feed the label-contents total."""
+    out: dict[str, Any] = {}
+    raw = item.get("product_id")
+    if raw is not None:
+        if isinstance(raw, bool) or not isinstance(raw, int) or raw < 1:
+            raise ValidationError(
+                {f"{where}.product_id": "must be the id of one of your products."}
+            )
+        out["product_id"] = raw
+    units = _amount(item.get("units_per_day"), f"{where}.units_per_day")
+    if units:
+        if Decimal(units) <= 0:
+            raise ValidationError(
+                {f"{where}.units_per_day": "must be greater than zero."}
+            )
+        if "product_id" not in out:
+            raise ValidationError(
+                {f"{where}.product_id": "is required with units_per_day."}
+            )
+        out["units_per_day"] = units
+    return out
+
+
+def _intervention(raw: Any, where: str) -> dict[str, Any]:
     keys = {"name", "amount", "unit", "schedule", "basis", "provenance"}
-    item = _object(raw, where, {*keys, "provenance_source"}, {"name"})
+    extra = {"provenance_source", "route", "formulation", "product_id", "units_per_day"}
+    item = _object(raw, where, {*keys, *extra}, {"name"})
     out = {
         "name": _text(item["name"], f"{where}.name"),
         "amount": _amount(item.get("amount"), f"{where}.amount"),
@@ -114,7 +162,12 @@ def _intervention(raw: Any, where: str) -> dict[str, str]:
     }
     if out["amount"] and not out["unit"]:
         raise ValidationError({f"{where}.unit": "is required when an amount is given."})
-    return {**out, **_posology(item, where)}
+    if item.get("route") is not None:
+        out["route"] = _enum(item["route"], ROUTES, f"{where}.route")
+    formulation = _formulation(item.get("formulation"), f"{where}.formulation")
+    if formulation:
+        out["formulation"] = formulation
+    return {**out, **_posology(item, where), **_product_use(item, where)}
 
 
 def is_per_weight(item: dict[str, Any]) -> bool:

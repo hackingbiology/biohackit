@@ -26,6 +26,26 @@ Staff only. Adds one code (`201`). The same system and code twice on one substan
 
 Staff only. Corrects a code. The result must still have a source and a fetch date, or it is `400`. Changing `code`, `system` or `source` needs a new `fetched_on` in the same request (`400` otherwise). The same goes for `substance_class` or `class_source` on `PATCH /api/substances/<id>/`, which need `class_fetched_on`. Text fields refuse NUL characters with `400`.
 
+## Products and declared ingredients (TG-e)
+
+Owner-only (any signed-in user, for their own products; another user's product is `404`, anonymous is `401` or `403`). Nothing is seeded. A product is `{id, name, label_source, label_fetched_on, ingredients}`: `label_source` (what the label is, up to 300 characters) and `label_fetched_on` (`YYYY-MM-DD`, not in the future) are required, so a product without a label source is `400`. An ingredient is `{id, substance, amount_per_unit, unit, label_source}`: `substance` is the id of an existing substance, `amount_per_unit` a plain ASCII decimal string (at most 18 digits before and 12 after the point; anything that would need rounding is `400`) or `null` when the label gives none, `unit` is required with an amount, and `label_source` is required. A substance can appear once per product. Unknown fields are `400`. Product ingredients feed `GET /api/protocols/<id>/ingredient-totals/` (docs/api-protocols.md).
+
+## `GET|POST /api/substances/products/`
+
+`GET` lists your products with their ingredients. `POST` creates one (`201`) from `name`, `label_source` and `label_fetched_on`.
+
+## `GET|PATCH /api/substances/products/<id>/`
+
+`GET` returns one product. `PATCH` changes `name`, `label_source` and `label_fetched_on`; a new `label_source` needs a new `label_fetched_on` in the same request (`400` otherwise). There is no delete route: protocol versions keep the product id.
+
+## `POST /api/substances/products/<id>/ingredients/`
+
+Adds one declared ingredient (`201`). The same substance twice on one product is `400`.
+
+## `PATCH|DELETE /api/substances/products/<id>/ingredients/<ingredient_id>/`
+
+`PATCH` corrects `amount_per_unit`, `unit` and `label_source` (the substance cannot change; delete the row and add another); sending `amount_per_unit: null` and `unit: null` records that the label gives no amount. The result must still hold the rules above. `DELETE` removes the row (`204`).
+
 ## Synonyms and name resolution (TG-b)
 
 A synonym is `{id, substance, name, language, source, reviewer, reviewed_at}`. `language` is a BCP 47 tag kept as typed and `source` is required. Nothing is seeded and nothing is fetched from Wikidata or Evipedia (Q108). A name resolves only by exact match, after case-folding and whitespace collapsing, on a **reviewed** synonym of exactly one substance. Every other outcome is `ambiguous` and queued. Text fields refuse NUL characters and over-long values with `400`.

@@ -14,6 +14,7 @@ from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF 
 from . import services
 from .diffing import diff_snapshots
 from .facets import is_per_weight, missing_in_draft
+from .ingredient_totals import ingredient_totals
 from .models import Protocol, ProtocolVersion, State
 
 BACKFILL_NOTE = (
@@ -30,6 +31,10 @@ def _intervention_data(item: dict[str, Any]) -> dict[str, Any]:
         "basis": item.get("basis", "absolute"),
         "provenance": item.get("provenance", ""),
         "provenance_source": item.get("provenance_source", ""),
+        "route": item.get("route", ""),
+        "formulation": item.get("formulation", ""),
+        "product_id": item.get("product_id"),
+        "units_per_day": item.get("units_per_day", ""),
     }
     if is_per_weight(out):
         out["absolute_dose"] = None
@@ -144,6 +149,19 @@ class VersionDetailView(APIView):
     def get(self, request: Request, pk: int, number: int) -> Response:
         version = get_object_or_404(_mine(request, pk).versions, number=number)
         return Response(_version_data(version))
+
+
+class IngredientTotalsView(APIView):
+    """Label-contents totals for the protocol as it stands now (Draft or latest version)."""
+
+    def get(self, request: Request, pk: int) -> Response:
+        protocol = _mine(request, pk)
+        return Response(
+            {
+                "protocol": protocol.pk,
+                **ingredient_totals(protocol.owner, protocol.interventions),
+            }
+        )
 
 
 class DiffView(APIView):

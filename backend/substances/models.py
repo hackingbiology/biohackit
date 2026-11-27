@@ -256,3 +256,58 @@ class ExtractionAmbiguity(models.Model):
 
     class Meta:
         ordering = ["id"]
+
+
+class Product(models.Model):
+    """A product as its label declares it (M03 TG-e). Owned by one user; the label is the
+    only source of its ingredient amounts."""
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+"
+    )
+    name = models.CharField(max_length=200)
+    label_source = models.CharField(max_length=300)
+    label_fetched_on = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+        constraints = [
+            models.CheckConstraint(
+                condition=~models.Q(name="") & ~models.Q(label_source=""),
+                name="product_name_and_label_set",
+            ),
+        ]
+
+
+class ProductIngredient(models.Model):
+    """One ingredient declared on a label. A null amount means the label gives none: the
+    ingredient is listed and never summed or estimated."""
+
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="ingredients"
+    )
+    substance = models.ForeignKey(Substance, on_delete=models.PROTECT, related_name="+")
+    amount_per_unit = models.DecimalField(
+        max_digits=30, decimal_places=12, null=True, blank=True
+    )
+    unit = models.CharField(max_length=50, null=True, blank=True)
+    label_source = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["product", "substance"], name="product_ingredient_unique"
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(label_source=""),
+                name="product_ingredient_label_set",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount_per_unit__isnull=True)
+                | (models.Q(unit__isnull=False) & ~models.Q(unit="")),
+                name="product_ingredient_amount_has_unit",
+            ),
+        ]

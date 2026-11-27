@@ -6,6 +6,7 @@ import json
 from typing import Any
 
 POSOLOGY_KEYS = ("basis", "provenance", "provenance_source")
+PRODUCT_KEYS = ("route", "formulation", "product_id", "units_per_day")
 DIFF_FACETS = ("interventions", "doses", "cycles", "measures")
 
 
@@ -34,7 +35,12 @@ def _facets_of(snapshot: dict[str, Any]) -> dict[str, Any]:
     interventions = snapshot["interventions"]
     return {
         "interventions": [
-            {"name": i["name"], "schedule": i["schedule"]} for i in interventions
+            {
+                "name": i["name"],
+                "schedule": i["schedule"],
+                **{k: i[k] for k in PRODUCT_KEYS if k in i},
+            }
+            for i in interventions
         ],
         "doses": [
             {

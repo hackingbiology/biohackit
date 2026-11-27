@@ -370,6 +370,18 @@
           "level": 2
         },
         {
+          "anchor": "api-protocols-get-api-protocols-id-ingredient-totals",
+          "body": "Owner-only. For the protocol as it stands now (Draft, or the latest version), the per-day total of **label contents** per substance. For each item with a `product_id` and `units_per_day`, each ingredient with a declared amount adds `amount_per_unit x units_per_day`, computed with `Decimal`, and only ingredients with exactly the same unit string are added together; different units are listed as separate totals and never converted (Q131). Response: `{protocol, kind: \"label-contents-total\", note, substances, items_without_units_per_day}`. Each substance has `totals` (`{unit, amount, contributions}`; a contribution has the product, its `label_source`, the ingredient's `ingredient_label_source`, `amount_per_unit`, `units_per_day`, `per_day`) and `without_amount`: ingredients whose label gives no amount, listed with `amount: null`, never summed and never estimated. Items with a product but no `units_per_day` are listed and contribute nothing. The response has no posology or dose field: it is a total of what the labels declare, not a recommendation. Totals follow the product's current label data. Left out: the intake schedule, the restock projection and the dose sanity check on the sum (no cited thresholds, Q126).",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/protocols/<id>/ingredient-totals/"
+            }
+          ],
+          "heading": "`GET /api/protocols/<id>/ingredient-totals/`",
+          "level": 2
+        },
+        {
           "anchor": "api-protocols-get-api-protocols-id-diff-from-n-to-m",
           "body": "Deterministic field-level diff of two versions (stdlib `difflib`, no AI). Returns `facets` (`interventions` = name and schedule, `doses` = amount and unit per intervention, `cycles`, `measures`), each `{changed, unified}` with unified diff lines over the canonical JSON, and `changes`: `[{field, old, new}]`, for example `{\"field\": \"doses[0].amount\", \"old\": \"6\", \"new\": \"8\"}`. Missing or non-numeric `from`/`to` is `400`; an unknown version is `404`.",
           "endpoints": [
@@ -441,6 +453,73 @@
             }
           ],
           "heading": "`PATCH /api/substances/<id>/codes/<code_id>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-products-and-declared-ingredients-tg-e",
+          "body": "Owner-only (any signed-in user, for their own products; another user's product is `404`, anonymous is `401` or `403`). Nothing is seeded. A product is `{id, name, label_source, label_fetched_on, ingredients}`: `label_source` (what the label is, up to 300 characters) and `label_fetched_on` (`YYYY-MM-DD`, not in the future) are required, so a product without a label source is `400`. An ingredient is `{id, substance, amount_per_unit, unit, label_source}`: `substance` is the id of an existing substance, `amount_per_unit` a plain ASCII decimal string (at most 18 digits before and 12 after the point; anything that would need rounding is `400`) or `null` when the label gives none, `unit` is required with an amount, and `label_source` is required. A substance can appear once per product. Unknown fields are `400`. Product ingredients feed `GET /api/protocols/<id>/ingredient-totals/` (docs/api-protocols.md).",
+          "endpoints": [],
+          "heading": "Products and declared ingredients (TG-e)",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-get-post-api-substances-products",
+          "body": "`GET` lists your products with their ingredients. `POST` creates one (`201`) from `name`, `label_source` and `label_fetched_on`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/substances/products/"
+            },
+            {
+              "method": "POST",
+              "path": "/api/substances/products/"
+            }
+          ],
+          "heading": "`GET|POST /api/substances/products/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-get-patch-api-substances-products-id",
+          "body": "`GET` returns one product. `PATCH` changes `name`, `label_source` and `label_fetched_on`; a new `label_source` needs a new `label_fetched_on` in the same request (`400` otherwise). There is no delete route: protocol versions keep the product id.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/substances/products/<id>/"
+            },
+            {
+              "method": "PATCH",
+              "path": "/api/substances/products/<id>/"
+            }
+          ],
+          "heading": "`GET|PATCH /api/substances/products/<id>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-products-id-ingredients",
+          "body": "Adds one declared ingredient (`201`). The same substance twice on one product is `400`.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/products/<id>/ingredients/"
+            }
+          ],
+          "heading": "`POST /api/substances/products/<id>/ingredients/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-patch-delete-api-substances-products-id-ingredients-ingredient-id",
+          "body": "`PATCH` corrects `amount_per_unit`, `unit` and `label_source` (the substance cannot change; delete the row and add another); sending `amount_per_unit: null` and `unit: null` records that the label gives no amount. The result must still hold the rules above. `DELETE` removes the row (`204`).",
+          "endpoints": [
+            {
+              "method": "PATCH",
+              "path": "/api/substances/products/<id>/ingredients/<ingredient_id>/"
+            },
+            {
+              "method": "DELETE",
+              "path": "/api/substances/products/<id>/ingredients/<ingredient_id>/"
+            }
+          ],
+          "heading": "`PATCH|DELETE /api/substances/products/<id>/ingredients/<ingredient_id>/`",
           "level": 2
         },
         {
@@ -744,6 +823,11 @@
       "path": "/api/protocols/<id>/diff/"
     },
     {
+      "anchor": "api-protocols-get-api-protocols-id-ingredient-totals",
+      "method": "GET",
+      "path": "/api/protocols/<id>/ingredient-totals/"
+    },
+    {
       "anchor": "api-protocols-get-api-protocols-id-versions",
       "method": "GET",
       "path": "/api/protocols/<id>/versions/"
@@ -802,6 +886,41 @@
       "anchor": "api-substances-post-api-substances-extractions-id-items-item-id-decide",
       "method": "POST",
       "path": "/api/substances/extractions/<id>/items/<item_id>/decide/"
+    },
+    {
+      "anchor": "api-substances-get-post-api-substances-products",
+      "method": "GET",
+      "path": "/api/substances/products/"
+    },
+    {
+      "anchor": "api-substances-get-post-api-substances-products",
+      "method": "POST",
+      "path": "/api/substances/products/"
+    },
+    {
+      "anchor": "api-substances-get-patch-api-substances-products-id",
+      "method": "GET",
+      "path": "/api/substances/products/<id>/"
+    },
+    {
+      "anchor": "api-substances-get-patch-api-substances-products-id",
+      "method": "PATCH",
+      "path": "/api/substances/products/<id>/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-products-id-ingredients",
+      "method": "POST",
+      "path": "/api/substances/products/<id>/ingredients/"
+    },
+    {
+      "anchor": "api-substances-patch-delete-api-substances-products-id-ingredients-ingredient-id",
+      "method": "DELETE",
+      "path": "/api/substances/products/<id>/ingredients/<ingredient_id>/"
+    },
+    {
+      "anchor": "api-substances-patch-delete-api-substances-products-id-ingredients-ingredient-id",
+      "method": "PATCH",
+      "path": "/api/substances/products/<id>/ingredients/<ingredient_id>/"
     },
     {
       "anchor": "api-substances-post-api-substances-resolve",

@@ -18,6 +18,7 @@ Implemented by `intervention_to_omop_drug_exposure(version, index)` in `backend/
 - Amount: goes to no column. `quantity` is the quantity dispensed and `days_supply` the supply in days, which are not the amount of one dose; the DDL has no dose-amount column. The amount stays in the stored version.
 - Schedule: goes to no column. `sig` holds the directions printed on a prescription, and a free-text self-experiment schedule is not that. It stays in the stored version.
 - A `per_body_weight` intervention (any provenance, including `animal-derived`) never gets a derived absolute dose: `quantity` stays `None`, and the stored per-weight unit text (for example `mg/kg`) goes to `dose_unit_source_value` as stored. The per-weight amount goes to no column, as for any amount.
+- Route (M03 TG-e): the stored route label goes to `route_source_value` (the pinned v5.4.0 DDL lists that column, varchar(50); every label of the list is shorter). `route_concept_id` stays `None`: no vocabulary is loaded and the labels are not SNOMED or EDQM codes. The formulation and the product link go to no column. A route never touches `quantity`.
 - `dose_unit_source_value` is `None` when no unit is stored (an intervention without an amount may have none).
 - `*_source_value` columns are `varchar(50)` while a stored name or unit may be up to 500 characters: an exporter must handle a longer value; the function does not truncate.
 
@@ -46,5 +47,5 @@ Implemented by `intervention_to_omop_drug_exposure(version, index)` in `backend/
 | `visit_detail_id` | integer NULL | empty: no stored value |
 | `drug_source_value` | varchar(50) NULL | intervention `name`, as stored |
 | `drug_source_concept_id` | integer NULL | empty: no vocabulary loaded |
-| `route_source_value` | varchar(50) NULL | empty: no stored value |
+| `route_source_value` | varchar(50) NULL | intervention `route` (a plain label from the closed list, Q130), as stored; empty if none |
 | `dose_unit_source_value` | varchar(50) NULL | intervention `unit`, as stored; empty if none |
