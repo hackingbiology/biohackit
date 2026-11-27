@@ -13,13 +13,27 @@ from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF 
 
 from . import services
 from .diffing import diff_snapshots
-from .facets import missing_in_draft
+from .facets import is_per_weight, missing_in_draft
 from .models import Protocol, ProtocolVersion, State
 
 BACKFILL_NOTE = (
     "You can add past measurements and earlier changes as history if you remember them. "
     "This is invited, not required."
 )
+
+
+def _intervention_data(item: dict[str, Any]) -> dict[str, Any]:
+    """The stored item exactly as stored, with the posology keys always present. A
+    per-weight item has `absolute_dose: null`: nothing derives an absolute dose from it."""
+    out = {
+        **item,
+        "basis": item.get("basis", "absolute"),
+        "provenance": item.get("provenance", ""),
+        "provenance_source": item.get("provenance_source", ""),
+    }
+    if is_per_weight(out):
+        out["absolute_dose"] = None
+    return out
 
 
 def _protocol_data(protocol: Protocol) -> dict[str, Any]:
@@ -35,7 +49,7 @@ def _protocol_data(protocol: Protocol) -> dict[str, Any]:
         "tracked_since": protocol.tracked_since.isoformat(),
         "history": protocol.history,
         "lineage_note": protocol.lineage_note,
-        "interventions": protocol.interventions,
+        "interventions": [_intervention_data(i) for i in protocol.interventions],
         "cycles": protocol.cycles,
         "measures": protocol.measures,
         "goals": protocol.goals,
@@ -106,6 +120,7 @@ class ProtocolDetailView(APIView):
     def patch(self, request: Request, pk: int) -> Response:
         body = _body(request)
         reason = services.clean_reason(body.pop("reason", None))
+        acknowledge = services.clean_acknowledge(body.pop("acknowledge", None))
         with transaction.atomic():
             protocol = get_object_or_404(
                 Protocol.objects.select_for_update(), pk=pk, owner=request.user
@@ -113,7 +128,7 @@ class ProtocolDetailView(APIView):
             fields = services.parse_fields(
                 body, {*services.TRACKED, *services.DRAFT_ONLY}
             )
-            version = services.edit(protocol, request.user, fields, reason)
+            version = services.edit(protocol, request.user, fields, reason, acknowledge)
         return Response(_result(protocol, version))
 
 

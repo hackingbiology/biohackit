@@ -4,7 +4,10 @@ Owner-only. Session (with CSRF) or token auth as in the labs API. Another user's
 
 Facets (all optional while the protocol is `draft`; unknown keys are a `400`):
 
-- `interventions`: `[{name, amount, unit, schedule}]`. `name` is required; `amount` is a decimal string (`"6"`, `"0.5"`), never a number, kept exactly as typed; an amount needs a `unit`. `name` and `unit` are stored as entered (no catalog or UCUM lookup yet).
+- `interventions`: `[{name, amount, unit, schedule, basis, provenance, provenance_source}]`. `name` is required; `amount` is a decimal string (`"6"`, `"0.5"`), never a number, kept exactly as typed; an amount needs a `unit`. `name` and `unit` are stored as entered (no catalog or UCUM lookup yet).
+  - `basis` (optional): `absolute` (default) or `per_body_weight`. `provenance` (optional): `human-derived` or `animal-derived`; it needs `provenance_source` (text, same limits as `name`, never truncated), and a source needs a provenance. A bad value, or a `provenance` without a source, is `400` naming the path, for example `interventions[0].basis`. Items stored before these keys existed read as `absolute` with empty provenance; nothing was rewritten.
+  - A `per_body_weight` item without a `provenance` is accepted in `draft` (the response `missing` list asks for the provenance and its source). Leaving `draft`, or any later edit that holds such an item, is `400` (`interventions`): it is not accepted as a dose.
+  - The response returns `amount` and `unit` exactly as stored plus `basis`, `provenance`, `provenance_source`; every `per_body_weight` item also has `absolute_dose: null`. No body weight is read and no absolute dose is ever computed from a per-weight value.
 - `cycles`: `[{label, on_days, off_days}]` (whole days).
 - `measures`: `[{loinc_code, purpose}]`, `purpose` is `efficacy`, `safety` or `baseline`. The code is stored as typed, not looked up yet.
 - `goals`: `[text]`.
@@ -20,6 +23,8 @@ Already running: `already_running: true` needs `in_effect_since` (today or earli
 ## `GET|PATCH /api/protocols/<id>/`
 
 `GET` returns the protocol, `latest_version` (null in draft). `PATCH` while `draft` edits in place: no version, no reason, `in_effect_since`, `history` and `lineage_note` can change. Moving `state` to `active` leaves draft: it creates version 1 and needs a non-blank `reason` and a `level`, else `400` and the protocol stays `draft`. After that every change of `title`, `level`, `state` or a facet creates version N+1 with one change event per changed field, and a non-blank `reason` is mandatory (`400`, nothing created). A request that changes nothing is `400`. Allowed state moves: draft to active; active to paused or completed; paused to active or completed. The response has the protocol and, when one was created, `version`. Correcting the latest version is a new version, never an edit of it.
+
+Heightened acknowledgment: moving to `active` (from `draft`, from `paused`, or through `already_running` on `POST`) is `400` (`acknowledge`, nothing created) when the protocol `level` is `research` or any item has `provenance: animal-derived`, unless the body has `acknowledge: true` (any other value is `400`). The error text includes the statement. With it, one append-only `ActivationAcknowledgment` is written in the same transaction (protocol, version, actor, time, level, the animal-derived item names, the statement shown). Resuming from `paused` asks again. On an already `active` protocol, an edit that newly makes it `research` or adds an animal-derived item name needs the same `acknowledge: true` (otherwise `400`) and logs one row; edits that add no new reason ask for nothing.
 
 ## `GET /api/protocols/<id>/versions/`
 

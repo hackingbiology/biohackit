@@ -5,6 +5,7 @@ import difflib
 import json
 from typing import Any
 
+POSOLOGY_KEYS = ("basis", "provenance", "provenance_source")
 DIFF_FACETS = ("interventions", "doses", "cycles", "measures")
 
 
@@ -36,7 +37,12 @@ def _facets_of(snapshot: dict[str, Any]) -> dict[str, Any]:
             {"name": i["name"], "schedule": i["schedule"]} for i in interventions
         ],
         "doses": [
-            {"name": i["name"], "amount": i["amount"], "unit": i["unit"]}
+            {
+                "name": i["name"],
+                "amount": i["amount"],
+                "unit": i["unit"],
+                **{k: i[k] for k in POSOLOGY_KEYS if k in i},
+            }
             for i in interventions
         ],
         "cycles": snapshot["cycles"],

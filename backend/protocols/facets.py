@@ -12,6 +12,9 @@ PURPOSES = ("efficacy", "safety", "baseline")
 MAX_ITEMS = 100
 MAX_TEXT = 500
 MAX_AMOUNT = 30
+BASES = ("absolute", "per_body_weight")
+PROVENANCES = ("human-derived", "animal-derived")
+PER_WEIGHT = "per_body_weight"
 AMOUNT_HINT = (
     'must be a plain decimal string such as "6" or "0.5" '
     f"(ASCII digits only, at most {MAX_AMOUNT} characters)."
@@ -69,8 +72,40 @@ def _object(raw: Any, where: str, keys: set[str], required: set[str]) -> dict[st
     return raw
 
 
+def _enum(raw: Any, choices: tuple[str, ...], where: str) -> str:
+    if not isinstance(raw, str) or raw not in choices:
+        raise ValidationError({where: f"must be one of {', '.join(choices)}."})
+    return raw
+
+
+def _posology(item: dict[str, Any], where: str) -> dict[str, str]:
+    """The optional basis and provenance keys, written only when not at their default,
+    so a stored item without them stays identical (absolute, no provenance)."""
+    out: dict[str, str] = {}
+    if item.get("basis") is not None:
+        basis = _enum(item["basis"], BASES, f"{where}.basis")
+        if basis != "absolute":
+            out["basis"] = basis
+    raw = item.get("provenance")
+    source = _text(item.get("provenance_source"), f"{where}.provenance_source", False)
+    if raw in (None, ""):
+        if source:
+            raise ValidationError(
+                {f"{where}.provenance": "is required when a source is given."}
+            )
+        return out
+    out["provenance"] = _enum(raw, PROVENANCES, f"{where}.provenance")
+    if not source:
+        raise ValidationError(
+            {f"{where}.provenance_source": "is required with a provenance."}
+        )
+    out["provenance_source"] = source
+    return out
+
+
 def _intervention(raw: Any, where: str) -> dict[str, str]:
-    item = _object(raw, where, {"name", "amount", "unit", "schedule"}, {"name"})
+    keys = {"name", "amount", "unit", "schedule", "basis", "provenance"}
+    item = _object(raw, where, {*keys, "provenance_source"}, {"name"})
     out = {
         "name": _text(item["name"], f"{where}.name"),
         "amount": _amount(item.get("amount"), f"{where}.amount"),
@@ -79,7 +114,22 @@ def _intervention(raw: Any, where: str) -> dict[str, str]:
     }
     if out["amount"] and not out["unit"]:
         raise ValidationError({f"{where}.unit": "is required when an amount is given."})
-    return out
+    return {**out, **_posology(item, where)}
+
+
+def is_per_weight(item: dict[str, Any]) -> bool:
+    return item.get("basis") == PER_WEIGHT
+
+
+def untagged_per_weight(interventions: list[Any]) -> list[str]:
+    """Names of per-weight items with no provenance: not accepted as a dose."""
+    return [
+        i["name"] for i in interventions if is_per_weight(i) and not i.get("provenance")
+    ]
+
+
+def animal_derived(interventions: list[Any]) -> list[str]:
+    return [i["name"] for i in interventions if i.get("provenance") == "animal-derived"]
 
 
 def _cycle(raw: Any, where: str) -> dict[str, Any]:
@@ -128,4 +178,10 @@ def missing_in_draft(
         ("safety" not in purposes, "No safety markers yet."),
         (not level, "No level chosen yet (medical or research)."),
     ]
-    return [text for lacking, text in rules if lacking]
+    lines = [text for lacking, text in rules if lacking]
+    lines += [
+        f"{name}: this dose is per body weight. Say whether it comes from human or "
+        "animal data, and give the source."
+        for name in untagged_per_weight(interventions)
+    ]
+    return lines

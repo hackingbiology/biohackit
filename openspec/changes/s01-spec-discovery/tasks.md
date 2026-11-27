@@ -65,7 +65,7 @@ Registers part D1c: docs/spec-discovery/specs-html.md (sections 15–27)
 
 ## interventions-and-catalog
 - [ ] Implement "Early partial result during long waits"
-- [ ] Implement "Weight-relative posology is gated on posology provenance"
+- [ ] Implement "Weight-relative posology is gated on posology provenance" (M03 TG-d 2026-11-27: scenarios 1 and 2 tagged; pending: "Human-derived per-weight value is shown as recorded", its last AND needs the dose sanity check, Q126)
 - [ ] Implement "Route and formulation are recorded per intake item"
 - [ ] Implement "Multi-ingredient products list their declared ingredients"
 

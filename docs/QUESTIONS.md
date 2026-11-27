@@ -338,3 +338,11 @@ Q66 implementation note: `Biomarker.category` (blood | body_composition | microb
 **Q124** · Staged extraction retention and ambiguous values (M03 TG-c). Default taken (a default, not a decision): **a staged or committed extraction is kept until its owner's account is erased (cascade); there is no automatic purge; values the validator marks ambiguous are kept whole on the item and do not block commit, since commit attaches nothing to a protocol or substance yet (no such link exists until TG-d/TG-e/TG-f)**. How long should staged records live, and should an unresolved ambiguous value block commit?
 
 **Q125** · Throttle rates (M03 TG-c and TG-b fix). Default taken (a default, not a decision): **`POST /api/substances/resolve/` 60/min per user (`SUBSTANCE_RESOLVE_THROTTLE_RATE`) and `POST /api/substances/extractions/` 60/min per user, charged one slot per submitted name so a batch costs as much as the same names sent to /resolve/ (`SUBSTANCE_EXTRACTION_THROTTLE_RATE`), both scoped and env-configurable like `loinc_search`; the numbers are not measured**. Are these rates right for real use?
+
+**Q126** · Dose sanity check and baseline gate (M03 TG-d). Default taken (a default, not a decision): **neither is built, because no cited upper-limit, therapeutic or toxic threshold is stored; so scenario "human-derived-per-weight-value-is-shown-as-recorded" (its last AND) and "accepting-the-risk-of-a-research-protocol" (its baseline AND) stay untagged**. Where do cited thresholds come from?
+
+**Q127** · Provenance on absolute posologies (M03 TG-d). Default taken (a default, not a decision): **the `provenance` tag is also accepted, optionally, on an absolute item; only a per-weight item requires it**. Should every dose carry it?
+
+**Q128** · Re-activation (M03 TG-d). Default taken (a default, not a decision): **resuming from Paused asks for the acknowledgment again and logs a new row**. Is once per protocol enough?
+
+**Q129** · Acknowledgment wording (M03 TG-d). Default taken (a default, not a decision): **"I know this protocol is research level and/or based on animal-derived dosing. I accept the risk knowingly and I am responsible for what I decide to do."; the API takes `acknowledge: true` and logs this statement**. Is this wording right, and should it be translated (IT/ZH)?

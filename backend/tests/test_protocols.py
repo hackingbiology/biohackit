@@ -40,7 +40,7 @@ def client(user):
 def _create(client: APIClient, **extra: Any) -> dict[str, Any]:
     body = {
         "title": "Synthetic protocol",
-        "level": "research",
+        "level": "medical",
         "interventions": [RAPA],
         **extra,
     }

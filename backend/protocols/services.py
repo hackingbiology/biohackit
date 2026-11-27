@@ -15,8 +15,16 @@ from rest_framework.exceptions import (  # type: ignore[import-untyped]  # DRF s
 )
 
 from .diffing import changed_fields
-from .facets import FACETS, MAX_TEXT, clean_facet
-from .models import ChangeEvent, History, Level, Protocol, ProtocolVersion, State
+from .facets import FACETS, MAX_TEXT, animal_derived, clean_facet, untagged_per_weight
+from .models import (
+    ActivationAcknowledgment,
+    ChangeEvent,
+    History,
+    Level,
+    Protocol,
+    ProtocolVersion,
+    State,
+)
 
 TRACKED = ("title", "level", "state", *FACETS)
 DRAFT_ONLY = ("in_effect_since", "history", "lineage_note")
@@ -27,6 +35,10 @@ TRANSITIONS = {
     State.COMPLETED: set(),
 }
 IMPORT_REASON = "imported as already running"
+ACK_STATEMENT = (
+    "I know this protocol is {reasons}. I accept the risk knowingly and I am "
+    "responsible for what I decide to do."
+)
 
 
 def snapshot(protocol: Protocol) -> dict[str, Any]:
@@ -144,8 +156,68 @@ def _version(
     return version
 
 
+def clean_acknowledge(raw: Any) -> bool:
+    if raw is None:
+        return False
+    if not isinstance(raw, bool):
+        raise ValidationError({"acknowledge": "must be true or false."})
+    return raw
+
+
+def _check_doses(interventions: list[Any]) -> None:
+    names = untagged_per_weight(interventions)
+    if names:
+        raise ValidationError(
+            {
+                "interventions": "A per-body-weight dose needs its provenance "
+                "(human-derived or animal-derived) and source before it is accepted "
+                f"as a dose: {', '.join(names)}."
+            }
+        )
+
+
+def _heightened_reasons(new: dict[str, Any]) -> tuple[list[str], list[str]]:
+    animal = animal_derived(new["interventions"])
+    reasons = ["research level"] if new["level"] == Level.RESEARCH else []
+    if animal:
+        reasons.append("based on animal-derived dosing")
+    return reasons, animal
+
+
+def _require_acknowledgment(
+    protocol: Protocol, new: dict[str, Any], acknowledge: bool
+) -> tuple[str, list[str]] | None:
+    """The statement and animal item names to log, or None when no acknowledgment is due."""
+    if new["state"] != State.ACTIVE:
+        return None
+    reasons, animal = _heightened_reasons(new)
+    if protocol.state == State.ACTIVE:
+        # Already active: ask only for what this edit newly adds.
+        old_reasons, old_animal = _heightened_reasons(snapshot(protocol))
+        reasons = [r for r in reasons if r not in old_reasons]
+        animal = [a for a in animal if a not in old_animal]
+        if animal and "based on animal-derived dosing" not in reasons:
+            reasons.append("based on animal-derived dosing")
+    if not reasons:
+        return None
+    statement = ACK_STATEMENT.format(reasons=" and ".join(reasons))
+    if not acknowledge:
+        raise ValidationError(
+            {
+                "acknowledge": "Send acknowledge: true to activate. "
+                f"You are accepting the risk of a protocol that is {' and '.join(reasons)}."
+                f" Statement: {statement}"
+            }
+        )
+    return statement, animal
+
+
 def edit(
-    protocol: Protocol, actor: AbstractBaseUser, fields: dict[str, Any], reason: str
+    protocol: Protocol,
+    actor: AbstractBaseUser,
+    fields: dict[str, Any],
+    reason: str,
+    acknowledge: bool = False,
 ) -> ProtocolVersion | None:
     """Apply validated `fields`. Returns the new version, or None for an in-place Draft edit.
     The caller holds a row lock on `protocol` inside a transaction."""
@@ -167,6 +239,7 @@ def edit(
         raise ValidationError(
             {"detail": f"{', '.join(draft_only)} can only change in Draft."}
         )
+    _check_doses(new["interventions"])
     if not reason:
         raise ValidationError({"reason": "A reason is required for this change."})
     if (
@@ -180,18 +253,28 @@ def edit(
         raise ValidationError(
             {"level": "Choose medical or research before leaving Draft."}
         )
-    return _version(protocol, actor, reason, new)
+    due = _require_acknowledgment(protocol, new, acknowledge)
+    version = _version(protocol, actor, reason, new)
+    if due is not None:
+        ActivationAcknowledgment.objects.create(
+            protocol=protocol,
+            version=version,
+            actor=actor,
+            timestamp=version.created_at,
+            level=new["level"],
+            animal_derived_items=due[1],
+            statement=due[0],
+        )
+    return version
 
 
 def create(
     actor: AbstractBaseUser, data: dict[str, Any]
 ) -> tuple[Protocol, ProtocolVersion | None]:
-    allowed = {"origin", "already_running", "reason", *TRACKED, *DRAFT_ONLY}
-    body = {
-        k: v
-        for k, v in data.items()
-        if k not in ("origin", "already_running", "reason")
-    }
+    extra = ("origin", "already_running", "reason", "acknowledge")
+    allowed = {*extra, *TRACKED, *DRAFT_ONLY}
+    body = {k: v for k, v in data.items() if k not in extra}
+    acknowledge = clean_acknowledge(data.get("acknowledge"))
     origin = data.get("origin", "community")
     if origin not in ("community", "curated"):
         raise ValidationError({"origin": "must be one of curated, community."})
@@ -225,4 +308,6 @@ def create(
                 {"in_effect_since": "is required, and not in the future."}
             )
         text = f"{IMPORT_REASON}. {reason}" if reason else IMPORT_REASON
-        return protocol, edit(protocol, actor, {"state": State.ACTIVE}, text)
+        return protocol, edit(
+            protocol, actor, {"state": State.ACTIVE}, text, acknowledge
+        )

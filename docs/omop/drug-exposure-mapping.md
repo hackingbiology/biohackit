@@ -17,6 +17,7 @@ Implemented by `intervention_to_omop_drug_exposure(version, index)` in `backend/
 - End date: not stored, so `drug_exposure_end_date` and `drug_exposure_end_datetime` are `None`. It is not derived from cycles or from the schedule.
 - Amount: goes to no column. `quantity` is the quantity dispensed and `days_supply` the supply in days, which are not the amount of one dose; the DDL has no dose-amount column. The amount stays in the stored version.
 - Schedule: goes to no column. `sig` holds the directions printed on a prescription, and a free-text self-experiment schedule is not that. It stays in the stored version.
+- A `per_body_weight` intervention (any provenance, including `animal-derived`) never gets a derived absolute dose: `quantity` stays `None`, and the stored per-weight unit text (for example `mg/kg`) goes to `dose_unit_source_value` as stored. The per-weight amount goes to no column, as for any amount.
 - `dose_unit_source_value` is `None` when no unit is stored (an intervention without an amount may have none).
 - `*_source_value` columns are `varchar(50)` while a stored name or unit may be up to 500 characters: an exporter must handle a longer value; the function does not truncate.
 

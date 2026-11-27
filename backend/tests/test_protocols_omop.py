@@ -24,7 +24,7 @@ def version(db) -> ProtocolVersion:
     client.force_authenticate(user)
     body = {
         "title": "Synthetic protocol",
-        "level": "research",
+        "level": "medical",
         "interventions": [
             {"name": NAME, "amount": "0.5", "unit": UNIT, "schedule": "weekly"},
             {"name": "plain-name"},

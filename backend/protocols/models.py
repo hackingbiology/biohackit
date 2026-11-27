@@ -133,3 +133,28 @@ class ChangeEvent(ImmutableModel):
 
     class Meta:
         ordering = ["id"]
+
+
+class ActivationAcknowledgment(ImmutableModel):
+    """Logged heightened acknowledgment given when a protocol became active (append-only)."""
+
+    protocol = models.ForeignKey(
+        Protocol, on_delete=models.CASCADE, related_name="acknowledgments"
+    )
+    version = models.ForeignKey(
+        ProtocolVersion, on_delete=models.CASCADE, related_name="acknowledgments"
+    )
+    actor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    timestamp = models.DateTimeField()
+    level = models.CharField(max_length=10)
+    # Item names as they were at activation, not a live reference.
+    animal_derived_items = models.JSONField(default=list)
+    statement = models.TextField()
+
+    class Meta:
+        ordering = ["id"]
