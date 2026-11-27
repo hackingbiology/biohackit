@@ -32,6 +32,8 @@ def _text(data: dict[str, Any], key: str, maximum: int, *, required: bool) -> st
     value = data.get(key, "")
     if not isinstance(value, str):
         raise SubstanceError({key: "Enter text."})
+    if "\x00" in value:
+        raise SubstanceError({key: "Enter text."})
     value = value.strip()
     if required and not value:
         raise SubstanceError({key: "This is required."})
@@ -64,8 +66,13 @@ def clean_class(data: dict[str, Any], current: dict[str, Any]) -> dict[str, Any]
         return {"substance_class": "", "class_source": "", "class_fetched_on": None}
     source = _text(merged, "class_source", SOURCE_MAX, required=True)
     raw = merged.get("class_fetched_on")
-    if raw is None:
-        raise SubstanceError({"class_fetched_on": "This is required with a class."})
+    if raw is None or (
+        ("substance_class" in data or "class_source" in data)
+        and "class_fetched_on" not in data
+    ):
+        raise SubstanceError(
+            {"class_fetched_on": "Enter the fetch date when you change the class."}
+        )
     return {
         "substance_class": klass,
         "class_source": source,
@@ -153,7 +160,16 @@ def add_code(substance: Substance, data: dict[str, Any]) -> SubstanceCode:
 
 
 def update_code(code: SubstanceCode, data: dict[str, Any]) -> SubstanceCode:
-    """Correct a code; the result must still have a source and a fetch date."""
+    """Correct a code; the result must still have a source and a fetch date.
+
+    Changing the code, system or source needs a new fetch date, so an old date is
+    never kept for a value fetched later.
+    """
+    changed = any(k in data for k in ("code", "system", "source"))
+    if changed and "fetched_on" not in data:
+        raise SubstanceError(
+            {"fetched_on": "Enter the fetch date when you change the code."}
+        )
     merged = {
         "system": code.system,
         "code": code.code,

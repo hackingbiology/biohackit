@@ -433,7 +433,7 @@
         },
         {
           "anchor": "api-substances-patch-api-substances-id-codes-code-id",
-          "body": "Staff only. Corrects a code. The result must still have a source and a fetch date, or it is `400`.",
+          "body": "Staff only. Corrects a code. The result must still have a source and a fetch date, or it is `400`. Changing `code`, `system` or `source` needs a new `fetched_on` in the same request (`400` otherwise). The same goes for `substance_class` or `class_source` on `PATCH /api/substances/<id>/`, which need `class_fetched_on`. Text fields refuse NUL characters with `400`.",
           "endpoints": [
             {
               "method": "PATCH",
@@ -441,6 +441,81 @@
             }
           ],
           "heading": "`PATCH /api/substances/<id>/codes/<code_id>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-synonyms-and-name-resolution-tg-b",
+          "body": "A synonym is `{id, substance, name, language, source, reviewer, reviewed_at}`. `language` is a BCP 47 tag kept as typed and `source` is required. Nothing is seeded and nothing is fetched from Wikidata or Evipedia (Q108). A name resolves only by exact match, after case-folding and whitespace collapsing, on a **reviewed** synonym of exactly one substance. Every other outcome is `ambiguous` and queued. Text fields refuse NUL characters and over-long values with `400`.",
+          "endpoints": [],
+          "heading": "Synonyms and name resolution (TG-b)",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-get-post-api-substances-synonyms",
+          "body": "Staff only (`403` for others). `POST` takes `substance` (id), `name` (max 200), `language` (max 35) and `source` (max 300). `reviewer`, `reviewed_at` and `normalised_name` are set by the server: a request that sends one is `400`. The same name, language and substance twice is `400`. The new synonym is unreviewed.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/substances/synonyms/"
+            },
+            {
+              "method": "POST",
+              "path": "/api/substances/synonyms/"
+            }
+          ],
+          "heading": "`GET|POST /api/substances/synonyms/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-synonyms-id-approve",
+          "body": "Staff only. Sets `reviewer` to the requesting user and `reviewed_at` to now; a body is ignored. `400` if already reviewed.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/synonyms/<id>/approve/"
+            }
+          ],
+          "heading": "`POST /api/substances/synonyms/<id>/approve/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-get-api-substances-review-queue",
+          "body": "Staff only. Lists items with `status` `open` (default), `resolved` or `rejected` (`?status=`). An item has `submitted_name`, `language`, `reason` (`no_match`, `unreviewed_synonym`, `near_match`, `several_substances`, `no_code`: a reviewed synonym whose substance has no stored code), `candidate_substance_ids`, `status`, `resolved_by` and `resolved_substance`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/substances/review-queue/"
+            }
+          ],
+          "heading": "`GET /api/substances/review-queue/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-review-queue-id-resolve-and-post-api-substances-review-queue-id-reject",
+          "body": "Staff only. `resolve` takes `{substance: <id>}` and closes an open item with that substance, recording who did it; it does not create a synonym. `reject` closes it without one. A closed item gives `400`.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/review-queue/<id>/resolve/"
+            },
+            {
+              "method": "POST",
+              "path": "/api/substances/review-queue/<id>/reject/"
+            }
+          ],
+          "heading": "`POST /api/substances/review-queue/<id>/resolve/` and `POST /api/substances/review-queue/<id>/reject/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-resolve",
+          "body": "Any signed-in user. Body `{name, language?}`. Returns `{status, reason, substance, codes, review_item_id, candidates}`. `status` is `resolved` (with `substance` and its stored `codes`) or `ambiguous` (`substance` is `null`, `codes` empty, and the open queue item id is returned). Repeating a request reuses the open item. Near-match candidates use stdlib `difflib` with cutoff 0.8 over reviewed names and are only listed, never attached (Q117). `candidates` is filled only for staff users; for everyone else it is `[]` and only `review_item_id` is returned, so an unreviewed link never reaches end users. `language` is stored on the queue item and does not filter the match (Q118).",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/resolve/"
+            }
+          ],
+          "heading": "`POST /api/substances/resolve/`",
           "level": 2
         }
       ],
@@ -652,6 +727,41 @@
       "anchor": "api-substances-patch-api-substances-id-codes-code-id",
       "method": "PATCH",
       "path": "/api/substances/<id>/codes/<code_id>/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-resolve",
+      "method": "POST",
+      "path": "/api/substances/resolve/"
+    },
+    {
+      "anchor": "api-substances-get-api-substances-review-queue",
+      "method": "GET",
+      "path": "/api/substances/review-queue/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-review-queue-id-resolve-and-post-api-substances-review-queue-id-reject",
+      "method": "POST",
+      "path": "/api/substances/review-queue/<id>/reject/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-review-queue-id-resolve-and-post-api-substances-review-queue-id-reject",
+      "method": "POST",
+      "path": "/api/substances/review-queue/<id>/resolve/"
+    },
+    {
+      "anchor": "api-substances-get-post-api-substances-synonyms",
+      "method": "GET",
+      "path": "/api/substances/synonyms/"
+    },
+    {
+      "anchor": "api-substances-get-post-api-substances-synonyms",
+      "method": "POST",
+      "path": "/api/substances/synonyms/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-synonyms-id-approve",
+      "method": "POST",
+      "path": "/api/substances/synonyms/<id>/approve/"
     },
     {
       "anchor": "api-terminology-get-api-terminology-biomarkers-loinc-code-ranges",

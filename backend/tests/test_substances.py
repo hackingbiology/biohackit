@@ -102,7 +102,9 @@ def test_add_correct_and_duplicate_codes(staff):
     cid = r.json()["id"]
     assert staff.post(f"{URL}{sid}/codes/", CODE, format="json").status_code == 400
     r = staff.patch(
-        f"{URL}{sid}/codes/{cid}/", {"source": "another synthetic"}, format="json"
+        f"{URL}{sid}/codes/{cid}/",
+        {"source": "another synthetic", "fetched_on": "2026-01-03"},
+        format="json",
     )
     assert r.status_code == 200 and r.json()["source"] == "another synthetic"
     assert (
@@ -111,7 +113,7 @@ def test_add_correct_and_duplicate_codes(staff):
     other = staff.post(f"{URL}{sid}/codes/", {**CODE, "code": "TEST-2"}, format="json")
     clash = staff.patch(
         f"{URL}{sid}/codes/{other.json()['id']}/",
-        {"code": "TEST-RXCUI-1"},
+        {"code": "TEST-RXCUI-1", "fetched_on": "2026-01-03"},
         format="json",
     )
     assert clash.status_code == 400

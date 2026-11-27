@@ -24,4 +24,28 @@ Staff only. Adds one code (`201`). The same system and code twice on one substan
 
 ## `PATCH /api/substances/<id>/codes/<code_id>/`
 
-Staff only. Corrects a code. The result must still have a source and a fetch date, or it is `400`.
+Staff only. Corrects a code. The result must still have a source and a fetch date, or it is `400`. Changing `code`, `system` or `source` needs a new `fetched_on` in the same request (`400` otherwise). The same goes for `substance_class` or `class_source` on `PATCH /api/substances/<id>/`, which need `class_fetched_on`. Text fields refuse NUL characters with `400`.
+
+## Synonyms and name resolution (TG-b)
+
+A synonym is `{id, substance, name, language, source, reviewer, reviewed_at}`. `language` is a BCP 47 tag kept as typed and `source` is required. Nothing is seeded and nothing is fetched from Wikidata or Evipedia (Q108). A name resolves only by exact match, after case-folding and whitespace collapsing, on a **reviewed** synonym of exactly one substance. Every other outcome is `ambiguous` and queued. Text fields refuse NUL characters and over-long values with `400`.
+
+## `GET|POST /api/substances/synonyms/`
+
+Staff only (`403` for others). `POST` takes `substance` (id), `name` (max 200), `language` (max 35) and `source` (max 300). `reviewer`, `reviewed_at` and `normalised_name` are set by the server: a request that sends one is `400`. The same name, language and substance twice is `400`. The new synonym is unreviewed.
+
+## `POST /api/substances/synonyms/<id>/approve/`
+
+Staff only. Sets `reviewer` to the requesting user and `reviewed_at` to now; a body is ignored. `400` if already reviewed.
+
+## `GET /api/substances/review-queue/`
+
+Staff only. Lists items with `status` `open` (default), `resolved` or `rejected` (`?status=`). An item has `submitted_name`, `language`, `reason` (`no_match`, `unreviewed_synonym`, `near_match`, `several_substances`, `no_code`: a reviewed synonym whose substance has no stored code), `candidate_substance_ids`, `status`, `resolved_by` and `resolved_substance`.
+
+## `POST /api/substances/review-queue/<id>/resolve/` and `POST /api/substances/review-queue/<id>/reject/`
+
+Staff only. `resolve` takes `{substance: <id>}` and closes an open item with that substance, recording who did it; it does not create a synonym. `reject` closes it without one. A closed item gives `400`.
+
+## `POST /api/substances/resolve/`
+
+Any signed-in user. Body `{name, language?}`. Returns `{status, reason, substance, codes, review_item_id, candidates}`. `status` is `resolved` (with `substance` and its stored `codes`) or `ambiguous` (`substance` is `null`, `codes` empty, and the open queue item id is returned). Repeating a request reuses the open item. Near-match candidates use stdlib `difflib` with cutoff 0.8 over reviewed names and are only listed, never attached (Q117). `candidates` is filled only for staff users; for everyone else it is `[]` and only `review_item_id` is returned, so an unreviewed link never reaches end users. `language` is stored on the queue item and does not filter the match (Q118).
