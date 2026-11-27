@@ -155,6 +155,25 @@ Method, decision categories and licence table: [README.md](README.md). Capabilit
 - **Verified:** api.github.com/repos/AmbitionEng/django-pghistory and pypi.org/pypi/django-pghistory/json (classifiers "BSD License", "Framework :: Django :: 5.2", version 3.9.2, summary "History tracking for Django and Postgres"), 2026-11-27
 - **Licence note:** assessment: it records history in PostgreSQL, which matches our database; its interaction with TimescaleDB hypertables was not checked. Its last push is the oldest of the three.
 
+**Comparison against the M03 versioning needs (TG-f first sub-task)**
+Fetched 2026-11-27. Sources: `api.github.com/repos/django-commons/django-simple-history`, `.../etianen/django-reversion`, `.../AmbitionEng/django-pghistory` (the old owner URLs `jazzband/*` and `Opus10/*` returned "Moved Permanently" or "Not Found"); `pypi.org/pypi/<name>/json`; docs pages https://github.com/AmbitionEng/django-pghistory, https://django-simple-history.readthedocs.io/en/latest/, https://django-reversion.readthedocs.io/en/stable/.
+
+| | django-simple-history | django-reversion | django-pghistory |
+|---|---|---|---|
+| Licence (GitHub / PyPI) | BSD-3-Clause / PyPI licence field empty | BSD-3-Clause / "BSD" | BSD-3-Clause / BSD-3-Clause |
+| Latest release (PyPI) | 3.13.0, 2026-07-22 | 6.5.2, 2026-11-12 | 3.9.2, 2026-02-17 |
+| Last push (GitHub `pushed_at`) | 2026-11-01 | 2026-11-12 | 2026-02-17 |
+| Mandatory reason | no: a reason can be recorded (changelog 1.9.0); "required" not mentioned | unknown (docs page fetched did not say) | not mentioned |
+| Actor | partly: middleware can set `history_user` (changelog) | unknown | partly: context such as the logged-in user |
+| Immutability of the latest version | no: history editable in admin when `SIMPLE_HISTORY_EDIT` is set; default not mentioned | unknown | not mentioned |
+| Measurements bound to a version | partly: `HistoricForeignKey` exists (changelog); how it works was not read | unknown | not mentioned |
+
+pghistory and PostgreSQL: its page says it "tracks changes ... using Postgres triggers", copying the model into an event model "on every insert and update", also for bulk methods and raw SQL. TimescaleDB and hypertables are **not mentioned** in the page fetched; whether it works on our database is **unknown** (it could not be checked without running it).
+
+Assessment (not fetched): none of the three gives the mandatory reason, the "latest version is also immutable" rule and the binding of measurements to a version without our own code on top, so the plain model is needed anyway.
+
+**Decision (Q109 default):** plain `ProtocolVersion` model with change events; the three libraries are learn-from only. Revisit if Fabio answers Q109 otherwise.
+
 ## (g) get-based components for supplements and interventions
 
 ### get-based supplement model and mitochondrial evidence catalogue
