@@ -100,3 +100,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-27 · X01 · get-based importer part 2c: `seed_reference` model `getbased_marker_mapping` (upsert by key, per-file atomic, validation equals the model's, no rows committed, Q91); api-labs `import_name` doc fix · see git log
 2026-11-27 · X01 · get-based importer part 2d: preview and confirm accept the unencrypted `labcharts-backup` v1 (format `getbased-labcharts-backup`); encrypted backup and other versions refused; per-profile layout cited in the format doc · see git log
 2026-11-27 · M00c · docs part D: `/docs/api` from `docs/api-*.md`, exporter checked against the URL resolver, tests; Q104 (no OpenAPI file yet) · see git log
+2026-11-27 · X01 · M03 ecosystem scan (interventions catalog + protocols): docs/ecosystem/m03-interventions-protocols.md, Q105-Q107, give-back rows; docs only · see git log
