@@ -69,9 +69,21 @@
       "link": "https://github.com/lucascamillomd/pyaging",
       "status": "proposed",
       "upstream": "lucascamillomd/pyaging"
+    },
+    {
+      "contribution": "Propose working with the maintainer on a documented, versioned archive schema (catalogue version, marker codes such as LOINC, the meaning of `importedWith` and `markerSources`) and on round-trip import/export with biohack.it (docs/ecosystem/getbased-archive-format.md, Q91-Q96). Needs Fabio OK, not posted",
+      "date": "2026-11-27",
+      "link": "https://github.com/elkimek/get-based",
+      "status": "proposed",
+      "upstream": "elkimek/get-based (archive format)"
     }
   ],
   "scans": [
+    {
+      "entries": [],
+      "file": "getbased-archive-format.md",
+      "title": "get-based export, backup and migration archive: format (2026-11-27)"
+    },
     {
       "entries": [],
       "file": "getbased-watch-2026-11.md",

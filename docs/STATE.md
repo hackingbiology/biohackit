@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- X01 get-based importer part 1 done 2026-11-27 (format doc + spec): `docs/ecosystem/getbased-archive-format.md` (cited at get-based commits 002c3e1 and PR #1719 head 9e72e52) and requirement "Import of a get-based archive" (11 scenarios, per-value provenance kept; Q91-Q96). Docs and spec only. Next: part 2, the importer code, once Fabio answers Q91 (marker mapping source).
 - M02 TG-m part 2 done 2026-11-26: `/labs/reports/<id>` shows each result against its reference range, longevity-optimal range and safety threshold, separate, with status in words, source and an optimal-range provenance `<details>` (Q88). Frontend only. Next: next unblocked group per tasks.md.
 - M02 TG-o part 1 done 2026-11-26: browser page `/labs/import` (upload a CSV, each row Recognised / Not recognised with reason, Save only when all are recognised, Undo this import) and `SessionAuthentication` next to JWT with CSRF enforced; IT/ZH fall back to EN (Q86). No migration, no dependency. Next: manual entry page and report view. Part 1b (2026-11-26): Range check column and saved-report guard on the page; next: manual entry page.
 - M02 TG-o part 3 done 2026-11-26: `/labs/reports/<id>` validation controls (confirm / mark as possibly wrong / withdraw behind confirm) via the existing PATCH API; frontend only (Q89). TG-o stays unchecked.

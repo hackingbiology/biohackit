@@ -8,3 +8,4 @@
 - [x] Scan docs/ecosystem/m02-blood-layer.md (lab report ingestion CSV/PDF/photo, FHIR DiagnosticReport/Observation, OMOP MEASUREMENT, PhenoAge/biological clocks, PII obfuscation)
 - [x] Docs page "Ecosystem": what we build on, what we give back
 - [ ] Importer for the get-based export/migration archive (format from elkimek/get-based #1719 and its backup code); propose collaboration via GIVEBACK (Fabio OK needed). See docs/ecosystem/getbased-watch-2026-11.md
+  - part 1 (format doc + spec) done: docs/ecosystem/getbased-archive-format.md, spec `biomarkers-and-labs` "Import of a get-based archive", Q91-Q96; importer code is a later part

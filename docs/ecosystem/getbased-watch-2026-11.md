@@ -42,6 +42,8 @@ Source: GitHub API on elkimek/get-based (releases, commits since 2026-09-01, iss
 - **#1736:** nutrition import with FoodData Central first and AI only as fallback. This is the same deterministic-first philosophy as ours.
 - **#1717:** a community member is asking to fork for German and French UI and contribute back. **#9:** CGM/CKM integration request.
 
+The export, backup and planned migration-archive formats, read from source with citations, are in [getbased-archive-format.md](getbased-archive-format.md).
+
 ## Implications for biohack.it (interpretation, for Fabio)
 1. **Non-technical users may lose their home.** If the hosted app goes recovery-only, users who cannot self-host with Tailscale need an alternative. biohack.it is server-hosted, so an **importer for the get-based migration archive or export** becomes high-value and is a natural collaboration point, to be proposed to the maintainer through GIVEBACK and not posted without Fabio's OK.
 2. **Converging data needs.** Biology Scores, baselines and immune markers overlap with M02/M06. Reuse candidates for Q56 (PhenoAge and Bortz): check their implementation and cite it, but never use it as a number source.
