@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Base domain stubs (M00 TG3). Full logic arrives in M01 (ranges) and M03 (interventions)."""
 
+import re
 from decimal import Decimal
 from typing import Any
 
@@ -459,3 +460,108 @@ class OrganSystemPanel(SourcedModel):
 
     def __str__(self) -> str:
         return self.name
+
+
+class GetbasedMarkerKind(models.TextChoices):
+    MEASURED = "measured", "Measured"
+    CALCULATED = "calculated", "Calculated (deny-list)"
+
+
+GETBASED_CALCULATED_PREFIX = "calculatedRatios."
+GETBASED_COMMIT_PATTERN = r"^[0-9a-f]{40}$"
+
+
+class GetbasedMarkerMapping(SourcedModel):
+    """One get-based marker key (for example `lipids.cholesterol`) and what it means here
+    (X01 part 2a). A `measured` row names the LOINC-coded Biomarker and, to be usable,
+    cites the get-based catalogue unit: UCUM unit, file path and the 40-hex commit it was
+    read at. A `calculated` row is a deny-list entry: no Biomarker, no unit, the cited
+    `source` gives the reason. Nothing is seeded (Q91); keys are never matched by name."""
+
+    getbased_key = models.CharField(max_length=200, unique=True)
+    kind = models.CharField(max_length=16, choices=GetbasedMarkerKind.choices)
+    biomarker = models.ForeignKey(
+        Biomarker, null=True, blank=True, on_delete=models.PROTECT, related_name="+"
+    )
+    unit = models.ForeignKey(
+        Unit, null=True, blank=True, on_delete=models.PROTECT, related_name="+"
+    )
+    unit_source_path = models.CharField(max_length=300, blank=True, default="")
+    unit_source_commit = models.CharField(max_length=40, blank=True, default="")
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=~models.Q(kind=GetbasedMarkerKind.MEASURED)
+                | models.Q(biomarker__isnull=False),
+                name="getbased_measured_has_biomarker",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(kind=GetbasedMarkerKind.CALCULATED)
+                | (
+                    models.Q(biomarker__isnull=True)
+                    & models.Q(unit__isnull=True)
+                    & models.Q(unit_source_path="")
+                    & models.Q(unit_source_commit="")
+                ),
+                name="getbased_calculated_has_no_biomarker_or_unit",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    models.Q(unit__isnull=True)
+                    & models.Q(unit_source_path="")
+                    & models.Q(unit_source_commit="")
+                )
+                | (
+                    models.Q(unit__isnull=False)
+                    & ~models.Q(unit_source_path="")
+                    & models.Q(unit_source_commit__regex=GETBASED_COMMIT_PATTERN)
+                ),
+                name="getbased_unit_citation_all_or_none",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(kind=GetbasedMarkerKind.MEASURED)
+                | ~models.Q(getbased_key__startswith=GETBASED_CALCULATED_PREFIX),
+                name="getbased_no_measured_calculated_ratio",
+            ),
+        ]
+
+    def clean(self) -> None:
+        if self.source_id is None:
+            raise ValidationError({"source": "A mapping row requires a cited source"})
+        if self.kind not in GetbasedMarkerKind.values:
+            raise ValidationError({"kind": "Kind must be measured or calculated"})
+        has_citation = [
+            self.unit_id is not None,
+            bool(self.unit_source_path),
+            bool(self.unit_source_commit),
+        ]
+        if self.kind == GetbasedMarkerKind.CALCULATED:
+            if self.biomarker_id is not None or any(has_citation):
+                raise ValidationError(
+                    "A calculated (deny-list) row has no Biomarker and no unit fields"
+                )
+            return
+        if self.biomarker_id is None:
+            raise ValidationError({"biomarker": "A measured row requires a Biomarker"})
+        if self.getbased_key.startswith(GETBASED_CALCULATED_PREFIX):
+            raise ValidationError(
+                {"getbased_key": "A calculatedRatios key can only be a deny-list row"}
+            )
+        if any(has_citation) and not all(has_citation):
+            raise ValidationError(
+                "The unit, its source path and its commit are set together or not at all"
+            )
+        if self.unit_source_commit and not re.fullmatch(
+            GETBASED_COMMIT_PATTERN, self.unit_source_commit
+        ):
+            raise ValidationError(
+                {"unit_source_commit": "Use the full 40-character lowercase git sha"}
+            )
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.getbased_key

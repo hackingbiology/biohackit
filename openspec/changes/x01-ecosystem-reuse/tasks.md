@@ -9,3 +9,4 @@
 - [x] Docs page "Ecosystem": what we build on, what we give back
 - [ ] Importer for the get-based export/migration archive (format from elkimek/get-based #1719 and its backup code); propose collaboration via GIVEBACK (Fabio OK needed). See docs/ecosystem/getbased-watch-2026-11.md
   - part 1 (format doc + spec) done: docs/ecosystem/getbased-archive-format.md, spec `biomarkers-and-labs` "Import of a get-based archive", Q91-Q96; importer code is a later part
+  - part 2a done 2026-11-27: `core.GetbasedMarkerMapping` (migration 0013, nothing seeded) and `POST /api/labs/imports/getbased/preview/` (v2 export and bundle, stores nothing; Q100). Left: confirm, provenance fields on LabResult, undo, labcharts-backup, migration archive

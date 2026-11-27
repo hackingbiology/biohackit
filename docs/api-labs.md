@@ -267,3 +267,11 @@ not sparse, with a null date.
 Owner-only (JWT). `GET` returns the plain-language notice (copies already cloned by others are outside the instance's control), what is deleted, and the two choices; `keep_for_research` is marked `available: false` with its reason.
 
 `POST` with `choice` = `delete_everything` and `confirm` = `true` deletes the user, profile, lab reports, results, measurements and the retained original files in one transaction (files are removed once it commits). Without `confirm` true, or with an unknown choice: 400, nothing deleted. `keep_for_research`: 409 "de-identification not implemented yet", nothing deleted. Unauthenticated: 401. Defaults: Q85.
+
+## `POST /api/labs/imports/getbased/preview/` (get-based archive preview)
+
+Owner-only (JWT, then session with CSRF, as the CSV import). Multipart `file` (at most 5 MiB) and optional `profile_id`. Reads a plain-JSON get-based single-client export or all-clients bundle, both `version` 2 (`docs/ecosystem/getbased-archive-format.md`). **Stores nothing**: no report, no result, no retained original; the archive content is not logged.
+
+A bundle with several profiles and no `profile_id` returns `{"status": "choose_profile", "profile_ids": [...]}` and no rows. Otherwise `{"status": "preview", "rows": [...], "summary": {...}, "can_confirm": bool}`. Each row: `marker`, `value` (exact text, `0.10` stays `0.10`), `date`, `status` (`matched` | `not_recognised` | `not_imported`), `reason`, and for a matched row `loinc_code`, `unit` (UCUM), `mapping_source`, `mapping_source_url` and `unit_source` (`path@sha` of the get-based catalogue unit), plus `flags` (AI-read, may be AI-read, origin not shown, origin unknown, edited in get-based after import; model and provider are entry-level and qualified). Matching is only through a stored `GetbasedMarkerMapping` row, never by name; with an empty table every marker is "not recognised". `can_confirm` is true only with no not recognised row and at least one matched row; left-out rows (deleted, calculated) are counted in `summary` and do not block.
+
+400: not UTF-8, not JSON, `labcharts-backup`, `getbased-migration`, a version other than 2, an unknown `profile_id`, or a file over the bound; the message names the found format/version and the supported ones. Unauthenticated: 401. Defaults: Q100.

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 from django.urls import path
 
-from . import lab_import, views
+from . import getbased_views, lab_import, views
 
 urlpatterns = [
     path("completeness/", views.LabCompletenessView.as_view()),
@@ -16,4 +16,5 @@ urlpatterns = [
     path("results/<int:pk>/validation/", views.LabResultValidationView.as_view()),
     path("imports/csv/preview/", lab_import.CsvPreviewView.as_view()),
     path("imports/csv/confirm/", lab_import.CsvConfirmView.as_view()),
+    path("imports/getbased/preview/", getbased_views.GetbasedPreviewView.as_view()),
 ]
