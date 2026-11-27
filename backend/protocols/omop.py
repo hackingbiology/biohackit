@@ -9,7 +9,7 @@ A column with no stored value is None: no concept id and no default is ever gues
 from datetime import UTC, date
 from typing import Any
 
-from .models import ProtocolVersion
+from .models import ProtocolVersion, State
 
 OMOP_CDM_VERSION = "5.4"  # docs/omop/drug-exposure-mapping.md, tag v5.4.0
 
@@ -43,6 +43,9 @@ DRUG_EXPOSURE_COLUMNS: tuple[str, ...] = (
 def _start_date(version: ProtocolVersion, item: dict[str, Any]) -> date:
     """Date of the first version of the unbroken run, up to `version`, holding `item`.
 
+    The run also ends where an active version follows a non-active one (a resume): the
+    exposure is then dated from that resume. Consecutive non-active versions pass through.
+
     The item is identified by equality of its stored fields. An item that is in version 1
     starts at `in_effect_since` when set and not after v1's creation date; every other first version contributes its own
     `created_at` (UTC date). A later version that merely repeats the item moves nothing.
@@ -52,6 +55,12 @@ def _start_date(version: ProtocolVersion, item: dict[str, Any]) -> date:
     for prior in earlier.order_by("-number"):
         if item not in prior.snapshot["interventions"]:
             break
+        resumed = (
+            prior.snapshot.get("state") != State.ACTIVE
+            and first.snapshot.get("state") == State.ACTIVE
+        )
+        if resumed:
+            break  # active after a pause: a resumed exposure starts at the resume
         first = prior
     created = first.created_at.astimezone(UTC).date()
     since = version.protocol.in_effect_since

@@ -43,6 +43,12 @@
       "purpose": "Sources, units and stored unit conversions"
     },
     {
+      "component": "substances app",
+      "layer": "backend",
+      "path": "backend/substances",
+      "purpose": "Substances with external identifiers stored as cited code strings only"
+    },
+    {
       "component": "Measurement hypertable",
       "layer": "backend",
       "path": "backend/core/migrations/0002_measurement_hypertable.py",

@@ -385,6 +385,68 @@
       "title": "M03 protocols API (TG-f part 1)"
     },
     {
+      "file": "docs/api-substances.md",
+      "sections": [
+        {
+          "anchor": "api-substances-get-post-api-substances",
+          "body": "`GET` lists substances with their codes. `POST` (staff) creates one from `name`, optional `substance_class` and an optional `codes` list; any invalid code refuses the whole request (`400`, nothing created). Returns `201`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/substances/"
+            },
+            {
+              "method": "POST",
+              "path": "/api/substances/"
+            }
+          ],
+          "heading": "`GET|POST /api/substances/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-get-patch-api-substances-id",
+          "body": "`GET` returns one substance, `404` if unknown. `PATCH` (staff) changes `name` and `substance_class`; codes are changed through the code routes.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/substances/<id>/"
+            },
+            {
+              "method": "PATCH",
+              "path": "/api/substances/<id>/"
+            }
+          ],
+          "heading": "`GET|PATCH /api/substances/<id>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-post-api-substances-id-codes",
+          "body": "Staff only. Adds one code (`201`). The same system and code twice on one substance is `400`.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/substances/<id>/codes/"
+            }
+          ],
+          "heading": "`POST /api/substances/<id>/codes/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-substances-patch-api-substances-id-codes-code-id",
+          "body": "Staff only. Corrects a code. The result must still have a source and a fetch date, or it is `400`.",
+          "endpoints": [
+            {
+              "method": "PATCH",
+              "path": "/api/substances/<id>/codes/<code_id>/"
+            }
+          ],
+          "heading": "`PATCH /api/substances/<id>/codes/<code_id>/`",
+          "level": 2
+        }
+      ],
+      "title": "M03 substances API (TG-a)"
+    },
+    {
       "file": "docs/api-terminology.md",
       "sections": [
         {
@@ -560,6 +622,36 @@
       "anchor": "api-protocols-get-api-protocols-id-versions-number",
       "method": "GET",
       "path": "/api/protocols/<id>/versions/<number>/"
+    },
+    {
+      "anchor": "api-substances-get-post-api-substances",
+      "method": "GET",
+      "path": "/api/substances/"
+    },
+    {
+      "anchor": "api-substances-get-post-api-substances",
+      "method": "POST",
+      "path": "/api/substances/"
+    },
+    {
+      "anchor": "api-substances-get-patch-api-substances-id",
+      "method": "GET",
+      "path": "/api/substances/<id>/"
+    },
+    {
+      "anchor": "api-substances-get-patch-api-substances-id",
+      "method": "PATCH",
+      "path": "/api/substances/<id>/"
+    },
+    {
+      "anchor": "api-substances-post-api-substances-id-codes",
+      "method": "POST",
+      "path": "/api/substances/<id>/codes/"
+    },
+    {
+      "anchor": "api-substances-patch-api-substances-id-codes-code-id",
+      "method": "PATCH",
+      "path": "/api/substances/<id>/codes/<code_id>/"
     },
     {
       "anchor": "api-terminology-get-api-terminology-biomarkers-loinc-code-ranges",

@@ -104,3 +104,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-27 · M03 · OpenSpec change m03-interventions-protocols (proposal, tasks TG-a..TG-l, spec deltas), Q108-Q112; spec and docs only · see git log
 2026-11-27 · M03 · TG-f part 1: protocols app (Protocol, immutable ProtocolVersion and ChangeEvent, owner-only API, stdlib difflib diff), Q114; no dependency · see git log
 2026-11-27 · M03 · TG-j part 1: pure `protocols.omop.intervention_to_omop_drug_exposure` + docs/omop/drug-exposure-mapping.md (DDL v5.4.0 SHA recorded), Q115; amounts must be plain ASCII decimals (review 1795779382); no dependency, no migration · see git log
+2026-11-27 · M03 · TG-a: substances app (Substance, SubstanceCode with source and fetch date, staff-only API, nothing seeded), Q116; OMOP start date stops at a pause (review 1795784163); no dependency · see git log

@@ -115,3 +115,51 @@ def test_future_in_effect_since_is_not_exported_as_start_date(version):
     protocol.save(update_fields=["in_effect_since"])
     row = intervention_to_omop_drug_exposure(version, 0)
     assert row["drug_exposure_start_date"] == version.created_at.date()
+
+
+def test_resumed_exposure_is_dated_from_the_resume_version(version):
+    # v1 active, v2 paused, v3 active: the export from v3 starts at v3's UTC date
+    from datetime import UTC, datetime
+
+    stamps = {
+        2: datetime(2026, 2, 1, 8, 0, tzinfo=UTC),
+        3: datetime(2026, 3, 5, 23, 30, tzinfo=UTC),
+    }
+    states = {2: "paused", 3: "active"}
+    made = {
+        number: ProtocolVersion.objects.create(
+            protocol=version.protocol,
+            number=number,
+            snapshot={**version.snapshot, "state": states[number]},
+            created_at=stamps[number],
+            actor=version.protocol.owner,
+            reason="synthetic",
+        )
+        for number in (2, 3)
+    }
+    assert version.snapshot["state"] == "active"
+    row = intervention_to_omop_drug_exposure(made[3], 0)
+    assert row["drug_exposure_start_date"] == stamps[3].date()
+    # a paused version may be exported; only earlier versions end a run, so it keeps v1's date
+    row = intervention_to_omop_drug_exposure(made[2], 0)
+    assert row["drug_exposure_start_date"] == version.created_at.date()
+
+
+def test_second_paused_version_is_dated_like_the_first_paused_one(version):
+    # v1 active, v2 paused, v3 paused (a title edit): no resume, so v3 keeps v1's date
+    from datetime import UTC, datetime
+
+    stamps = {2: datetime(2026, 2, 1, tzinfo=UTC), 3: datetime(2026, 3, 5, tzinfo=UTC)}
+    made = [
+        ProtocolVersion.objects.create(
+            protocol=version.protocol,
+            number=number,
+            snapshot={**version.snapshot, "state": "paused"},
+            created_at=stamp,
+            actor=version.protocol.owner,
+            reason="synthetic",
+        )
+        for number, stamp in stamps.items()
+    ]
+    row = intervention_to_omop_drug_exposure(made[-1], 0)
+    assert row["drug_exposure_start_date"] == version.created_at.date()

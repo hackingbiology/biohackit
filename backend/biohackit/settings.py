@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "core",
     "terminology",
     "protocols",
+    "substances",
 ]
 
 MIDDLEWARE = [
