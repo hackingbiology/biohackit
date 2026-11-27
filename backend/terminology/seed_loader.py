@@ -2,6 +2,7 @@
 """Seed-file loader and inspector (M01 TG5 part A). Format: seed/README.md."""
 
 import json
+import re
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal, InvalidOperation
@@ -13,7 +14,13 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.db import DatabaseError, transaction
 
-from core.models import Biomarker
+from core.models import (
+    GETBASED_CALCULATED_PREFIX,
+    GETBASED_COMMIT_PATTERN,
+    Biomarker,
+    GetbasedMarkerKind,
+    GetbasedMarkerMapping,
+)
 from terminology.models import Source, Unit, UnitConversion
 
 SEED_DIR = Path(__file__).resolve().parent / "seed"
@@ -21,6 +28,14 @@ REQUIRED_SOURCE = ("name", "licence", "url", "retrieved_at")
 FIELDS = {
     "unit": {"ucum_code", "display"},
     "unit_conversion": {"from_unit", "to_unit", "factor", "biomarker"},
+    "getbased_marker_mapping": {
+        "getbased_key",
+        "kind",
+        "biomarker",
+        "unit",
+        "unit_source_path",
+        "unit_source_commit",
+    },
 }
 MAX_LEN = {
     "ucum_code": 64,
@@ -28,7 +43,10 @@ MAX_LEN = {
     "from_unit": 64,
     "to_unit": 64,
     "biomarker": 64,
+    "getbased_key": 200,
+    "unit_source_path": 300,
 }
+MAPPING_CITATION = ("unit", "unit_source_path", "unit_source_commit")
 SOURCE_MAX = {"name": 200, "version": 64, "licence": 200, "url": 500}
 FACTOR_DECIMALS = 12
 FACTOR_INT_DIGITS = 18
@@ -92,12 +110,37 @@ def _check_fields(model: str, fields: dict[str, Any]) -> str | None:
         if key not in fields:
             continue
         value = fields[key]
-        if value is None and key == "biomarker":
+        if value is None and key in ("biomarker", *MAPPING_CITATION):
             continue
         if not isinstance(value, str) or not value.strip():
             return f"fields.{key} must be a non-blank string"
         if len(value) > limit:
             return f"fields.{key} is longer than {limit} characters"
+    return None
+
+
+def _mapping_problem(fields: dict[str, Any]) -> str | None:
+    """The same rules as GetbasedMarkerMapping.clean() and its CheckConstraints."""
+    kind = fields["kind"]
+    if kind not in GetbasedMarkerKind.values:
+        return "fields.kind must be measured or calculated"
+    cited = [fields[key] for key in MAPPING_CITATION]
+    if kind == GetbasedMarkerKind.CALCULATED:
+        if fields["biomarker"] is not None or any(v is not None for v in cited):
+            return (
+                "a calculated row must have null biomarker, unit, "
+                "unit_source_path and unit_source_commit"
+            )
+        return None
+    if fields["biomarker"] is None:
+        return "fields.biomarker is required for a measured row"
+    if fields["getbased_key"].startswith(GETBASED_CALCULATED_PREFIX):
+        return f"a {GETBASED_CALCULATED_PREFIX} key can only be a calculated row"
+    if any(v is not None for v in cited) and any(v is None for v in cited):
+        return "unit, unit_source_path and unit_source_commit are set together or not at all"
+    commit = fields["unit_source_commit"]
+    if commit is not None and not re.fullmatch(GETBASED_COMMIT_PATTERN, commit):
+        return "fields.unit_source_commit must be 40 lowercase hex characters"
     return None
 
 
@@ -147,6 +190,10 @@ def _parse_row(raw: Any) -> SeedRow | str:
     problem = _check_fields(model, fields)
     if problem:
         return problem
+    if model == "getbased_marker_mapping":
+        problem = _mapping_problem(fields)
+        if problem:
+            return problem
     if model == "unit_conversion":
         factor = _parse_factor(fields["factor"])
         if factor is None:
@@ -208,6 +255,28 @@ def _biomarker(code: Any, where: str) -> Biomarker | None:
         raise SeedError(f"{where}: biomarker {code!r} does not exist") from None
 
 
+def _apply_mapping(f: dict[str, Any], source: Source, where: str) -> bool:
+    """Upsert by getbased_key; clean() runs before save, so a row the model refuses is
+    never stored."""
+    mapping = GetbasedMarkerMapping.objects.filter(
+        getbased_key=f["getbased_key"]
+    ).first()
+    created = mapping is None
+    if mapping is None:
+        mapping = GetbasedMarkerMapping(getbased_key=f["getbased_key"])
+    mapping.kind = f["kind"]
+    mapping.source = source
+    mapping.biomarker = _biomarker(f["biomarker"], where)
+    mapping.unit = None if f["unit"] is None else _unit(f["unit"], where, "mapping")
+    mapping.unit_source_path = f["unit_source_path"] or ""
+    mapping.unit_source_commit = f["unit_source_commit"] or ""
+    try:
+        mapping.save()
+    except ValidationError as exc:
+        raise SeedError(f"{where}: {exc}") from exc
+    return created
+
+
 def _apply_row(row: SeedRow, where: str) -> bool:
     """Upsert one row; return True when it was created."""
     source = _upsert_source(row.source, where)
@@ -217,6 +286,8 @@ def _apply_row(row: SeedRow, where: str) -> bool:
             ucum_code=f["ucum_code"],
             defaults={"display": f["display"], "source": source},
         )[1]
+    if row.model == "getbased_marker_mapping":
+        return _apply_mapping(f, source, where)
     return UnitConversion.objects.update_or_create(
         from_unit=_unit(f["from_unit"], where, "from"),
         to_unit=_unit(f["to_unit"], where, "to"),
@@ -275,6 +346,22 @@ def load_dir(directory: Path) -> list[str]:
     ]
 
 
+def _unverified_unit_warnings(name: str, index: int, raw: Any) -> list[str]:
+    fields = raw.get("fields") if isinstance(raw, dict) else None
+    if (
+        isinstance(raw, dict)
+        and raw.get("model") == "getbased_marker_mapping"
+        and isinstance(fields, dict)
+        and fields.get("kind") == GetbasedMarkerKind.MEASURED
+        and fields.get("unit") is None
+    ):
+        key = fields.get("getbased_key")
+        return [
+            f"{name} row {index}: warning: measured key {key!r} has no unit citation"
+        ]
+    return []
+
+
 def inspect_seed_dir(directory: Path) -> list[str]:
     """List problems: restricted release filenames and rows without a complete source."""
     problems: list[str] = []
@@ -293,4 +380,5 @@ def inspect_seed_dir(directory: Path) -> list[str]:
             problem = _source_problem(source)
             if problem:
                 problems.append(f"{path.name} row {index}: {problem}")
+            problems.extend(_unverified_unit_warnings(path.name, index, raw))
     return problems

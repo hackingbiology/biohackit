@@ -17,7 +17,7 @@ once the UCUM licence (Q9) is verified from the source.
 ]}
 ```
 
-- `model` is `unit` or `unit_conversion`; unknown models, unknown or missing fields are errors.
+- `model` is `unit`, `unit_conversion` or `getbased_marker_mapping`; unknown models, unknown or missing fields are errors.
 - `source.name`, `licence`, `url`, `retrieved_at` (ISO date) are mandatory and non-blank;
   `version` is optional (stored as `""`).
 - `factor` is a string, parsed as `Decimal`, never as a float. It must be > 0, have at most
@@ -26,6 +26,34 @@ once the UCUM licence (Q9) is verified from the source.
   strings within the column length limits. `source.version` must be a string if present.
 - `from_unit`/`to_unit` must already exist (earlier row or earlier file); `biomarker` is a
   `loinc_code` that must already exist, or `null`. Nothing is auto-created.
+
+## get-based marker mapping rows
+
+No mapping rows are committed (Q91): no LOINC code can be verified here. Each row must
+cite the get-based catalogue file at a pinned commit (see
+`docs/ecosystem/getbased-archive-format.md`). Placeholders only:
+
+```json
+{"model": "getbased_marker_mapping",
+ "source": {"...": "..."},
+ "fields": {"getbased_key": "<getbased marker key>", "kind": "measured",
+            "biomarker": "<loinc_code>", "unit": "<ucum_code>",
+            "unit_source_path": "<catalogue file path>",
+            "unit_source_commit": "<40-hex commit>"}},
+{"model": "getbased_marker_mapping",
+ "source": {"...": "..."},
+ "fields": {"getbased_key": "calculatedRatios.<name>", "kind": "calculated",
+            "biomarker": null, "unit": null,
+            "unit_source_path": null, "unit_source_commit": null}}
+```
+
+- Same rules as `core.GetbasedMarkerMapping`: `measured` needs an existing `biomarker`
+  (`loinc_code`) and may not use a `calculatedRatios.` key; `calculated` has null
+  biomarker, unit, path and commit. The unit, path and commit are all set or all null;
+  the commit is 40 lowercase hex. `unit` is the `ucum_code` of an existing Unit.
+- A measured row without a unit citation loads as is (the preview shows it as "not
+  recognised: unit not verified"); `inspect_seed_dir` reports it as a warning.
+- Upsert by `getbased_key`.
 
 ## Behaviour
 

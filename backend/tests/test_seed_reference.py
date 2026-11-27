@@ -173,8 +173,10 @@ def test_output_summary(db, tmp_path, capsys):
     run(tmp_path)
     out = capsys.readouterr().out.splitlines()
     assert out == [
+        "getbased_marker_mapping: created 0, updated 0",
         "unit: created 1, updated 0",
         "unit_conversion: created 0, updated 0",
+        "getbased_marker_mapping: created 0, updated 0",
         "unit: created 0, updated 1",
         "unit_conversion: created 0, updated 0",
     ]
