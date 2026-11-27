@@ -99,7 +99,7 @@ A marker value with **no** `markerSources` entry: a legacy or purely manual valu
 - The type of `importedWith` is not declared in `LabEntryDraft` (it is covered only by its index signature, M js/lab-entry.ts:15).
 
 ## What is not in these files (so the importer must not assume it)
-- Per-value **unit**: not stored (see above); derived from the catalogue.
+- Per-value **unit**: not stored (see above); derived from the catalogue. The importer's use of it is in the OpenSpec scenario "Mapping row cites the get-based catalogue unit" (biomarkers-and-labs, change x01-ecosystem-reuse).
 - **LOINC/UCUM/ontology codes**: none found.
 - A **schema document** or **JSON Schema** for the export: none found.
 - A **version of the marker catalogue**: none found.

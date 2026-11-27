@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: Import of a get-based archive
-The system SHALL let a user import lab results from a get-based export, backup or migration archive (format: `docs/ecosystem/getbased-archive-format.md`) in two steps, a preview and a confirmation. Nothing SHALL be saved before the user confirms. Every get-based marker SHALL be matched to a stored, LOINC-coded `Biomarker` only through a stored mapping that cites its source, or be listed as not recognised with the reason; a marker SHALL never be matched by name guessing. get-based's per-value provenance (`importedWith`, `markerSources` with `reported`, `manuallyEdited` and `derivedFrom`) SHALL be kept and SHALL never be dropped, so that a value read by an AI model, a calculated value or an edited value is never stored or shown as an ordinary measured laboratory result. A result SHALL be exempt from the "check against your report" flag only when `importedWith` positively shows a non-AI path; otherwise it is flagged and stored `entered`. Exactly one profile of the archive SHALL be imported, chosen by the user, and profile identity fields, chat, nutrition, wallet, credentials and the Sync recovery record SHALL never be stored or logged. Calculated markers SHALL never be stored as measured, whether or not `derivedFrom` is present.
+The system SHALL let a user import lab results from a get-based export, backup or migration archive (format: `docs/ecosystem/getbased-archive-format.md`) in two steps, a preview and a confirmation. Nothing SHALL be saved before the user confirms. Every get-based marker SHALL be matched to a stored, LOINC-coded `Biomarker` only through a stored mapping that cites its source, or be listed as not recognised with the reason; a marker SHALL never be matched by name guessing. get-based's per-value provenance (`importedWith`, `markerSources` with `reported`, `manuallyEdited` and `derivedFrom`) SHALL be kept and SHALL never be dropped, so that a value read by an AI model, a calculated value or an edited value is never stored or shown as an ordinary measured laboratory result. A result SHALL be exempt from the "check against your report" flag only when `importedWith` positively shows a non-AI path; otherwise it is flagged and stored `entered`. Exactly one profile of the archive SHALL be imported, chosen by the user, and profile identity fields, chat, nutrition, wallet, credentials and the Sync recovery record SHALL never be stored or logged. The unit of every measured mapping row (a row with a Biomarker; deny-list rows carry no unit) SHALL cite the get-based catalogue unit for that marker at a pinned commit, and a marker whose measured row cites no unit SHALL be listed as not recognised. Calculated markers SHALL never be stored as measured, whether or not `derivedFrom` is present.
 
 #### Scenario: Preview before anything is saved
 - **WHEN** a user uploads a get-based archive
@@ -10,9 +10,16 @@ The system SHALL let a user import lab results from a get-based export, backup o
 
 #### Scenario: Markers matched through a cited mapping or not recognised
 - **WHEN** the preview is built
-- **THEN** each marker whose get-based key is in the stored mapping table is shown matched to its LOINC-coded `Biomarker`, with the mapping's source
-- **AND** every other marker is listed as not recognised with the reason, "no mapping stored for this get-based marker"
+- **THEN** each marker whose get-based key has a measured mapping row (one with a `Biomarker`) that cites its unit is shown matched to its LOINC-coded `Biomarker`, with the mapping's source
+- **AND** a key with a deny-list row is handled by "Calculated ratios are never stored as measured", and a measured row with no cited unit is handled by "Mapping row cites the get-based catalogue unit"
+- **AND** every other marker, with no row of any kind for its key, is listed as not recognised with the reason, "no mapping stored for this get-based marker"
 - **AND** no marker is matched by comparing names
+
+#### Scenario: Mapping row cites the get-based catalogue unit
+- **WHEN** a measured mapping row (one with a `Biomarker`) is stored or used
+- **THEN** it records the get-based catalogue unit for that marker key with a source path and pinned commit (for example `js/marker-schema/<group>.ts@<sha>`)
+- **AND** the importer stores the value only in that unit or converts it through a stored UCUM conversion, and never guesses a unit
+- **AND** a marker whose measured mapping row has no cited unit is listed as "not recognised: unit not verified" and blocks confirm like any other not recognised row
 
 #### Scenario: Confirm refused while a row is not recognised
 - **WHEN** a user confirms an import whose preview still holds a not recognised row
@@ -63,9 +70,10 @@ The system SHALL let a user import lab results from a get-based export, backup o
 - **THEN** profile identity fields (name, sex, date of birth, location, notes, avatar), chat, nutrition and wallet data are never stored and never logged
 
 #### Scenario: Calculated ratios are never stored as measured
-- **WHEN** a marker is in the `calculatedRatios` group, or its key is marked as calculated in the mapping table, whether or not `derivedFrom` is present
+- **WHEN** a marker is in the `calculatedRatios` group, or its key has a deny-list row of kind `calculated` in the mapping table, whether or not `derivedFrom` is present
 - **THEN** the row is shown as "not imported: calculated" and is never stored as a laboratory result
-- **AND** it is excluded from the confirm refusal, and the mapping table refuses rows for those keys
+- **AND** it is excluded from the confirm refusal
+- **AND** the mapping table may hold a deny-list row for a key (no `Biomarker`, a cited reason, kind `calculated`), and refuses only a measured mapping row (one with a `Biomarker`) for such a key; deny-list rows carry no unit, so the unit-citation rule does not apply to them
 
 #### Scenario: Per-value markerSources is kept
 - **WHEN** a result is stored from an archive marker that has a `markerSources` record

@@ -10,6 +10,6 @@ Spec refs: biomarkers-and-labs "Import of a get-based archive" (change x01-ecosy
 
 Acceptance:
 - `docs/ecosystem/getbased-archive-format.md` cites each field at a pinned commit or marks it unknown.
-- The requirement has at least 11 scenarios; the trace matrix lists them as uncovered.
+- The requirement has at least 12 scenarios; the trace matrix lists them as uncovered.
 - GIVEBACK row added, marked as needing Fabio's OK and not posted.
 - `bash tools/autodev2/gates.sh origin/main` passes.
