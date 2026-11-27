@@ -185,7 +185,11 @@ class LabReportImportSource(models.TextChoices):
     GETBASED = "getbased", "get-based"
 
 
-GETBASED_IMPORT_FORMATS = ("getbased-export", "getbased-database")
+GETBASED_IMPORT_FORMATS = (
+    "getbased-export",
+    "getbased-database",
+    "getbased-labcharts-backup",
+)
 
 
 class LabResultValidation(models.TextChoices):

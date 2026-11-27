@@ -29,6 +29,8 @@ from .models import (
 )
 
 SUPPORTED_VERSION = 2
+BACKUP_VERSION = 1
+BACKUP_KIND = "browser backup"
 MAX_KEY_CHARS = 200
 MAX_TEXT_CHARS = 200
 MAX_ENTRIES = 1000
@@ -36,7 +38,13 @@ MAX_ROWS = 5000
 DATE_PATTERN = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 SUPPORTED_TEXT = (
     "Supported: a single-client export (no 'type', has 'entries', version 2) and an "
-    "all-clients bundle ('type': 'database', has 'profiles', version 2)."
+    "all-clients bundle ('type': 'database', has 'profiles', version 2). Also supported: "
+    f"an unencrypted full browser backup ('format': 'labcharts-backup', version {BACKUP_VERSION})."
+)
+LOCKED = (
+    "This backup is encrypted: its lab data is still locked with the get-based "
+    "passphrase. Unlock or export it from get-based first (a single-client export or an "
+    "all-clients bundle); nothing was stored."
 )
 QUALIFIER = "last import into this date; the model for this value is unknown"
 FLAG_TEXT = {
@@ -50,7 +58,9 @@ EDITED_CODE = "edited_after_import"
 FORMAT_NAME = {
     "single-client export": "getbased-export",
     "all-clients bundle": "getbased-database",
+    BACKUP_KIND: "getbased-labcharts-backup",
 }
+FORMAT_VERSION = {BACKUP_KIND: BACKUP_VERSION}
 
 DELETED = "not imported: deleted in get-based"
 CALCULATED = "not imported: calculated"
@@ -91,14 +101,17 @@ def _parse(raw: bytes) -> Any:
         text = raw.decode("utf-8-sig")
     except UnicodeDecodeError:
         _refuse("The file is not UTF-8 text, so it is not a get-based export.")
+    return _loads(text, "The file is not valid JSON, so it is not a get-based export.")
 
+
+def _loads(text: str, failure: str) -> Any:
     def no_constant(_: str) -> NoReturn:
         raise ValueError("non-finite number")
 
     try:
         return json.loads(text, parse_float=Decimal, parse_constant=no_constant)
     except (ValueError, RecursionError):
-        _refuse("The file is not valid JSON, so it is not a get-based export.")
+        _refuse(failure)
 
 
 def _is_version_2(version: Any) -> bool:
@@ -120,7 +133,9 @@ def detect(top: Any) -> Container:
     if not isinstance(top, dict):
         _refuse(f"The top level of the file is not an object. {SUPPORTED_TEXT}")
     fmt = top.get("format")
-    if fmt in ("labcharts-backup", "getbased-migration"):
+    if fmt == "labcharts-backup":
+        return _detect_backup(top)
+    if fmt == "getbased-migration":
         _refuse(
             f"The format '{fmt}' is not supported yet ({_found(top)}). {SUPPORTED_TEXT}"
         )
@@ -140,6 +155,50 @@ def detect(top: Any) -> Container:
     _refuse(unsupported)
 
 
+def _is_locked(value: Any) -> bool:
+    return isinstance(value, str) and value.startswith("v1:")
+
+
+def _detect_backup(top: dict[str, Any]) -> Container:
+    """A `labcharts-backup` v1 (M js/backup.ts:43-49). Only `profiles[].profileId` and
+    `profiles[].keys.imported` are read; settings, `profileList`, `encryptionSalt` and the
+    side stores are never read, stored or echoed. An encrypted backup is refused."""
+    version = top.get("version")
+    if not (
+        isinstance(version, int)
+        and not isinstance(version, bool)
+        and version == BACKUP_VERSION
+    ):
+        _refuse(
+            f"The browser backup is version {_short(version) if 'version' in top else 'missing'}; "
+            f"the only supported backup version is {BACKUP_VERSION}. {SUPPORTED_TEXT}"
+        )
+    backup_profiles = top.get("profiles")
+    if top.get("encrypted") is True or _is_locked(top.get("profileList")):
+        _refuse(LOCKED)
+    if (
+        not isinstance(backup_profiles, list)
+        or not backup_profiles
+        or not all(
+            isinstance(p, dict)
+            and isinstance(p.get("profileId"), str)
+            and isinstance(p.get("keys"), dict)
+            for p in backup_profiles
+        )
+    ):
+        _refuse(
+            "The browser backup ('labcharts-backup') holds no readable profiles. "
+            f"{SUPPORTED_TEXT}"
+        )
+    profiles = [
+        {"id": p["profileId"], "imported": p["keys"].get("imported")}
+        for p in backup_profiles
+    ]
+    if any(_is_locked(p["imported"]) for p in profiles):
+        _refuse(LOCKED)
+    return Container(BACKUP_KIND, profiles, [p["id"] for p in profiles])
+
+
 def _choose(container: Container, profile_id: str | None) -> dict[str, Any] | None:
     """The one chosen profile's data dict, or None when the user must still choose."""
     if container.kind == "single-client export":
@@ -157,6 +216,18 @@ def _choose(container: Container, profile_id: str | None) -> dict[str, Any] | No
 
 
 def _profile_data(profile: dict[str, Any]) -> dict[str, Any]:
+    if (
+        "imported" in profile
+    ):  # a browser backup: the raw stored JSON text (M js/data-core.ts:303)
+        raw = profile["imported"]
+        if raw is None:
+            return {}
+        if not isinstance(raw, str):
+            _refuse("The lab data of this profile in the backup is not readable.")
+        data = _loads(
+            raw, "The lab data of this profile in the backup is not readable."
+        )
+        return data if isinstance(data, dict) else {}
     data = profile.get("data")
     return data if isinstance(data, dict) else {}
 
@@ -366,7 +437,7 @@ def build_preview(raw: bytes, profile_id: str | None = None) -> dict[str, Any]:
     return {
         "status": "preview",
         "container": container.kind,
-        "version": SUPPORTED_VERSION,
+        "version": FORMAT_VERSION.get(container.kind, SUPPORTED_VERSION),
         "rows": rows,
         "summary": summary,
         "can_confirm": summary["not_recognised"] == 0 and summary["matched"] > 0,
@@ -379,6 +450,7 @@ class ConfirmPlan:
     counts of rows left out."""
 
     import_format: str
+    import_format_version: int
     candidates: list[Candidate]
     not_recognised: list[dict[str, Any]]
     left_out_calculated: int
@@ -396,6 +468,7 @@ def build_confirm_plan(raw: bytes, profile_id: str | None) -> ConfirmPlan:
     summary = _summary(rows)
     return ConfirmPlan(
         FORMAT_NAME[container.kind],
+        FORMAT_VERSION.get(container.kind, SUPPORTED_VERSION),
         candidates,
         [r for r in rows if r["status"] == NOT_RECOGNISED],
         summary["left_out_calculated"],
@@ -456,7 +529,7 @@ def store_plan(plan: ConfirmPlan, owner: Any) -> LabReport:
         import_name=IMPORT_NAME,
         import_source=LabReportImportSource.GETBASED,
         import_format=plan.import_format,
-        import_format_version=SUPPORTED_VERSION,
+        import_format_version=plan.import_format_version,
     )
     report.save()
     for c in plan.candidates:

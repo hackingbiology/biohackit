@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- X01 get-based importer part 2d done 2026-11-27: preview and confirm also accept the unencrypted `labcharts-backup` v1 (one chosen profile; encrypted or other version refused in plain words; no migration needed, Q103). Next: the migration archive stays out of scope until PR #1719 is merged.
 - X01 get-based importer part 2a done 2026-11-27: `core.GetbasedMarkerMapping` (migration 0013, table only, nothing seeded; measured rows cite the catalogue unit at a pinned commit, deny-list rows mark calculated keys) and owner-only `POST /api/labs/imports/getbased/preview/` for plain-JSON v2 exports and bundles; stores and logs nothing (Q100). Next: part 2b (confirm, provenance fields on LabResult, undo); the mapping rows still wait on Q91.
 - X01 get-based importer part 2b done 2026-11-27: `POST /api/labs/imports/getbased/confirm/` stores one report and its results (all `entered`), per-value provenance in `LabResultGetbasedProvenance`, report origin fields (migration 0014), undo through the existing report DELETE (Q101, Q102). Next: labcharts-backup and the migration archive; the mapping rows still wait on Q91.
 - X01 get-based importer part 2c done 2026-11-27: `manage.py seed_reference` accepts model `getbased_marker_mapping` (cited rows, fails closed, same rules as the model; no rows committed, Q91); docs/api-labs.md says `import_name` is the fixed `getbased-export.json`. Next: labcharts-backup and the migration archive.
