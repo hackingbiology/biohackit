@@ -335,6 +335,34 @@ export const changelogStrings: Record<Locale, ChangelogStrings> = {
   zh: changelogEn,
 };
 
+export interface ApiReferenceStrings {
+  title: string;
+  intro: string;
+  overviewCaption: string;
+  method: string;
+  path: string;
+  tableRegion: string;
+  back: string;
+}
+
+const apiReferenceEn: ApiReferenceStrings = {
+  title: "API reference",
+  intro:
+    "Every route of the biohack.it API under /api/, with the methods it accepts. The text comes from the API documents in the repository and is checked against the real routes.",
+  overviewCaption: "All endpoints",
+  method: "Method",
+  path: "Path",
+  tableRegion: "Scrollable table",
+  back: "Back to documentation",
+};
+
+// IT and ZH fall back to EN until translated, as for the changelog.
+export const apiReferenceStrings: Record<Locale, ApiReferenceStrings> = {
+  en: apiReferenceEn,
+  it: apiReferenceEn,
+  zh: apiReferenceEn,
+};
+
 export interface LabImportStrings {
   title: string;
   intro: string;

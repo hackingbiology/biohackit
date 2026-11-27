@@ -33,5 +33,5 @@
     - [x] A: AI surfaces map (`docs/ai-surfaces.md` -> `/docs/ai-surfaces`)
     - [x] B: architecture (`docs/architecture.md` -> `/docs/architecture`)
     - [x] C: user guide (`docs/user-guide.md` -> `/docs/user-guide`)
-    - [ ] D: OpenAPI reference
+    - [x] D: API reference (`docs/api-*.md` -> `/docs/api`), checked against the URL resolver; machine-readable OpenAPI via drf-spectacular waits on Q104
     - [x] E: changelog

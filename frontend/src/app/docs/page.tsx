@@ -6,6 +6,7 @@
 import Link from "next/link";
 import {
   aiSurfacesStrings,
+  apiReferenceStrings,
   architectureStrings,
   changelogStrings,
   userGuideStrings,
@@ -26,6 +27,7 @@ export default async function DocsIndex() {
   const a = architectureStrings[locale];
   const u = userGuideStrings[locale];
   const c = changelogStrings[locale];
+  const r = apiReferenceStrings[locale];
   return (
     <main className="mx-auto max-w-3xl space-y-6 p-4 sm:p-8">
       <h1 className="text-3xl font-bold tracking-tight">{t.docsIndex}</h1>
@@ -43,6 +45,11 @@ export default async function DocsIndex() {
         <li>
           <Link href="/docs/user-guide" className={`underline ${focus}`}>
             {u.title}
+          </Link>
+        </li>
+        <li>
+          <Link href="/docs/api" className={`underline ${focus}`}>
+            {r.title}
           </Link>
         </li>
         <li>

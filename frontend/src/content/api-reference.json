@@ -1,0 +1,466 @@
+{
+  "docs": [
+    {
+      "file": "docs/api-accounts.md",
+      "sections": [
+        {
+          "anchor": "api-accounts-post-api-auth-register",
+          "body": "Open to anyone (no credentials needed). Creates an account and its profile in one transaction.\n\n```json\n{\n  \"email\": \"required, must not belong to another account (compared ignoring case)\",\n  \"password\": \"required, checked by Django's password validators\",\n  \"display_name\": \"optional, a slug of at most 50 characters, must be unused; default user-<id>\"\n}\n```\n\n- `201` with the new account: `id`, `email`, `is_public` and `profile` (see `GET /api/auth/me/`).\n- `400` with the field errors (invalid email, email in use, weak password, display name taken or not a slug). Nothing is stored.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/auth/register/"
+            }
+          ],
+          "heading": "`POST /api/auth/register/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-accounts-post-api-auth-token",
+          "body": "Open to anyone. The simplejwt `TokenObtainPairView`: send `email` and `password`; the answer is `200` with `access` and `refresh` tokens. Wrong credentials: `401`. The access token goes in the `Authorization: Bearer ...` header of every other endpoint.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/auth/token/"
+            }
+          ],
+          "heading": "`POST /api/auth/token/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-accounts-post-api-auth-token-refresh",
+          "body": "Open to anyone. The simplejwt `TokenRefreshView`: send `refresh`; the answer is `200` with a new `access` token. An invalid or expired refresh token: `401`. Whether a new refresh token is returned is unknown from the repository code read here (`ROTATE_REFRESH_TOKENS` is false).",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/auth/token/refresh/"
+            }
+          ],
+          "heading": "`POST /api/auth/token/refresh/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-accounts-get-api-auth-me",
+          "body": "Authenticated (JWT, or the browser session cookie). Returns the caller's account: `id`, `email`, `is_public` and `profile` with `display_name`, `date_of_birth`, `sex`, `ethnicity`, `height_cm`, `is_public` and `social_handles` (each `platform`, `handle`, `url`). Without valid credentials: `401`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/auth/me/"
+            }
+          ],
+          "heading": "`GET /api/auth/me/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-accounts-get-api-profiles-display-name",
+          "body": "Open to anyone, no credentials read. Returns the profile with the same fields as `profile` above. The profile is returned only when both the profile and its account are public; otherwise `404` (a private profile and an unknown name look the same).",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/profiles/<display_name>/"
+            }
+          ],
+          "heading": "`GET /api/profiles/<display_name>/`",
+          "level": 2
+        }
+      ],
+      "title": "Accounts API"
+    },
+    {
+      "file": "docs/api-labs.md",
+      "sections": [
+        {
+          "anchor": "api-labs-browser-access",
+          "body": "The API accepts either a JWT (`Authorization: Bearer ...`) or the browser sign-in session\ncookie. A session request that changes data (POST, PATCH, DELETE) must also send the\n`X-CSRFToken` header with the value of the `csrftoken` cookie, otherwise the answer is `403`\nand nothing is stored. A request with no valid credentials is still refused with `401`.",
+          "endpoints": [],
+          "heading": "Browser access",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-post-api-labs-reports",
+          "body": "Creates a report with `origin = manual`, owned by the caller, and all its results in one\ntransaction.\n\n```json\n{\n  \"laboratory\": \"optional, applies to results that name none\",\n  \"results\": [\n    {\n      \"loinc_code\": \"required, must be a stored analyte\",\n      \"reported_value\": \"required, decimal as a string, at most 6 decimals\",\n      \"reported_unit\": \"required, as the lab reported it\",\n      \"laboratory\": \"optional\", \"method\": \"optional\", \"device\": \"optional\",\n      \"collected_at\": \"optional ISO 8601 with UTC offset\",\n      \"reported_at\": \"optional ISO 8601 with UTC offset\"\n    }\n  ]\n}\n```\n\n- `201` with the report and its results. Each result has the stored fields,\n  `validation_state` (`entered`), `aggregation_eligible` (true only with laboratory,\n  method and a confirmed state, see below), `normalised_value` / `normalised_unit` (empty unless a stored conversion\n  exists) and `plausibility`.\n- `400` if any result is invalid (unknown LOINC code, more than 6 decimals, DEXA or\n  microbiome without laboratory and method, naive time, ...). The body names the result\n  index and field, e.g. `{\"results\": {\"1\": {\"reported_value\": [\"...\"]}}}`; nothing is stored.\n- `401` when not logged in.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/labs/reports/"
+            }
+          ],
+          "heading": "`POST /api/labs/reports/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-input-limits",
+          "body": "- `reported_value` is at most **40 characters** (after trimming); longer gives a 400 naming\n  `reported_value` and the result index.\n- A report holds at most **200 results**; more gives a 400 naming `results`, before anything is stored.\n\nThese are abuse protection, not scientific limits: a 20-digit value with 6 decimals needs far\nfewer than 40 characters. In both cases nothing is stored. Defaults are open in Q70.",
+          "endpoints": [],
+          "heading": "Input limits",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-get-api-labs-reports-id",
+          "body": "The report with its results. `404` for a report owned by someone else.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/reports/<id>/"
+            }
+          ],
+          "heading": "`GET /api/labs/reports/<id>/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-get-api-labs-reports-id-fhir",
+          "body": "The report as a FHIR R4 `collection` Bundle (`application/fhir+json`): one DiagnosticReport whose\n`result` references one Observation per result, plus an Organization (name only) per distinct\nlaboratory. Each Observation has the LOINC code and the value as reported (a JSON number, not\nrounded). `valueQuantity` has `system` `http://unitsofmeasure.org` and `code` only when the\nreported unit exactly equals a stored `Unit.ucum_code`; otherwise only `unit` text. `method`,\n`performer` (laboratory), `effectiveDateTime` (collected) and `issued` (reported) appear only\nwhen stored. `status` is `unknown` and no patient is referenced (Q73). `404` for another user's\nreport; `401`/`403` when not signed in. Element sources: docs/fhir/lab-report-mapping.md.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/reports/<id>/fhir/"
+            }
+          ],
+          "heading": "`GET /api/labs/reports/<id>/fhir/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-get-api-labs-reports-id-omop",
+          "body": "The report's results as OMOP CDM v5.4 MEASUREMENT-shaped rows (JSON only, no CSV yet):\n`{\"omop_cdm_version\": \"5.4\", \"columns\": [...], \"rows\": [...]}`. `columns` is the DDL order\n(`core.omop.MEASUREMENT_COLUMNS`); there is one row per result, ordered by result id, each built\nonly by `lab_result_to_omop_measurement` with every column present. Retracted results are not\nexported; disputed and entered ones are (the export is the owner's own data, Q80). Every\n`*_concept_id`, `person_id` and other column without a stored, cited source is `null`: no\nvocabulary content is stored, so none is invented (Q69). `404` for another user's report;\n`401`/`403` when not signed in. Column sources: docs/omop/measurement-mapping.md.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/reports/<id>/omop/"
+            }
+          ],
+          "heading": "`GET /api/labs/reports/<id>/omop/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-get-api-labs-results-id-convert-unit-ucum",
+          "body": "Shows one of your results in the UCUM unit you name. The original value and unit are always\nkept and always returned; nothing is written. `unit` is required, at most 64 characters, and\nmust be a stored UCUM code (otherwise `400` naming `unit`). Response:\n`{result_id, reported_value, reported_unit, value, unit, converted, reason, conversion_source}`;\ndecimals are strings, not rounded.\n\n- `converted: true`: a stored, sourced conversion exists (an analyte-specific one is preferred);\n  `value` is `reported_value` times its factor, `unit` is the requested unit and\n  `conversion_source` is the stored Source (`id, name, version, licence, url, retrieved_at`).\n- `converted: false, reason: \"same_unit\"`: the requested unit is the reported one.\n- `converted: false, reason: \"no_conversion_known\"`: no stored direct conversion (an inverse or\n  a chain is never used) or the reported unit is not stored; `value`/`unit` are the reported\n  ones.\n\nRetracted results can still be viewed by their owner (Q81). `404` for another user's result;\n`401`/`403` when not signed in.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/results/<id>/convert/"
+            }
+          ],
+          "heading": "`GET /api/labs/results/<id>/convert/?unit=<ucum>`",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-get-api-labs-results-id-ranges",
+          "body": "Places one of your results against three separate ranges, never merged:\n`{result_id, reported_value, reported_unit, reference_range, optimal_range, safety_threshold,\ncomparison_value, comparison_unit, converted, conversion_source}`. Each range object has `status` and, when a range applies,\n`low`, `high` (decimal strings, `null` = open), `unit` and `source` (`name, version, url`).\n\n- Comparison value: `reported_value` if reported in the analyte's unit, else the stored\n  `normalised_value` (only when it is in that unit), else none. Nothing is converted on the fly. `converted` is `true` when the stored normalised\n  value was used; `conversion_source` is then that stored Source (`name, version, url`), else `null`.\n  A lab+method tier is chosen only among rows that apply to the subject, so a stratified\n  lab-specific row never hides a generic row.\n- Status rule: `below` if value < low, `above` if value > high, `inside` otherwise (bounds\n  inclusive, a null bound is open); `no_range` if none applies (no bounds returned);\n  `not_comparable` (`reason: \"no_value_in_analyte_unit\"`) when there is no comparison value.\n- `reference_range` adds `lab, method, population, evidence_grade`. Only rows in the analyte's\n  unit whose lab and method are empty or equal (trimmed, casefolded) to the result's apply;\n  rows matching lab and method beat generic ones; a tie gives `no_range`.\n- `optimal_range` is shown only if `displayable_optimal_range` passes (source, population,\n  endpoint, evidence grade and last-reviewed date all present); it adds `population, endpoint,\n  evidence_grade, last_reviewed`.\n- `safety_threshold`: exactly one row is used; several give `no_range` with\n  `reason: \"ambiguous_several_thresholds\"`.\n\nThe subject is unknown (no age, sex or ancestry stored), so only unstratified rows apply (Q82).\nRetracted results can still be viewed by their owner. `404` for another user's result;\n`401`/`403` when not signed in.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/results/<id>/ranges/"
+            }
+          ],
+          "heading": "`GET /api/labs/results/<id>/ranges/`",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-plausibility",
+          "body": "`plausibility = {\"status\": \"within\" | \"outside\" | \"not_checked\", \"range_source\": {...} | null}`.\nIt compares the value only with a stored, cited `ReferenceRange` of the same analyte whose\nunit equals the reported unit (or the normalised unit). Only a single range without age,\nsex, ancestry or population strata, and whose lab and method are empty or equal to the result's, is used; otherwise the status is `not_checked`. It is a flag: the\nvalue is stored in every case. No range is invented or seeded (Q70).",
+          "endpoints": [],
+          "heading": "Plausibility",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-csv-import-two-steps",
+          "body": "Header (UTF-8, comma-separated): `loinc_code,value,unit,collected_at,reported_at,laboratory,method`.\nThe first three columns are required; the last four are optional. Any other or duplicate column\nrejects the whole file with a `400` naming the header. Empty cells are treated as absent.\nRows go through the same rules as manual entry. Nothing is guessed (Q71).",
+          "endpoints": [],
+          "heading": "CSV import (two steps)",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-post-api-labs-imports-csv-preview",
+          "body": "Multipart field `file`. Stores nothing. Returns\n`{\"rows\": [{\"row\": 1, \"status\": \"recognised\" | \"not_recognised\", \"reason\": \"\", \"loinc_code\", \"value\", \"unit\", \"plausibility\"}]}`\nwith `row` the 1-based data line. `not_recognised` carries a reason naming the column (unknown\nLOINC code, empty unit, bad number, time without UTC offset, ...) and `plausibility` null. The\nstatus `inferred` exists in the review vocabulary but this parser never emits it.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/labs/imports/csv/preview/"
+            }
+          ],
+          "heading": "`POST /api/labs/imports/csv/preview/`",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-post-api-labs-imports-csv-confirm",
+          "body": "Same file again, plus an optional `laboratory` form field for the report. If any row is\n`not_recognised` the answer is `400` with `detail` and the `rows`, and nothing is stored.\nOtherwise one `LabReport` (`origin = import`, `import_name` = file name) and its results are\nstored in one transaction, with `validation_state = user_confirmed` (you checked every row in\nthe preview); `201` with the report and results.\n\nThe report JSON (confirm, `GET /api/labs/reports/<id>/`) carries `original_retained` (bool),\n`original_sha256` and `original_size` (bytes). The uploaded CSV is kept exactly as sent, in a\nprivate store under a generated name (never your file name), with no automatic expiry (Q57).\nIt is never served, published or put into OpenData: no endpoint returns the file, a path or a\nURL. `DELETE /api/labs/reports/<id>/` removes the file after the rollback commits (Q65). If you\nsend `redact_terms`, the original is **not** kept (it would defeat the redaction): the confirm\nanswer has `original_retained: false` and `original_not_retained_reason` (Q76). The preview\nnever stores a file; a refused confirm leaves none.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/labs/imports/csv/confirm/"
+            }
+          ],
+          "heading": "`POST /api/labs/imports/csv/confirm/`",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-validation-states-and-patch-api-labs-results-id-validation",
+          "body": "| State | Meaning |\n|---|---|\n| `entered` | typed or imported, not yet checked (typed entries start here) |\n| `user_confirmed` | the user checked it against their own report |\n| `source_verified` | the original document is attached and the value matches it (deterministic extraction or a second person) |\n| `disputed` | flagged as possibly wrong |\n| `retracted` | withdrawn by the user, excluded from statistics, kept for audit |\n\nA result is `aggregation_eligible` only with a laboratory, a method **and** the state\n`user_confirmed` or `source_verified`. The owner changes the state with\n`{\"validation_state\": \"<state>\"}`: `user_confirmed`, `disputed` or `retracted` give `200`\nwith the result as in `GET /api/labs/reports/<id>/`. `entered` and `source_verified` (no\nattached-original check exists yet), and any change away from `retracted`, give `400` naming\n`validation_state`. Another user's or a missing result gives `404`. Nothing changes on `400`/`404`.",
+          "endpoints": [
+            {
+              "method": "PATCH",
+              "path": "/api/labs/results/<id>/validation/"
+            }
+          ],
+          "heading": "Validation states and `PATCH /api/labs/results/<id>/validation/`",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-pii-redaction-opt-in",
+          "body": "Off by default. Both import endpoints accept an optional `redact_terms`: the exact strings to\nremove (your name, IDs), as repeated multipart fields, one JSON list, or a JSON array. At most\n20 terms, each 1..200 characters and not blank; a breach gives `400` naming `redact_terms` and\nnothing is stored. Matching is exact and case-insensitive. Overlapping or adjacent matches merge into one\nremoval (one placeholder) naming the term with the longest match, so no part of a longer\nmatch is kept. There are no built-in patterns (Q72). Each removal becomes `[REDACTED]`. The\nterms may match at most 1000 places in a file, otherwise `400` naming `redact_terms`. Row\ncount and field lengths are checked on the raw file before redaction runs (`400` naming `file`).\nIf a cell only exceeds its limit because `[REDACTED]` is longer than the term, the `400` names\n`redact_terms`. Cells are trimmed before they are checked and redacted, so offsets are relative to the trimmed cell.\n\nRedaction is applied cell by cell to the data rows, to the file name (`import_name`) and to the\n`laboratory` form field, before the rows are evaluated; the header is not touched. The preview\nanswers `redaction: {\"applied\": bool, \"removals\": [{\"row\", \"column\", \"term_index\", \"start\",\n\"end\", \"line\", \"replacement\"}]}`. `row` is the data line (null for the file name and form\nfield), `start`/`end`/`line` locate the match inside that field, and `term_index` is the\nposition in your list. The removed text is never echoed back. Confirm re-applies the same terms,\nso only the placeholder is stored. A term that hits `loinc_code`, `value`, `unit`, `collected_at`\nor `reported_at` makes that row `not_recognised` naming the column (a value is never silently\nchanged), so confirm refuses. Without `redact_terms`, `applied` is `false` and nothing changes.",
+          "endpoints": [],
+          "heading": "PII redaction (opt-in)",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-limits-400-naming-the-limit-nothing-stored",
+          "body": "File at most 1 MiB; at most 200 data rows; each field at most its model length (`value` 40\ncharacters); the file must be UTF-8.",
+          "endpoints": [],
+          "heading": "Limits (`400` naming the limit, nothing stored)",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-delete-api-labs-reports-id",
+          "body": "Rolls back an import: removes the report and its results, nothing else. `204`; `404` for another\nuser's report; `409` for a manual report. The retained original file is not stored yet (TG-g).",
+          "endpoints": [
+            {
+              "method": "DELETE",
+              "path": "/api/labs/reports/<id>/"
+            }
+          ],
+          "heading": "`DELETE /api/labs/reports/<id>/`",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-get-api-labs-reports-id-phenoage-age-years-number",
+          "body": "PhenoAge (Levine 2018) computed from the nine analytes of one of your reports (TG-i part 2).\n`age_years` is a request parameter and is never stored (Q79); a missing value, or one that is not a\nfinite number or is too large to fit one (for example `1e400`), is `400` naming `age_years`. Another user's or a missing report is `404`; anonymous is 401/403.\nEach analyte is found by the LOINC code of its biomarker; `retracted` and `disputed` results are\nignored. The value is used as is when its UCUM unit equals the PhenoAge unit, otherwise only a\nstored unit conversion is applied. Nothing is written.\n\n`200` with the result: `{\"phenoage_years\", \"mortality_score\", \"xb\", \"constants_version\",\n\"inputs\": [{\"field\", \"lab_result_id\", \"value\", \"unit\", \"converted\"}], \"method\"}`; or `200` with\n`{\"refusal\": {\"reason\", \"field\"}}`. Reasons: `analyte_not_mapped` (no verified LOINC code for\nthe analyte; **currently every analyte, see Q79**), `missing_input`, `ambiguous_analyte` (two\nusable results for one analyte), `unit_not_convertible` (no stored conversion), and the engine's\n`not_finite_input`, `crp_not_positive`, `mortality_score_out_of_range`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/reports/<id>/phenoage/"
+            }
+          ],
+          "heading": "`GET /api/labs/reports/<id>/phenoage/?age_years=<number>`",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-get-api-labs-reports-id-calculated",
+          "body": "Calculated quotient markers for one of your reports (TG-n part 1). Each stored\n`CalculatedRatioDefinition` (numerator and denominator analyte, the UCUM unit each input must be\nin, and a cited Source) is computed in code with `Decimal` (28 digits, half-even, not rounded).\nNo definition is seeded (Q83), so until some are stored the answer is\n`{\"report_id\", \"markers\": [], \"note\": \"no_definitions_stored\"}`. Another user's or a missing\nreport is `404`; anonymous is 401/403. Only this report's results are used; `retracted` and\n`disputed` results are ignored; a value is used as reported when its unit matches, otherwise only\na stored unit conversion applies. Nothing is written.\n\nEach marker has `name`, `calculated: true` and `source`. Computed: `status: \"computed\"`, `value`\n(string), `unit_note` (the two input units; no unit is invented for the ratio) and `inputs`\n(`role`, `lab_result_id`, `loinc_code`, `value_used`, `unit_used`, `reported_value`,\n`reported_unit`, `collected_at`, `reported_at`, `converted`, `conversion_source` — the stored conversion's Source, null when not converted). Otherwise `status: \"not_computable\"`,\n`value: null` and `reasons`: `missing_input:<role>`, `ambiguous_input:<role>`,\n`unit_not_convertible:<role>`, `denominator_zero`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/reports/<id>/calculated/"
+            }
+          ],
+          "heading": "`GET /api/labs/reports/<id>/calculated/`",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-get-api-labs-completeness",
+          "body": "Completeness and freshness per organ system (TG-h part 1). Each stored `OrganSystemPanel` (a name,\nits expected analytes and a cited Source) is listed, ordered by name. No panel is seeded (Q84),\nso until some are stored the answer is `{\"panels\": []}`. Anonymous is 401/403. Only your own\nresults count, across all of your reports; `retracted` and `disputed` results are ignored.\nNothing is written.\n\nEach panel has `name`, `source`, `expected_count`, `present_count`, `present` and `missing`\n(`biomarker_id`, `loinc_code`), `last_collected_at` (newest `collected_at`, else `reported_at`;\nnull when no present result has a date), `age_days` (whole days from that date to now, or null) and\n`sparse` (true when `present_count < expected_count`). A panel with no expected analytes is 0/0,\nnot sparse, with a null date.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/labs/completeness/"
+            }
+          ],
+          "heading": "`GET /api/labs/completeness/`",
+          "level": 3
+        },
+        {
+          "anchor": "api-labs-get-post-api-auth-me-erase-account-erasure",
+          "body": "Owner-only (JWT). `GET` returns the plain-language notice (copies already cloned by others are outside the instance's control), what is deleted, and the two choices; `keep_for_research` is marked `available: false` with its reason.\n\n`POST` with `choice` = `delete_everything` and `confirm` = `true` deletes the user, profile, lab reports, results, measurements and the retained original files in one transaction (files are removed once it commits). Without `confirm` true, or with an unknown choice: 400, nothing deleted. `keep_for_research`: 409 \"de-identification not implemented yet\", nothing deleted. Unauthenticated: 401. Defaults: Q85.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/auth/me/erase/"
+            },
+            {
+              "method": "POST",
+              "path": "/api/auth/me/erase/"
+            }
+          ],
+          "heading": "`GET|POST /api/auth/me/erase/` (account erasure)",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-post-api-labs-imports-getbased-preview-get-based-archive-preview",
+          "body": "Owner-only (JWT, then session with CSRF, as the CSV import). Multipart `file` (at most 5 MiB) and optional `profile_id`. Reads a plain-JSON get-based single-client export or all-clients bundle, both `version` 2, or an unencrypted full browser backup (`format` `labcharts-backup`, `version` 1; the profile ids are its `profileId`s, and the response `container` is `browser backup`) (`docs/ecosystem/getbased-archive-format.md`). **Stores nothing**: no report, no result, no retained original; the archive content is not logged.\n\nA bundle with several profiles and no `profile_id` returns `{\"status\": \"choose_profile\", \"profile_ids\": [...]}` and no rows. Otherwise `{\"status\": \"preview\", \"rows\": [...], \"summary\": {...}, \"can_confirm\": bool}`. Each row: `marker`, `value` (exact text, `0.10` stays `0.10`), `date`, `status` (`matched` | `not_recognised` | `not_imported`), `reason`, and for a matched row `loinc_code`, `unit` (UCUM), `mapping_source`, `mapping_source_url` and `unit_source` (`path@sha` of the get-based catalogue unit), plus `flags` (AI-read, may be AI-read, origin not shown, origin unknown, edited in get-based after import; model and provider are entry-level and qualified). Matching is only through a stored `GetbasedMarkerMapping` row, never by name; with an empty table every marker is \"not recognised\". `can_confirm` is true only with no not recognised row and at least one matched row; left-out rows (deleted, calculated) are counted in `summary` and do not block.\n\n400: not UTF-8, not JSON, `getbased-migration`, a version other than 2 (a `labcharts-backup` other than 1: the message names the version found and the supported one), an encrypted `labcharts-backup` (`encrypted: true` or a `v1:` value: \"still locked with the get-based passphrase\"), an unknown `profile_id`, or a file over the bound; the message names the found format/version and the supported ones. Unauthenticated: 401. Defaults: Q100.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/labs/imports/getbased/preview/"
+            }
+          ],
+          "heading": "`POST /api/labs/imports/getbased/preview/` (get-based archive preview)",
+          "level": 2
+        },
+        {
+          "anchor": "api-labs-post-api-labs-imports-getbased-confirm-get-based-archive-confirm",
+          "body": "Owner-only, same authentication, upload bounds and refusals as the preview (5 MiB, `version` exactly 2 (backup: exactly 1, unencrypted only), no migration archive, 1000 entries, 5000 values); send the same `file` and `profile_id` again. A bundle with more than one profile needs a `profile_id`. **400** listing the rows (`rows`, each with its reason) while any row is not recognised (no mapping, unit not verified, bad date, not a number), or when no row is matched, or when the shared result rules refuse a value: nothing is stored. Rows left out as calculated (deny-list, `calculatedRatios`, `derivedFrom`) or deleted do not block. **201**: `{\"report_id\", \"stored_count\", \"left_out\": {\"calculated\", \"deleted\"}, \"original_retained\": false, \"original_not_retained_reason\"}`.\n\nOne `LabReport` is stored with `origin` `import`, `import_source` `getbased`, `import_format` (`getbased-export`, `getbased-database` or `getbased-labcharts-backup`), `import_format_version` 2 (1 for the backup) and `import_name` = the fixed name `getbased-export.json` (the upload's file name is not kept, because it can carry the client's name), plus one `LabResult` per matched row: the exact archive number, the mapping's cited unit, `collected_at` empty, `validation_state` `entered` and `aggregation_eligible` false. The owner confirms each result through `PATCH /api/labs/results/<id>/validation/`. Identity, chat, nutrition, wallet and credentials are never stored or logged, and the original file is not kept. Undo: `DELETE /api/labs/reports/<id>/` removes the report, its results and their provenance.\n\n`GET /api/labs/reports/<id>/` returns `import_source`, `import_format`, `import_format_version` and, for each result, `getbased_provenance` (null for results not from get-based): `flag` and `flag_text`, `manually_edited` and `edited_label` (\"edited in get-based after import\"), `entry_date`, `has_marker_sources`, `marker_sources` (`reported`, `file`, `at` verbatim, `snapshot_id`) and `imported_with` (`model_id`, `provider`, each \"unknown\" when empty, and the qualifier \"last import into this date; the model for this value is unknown\"; entry-level, not proof of the model of this value). Defaults: Q101, Q102.",
+          "endpoints": [
+            {
+              "method": "POST",
+              "path": "/api/labs/imports/getbased/confirm/"
+            }
+          ],
+          "heading": "`POST /api/labs/imports/getbased/confirm/` (get-based archive confirm)",
+          "level": 2
+        }
+      ],
+      "title": "M02 lab report API (manual entry)"
+    },
+    {
+      "file": "docs/api-terminology.md",
+      "sections": [
+        {
+          "anchor": "api-terminology-get-api-terminology-loinc-q-text",
+          "body": "Searches the imported LOINC terms by name words or by LOINC code. Throttled per scope `loinc_search` (default `60/min`, `LOINC_SEARCH_THROTTLE_RATE`); over the limit: `429`.\n\n- `q` is required, at most 200 characters after trimming. A missing, empty or too long `q`: `400` with a message under `q`.\n- Paginated: `page`, and `page_size` (default 20, at most 100).\n- `200` lists terms, each with `loinc_num`, `long_common_name`, `short_name`, `component`, `system`, `property`, `scale_type`, `status` and `source` (`name`, `version`, `licence`, `url`, `retrieved_at`).",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/terminology/loinc/"
+            }
+          ],
+          "heading": "`GET /api/terminology/loinc/?q=<text>`",
+          "level": 2
+        },
+        {
+          "anchor": "api-terminology-get-api-terminology-biomarkers-loinc-code-ranges",
+          "body": "Returns the ranges of one analyte, kept as three separate keys, each with its source: `reference`, `optimal` and `safety`, plus `biomarker` (`loinc_code`, `name`, `unit` as a UCUM code) and `value`. `optimal` is `null` unless its provenance is complete. Only `GET`, `HEAD` and `OPTIONS` are allowed.\n\n- Optional `?value=<decimal>`: each range then carries a `status` computed in code. The value is taken to be in the analyte's unit; no unit conversion is done. A value that is not a finite decimal: `400` with a message under `value`.\n- An unknown `loinc_code`: `404`.",
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/api/terminology/biomarkers/<loinc_code>/ranges/"
+            }
+          ],
+          "heading": "`GET /api/terminology/biomarkers/<loinc_code>/ranges/`",
+          "level": 2
+        }
+      ],
+      "title": "Terminology API"
+    }
+  ],
+  "endpoints": [
+    {
+      "anchor": "api-accounts-get-api-auth-me",
+      "method": "GET",
+      "path": "/api/auth/me/"
+    },
+    {
+      "anchor": "api-labs-get-post-api-auth-me-erase-account-erasure",
+      "method": "GET",
+      "path": "/api/auth/me/erase/"
+    },
+    {
+      "anchor": "api-labs-get-post-api-auth-me-erase-account-erasure",
+      "method": "POST",
+      "path": "/api/auth/me/erase/"
+    },
+    {
+      "anchor": "api-accounts-post-api-auth-register",
+      "method": "POST",
+      "path": "/api/auth/register/"
+    },
+    {
+      "anchor": "api-accounts-post-api-auth-token",
+      "method": "POST",
+      "path": "/api/auth/token/"
+    },
+    {
+      "anchor": "api-accounts-post-api-auth-token-refresh",
+      "method": "POST",
+      "path": "/api/auth/token/refresh/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-completeness",
+      "method": "GET",
+      "path": "/api/labs/completeness/"
+    },
+    {
+      "anchor": "api-labs-post-api-labs-imports-csv-confirm",
+      "method": "POST",
+      "path": "/api/labs/imports/csv/confirm/"
+    },
+    {
+      "anchor": "api-labs-post-api-labs-imports-csv-preview",
+      "method": "POST",
+      "path": "/api/labs/imports/csv/preview/"
+    },
+    {
+      "anchor": "api-labs-post-api-labs-imports-getbased-confirm-get-based-archive-confirm",
+      "method": "POST",
+      "path": "/api/labs/imports/getbased/confirm/"
+    },
+    {
+      "anchor": "api-labs-post-api-labs-imports-getbased-preview-get-based-archive-preview",
+      "method": "POST",
+      "path": "/api/labs/imports/getbased/preview/"
+    },
+    {
+      "anchor": "api-labs-post-api-labs-reports",
+      "method": "POST",
+      "path": "/api/labs/reports/"
+    },
+    {
+      "anchor": "api-labs-delete-api-labs-reports-id",
+      "method": "DELETE",
+      "path": "/api/labs/reports/<id>/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-reports-id",
+      "method": "GET",
+      "path": "/api/labs/reports/<id>/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-reports-id-calculated",
+      "method": "GET",
+      "path": "/api/labs/reports/<id>/calculated/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-reports-id-fhir",
+      "method": "GET",
+      "path": "/api/labs/reports/<id>/fhir/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-reports-id-omop",
+      "method": "GET",
+      "path": "/api/labs/reports/<id>/omop/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-reports-id-phenoage-age-years-number",
+      "method": "GET",
+      "path": "/api/labs/reports/<id>/phenoage/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-results-id-convert-unit-ucum",
+      "method": "GET",
+      "path": "/api/labs/results/<id>/convert/"
+    },
+    {
+      "anchor": "api-labs-get-api-labs-results-id-ranges",
+      "method": "GET",
+      "path": "/api/labs/results/<id>/ranges/"
+    },
+    {
+      "anchor": "api-labs-validation-states-and-patch-api-labs-results-id-validation",
+      "method": "PATCH",
+      "path": "/api/labs/results/<id>/validation/"
+    },
+    {
+      "anchor": "api-accounts-get-api-profiles-display-name",
+      "method": "GET",
+      "path": "/api/profiles/<display_name>/"
+    },
+    {
+      "anchor": "api-terminology-get-api-terminology-biomarkers-loinc-code-ranges",
+      "method": "GET",
+      "path": "/api/terminology/biomarkers/<loinc_code>/ranges/"
+    },
+    {
+      "anchor": "api-terminology-get-api-terminology-loinc-q-text",
+      "method": "GET",
+      "path": "/api/terminology/loinc/"
+    }
+  ]
+}

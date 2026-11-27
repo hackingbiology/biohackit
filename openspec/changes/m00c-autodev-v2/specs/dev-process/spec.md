@@ -209,3 +209,14 @@ The changelog page SHALL be generated from `docs/CHANGELOG.md`. Every entry SHAL
 #### Scenario: Changelog page in sync
 - **WHEN** `frontend/src/content/changelog.json` differs from the export of `docs/CHANGELOG.md`
 - **THEN** the test fails and `tools/docs/export_changelog.py --check` exits 1
+
+### Requirement: API reference reflects the backend routes
+The API reference page SHALL be generated from `docs/api-*.md`. Every route under `/api/` in the Django URLconf SHALL be documented there with its method(s), and every documented endpoint SHALL resolve to a route.
+
+#### Scenario: API routes documented
+- **WHEN** a route under `/api/` has no documented entry, or a documented `METHOD path` does not resolve to a route
+- **THEN** the test fails naming the path
+
+#### Scenario: API reference page in sync
+- **WHEN** `frontend/src/content/api-reference.json` differs from the export of `docs/api-*.md`
+- **THEN** the test fails and `tools/docs/export_api_reference.py --check` exits 1
