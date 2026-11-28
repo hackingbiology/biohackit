@@ -189,3 +189,75 @@ class ActivationAcknowledgment(ImmutableModel):
 
     class Meta:
         ordering = ["id"]
+
+
+class IntakeState(models.TextChoices):
+    """The four stored adherence names (Q150). No rule or default ever sets one."""
+
+    DONE = "done"
+    PARTIAL = "partial"
+    SKIPPED = "skipped"
+    MISSED = "missed"
+
+
+class IntakeEvent(models.Model):
+    """One due intake. `state` is null while pending; only `set_intake_state` writes it."""
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+"
+    )
+    protocol = models.ForeignKey(
+        Protocol, on_delete=models.CASCADE, related_name="intake_events"
+    )
+    version = models.ForeignKey(
+        ProtocolVersion, on_delete=models.CASCADE, related_name="intake_events"
+    )
+    # Position of the intervention in version.snapshot["interventions"], as text (Q160).
+    intervention_key = models.CharField(max_length=20)
+    due_date = models.DateField()
+    occurrence_index = models.PositiveIntegerField()
+    state = models.CharField(
+        max_length=10, choices=IntakeState.choices, null=True, blank=True
+    )
+    state_set_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+    state_set_at = models.DateTimeField(null=True, blank=True)
+    entered_amount = models.DecimalField(
+        max_digits=30, decimal_places=10, null=True, blank=True
+    )
+    # UCUM code stored as given; not converted or validated (Q158).
+    entered_unit = models.CharField(max_length=100, blank=True, default="")
+
+    class Meta:
+        ordering = ["due_date", "occurrence_index", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["version", "intervention_key", "due_date", "occurrence_index"],
+                name="intake_event_unique_occurrence",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    models.Q(
+                        state__isnull=True,
+                        state_set_by__isnull=True,
+                        state_set_at__isnull=True,
+                    )
+                    | models.Q(
+                        state__isnull=False,
+                        state_set_by__isnull=False,
+                        state_set_at__isnull=False,
+                    )
+                ),
+                name="intake_event_state_actor_time_together",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(entered_amount__isnull=True)
+                | ~models.Q(entered_unit=""),
+                name="intake_event_amount_needs_unit",
+            ),
+        ]

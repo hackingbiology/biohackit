@@ -18,6 +18,7 @@ MODE_INTERVAL = "interval"
 MODES = (MODE_DAILY, MODE_DAYS_OF_WEEK, MODE_INTERVAL)
 MAX_WINDOW_DAYS = 366
 MAX_TIMES_PER_DAY = 24
+KEYS = ("mode", "times_per_day", "days_of_week", "interval_days")
 
 
 def _positive_int(value: object, field: str) -> int:
@@ -73,6 +74,11 @@ class Cadence:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Cadence:
+        if not isinstance(data, dict):
+            raise ValueError("cadence must be an object")
+        for key in data:
+            if key not in KEYS:
+                raise ValueError(f"unknown cadence key: {key}")
         days = data.get("days_of_week")
         if days is not None and not isinstance(days, (list, tuple)):
             raise ValueError("days_of_week must be a list")

@@ -87,3 +87,10 @@ def test_round_trip_plain_json() -> None:
         assert Cadence.from_dict(data) == cadence
     with pytest.raises(ValueError, match="days_of_week"):
         Cadence.from_dict({"mode": "days_of_week", "days_of_week": "24"})
+
+
+def test_from_dict_refuses_unknown_key_and_non_dict() -> None:
+    with pytest.raises(ValueError, match="timesPerDay"):
+        Cadence.from_dict({"mode": "daily", "timesPerDay": 3})
+    with pytest.raises(ValueError, match="object"):
+        Cadence.from_dict([])  # type: ignore[arg-type]

@@ -114,3 +114,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-28 · X01 · M04 ecosystem scan (docs/ecosystem/m04-pills-therapeutics-nutrition-exercise.md): 17 entries fetched on the day, Q140-Q148, 2 give-back proposals, /ecosystem data regenerated; docs only
 2026-11-28 · M04 · OpenSpec change m04-pills-therapeutics-nutrition-exercise (second attempt): proposal, tasks, 5 spec deltas, state-filtered intake export, Q150-Q154; spec and docs only · see git log
 2026-11-28 · M04 · TG-a typed cadence and due_dates (backend/core/cadence.py), spec fixes (entered-amount unit, due-session scenario), Q156-Q158 · see git log
+2026-11-28 · M04 · TG-b IntakeEvent (one nullable owner-set state, UCUM unit string, migration 0006, services only, no endpoint) and Cadence.from_dict key/type check, Q160 · see git log
