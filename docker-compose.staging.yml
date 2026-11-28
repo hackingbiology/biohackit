@@ -38,6 +38,8 @@ services:
       DEMO_USERNAME: ${DEMO_USERNAME:-}
       DEMO_PASSWORD: ${DEMO_PASSWORD:-}
       PRIVATE_MEDIA_ROOT: /app/private_media
+      # Proxies in front of Django; 0 until the Next.js hop is verified (docs/STAGING.md, Q139).
+      DRF_NUM_PROXIES: ${DRF_NUM_PROXIES:-0}
     volumes:
       - private-media-staging:/app/private_media
     depends_on:

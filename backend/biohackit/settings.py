@@ -217,6 +217,9 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    # Reverse proxies in front of Django (0 = none: REMOTE_ADDR is used and X-Forwarded-For is
+    # ignored, so it cannot be spoofed to dodge a throttle).
+    "NUM_PROXIES": env.int("DRF_NUM_PROXIES", default=0),
     # Scoped throttles only apply to views that set `throttle_scope`.
     "DEFAULT_THROTTLE_RATES": {
         "loinc_search": env("LOINC_SEARCH_THROTTLE_RATE", default="60/min"),

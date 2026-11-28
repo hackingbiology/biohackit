@@ -11,5 +11,6 @@ urlpatterns = [
     path("<int:pk>/ingredient-totals/", views.IngredientTotalsView.as_view()),
     path("<int:pk>/publish/", views.PublishView.as_view()),
     path("<int:pk>/unpublish/", views.UnpublishView.as_view()),
+    path("<int:pk>/fork/", views.ForkView.as_view()),
     path("<int:pk>/diff/", views.DiffView.as_view()),
 ]

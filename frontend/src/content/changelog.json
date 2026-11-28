@@ -1,6 +1,16 @@
 {
   "days": [
     {
+      "date": "2026-11-28",
+      "entries": [
+        {
+          "change": "m03-interventions-protocols",
+          "commit": "a6b976d",
+          "summary": "You can copy a published protocol into your own draft. The copy remembers which protocol and which published version it came from, leaves out anything the owner kept private, and editing it never changes the original."
+        }
+      ]
+    },
+    {
       "date": "2026-11-26",
       "entries": [
         {

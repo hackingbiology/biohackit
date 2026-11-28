@@ -48,6 +48,19 @@ The system SHALL keep every created `ProtocolVersion` unchanged, including the l
 - **THEN** no new version is created
 - **AND** the saved version is unchanged
 
+### Requirement: A fork copies only what the source shows publicly
+The system SHALL let a logged-in user copy a protocol that has an active publication into a new `Draft` owned by that user, with origin `community` and the source's level. The copy SHALL record the source protocol and the exact published version it came from, and that reference SHALL NOT change when the source later publishes another version. The copy SHALL take interventions and measures from that published version only, without any item the owner withheld and without any genomic item, and SHALL keep each copied item's posology basis, provenance and provenance source, route, formulation and substance links. A product reference SHALL be kept only if the product belongs to the user who forks. A protocol that is a draft, not published, or no longer published SHALL answer as not found, so its existence is not revealed. Safety markers and the mandatory baseline of `safety-guardrails` do not exist yet; until they do, only the stored safety-relevant fields (level and posology provenance) travel with the copy (Q138).
+
+#### Scenario: Fork copies only public items
+- **WHEN** a user forks a published protocol that withholds one measure and has one genomic intervention
+- **THEN** the withheld measure and the genomic intervention are absent from the copy
+- **AND** a product that is not the forking user's is not referenced by the copy
+
+#### Scenario: Only a published protocol can be forked
+- **WHEN** a user forks a draft protocol, an unpublished protocol, or without being logged in
+- **THEN** no copy is created
+- **AND** the answer for a protocol that is not published is not found
+
 ### Requirement: Protocol export mappings cite their target schema
 The system SHALL document the mapping of a tracked intervention to FHIR MedicationStatement and to OMOP DRUG_EXPOSURE, and of a protocol to FHIR PlanDefinition, as export targets and not as storage schemas. OMOP concept ids SHALL stay empty until the OHDSI vocabularies are loaded. (Source: docs/ecosystem/m03-interventions-protocols.md (c).)
 

@@ -13,7 +13,7 @@ from rest_framework.response import Response  # type: ignore[import-untyped]  # 
 from rest_framework.throttling import ScopedRateThrottle  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
-from . import publication, services
+from . import forking, publication, services
 from .diffing import diff_snapshots
 from .facets import is_per_weight, missing_in_draft
 from .ingredient_totals import ingredient_totals
@@ -43,6 +43,17 @@ def _intervention_data(item: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+def _lineage(protocol: Protocol) -> dict[str, Any] | None:
+    version = protocol.forked_from_version
+    if version is None:
+        return None
+    return {
+        "protocol": protocol.forked_from_protocol_id,
+        "version": version.number,
+        "version_id": version.pk,
+    }
+
+
 def _protocol_data(protocol: Protocol) -> dict[str, Any]:
     data: dict[str, Any] = {
         "id": protocol.pk,
@@ -65,6 +76,7 @@ def _protocol_data(protocol: Protocol) -> dict[str, Any]:
             protocol=protocol, published=True
         ).exists(),
     }
+    data["forked_from"] = _lineage(protocol)
     if protocol.state == State.DRAFT:
         data["missing"] = missing_in_draft(
             protocol.interventions, protocol.goals, protocol.measures, protocol.level
@@ -211,6 +223,13 @@ class PublishView(APIView):
                 protocol, request.user, body.get("withheld_items"), reason
             )
         return Response(publication.public_data(pub))
+
+
+class ForkView(APIView):
+    def post(self, request: Request, pk: int) -> Response:
+        with transaction.atomic():
+            copy = forking.fork(request.user, pk)
+        return Response(_protocol_data(copy), status=status.HTTP_201_CREATED)
 
 
 class UnpublishView(APIView):

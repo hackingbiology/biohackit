@@ -59,3 +59,10 @@ Keep `BUILD_SCRIPT_PACKAGES` in `frontend/src/__tests__/pnpm-build-policy.test.t
 in step. If you bump the pinned pnpm, move the policy to the place that
 version reads (`pnpm-workspace.yaml` in newer pnpm) and copy that file in the
 Dockerfile `deps` stage.
+
+## Throttle client address
+
+`DRF_NUM_PROXIES` (default `0`) is the number of reverse proxies in front of Django. At `0` the
+throttles use the connection address and ignore `X-Forwarded-For`, so a spoofed header cannot dodge
+the anonymous throttle on `/api/public/protocols/`. The staging compose leaves it at `0`: the
+only hop is the Next.js rewrite and whether it appends the client address is unverified (Q139).

@@ -139,6 +139,20 @@ def _public_item(facet: str, item: dict[str, Any]) -> dict[str, Any]:
     return dict(item)
 
 
+def _public_lineage(protocol: Protocol) -> dict[str, Any] | None:
+    """Shown only while the source is itself published, so a fork never reveals a source that
+    was taken down."""
+    version = protocol.forked_from_version
+    if (
+        version is None
+        or not Publication.objects.filter(
+            protocol_id=protocol.forked_from_protocol_id, published=True
+        ).exists()
+    ):
+        return None
+    return {"protocol": protocol.forked_from_protocol_id, "version": version.number}
+
+
 def public_data(pub: Publication) -> dict[str, Any]:
     """The public view of the pinned version: no owner data, no withheld or genomic item."""
     snap = pub.version.snapshot
@@ -152,6 +166,7 @@ def public_data(pub: Publication) -> dict[str, Any]:
         "cycles": snap["cycles"],
         "goals": snap["goals"],
     }
+    out["forked_from"] = _public_lineage(pub.protocol)
     for facet in ITEM_FACETS:
         out[facet] = [
             _public_item(facet, item)

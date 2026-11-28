@@ -92,6 +92,21 @@ class Protocol(models.Model):
     measures = models.JSONField(default=list)
     goals = models.JSONField(default=list)
     created_at = models.DateTimeField(auto_now_add=True)
+    # Lineage of a fork (TG-f part 2a): the source and the exact published version copied.
+    forked_from_protocol = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="forks",
+    )
+    forked_from_version = models.ForeignKey(
+        "ProtocolVersion",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="forks",
+    )
 
     class Meta:
         ordering = ["id"]
