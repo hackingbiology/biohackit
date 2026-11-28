@@ -4,6 +4,7 @@
 from typing import Any, NoReturn
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -261,3 +262,64 @@ class IntakeEvent(models.Model):
                 name="intake_event_amount_needs_unit",
             ),
         ]
+
+
+class IntakeConstraintKind(models.TextChoices):
+    SEPARATE_SLOTS = "separate_slots"
+    MIN_DISTANCE_MINUTES = "min_distance_minutes"
+
+
+class IntakeConstraint(models.Model):
+    """A spacing rule between two substances, or between one substance and meals
+    (`substance_b` null). Counts as sourced only when `source` is non-blank. Never seeded."""
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+"
+    )
+    substance_a = models.ForeignKey(
+        "substances.Substance", on_delete=models.CASCADE, related_name="+"
+    )
+    substance_b = models.ForeignKey(
+        "substances.Substance",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+    kind = models.CharField(max_length=24, choices=IntakeConstraintKind.choices)
+    minutes = models.PositiveIntegerField(null=True, blank=True)
+    # Free-text citation; blank means the constraint is listed but not enforced.
+    source = models.TextField(blank=True, default="")
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(minutes__isnull=True) | models.Q(minutes__gt=0),
+                name="intake_constraint_minutes_positive",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(
+                    kind="separate_slots",
+                    minutes__isnull=True,
+                    substance_b__isnull=False,
+                )
+                | models.Q(kind="min_distance_minutes", minutes__isnull=False),
+                name="intake_constraint_kind_fields",
+            ),
+        ]
+
+    def clean(self) -> None:
+        if self.minutes is not None and self.minutes <= 0:
+            raise ValidationError("minutes must be positive.")
+        if self.kind == IntakeConstraintKind.SEPARATE_SLOTS:
+            if self.minutes is not None:
+                raise ValidationError("separate_slots takes no minutes.")
+            if self.substance_b_id is None:
+                raise ValidationError("separate_slots needs a second substance.")
+        elif self.minutes is None:
+            raise ValidationError("min_distance_minutes needs minutes.")
