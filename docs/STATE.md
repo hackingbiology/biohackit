@@ -6,6 +6,7 @@
 - Plan: `docs/ROADMAP.md`. Questions for Fabio: `docs/QUESTIONS.md`. Log: `docs/AUTODEV-LOG.md`.
 
 ## Current
+- M04 spec written 2026-11-28 (second attempt, change `m04-pills-therapeutics-nutrition-exercise`): proposal, tasks TG-a..TG-j, deltas for pills, therapeutics, nutrition, exercise and daily-log; intake export writes DRUG_EXPOSURE only for `done` and `partial` events (skipped, missed and stateless write none); Q150-Q154; no dependency. Next: M04 TG-a, TG-b; TG-d blocked by Q140, TG-i by Q141/Q142/Q145.
 - M03 TG-f part 2a done 2026-11-28: `POST /api/protocols/<id>/fork/` copies a published protocol into the caller's Draft (lineage to the source and the pinned version, withheld/genomic items and foreign products not copied; migration 0005); `DRF_NUM_PROXIES` (default 0) closes the spoofable-X-Forwarded-For throttle bypass; Q136-Q139. No dependency. Next: TG-f part 2b (needs a measurement-planning link), TG-i.
 - M03 TG-k done 2026-11-27: protocol publication (pins a version, per-item withhold, genomic never public, anonymous throttled public API, origin and level everywhere); nothing seeded; Q133-Q135. No dependency. Next: TG-f part 2 (fork lineage), TG-i or TG-j FHIR.
 - M03 TG-d done 2026-11-27: posology provenance on protocol interventions (per-weight needs human/animal tag + source to be a dose; no absolute dose is derived; OMOP quantity empty) and logged heightened acknowledgment on activation (`ActivationAcknowledgment`, migration 0002); dose sanity check and baseline gate left out (Q126-Q129). No dependency. Next: TG-e or TG-i.

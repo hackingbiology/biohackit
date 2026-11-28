@@ -27,7 +27,7 @@ until *everything* is done; then Fabio starts using it as first user.
 | 1 | Terminology & reference data (LOINC/UCUM/RxNorm…) with provenance | data-standards-and-typing, biomarkers-and-labs | todo |
 | 2 | Blood Layer: lab ingestion (CSV/PDF/manual), normalization, ranges | biomarkers-and-labs | spec written |
 | 3 | Interventions catalog + protocols | interventions-and-catalog, protocols | spec written |
-| 4 | Pills / therapeutics / nutrition / exercise | pills-management, therapeutics-management, nutrition-management, exercise-reporting | todo |
+| 4 | Pills / therapeutics / nutrition / exercise | pills-management, therapeutics-management, nutrition-management, exercise-reporting | spec written |
 | 5 | Daily log & adherence, measurement planning | daily-log-and-adherence, measurement-planning | todo |
 | 6 | n-of-1 studies + statistics + scientific method | studies-nof1, statistical-methodology, scientific-method-and-evidence | todo |
 | 7 | Evidence layer (Evipedia MCP) + AI4L narration | evidence-layer, ai-uses-and-attribution | todo |
