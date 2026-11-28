@@ -90,6 +90,20 @@
       "link": "https://github.com/elkimek/get-based",
       "status": "proposed",
       "upstream": "elkimek/get-based (supplement model)"
+    },
+    {
+      "contribution": "Share the observation that supplement tracking, stock and reminders could use a documented, exportable intake format (for example FHIR MedicationAdministration fields) so intake logs move between self-hosted trackers; nothing is posted without Fabio OK (docs/ecosystem/m04-pills-therapeutics-nutrition-exercise.md)",
+      "date": "2026-11-28",
+      "link": "https://github.com/peterthepeter/groly",
+      "status": "proposed",
+      "upstream": "peterthepeter/groly"
+    },
+    {
+      "contribution": "Ask which licence applies to the schemas: GitHub says Apache-2.0, the README states none and the project site says All Rights Reserved (Q146)",
+      "date": "2026-11-28",
+      "link": "https://github.com/openmhealth/schemas",
+      "status": "proposed",
+      "upstream": "openmhealth/schemas"
     }
   ],
   "scans": [
@@ -1023,6 +1037,221 @@
       ],
       "file": "m03-interventions-protocols.md",
       "title": "Ecosystem scan — M03 Interventions catalog and protocols"
+    },
+    {
+      "entries": [
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "adopt as dependency",
+            "Last activity": "2026-11-27",
+            "Licence": "Apache-2.0",
+            "Licence note": "the spec says allocation uses \"a constraint solver rather than an LLM\", deterministic and explainable. Assessment: OR-Tools is a candidate solver; it is not installed by this scan and `backend/pyproject.toml` has no solver today (grep for ortools, constraint, dateutil, icalendar, webpush found nothing, 2026-11-28). Adding it needs Fabio's approval of a dependency (Q140). Whether its solutions can be turned into a \"stated reason\" for each separation (the scenario \"Competing compounds separated\") was not read; the M04 change must check that, and that the solver is deterministic for a fixed input.",
+            "Provisional": "yes, adoption waits on Q140 (dependency approval and the explainability check).",
+            "URL": "https://github.com/google/or-tools",
+            "Verified": "api.github.com/repos/google/or-tools (licence `Apache-2.0`, not archived, pushed 2026-11-27T17:30:53Z) and pypi.org/pypi/ortools/json (license \"Apache 2.0\", classifier \"Apache Software License\", version 9.15.6755, uploaded 2026-01-14, summary \"Google OR-Tools python libraries and modules\"), 2026-11-28"
+          },
+          "name": "OR-Tools (Google)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-2-Clause)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-07",
+            "Licence": "BSD-2-Clause",
+            "Licence note": "a smaller CSP library as an alternative to OR-Tools. Not adopted here: the old PyPI name `python-constraint` is at 1.4.0 uploaded 2018-11-05 (pypi.org, 2026-11-28), so the maintained package name is `python-constraint2`. Assessment: a small pure constraint model may be enough for dozens of intakes into a few slots; the M04 change decides after writing the scenarios as tests. Neither library was run here.",
+            "URL": "https://github.com/python-constraint/python-constraint",
+            "Verified": "api.github.com/repos/python-constraint/python-constraint (licence `BSD-2-Clause`, pushed 2026-11-07T03:00:58Z) and pypi.org/pypi/python-constraint2/json (license_expression `BSD-2-Clause`, version 2.9.0, uploaded 2026-10-27, summary \"python-constraint is a module for efficiently solving CSPs (Constraint Solving Problems)\"), 2026-11-28"
+          },
+          "name": "python-constraint2"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-3-Clause)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-18",
+            "Licence": "BSD-3-Clause",
+            "Licence note": "the licence comes from PyPI because GitHub reported `NOASSERTION`. Assessment: its `rrule` module implements RFC 5545 recurrence rules and could express \"every second day\", \"weekdays\"; get-based's schedule (`mode`, `timesPerDay`, `daysOfWeek`, `intervalDays`, see M03) is a simpler typed form. The M04 change decides whether a typed cadence is enough before any recurrence library is added.",
+            "URL": "https://github.com/dateutil/dateutil",
+            "Verified": "api.github.com/repos/dateutil/dateutil (licence `NOASSERTION`, pushed 2026-11-18T01:50:32Z) and pypi.org/pypi/python-dateutil/json (license_expression `BSD-3-Clause`, version 4.0.0, uploaded 2026-11-01, summary \"Extensions to the standard Python datetime module\"), 2026-11-28"
+          },
+          "name": "python-dateutil (rrule)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (BSD-2-Clause)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-27",
+            "Licence": "BSD-2-Clause",
+            "Licence note": "assessment: a possible way to export the programming calendar (pills, therapies, exercise) as an `.ics` feed. No spec requirement asks for calendar export, so nothing is adopted; recorded for the planner of `measurement-planning`.",
+            "URL": "https://github.com/collective/icalendar",
+            "Verified": "api.github.com/repos/collective/icalendar (redirects to PyCalendar/icalendar; licence `BSD-2-Clause`, pushed 2026-11-27T04:46:53Z) and pypi.org/pypi/icalendar/json (license_expression `BSD-2-Clause`, version 7.3.2, uploaded 2026-11-20, summary \"RFC 5545 compatible parser and generator of iCalendar files\"), 2026-11-28"
+          },
+          "name": "icalendar"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MPL-2.0)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-09-01",
+            "Licence": "MPL-2.0",
+            "Licence note": "candidate server-side sender for push reminders in the PWA. The reminder channel (in-app, Web Push, email) is not specified in \"Reminders for intake, due tests and restock\", so nothing is adopted before Q144. How it handles VAPID keys, and its fit with the Django 5 stack, were not read. The Django wrapper `django-webpush` is listed on PyPI with the GPLv3 classifier (version 0.3.6, uploaded 2024-04-30; pypi.org, 2026-11-28) and its GitHub repository was not found under the owner tried, so it is not an entry; GPL-3.0 combining is still an open question in README.md.",
+            "URL": "https://github.com/web-push-libs/pywebpush",
+            "Verified": "api.github.com/repos/web-push-libs/pywebpush (licence `MPL-2.0`, pushed 2026-09-01T21:53:33Z) and pypi.org/pypi/pywebpush/json (license_expression `MPL-2.0`, version 2.5.0, uploaded 2026-08-30, summary \"WebPush publication library\"), 2026-11-28"
+          },
+          "name": "pywebpush"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (same licence)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-27",
+            "Licence": "AGPL-3.0",
+            "Licence note": "description: \"A lightweight self-hosted grocery list, supplement tracker & meal planner PWA\". README facts: per-supplement push reminders; stock tracking with reorder to a list; one-tap intake logging (amount and time); nutrients defined per unit (the example is 500 µg B12 per capsule) and summed into a daily total; weekly meal plan; a food diary that uses built-in foods plus Open Food Facts lookups. The README does not say how doses are scheduled or repeated. The code is AGPL-3.0, so reuse would be licence-compatible, but nothing is imported: the stack and data model were not read. Pattern to learn: per-unit nutrient definition and daily sum.",
+            "URL": "https://github.com/peterthepeter/groly",
+            "Verified": "api.github.com/repos/peterthepeter/groly (licence `AGPL-3.0`, pushed 2026-11-27T08:52:41Z) and raw.githubusercontent.com/peterthepeter/groly/main/README.md, 2026-11-28"
+          },
+          "name": "Groly (supplement tracker and meal planner PWA)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (Apache-2.0)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-08-01",
+            "Licence": "Apache-2.0",
+            "Licence note": "the README says it is early-stage, \"not production-ready and has no functional release yet\"; its scheduling model, reminders and adherence states are \"not stated\" (meal-relative schedules, inventory and refill planning are listed as planned). Little to learn today; recorded so the next scan can check its progress.",
+            "URL": "https://github.com/juscghwe/pilltracker",
+            "Verified": "api.github.com/repos/juscghwe/pilltracker (licence `Apache-2.0`, pushed 2026-08-01T16:00:03Z) and raw.githubusercontent.com/juscghwe/pilltracker/main/README.md, 2026-11-28"
+          },
+          "name": "PillTracker (juscghwe)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (same licence)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-27",
+            "Licence": "AGPL-3.0",
+            "Licence note": "description \"Self hosted FLOSS fitness/workout, nutrition and weight tracker\". README facts: an exercise wiki, custom workout routines with weight-progression rules, calorie logging with a food database \"from Open Food Facts\"; the README lists \"Exercise/Ingredient Data: Creative Commons (see individual entries)\", so the exercise data licence varies by entry and is not a single known licence. Assessment: it is a gym and routine tracker, which `exercise-reporting` says we are not (\"not a gym-management app\", no per-set logging). Learn only its separation of exercise data from user logs; no exercise data is taken.",
+            "URL": "https://github.com/wger-project/wger",
+            "Verified": "api.github.com/repos/wger-project/wger (licence `AGPL-3.0`, pushed 2026-11-27T20:47:08Z), pypi.org/pypi/wger/json (classifier AGPLv3+, version 2.1, uploaded 2022-10-11, so the PyPI package is stale) and raw.githubusercontent.com/wger-project/wger/master/README.md, 2026-11-28"
+          },
+          "name": "wger"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q141)",
+            "Decision": "learn-from only",
+            "Last activity": "unknown",
+            "Licence": "unknown",
+            "Licence note": "fetched 2026-11-28 from https://fdc.nal.usda.gov/download-datasets/: the page states no licence, copyright, public-domain or CC0 terms; \"Latest Downloads\" lists Foundation Foods and Branded Foods and the Full Download as October 2026, FNDDS as October 2024 and SR Legacy as April 2018. https://fdc.nal.usda.gov/faq/ and https://fdc.nal.usda.gov/data-documentation/ (2026-11-28) also state no licence; the FAQ says only \"Obtain the API with the API Key.\" https://www.ars.usda.gov/oc/linking-policy-and-copyright/ returned HTTP 404. The terms, rate limits and redistribution rights are therefore unknown from the pages read; nothing is recalled.",
+            "Provisional": "yes, no FoodData Central value or file is stored until Q141 is answered.",
+            "URL": "https://fdc.nal.usda.gov/download-datasets/",
+            "Verified": "unknown"
+          },
+          "name": "USDA FoodData Central"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q142)",
+            "Decision": "learn-from only",
+            "Last activity": "unknown",
+            "Licence": "ODbL-1.0",
+            "Licence note": "fetched 2026-11-28 from the URL above: the database is under the Open Database License (ODbL 1.0), with \"the attribution and the sharing under the same condition of derivative works\"; individual entries are under the Database Contents License (DbCL 1.0), whose conditions the page does not spell out; product photos are under Creative Commons Attribution-ShareAlike (the linked version is CC BY-SA 3.0), credit and a link to openfoodfacts.org required, and the photo licence does not cover third-party trademarks or packaging design. ODbL is not in the README licence table, so the verdict is `unknown` until looked up. The server code is a separate project: api.github.com/repos/openfoodfacts/openfoodfacts-server reports licence `AGPL-3.0`, pushed 2026-11-28T01:43:53Z (fetched 2026-11-28); the data licence above is what matters for a lookup. wger and Groly both use it for food lookups (their READMEs).",
+            "Provisional": "yes, no Open Food Facts record is stored or seeded until Q142 is answered; at most a live lookup by the user with attribution.",
+            "URL": "https://world.openfoodfacts.org/terms-of-use",
+            "Verified": "unknown"
+          },
+          "name": "Open Food Facts (database)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q145)",
+            "Decision": "learn-from only",
+            "Last activity": "unknown",
+            "Licence": "unknown",
+            "Licence note": "fetching https://ciqual.anses.fr/ on 2026-11-28 returned HTTP 503, so terms, formats and version are unknown. A third-party wrapper exists, plemio/ciqual-mcp, \"MCP for Anses Ciqual French food composition and nutritional database\", licence `MIT`, pushed 2026-08-07 (api.github.com search and repo, 2026-11-28); its licence covers the wrapper, not the Ciqual data. Listed as an example of a European table for the Italian and Chinese i18n goal; not read.",
+            "Provisional": "yes, nothing from Ciqual is used until the page can be fetched (Q145).",
+            "URL": "https://ciqual.anses.fr/",
+            "Verified": "unknown"
+          },
+          "name": "Ciqual (ANSES French food composition table)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q143)",
+            "Decision": "learn-from only",
+            "Last activity": "unknown",
+            "Licence": "unknown",
+            "Licence note": "fetched 2026-11-28 from the URL above: the latest edition is the \"2024 Adult Compendium Update\" (published January 2024, Journal of Sport and Health Science; earlier editions 1993, 2000, 2011). \"One MET is defined as 1 kcal/kg/hour\"; \"Please do not change MET values or combine activities with different MET levels.\" No licence name and no copyright notice appear. \"The Adult, Older Adult, and Wheelchair Compendia are free to use for commercial purposes\"; \"Researchers may download the compendium for use in their research\"; teachers may use portions for education; \"Please cite the Compendium website or publication(s)\"; the download is by request (\"To request a copy of the compendium in Excel format, please email us\"). The page does not address redistribution beyond those lines, so committing the table to git is not settled.",
+            "Provisional": "yes, no MET value is committed until Q143 is answered. `exercise-reporting` captures activity at the level of what the user does; MET values would matter only for the TDEE activity factor in `nutrition-management`, whose formula the M04 change must cite from a source (not chosen in this scan).",
+            "URL": "https://pacompendium.com/",
+            "Verified": "unknown"
+          },
+          "name": "Compendium of Physical Activities (MET values)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q146)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-08-26",
+            "Licence": "Apache-2.0",
+            "Licence note": "the README says the repository holds Open mHealth schemas with sample data, a validator and a Kotlin SDK, and that \"schemas modeling sleep and physical activity measures and metadata are superseded\" by IEEE 1752.1 schemas; the README states no licence. `Apache-2.0` above is GitHub's detection only. The project site https://www.openmhealth.org/documentation/ states \"Copyright © 2011-2019 Open mHealth All Rights Reserved\" and links a Terms of Use page whose text was not returned (2026-11-28). GitHub's `Apache-2.0` and the site's wording are not reconciled (Q146). Superseded by IEEE 1752.1 for activity, whose text was not fetched.",
+            "URL": "https://github.com/openmhealth/schemas",
+            "Verified": "api.github.com/repos/openmhealth/schemas (licence `Apache-2.0`, pushed 2026-08-26T20:17:30Z) and raw.githubusercontent.com/openmhealth/schemas/master/README.md, 2026-11-28"
+          },
+          "name": "Open mHealth schemas"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-27",
+            "Licence": "MIT",
+            "Licence note": "description \"Self-hosted platform to unify wearable health data through one AI-ready API\". README facts: cloud providers Garmin, Oura, Whoop, Polar, Suunto, Strava, Withings, Ultrahuman, SensorBio, Google Health and Fitbit (marked deprecated); on-device Apple Health, Google Health Connect and Samsung Health; a full Apple Health XML export upload; data types include daily activity summaries, sleep, workouts, time series (heart rate, HRV, SpO2, weight, steps, energy), nutrition meals with energy and macronutrients where the source gives them. The README does not say which provider delivers which type. Assessment: wearable import is a `biomarkers-and-labs` requirement (\"Import from wearable export files\", still open in s01), not an `exercise-reporting` one; the M04 change should not pull it in. Recorded as the main reuse candidate for that later task.",
+            "URL": "https://github.com/the-momentum/open-wearables",
+            "Verified": "api.github.com/repos/the-momentum/open-wearables (licence `MIT`, pushed 2026-11-27T13:47:04Z; the path `openwearables/open-wearables` returned 404) and raw.githubusercontent.com/the-momentum/open-wearables/main/README.md, 2026-11-28"
+          },
+          "name": "Open Wearables (the-momentum)"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "learn-from only",
+            "Last activity": "2025-08-06",
+            "Licence": "MIT",
+            "Licence note": "reads Garmin/ANT FIT files. `exercise-reporting` forbids per-set tracking, so the FIT workout detail is not needed by M04; kept as the reader to evaluate for the wearable-import task.",
+            "URL": "https://github.com/polyvertex/fitdecode",
+            "Verified": "api.github.com/repos/polyvertex/fitdecode (licence `MIT`, pushed 2025-08-06T08:06:41Z) and pypi.org/pypi/fitdecode/json (license field `MIT`, version 0.11.0, uploaded 2025-08-06, summary \"FIT file parser and decoder\"), 2026-11-28"
+          },
+          "name": "fitdecode"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "yes (MIT)",
+            "Decision": "reject",
+            "Last activity": "2025-01-28",
+            "Licence": "MIT",
+            "Licence note": "rejected as a second FIT reader: the last PyPI release is 2020-09-07 and fitdecode is newer (assessment). No functional comparison was run.",
+            "URL": "https://github.com/dtcooper/python-fitparse",
+            "Verified": "api.github.com/repos/dtcooper/python-fitparse (licence `MIT`, pushed 2025-01-28T22:09:15Z) and pypi.org/pypi/fitparse/json (license field `MIT`, version 1.2.0, uploaded 2020-09-07), 2026-11-28"
+          },
+          "name": "python-fitparse"
+        },
+        {
+          "fields": {
+            "AGPL-compatible": "unknown — question in docs/QUESTIONS.md (Q55)",
+            "Decision": "learn-from only",
+            "Last activity": "2026-11-25",
+            "Licence": "unknown",
+            "Licence note": "same open question as the m02 and m03 scans (Q55), not re-decided. Read facts (each page read only in part, the first 100,000 characters). MedicationAdministration (R4): Maturity Level 2, Trial Use, an event; required `status`, `medication[x]`, `subject`, `effective[x]`; its scope is \"the administration of all medications and vaccines\" including \"self-administrations of oral medications\", and it does not mention supplements; \"A medication statement is not a part of the prescribe->dispense->administer sequence\", so an intake log entry fits MedicationAdministration and \"what a user takes\" fits MedicationStatement (M03). NutritionOrder (R4): Maturity Level 2, Trial Use, a request (`status`, `intent`, `patient`, `dateTime` required) for an oral diet (with `schedule`, `nutrient`, `texture`), oral supplements or enteral formula, described for inpatient settings; parenteral nutrition is excluded. NutritionIntake (R5, not R4): Maturity Level 1, Trial Use, an event; required `status`, `subject`, `consumedItem` (with `type` and `nutritionProduct`); `ingredientLabel.nutrient` and `.amount` give total nutrient consumed; no `intakeAmount` element exists. Assessment: a meal or fasting-window log could map to NutritionIntake, but it is R5 and the stack's FHIR library targets were not checked against R5; a diet pattern (OMAD, 16/8) has no resource that was found. No FHIR resource for exercise or therapy sessions was read (Q147). Each is an export mapping target, not a storage schema.",
+            "URL": "https://github.com/HL7/fhir",
+            "Verified": "api.github.com/repos/HL7/fhir (licence `NOASSERTION`, pushed 2026-11-25T06:48:32Z) and the pages https://hl7.org/fhir/R4/medicationadministration.html, https://hl7.org/fhir/R4/nutritionorder.html and https://hl7.org/fhir/R5/nutritionintake.html, 2026-11-28"
+          },
+          "name": "HL7 FHIR (MedicationAdministration, NutritionOrder, NutritionIntake)"
+        }
+      ],
+      "file": "m04-pills-therapeutics-nutrition-exercise.md",
+      "title": "Ecosystem scan — M04 Pills, therapeutics, nutrition and exercise"
     }
   ]
 }

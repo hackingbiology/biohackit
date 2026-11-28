@@ -5,6 +5,7 @@
 - [x] Integration scans (`docs/ecosystem/integrations.md`) for the anchors named in the slides: get-based, AI4L, evipedia-mcp, FHIR (Python libs), OMOP CDM DDL, Discourse API
 - [x] Licence gate in gates.sh (append): backend deps via pip metadata, frontend via pnpm licenses; fail on AGPL-incompatible licences
 - [ ] Planner rule: scan precedes each module change M02–M13
+  - progress: M04 scan done 2026-11-28 (docs/ecosystem/m04-pills-therapeutics-nutrition-exercise.md); M05–M13 remain
 - [x] Scan docs/ecosystem/m02-blood-layer.md (lab report ingestion CSV/PDF/photo, FHIR DiagnosticReport/Observation, OMOP MEASUREMENT, PhenoAge/biological clocks, PII obfuscation)
 - [x] M03 scan: docs/ecosystem/m03-interventions-protocols.md
 - [x] Docs page "Ecosystem": what we build on, what we give back
