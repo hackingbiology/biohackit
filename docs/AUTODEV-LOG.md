@@ -113,3 +113,4 @@ One entry per iteration: date · module · what was done · commit.
 2026-11-28 · M03 · TG-f part 2a: fork a published protocol (lineage to source + pinned version, withheld/genomic/foreign-product not copied, migration 0005), DRF_NUM_PROXIES fixes the spoofable public throttle, Q136-Q139; no dependency · see git log
 2026-11-28 · X01 · M04 ecosystem scan (docs/ecosystem/m04-pills-therapeutics-nutrition-exercise.md): 17 entries fetched on the day, Q140-Q148, 2 give-back proposals, /ecosystem data regenerated; docs only
 2026-11-28 · M04 · OpenSpec change m04-pills-therapeutics-nutrition-exercise (second attempt): proposal, tasks, 5 spec deltas, state-filtered intake export, Q150-Q154; spec and docs only · see git log
+2026-11-28 · M04 · TG-a typed cadence and due_dates (backend/core/cadence.py), spec fixes (entered-amount unit, due-session scenario), Q156-Q158 · see git log

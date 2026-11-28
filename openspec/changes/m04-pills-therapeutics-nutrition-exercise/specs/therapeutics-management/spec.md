@@ -19,4 +19,3 @@ The system SHALL store a therapy's session cadence in the same typed form as an 
 #### Scenario: Weekly sessions
 - **WHEN** a therapy has a cadence of two named days of the week
 - **THEN** a session is due on each of those days
-- **AND** sessions appear in the calendar with an in-app reminder (Q144)
