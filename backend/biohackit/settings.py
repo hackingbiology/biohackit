@@ -221,6 +221,7 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "loinc_search": env("LOINC_SEARCH_THROTTLE_RATE", default="60/min"),
         "substance_resolve": env("SUBSTANCE_RESOLVE_THROTTLE_RATE", default="60/min"),
+        "public_protocols": env("PUBLIC_PROTOCOLS_THROTTLE_RATE", default="60/min"),
         "substance_extraction": env(
             "SUBSTANCE_EXTRACTION_THROTTLE_RATE", default="60/min"
         ),

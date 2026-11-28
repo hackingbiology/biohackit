@@ -13,5 +13,6 @@ urlpatterns: list = [
     path("terminology/", include("terminology.urls")),
     path("labs/", include("core.urls")),
     path("protocols/", include("protocols.urls")),
+    path("public/protocols/", include("protocols.public_urls")),
     path("substances/", include("substances.urls")),
 ]

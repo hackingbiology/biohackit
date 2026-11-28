@@ -41,7 +41,8 @@ Ordering: tasks with no new dependency first. Each TG is one implementer run (~6
 - [ ] FHIR MedicationStatement (intervention) and PlanDefinition (protocol) mapping, written by hand against the spec. Req: same. Blocked by: Q55 (FHIR licence).
 
 ## TG-k — Visibility, origin and level
-- [ ] Publish with per-facet visibility (public by default on publish, per-item withhold, genomic elements behind heightened consent), `curated` vs `community` origin shown wherever a protocol appears, `medical` vs `research` level shown. A curated seed protocol is written only from a cited source (no invented protocol). Req: main-P "Publish with per-facet visibility", "Curated and community origin". Blocked by: Q112 (default visibility of a draft and of unpublished facets); depends on: TG-f.
+- [x] Publish with per-facet visibility (public by default on publish, per-item withhold, genomic elements behind heightened consent), `curated` vs `community` origin shown wherever a protocol appears, `medical` vs `research` level shown. A curated seed protocol is written only from a cited source (no invented protocol). Req: main-P "Publish with per-facet visibility", "Curated and community origin". Blocked by: Q112 (default visibility of a draft and of unpublished facets); depends on: TG-f.
+  - Done 2026-11-27: `Publication` (migration 0003) pins a version; per-item withhold by key (`measures[1]`), `genomic` flag never public (Q134); owner `publish`/`unpublish` with mandatory reason and a change event each; anonymous throttled `/api/public/protocols/`; `origin` and `level` in every serializer. Defaults Q133-Q135. Left out: any curated seed (no cited source), per-facet withhold, the genomics heightened consent itself. No dependency.
 
 ## TG-l — Browser pages (later)
 - [ ] Substance search, review queue, protocol builder and version diff pages; EN first, IT/ZH fall back to EN as in M02; WCAG 2.2 AA; Playwright + axe check (Q34). Depends on: TG-b, TG-f. Blocked by: Q34.

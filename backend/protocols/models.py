@@ -135,6 +135,22 @@ class ChangeEvent(ImmutableModel):
         ordering = ["id"]
 
 
+class Publication(models.Model):
+    """Public status of a protocol: pins one version; `withheld` lists item keys such as
+    `measures[1]` (position in the pinned version) kept out of public views. Mutable by
+    design: every change is also recorded as a ChangeEvent."""
+
+    protocol = models.OneToOneField(
+        Protocol, on_delete=models.CASCADE, related_name="publication"
+    )
+    version = models.ForeignKey(
+        ProtocolVersion, on_delete=models.RESTRICT, related_name="+"
+    )
+    withheld = models.JSONField(default=list)
+    published = models.BooleanField(default=True)
+    updated_at = models.DateTimeField()
+
+
 class ActivationAcknowledgment(ImmutableModel):
     """Logged heightened acknowledgment given when a protocol became active (append-only)."""
 

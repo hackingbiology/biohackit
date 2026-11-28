@@ -7,15 +7,17 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import status  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.exceptions import ValidationError  # type: ignore[import-untyped]  # DRF ships no stubs
+from rest_framework.permissions import AllowAny  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.request import Request  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.response import Response  # type: ignore[import-untyped]  # DRF ships no stubs
+from rest_framework.throttling import ScopedRateThrottle  # type: ignore[import-untyped]  # DRF ships no stubs
 from rest_framework.views import APIView  # type: ignore[import-untyped]  # DRF ships no stubs
 
-from . import services
+from . import publication, services
 from .diffing import diff_snapshots
 from .facets import is_per_weight, missing_in_draft
 from .ingredient_totals import ingredient_totals
-from .models import Protocol, ProtocolVersion, State
+from .models import Protocol, ProtocolVersion, Publication, State
 
 BACKFILL_NOTE = (
     "You can add past measurements and earlier changes as history if you remember them. "
@@ -59,6 +61,9 @@ def _protocol_data(protocol: Protocol) -> dict[str, Any]:
         "measures": protocol.measures,
         "goals": protocol.goals,
         "latest_version": protocol.versions.count() or None,
+        "published": Publication.objects.filter(
+            protocol=protocol, published=True
+        ).exists(),
     }
     if protocol.state == State.DRAFT:
         data["missing"] = missing_in_draft(
@@ -70,6 +75,8 @@ def _protocol_data(protocol: Protocol) -> dict[str, Any]:
 def _version_data(version: ProtocolVersion) -> dict[str, Any]:
     return {
         "number": version.number,
+        "origin": version.protocol.origin,
+        "level": version.snapshot["level"],
         "created_at": version.created_at.isoformat(),
         "actor": version.actor_id,
         "reason": version.reason,
@@ -139,7 +146,11 @@ class ProtocolDetailView(APIView):
 
 class VersionListView(APIView):
     def get(self, request: Request, pk: int) -> Response:
-        versions = _mine(request, pk).versions.prefetch_related("events")
+        versions = (
+            _mine(request, pk)
+            .versions.select_related("protocol")
+            .prefetch_related("events")
+        )
         return Response([_version_data(v) for v in versions])
 
 
@@ -179,3 +190,62 @@ class DiffView(APIView):
             old.snapshot, new.snapshot, f"v{old.number}", f"v{new.number}"
         )
         return Response({"from": old.number, "to": new.number, **result})
+
+
+def _reason_only(body: dict[str, Any], allowed: set[str]) -> str:
+    unknown = sorted(set(body) - allowed)
+    if unknown:
+        raise ValidationError({"detail": f"Not accepted here: {', '.join(unknown)}."})
+    return services.clean_reason(body.get("reason"))
+
+
+class PublishView(APIView):
+    def post(self, request: Request, pk: int) -> Response:
+        body = _body(request)
+        reason = _reason_only(body, {"withheld_items", "reason"})
+        with transaction.atomic():
+            protocol = get_object_or_404(
+                Protocol.objects.select_for_update(), pk=pk, owner=request.user
+            )
+            pub = publication.publish(
+                protocol, request.user, body.get("withheld_items"), reason
+            )
+        return Response(publication.public_data(pub))
+
+
+class UnpublishView(APIView):
+    def post(self, request: Request, pk: int) -> Response:
+        reason = _reason_only(_body(request), {"reason"})
+        with transaction.atomic():
+            protocol = get_object_or_404(
+                Protocol.objects.select_for_update(), pk=pk, owner=request.user
+            )
+            publication.unpublish(protocol, request.user, reason)
+        return Response({"id": pk, "published": False})
+
+
+class PublicProtocolView(APIView):
+    """Anonymous, read-only, throttled. No session or token is read, so no owner data is reachable."""
+
+    authentication_classes: list[Any] = []
+    permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "public_protocols"
+
+    @staticmethod
+    def published() -> Any:
+        return Publication.objects.filter(published=True).select_related(
+            "protocol", "version"
+        )
+
+
+class PublicProtocolListView(PublicProtocolView):
+    def get(self, request: Request) -> Response:
+        pubs = self.published().order_by("protocol_id")
+        return Response([publication.public_data(p) for p in pubs])
+
+
+class PublicProtocolDetailView(PublicProtocolView):
+    def get(self, request: Request, pk: int) -> Response:
+        pub = get_object_or_404(self.published(), protocol_id=pk)
+        return Response(publication.public_data(pub))

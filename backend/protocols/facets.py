@@ -150,10 +150,21 @@ def _product_use(item: dict[str, Any], where: str) -> dict[str, Any]:
     return out
 
 
+def _genomic(item: dict[str, Any], where: str) -> dict[str, bool]:
+    """Optional `genomic` flag, written only when true. A genomic item is never published
+    (no genomics heightened consent exists yet)."""
+    raw = item.get("genomic")
+    if raw is None or raw is False:
+        return {}
+    if raw is not True:
+        raise ValidationError({f"{where}.genomic": "must be true or false."})
+    return {"genomic": True}
+
+
 def _intervention(raw: Any, where: str) -> dict[str, Any]:
     keys = {"name", "amount", "unit", "schedule", "basis", "provenance"}
     extra = {"provenance_source", "route", "formulation", "product_id", "units_per_day"}
-    item = _object(raw, where, {*keys, *extra}, {"name"})
+    item = _object(raw, where, {*keys, *extra, "genomic"}, {"name"})
     out = {
         "name": _text(item["name"], f"{where}.name"),
         "amount": _amount(item.get("amount"), f"{where}.amount"),
@@ -167,7 +178,12 @@ def _intervention(raw: Any, where: str) -> dict[str, Any]:
     formulation = _formulation(item.get("formulation"), f"{where}.formulation")
     if formulation:
         out["formulation"] = formulation
-    return {**out, **_posology(item, where), **_product_use(item, where)}
+    return {
+        **out,
+        **_posology(item, where),
+        **_product_use(item, where),
+        **_genomic(item, where),
+    }
 
 
 def is_per_weight(item: dict[str, Any]) -> bool:
@@ -197,7 +213,7 @@ def _cycle(raw: Any, where: str) -> dict[str, Any]:
 
 def _measure(raw: Any, where: str) -> dict[str, str]:
     keys = {"loinc_code", "purpose"}
-    item = _object(raw, where, keys, keys)
+    item = _object(raw, where, {*keys, "genomic"}, keys)
     if item["purpose"] not in PURPOSES:
         raise ValidationError(
             {f"{where}.purpose": f"must be one of {', '.join(PURPOSES)}."}
@@ -205,6 +221,7 @@ def _measure(raw: Any, where: str) -> dict[str, str]:
     return {
         "loinc_code": _text(item["loinc_code"], f"{where}.loinc_code"),
         "purpose": item["purpose"],
+        **_genomic(item, where),
     }
 
 

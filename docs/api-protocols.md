@@ -42,3 +42,13 @@ Owner-only. For the protocol as it stands now (Draft, or the latest version), th
 ## `GET /api/protocols/<id>/diff/?from=<n>&to=<m>`
 
 Deterministic field-level diff of two versions (stdlib `difflib`, no AI). Returns `facets` (`interventions` = name and schedule, `doses` = amount and unit per intervention, `cycles`, `measures`), each `{changed, unified}` with unified diff lines over the canonical JSON, and `changes`: `[{field, old, new}]`, for example `{"field": "doses[0].amount", "old": "6", "new": "8"}`. Missing or non-numeric `from`/`to` is `400`; an unknown version is `404`.
+
+## `POST /api/protocols/<id>/publish/` and `POST /api/protocols/<id>/unpublish/`
+
+Owner-only (another user's protocol is `404`). Body `{withheld_items, reason}` for publish, `{reason}` for unpublish; `reason` is mandatory (`400`). A protocol in `draft` is private and cannot be published (`400`). Publishing pins the latest version and is public by default: `withheld_items` (optional) lists item keys to keep out, in the form `interventions[0]` or `measures[1]` (position in the pinned version; an unknown key is `400`). Publishing again pins the then-latest version. If `withheld_items` is omitted, earlier withholds are kept when each withheld item is unchanged at its position, otherwise the request is `400`; an explicit `[]` clears them; until then the public view keeps showing the previously pinned version. Each publish, unpublish or withhold change writes a `ChangeEvent` (`field: publication`, old and new state, reason) on the pinned version; no version is ever edited. Unpublishing a protocol that is not published is `400`. Interventions and measures may carry `genomic: true`; a genomic item is never public, whatever `withheld_items` says, because no genomics heightened consent exists yet (Q134). Withholding is per item only (Q135). Nothing is seeded (Q133).
+
+Every owner serializer (list, detail, version list, version detail) carries `origin` (`curated` or `community`; only staff can create `curated`) and `level`; the protocol also carries `published`.
+
+## `GET /api/public/protocols/` and `GET /api/public/protocols/<id>/`
+
+Anonymous, read-only, throttled (scope `public_protocols`, `PUBLIC_PROTOCOLS_THROTTLE_RATE`, default `60/min`, `429` over it). Only published protocols appear; a draft, an unpublished or another user's private protocol is `404` on detail and absent from the list. Each protocol is `{id, title, origin, level, state, published_version, cycles, goals, interventions, measures}` built from the pinned version (content), with `state` and `origin` read live (a paused protocol shows as paused): withheld and genomic items are absent (not masked), an intervention has no `product_id` or `units_per_day`, and there is no owner id or email.
